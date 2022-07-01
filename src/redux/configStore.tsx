@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from "@reduxjs/tookit;
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
 import user from "./modules/userSlice";
 const middlewares = [thunk];
@@ -13,6 +13,6 @@ const store = configureStore({
   middleware: [...middlewares],
 });
 
-export type AppDispatch = typeof store.dispatch
-export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
 export default store;

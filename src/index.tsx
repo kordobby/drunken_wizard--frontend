@@ -8,7 +8,8 @@ import "./index.css";
 import GlobalStyled from "./Components/GlobalStyled/GlobalStyled";
 
 /* Redux-toolkit settings */
-
+import { Provider } from "react-redux";
+import store from "./redux/configStore";
 /* react-query */
 import { QueryClient, QueryClientProvider } from "react-query";
 
@@ -29,7 +30,9 @@ root.render(
       <BrowserRouter>
         <React.StrictMode>
           <GlobalStyled />
-          <App />
+          <Provider store={store}>
+            <App />
+          </Provider>
         </React.StrictMode>
       </BrowserRouter>
     </QueryClientProvider>

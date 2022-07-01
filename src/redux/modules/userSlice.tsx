@@ -48,5 +48,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { changeCheckId } = userSlice.actions;
+// export const { changeCheckId } = userSlice.actions;
 export default userSlice.reducer;
