@@ -1,7 +1,6 @@
 // KakaoRedirect.js
 import React, { Dispatch, SetStateAction } from "react";
-import { useMutation, useQuery } from "react-query";
-import { useDispatch } from "react-redux";
+import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 // cookies
 import { setCookie } from "../shared/Cookies";
@@ -23,11 +22,11 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
 
   const kakao_query = useQuery("kakao_login", kakaoQR, {
     onSuccess: (data) => {
+      setCookie("token", data.headers.authorization, {
+        path: "/",
+        expire: "after60m",
+      });
       console.log("성공했어!", data);
-      //   setCookie("token", res.data.token, {
-      //     path: "/",
-      //     expire: "after60m",
-      //   });
       //   setCookie("username", res.data.username, {
       //     path: "/",
       //     expire: "after60m",
@@ -45,38 +44,6 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
       setLoginState(false);
     },
   });
-
-  // React.useEffect(() => {});
-
-  //   const { mutate } = useMutation(kakaoMT, {
-  //     onSuccess: (res) => {
-  //       console.log(res);
-  //       //   setCookie("token", res.data.token, {
-  //       //     path: "/",
-  //       //     expire: "after60m",
-  //       //   });
-  //       //   setCookie("userId", res.data.userId, {
-  //       //     path: "/",
-  //       //     expire: "after60m",
-  //       //   });
-  //       //   setCookie("nickname", res.data.nickname, {
-  //       //     path: "/",
-  //       //     expire: "after60m",
-  //       //   });
-  //       navigate("/");
-  //       setLoginState(true);
-  //     },
-  //     onError: (error) => {
-  //       navigate("/login");
-  //       setLoginState(false);
-  //     },
-  //   });
-
-  //   React.useEffect(async () => {
-  //     await mutate(code);
-  //     console.log(code);
-  //     navigate("/");
-  //   }, []);
 
   return (
     <div>

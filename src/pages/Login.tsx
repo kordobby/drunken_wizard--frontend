@@ -13,8 +13,9 @@ import { KAKAO_AUTH_URL } from "../shared/Kakao";
 import { setCookie } from "../shared/Cookies";
 import { LogUser } from "../typings/db";
 
-const loginMT = (data: LogUser) => {
-  return axios.post("http://3.35.214.100/login", data);
+const loginMT = async (data: LogUser) => {
+  const response = await axios.post("http://3.35.214.100/login", data);
+  return response;
 };
 
 interface loginStateProps {
@@ -58,7 +59,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
       e.preventDefault();
       mutate({ username, password });
     },
-    [username, password]
+    [username, password, mutate]
   );
 
   return (

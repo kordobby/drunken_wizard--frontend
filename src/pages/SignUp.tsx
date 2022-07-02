@@ -1,8 +1,7 @@
 // package
 import React, { useCallback, useState } from "react";
-import axios, { AxiosError } from "axios";
-import { useMutation, useQuery } from "react-query";
-import { useForm, SubmitHandler } from "react-hook-form";
+import axios from "axios";
+import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 // interface
@@ -12,16 +11,16 @@ import fetcher from "../utils/fetcher";
 // hooks
 import useInput from "../hooks/useInput";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
+// modules
+import { __checkUserId } from "../redux/modules/userSlice";
+import { useAppDispatch } from "../hooks/tsHooks";
+import { AppDispatch } from "../redux/configStore";
 
 const registerMT = (data: IUser) => {
   return axios.post("http://3.35.214.100/user/signup", data);
 };
 
 const SignUp = () => {
-  // const { isLoading, isSuccess, status, isError, data, error } = useQuery(
-  //   "user",
-  //   () => fetcher({ queryKey: "/api/users" })
-  // );
   const [username, setUsername] = useInput("");
   const [nickname, setNicname] = useInput("");
   const [email, setEmail] = useInput("");
@@ -30,28 +29,23 @@ const SignUp = () => {
   const [mismatchError, setMismatchError] = useState(false);
   const [signUpError, setSignUpError] = useState("");
   const [signUpSuccess, setSignUpSuccess] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   // id check
+  const name = { username: username };
+
   // const onIdCheck = () => {
-  //   dispatch(__checkUserId(username));
+  //   dispatch(__checkUserId.getUser(name));
   // };
 
-  const onChangePassword = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(e.target.value);
-      setMismatchError(e.target.value !== passwordCheck);
-    },
-    [passwordCheck, setPassword]
-  );
-  const onChangePasswordCheck = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPasswordCheck(e.target.value);
-      setMismatchError(e.target.value !== password);
-    },
-    [password, setPasswordCheck]
-  );
+  // id disable
+  const idCheckDisabled = () => {
+    if (idCheck(username) === true) return true;
+    if (username === "") return true;
+    // 서버 리턴값 if (  === true ) return false;
+    else return false;
+  };
 
   // button disable
   const disabledHandler = () => {
@@ -70,41 +64,20 @@ const SignUp = () => {
     else return false;
   };
 
-  // const mutation = useMutation<
-  //   IUser,
-  //   AxiosError,
-  //   { username: string; nickname: string; email: string; password: string }
-  // >(
-  //   "user",
-  //   (data) => axios.post("/api/users", data).then((response) => response.data),
-  //   {
-  //     onMutate() {
-  //       setSignUpError("");
-  //       setSignUpSuccess(false);
-  //     },
-  //     onSuccess() {
-  //       setSignUpSuccess(true);
-  //     },
-  //     onError(error: any) {
-  //       setSignUpError(error.response?.data);
-  //     },
-  //   }
-  // );
-
-  // const handleSubmit = useCallback(
-  //   (e: any) => {
-  //     e.preventDefault();
-  //     if (!mismatchError && nickname) {
-  //       console.log("서버로 회원가입하기");
-  //       mutation.mutate({ username, nickname, email, password });
-  //     }
-  //   },
-  //   [username, nickname, email, password, mismatchError, mutation]
-  // );
-
-  // if (isLoading) {
-  //   return <div>로딩중...</div>;
-  // }
+  const onChangePassword = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+      setMismatchError(e.target.value !== passwordCheck);
+    },
+    [passwordCheck, setPassword]
+  );
+  const onChangePasswordCheck = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPasswordCheck(e.target.value);
+      setMismatchError(e.target.value !== password);
+    },
+    [password, setPasswordCheck]
+  );
 
   // mutate
   const { mutate } = useMutation(registerMT, {
@@ -122,13 +95,6 @@ const SignUp = () => {
   const onSubmit = useCallback(
     (e: any) => {
       e.preventDefault();
-      // console.log({
-      //   username: username,
-      //   nickname: nickname,
-      //   email: email,
-      //   password: password,
-      //   passwordCheck: passwordCheck,
-      // });
       if (!mismatchError) {
         mutate({
           username: username,
@@ -147,8 +113,8 @@ const SignUp = () => {
         <form onSubmit={onSubmit}>
           <label id="user-id-label">
             <span>아이디</span>
-            {/* <button onClick={onIdCheck} disabled={idCheckDisabled()}> */}
-            {/* 중복확인
+            {/* <button onClick={onIdCheck} disabled={idCheckDisabled()}>
+              중복확인
             </button> */}
             <div>
               <input

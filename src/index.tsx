@@ -9,7 +9,7 @@ import GlobalStyled from "./Components/GlobalStyled/GlobalStyled";
 
 /* Redux-toolkit settings */
 import { Provider } from "react-redux";
-import store from "./redux/configStore";
+import { store } from "./redux/configStore";
 /* react-query */
 import { QueryClient, QueryClientProvider } from "react-query";
 
