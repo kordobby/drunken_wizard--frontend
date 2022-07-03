@@ -1,20 +1,39 @@
+import axios from "axios";
 import React from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
+// css
 import flex from "../GlobalStyled/flex";
+
+const getRoomListQR = () => {
+  return axios.get(`http://3.35.214.100/rooms`);
+};
+
 const Rooms = () => {
+  const roomList_query = useQuery("room_list", getRoomListQR, {
+    onSuccess: (data: any) => {
+      console.log("성공했어!", data);
+    },
+    onError: (error: any) => {
+      console.log("실패", error);
+    },
+  });
+
   return (
-    <RoomWrap>
-      <RoomTitle>
-        <span>001</span>
-        <span>방 제목</span>
-      </RoomTitle>
-      <UsersWrap>
-        <Users>닉네임 1</Users>
-        <Users>닉네임 2</Users>
-        <Users>닉네임 3</Users>
-        <Users>닉네임 4</Users>
-      </UsersWrap>
-    </RoomWrap>
+    <>
+      <RoomWrap>
+        <RoomTitle>
+          <span>001</span>
+          <span>방 제목</span>
+        </RoomTitle>
+        <UsersWrap>
+          <Users>닉네임 1</Users>
+          <Users>닉네임 2</Users>
+          <Users>닉네임 3</Users>
+          <Users>닉네임 4</Users>
+        </UsersWrap>
+      </RoomWrap>
+    </>
   );
 };
 

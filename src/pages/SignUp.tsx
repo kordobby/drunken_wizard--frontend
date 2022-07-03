@@ -28,10 +28,10 @@ const SignUp = () => {
   const [email, setEmail] = useInput("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
-  const [mismatchError, setMismatchError] = useState(false);
+  const [mismatchError, setMismatchError] = useState<boolean>(false);
   const [signUpError, setSignUpError] = useState("");
-  const [signUpSuccess, setSignUpSuccess] = useState(false);
-  const [signUpCheckId, setSignUpCheckId] = useState(false);
+  const [signUpSuccess, setSignUpSuccess] = useState<boolean>(false);
+  const [signUpCheckId, setSignUpCheckId] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -61,6 +61,7 @@ const SignUp = () => {
     else return false;
   };
 
+  // 비밀번호 재확인
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(e.target.value);
@@ -77,6 +78,7 @@ const SignUp = () => {
   );
 
   // mutate
+  // id 중복확인 mutate
   const { mutate: signUpidCheck } = useMutation(signUpIdCheckMT, {
     onSuccess: (res) => {
       setSignUpCheckId(true);
@@ -88,6 +90,7 @@ const SignUp = () => {
     },
   });
 
+  // 회원가입 mutate
   const { mutate: signUp } = useMutation(signUpMT, {
     onSuccess: () => {
       setSignUpSuccess(true);
@@ -98,6 +101,8 @@ const SignUp = () => {
       setSignUpError(error);
     },
   });
+
+  // id 중복확인 이벤트
   const onIdCheck = useCallback(
     (e: React.FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
