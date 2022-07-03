@@ -44,7 +44,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
         path: "/",
         expire: "after60m",
       });
-      navigate("/");
+      navigate("/lobby");
       setLoginState(true);
     },
     onError: (error) => {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
 // pages
+import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Lobby from "./pages/Lobby";
@@ -27,7 +28,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Lobby />}></Route>
+        <Route path="/" element={<Main />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route
           path="/login"
@@ -38,6 +39,7 @@ function App() {
           element={<KakaoRedirect />}
           setLoginState={setLoginState}
         /> */}
+        <Route path="/lobby" element={<Lobby />}></Route>
       </Routes>
       <button onClick={logoutHandler}>로그아웃</button>
     </>

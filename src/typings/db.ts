@@ -3,6 +3,7 @@ export interface IUser {
   nickname: string;
   email: string;
   password: string;
+  passwordCheck: string;
   // Workspaces: IWorkspace[];
 }
 export interface LogUser {

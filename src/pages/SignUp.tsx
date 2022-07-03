@@ -12,12 +12,14 @@ import fetcher from "../utils/fetcher";
 import useInput from "../hooks/useInput";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
 // modules
-import { __checkUserId } from "../redux/modules/userSlice";
 import { useAppDispatch } from "../hooks/tsHooks";
 import { AppDispatch } from "../redux/configStore";
 
-const registerMT = (data: IUser) => {
+const signUpMT = (data: IUser) => {
   return axios.post("http://3.35.214.100/user/signup", data);
+};
+const signUpIdCheckMT = (data: object) => {
+  return axios.post("http://3.35.214.100/user/dubcheck", data);
 };
 
 const SignUp = () => {
@@ -29,19 +31,13 @@ const SignUp = () => {
   const [mismatchError, setMismatchError] = useState(false);
   const [signUpError, setSignUpError] = useState("");
   const [signUpSuccess, setSignUpSuccess] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
+  const [signUpCheckId, setSignUpCheckId] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // id check
-  const name = { username: username };
-
-  // const onIdCheck = () => {
-  //   dispatch(__checkUserId.getUser(name));
-  // };
 
   // id disable
   const idCheckDisabled = () => {
-    if (idCheck(username) === true) return true;
+    if (!idCheck(username) === true) return true;
     if (username === "") return true;
     // 서버 리턴값 if (  === true ) return false;
     else return false;
@@ -49,7 +45,8 @@ const SignUp = () => {
 
   // button disable
   const disabledHandler = () => {
-    if (idCheck(username) === true) return true;
+    if (idCheck(username) === false) return true;
+    else if (signUpCheckId === false) return true;
     else if (password !== passwordCheck) return true;
     else if (emailCheck(email) === false) return true;
     else if (passwordCheckF(password) === false) return true;
@@ -80,31 +77,50 @@ const SignUp = () => {
   );
 
   // mutate
-  const { mutate } = useMutation(registerMT, {
-    onSuccess: () => {
-      navigate("/login");
-      setSignUpSuccess(true);
+  const { mutate: signUpidCheck } = useMutation(signUpIdCheckMT, {
+    onSuccess: (res) => {
+      setSignUpCheckId(true);
+      console.log(res);
     },
     onError: (error: string) => {
-      navigate("/");
-      setSignUpError(error);
+      setSignUpCheckId(false);
+      console.log(error);
     },
   });
 
+  const { mutate: signUp } = useMutation(signUpMT, {
+    onSuccess: () => {
+      setSignUpSuccess(true);
+      navigate("/login");
+    },
+    onError: (error: string) => {
+      navigate("/signup");
+      setSignUpError(error);
+    },
+  });
+  const onIdCheck = useCallback(
+    (e: React.FormEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      signUpidCheck({ username: username });
+    },
+    [username, signUpidCheck]
+  );
+
   // submit
   const onSubmit = useCallback(
-    (e: any) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!mismatchError) {
-        mutate({
+        signUp({
           username: username,
           nickname: nickname,
           email: email,
           password: password,
+          passwordCheck: passwordCheck,
         });
       }
     },
-    [username, nickname, email, password, passwordCheck]
+    [username, nickname, email, password, passwordCheck, mismatchError, signUp]
   );
 
   return (
@@ -113,9 +129,9 @@ const SignUp = () => {
         <form onSubmit={onSubmit}>
           <label id="user-id-label">
             <span>아이디</span>
-            {/* <button onClick={onIdCheck} disabled={idCheckDisabled()}>
+            <button onClick={onIdCheck} disabled={idCheckDisabled()}>
               중복확인
-            </button> */}
+            </button>
             <div>
               <input
                 type="text"
@@ -124,10 +140,12 @@ const SignUp = () => {
                 value={username}
                 onChange={setUsername}
               />
-              {signUpError ? (
-                <span>로그인 시 사용할 ID를 입력해주세요.</span>
-              ) : (
+              {idCheck(username) &&
+              username !== "" &&
+              signUpCheckId === true ? (
                 <span>사용가능한 ID입니다.</span>
+              ) : (
+                <span>올바른 아이디 형식이 아닙니다.</span>
               )}
             </div>
           </label>
@@ -195,7 +213,7 @@ const SignUp = () => {
               {mismatchError ? (
                 <span>비밀번호가 일치하지 않습니다.</span>
               ) : (
-                <span>비밀번호를 재입력 해주세요.</span>
+                <span>비밀번호가 일치합니다.</span>
               )}
             </div>
 

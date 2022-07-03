@@ -2,7 +2,7 @@
 
 // 아이디 형식 검사
 export const idCheck = (userId: string) => {
-  let _reg = /^(?=.*[0-9a-zA-Z]){4,15}$/;
+  let _reg = /^(?=.*[0-9a-zA-Z]).{4,15}$/;
   return _reg.test(userId);
 };
 
