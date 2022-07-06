@@ -35,15 +35,16 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // id disable
+  // id disable 올바른 형식이 아니거나 중복확인이 됬다면 버튼을 막아놈
   const idCheckDisabled = () => {
     if (!idCheck(username) === true) return true;
     if (username === "") return true;
+    if (signUpCheckId === true) return true;
     // 서버 리턴값 if (  === true ) return false;
     else return false;
   };
 
-  // button disable
+  // button disable 로그인 할 때 올바른 형식이 아니면 버튼을 막아놨음
   const disabledHandler = () => {
     if (idCheck(username) === false) return true;
     else if (signUpCheckId === false) return true;
@@ -60,6 +61,8 @@ const SignUp = () => {
       return true;
     else return false;
   };
+
+  // 아이디 onChangeEvent, 인풋창에 다시 작성하거나 지우면 다시 중복확인하게 함
   const onChangeIdCheck = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setUsername(e.target.value);
@@ -144,9 +147,16 @@ const SignUp = () => {
         <form onSubmit={onSubmit}>
           <label id="user-id-label">
             <span>아이디</span>
-            <button onClick={onIdCheck} disabled={idCheckDisabled()}>
-              중복확인
-            </button>
+            {signUpCheckId ? (
+              <button onClick={onIdCheck} disabled={idCheckDisabled()}>
+                사용가능
+              </button>
+            ) : (
+              <button onClick={onIdCheck} disabled={idCheckDisabled()}>
+                중복확인
+              </button>
+            )}
+
             <div>
               <input
                 type="text"

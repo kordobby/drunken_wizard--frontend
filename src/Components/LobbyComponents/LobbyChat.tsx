@@ -82,7 +82,7 @@ const LobbyChat = () => {
       console.log(error);
       setSubscribeState(false);
     }
-  }, []);
+  }, [subscribeState]);
 
   const socketUnsubscribe = () => {
     try {
