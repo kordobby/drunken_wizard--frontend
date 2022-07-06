@@ -1,38 +1,57 @@
 import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 // css
 import flex from "../GlobalStyled/flex";
 
 const getRoomListQR = () => {
-  return axios.get(`http://3.35.214.100/rooms`);
+  return axios.get(`http://13.124.63.214/chat/game/rooms`);
 };
 
 const Rooms = () => {
-  const roomList_query = useQuery("room_list", getRoomListQR, {
+  const { data: roomList_query } = useQuery("room_list", getRoomListQR, {
     onSuccess: (data: any) => {
-      console.log("성공했어!", data);
+      console.log("성공했어!");
     },
     onError: (error: any) => {
       console.log("실패", error);
     },
   });
+  // console.log(roomList_query);
 
   return (
     <>
-      <RoomWrap>
-        <RoomTitle>
-          <span>001</span>
-          <span>방 제목</span>
-        </RoomTitle>
-        <UsersWrap>
-          <Users>닉네임 1</Users>
-          <Users>닉네임 2</Users>
-          <Users>닉네임 3</Users>
-          <Users>닉네임 4</Users>
-        </UsersWrap>
-      </RoomWrap>
+      {roomList_query &&
+        roomList_query.data.map((room: any, i: any) => {
+          return (
+            room.userList.length > 0 && (
+              <Link
+                to={`/waiting/${room.roomId}`}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <RoomWrap>
+                  <RoomTitle>
+                    <span>{i + 1}</span>
+                    <span>{room?.roomName}</span>
+                  </RoomTitle>
+                  <UsersWrap>
+                    <span>팀1</span>
+                    <br />
+                    {room.userList[0] && <Users>닉네임 1</Users>}
+                    {room.userList[2] && <Users>닉네임 3</Users>}
+                    <br />
+                    <span>팀2</span>
+                    <br />
+                    {room.userList[1] && <Users>닉네임 2</Users>}
+                    {room.userList[3] && <Users>닉네임 4</Users>}
+                  </UsersWrap>
+                </RoomWrap>
+              </Link>
+            )
+          );
+        })}
     </>
   );
 };

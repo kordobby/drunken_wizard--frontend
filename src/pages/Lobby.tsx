@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 // components
 import CreateRoom from "../Components/LobbyComponents/CreateRoom";
+import LobbyChat from "../Components/LobbyComponents/LobbyChat";
 import Rooms from "../Components/LobbyComponents/Rooms";
 
 const Lobby = () => {
   const [createRoomModal, setCreateRooMoadl] = useState<boolean>(false);
 
-  console.log(createRoomModal);
   const modalOpen = useCallback(() => {
     setCreateRooMoadl(!createRoomModal);
     document.body.style.overflow = "hidden";
@@ -32,6 +32,7 @@ const Lobby = () => {
         <button>로그인하기</button>
       </Link>
       <Rooms />
+      <LobbyChat />
     </Main>
   );
 };

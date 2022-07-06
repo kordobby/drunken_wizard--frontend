@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { PropsWithChildren, useCallback } from "react";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 // hooks
 import useInput from "../../hooks/useInput";
+import { getCookie } from "../../shared/Cookies";
 // css
 import flex from "../GlobalStyled/flex";
 
@@ -12,17 +14,24 @@ interface ModalType {
 }
 
 const createRoomMT = (data: object) => {
-  return axios.post("http://3.35.214.100/room", data);
+  const accessToken = getCookie("token");
+  return axios.post("http://13.124.63.214/chat/game/room", data, {
+    headers: {
+      Authorization: accessToken,
+    },
+  });
 };
 
 const CreateRoom = ({ modalClose }: ModalType) => {
   const [roomName, setRoomName] = useInput("");
+  const navigate = useNavigate();
 
   const { mutate: createRoom } = useMutation(createRoomMT, {
     onSuccess: (res: any) => {
-      console.log(res);
+      console.log(res.data);
+      navigate(`/waiting/${res.data}`);
     },
-    onError: (error: string) => {
+    onError: (error: any) => {
       console.log(error);
     },
   });
@@ -49,15 +58,15 @@ const CreateRoom = ({ modalClose }: ModalType) => {
           ></input>
           <button
             onClick={(e) => {
-              e.preventDefault();
               onCreateRoom(e);
               modalClose();
+              navigate("/waiting");
             }}
           >
             방 생성
           </button>
         </CreatRoomBox>
-        <Backdrop />
+        <Backdrop onClick={modalClose} />
       </ModalContainer>
     </>
   );

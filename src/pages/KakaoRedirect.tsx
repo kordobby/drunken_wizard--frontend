@@ -17,7 +17,7 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   let code = new URL(window.location.href).searchParams.get("code");
 
   const kakaoQR = () => {
-    return axios.get(`http://3.35.214.100/user/kakao/callback?code=${code}`);
+    return axios.get(`http://13.124.63.214/user/kakao/callback?code=${code}`);
   };
 
   const kakao_query = useQuery("kakao_login", kakaoQR, {

@@ -16,14 +16,14 @@ import { useAppDispatch } from "../hooks/tsHooks";
 import { AppDispatch } from "../redux/configStore";
 
 const signUpMT = (data: IUser) => {
-  return axios.post("http://3.35.214.100/user/signup", data);
+  return axios.post("http://13.124.63.214/user/signup", data);
 };
 const signUpIdCheckMT = (data: object) => {
-  return axios.post("http://3.35.214.100/user/dubcheck", data);
+  return axios.post("http://13.124.63.214/user/dubcheck", data);
 };
 
 const SignUp = () => {
-  const [username, setUsername] = useInput("");
+  const [username, setUsername] = useState("");
   const [nickname, setNicname] = useInput("");
   const [email, setEmail] = useInput("");
   const [password, setPassword] = useState("");
@@ -60,6 +60,13 @@ const SignUp = () => {
       return true;
     else return false;
   };
+  const onChangeIdCheck = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setUsername(e.target.value);
+      setSignUpCheckId(false);
+    },
+    [username]
+  );
 
   // 비밀번호 재확인
   const onChangePassword = useCallback(
@@ -80,9 +87,12 @@ const SignUp = () => {
   // mutate
   // id 중복확인 mutate
   const { mutate: signUpidCheck } = useMutation(signUpIdCheckMT, {
-    onSuccess: (res) => {
+    onMutate: () => {
       setSignUpCheckId(true);
+    },
+    onSuccess: (res) => {
       console.log(res);
+      alert("사용할 수 있는 ID입니다.");
     },
     onError: (error: string) => {
       setSignUpCheckId(false);
@@ -143,13 +153,15 @@ const SignUp = () => {
                 id="user-id"
                 name="user-id"
                 value={username}
-                onChange={setUsername}
+                onChange={onChangeIdCheck}
               />
               {idCheck(username) &&
-              username !== "" &&
-              signUpCheckId === true ? (
-                <span>사용가능한 ID입니다.</span>
-              ) : (
+                username !== "" &&
+                signUpCheckId === false && <span>ID중복 확인을 해주세요.</span>}
+              {idCheck(username) &&
+                username !== "" &&
+                signUpCheckId === true && <span>사용가능한 ID입니다.</span>}
+              {!idCheck(username) && username === "" && (
                 <span>올바른 아이디 형식이 아닙니다.</span>
               )}
             </div>
