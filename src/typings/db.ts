@@ -1,13 +1,23 @@
+import { Dispatch, SetStateAction } from "react";
+
+// signUp
 export interface IUser {
   username: string;
   nickname: string;
   email: string;
   password: string;
   passwordCheck: string;
-  // Workspaces: IWorkspace[];
 }
+// login
 export interface LogUser {
   username: string;
   password: string;
-  // Workspaces: IWorkspace[];
+}
+export interface loginStateProps {
+  setLoginState: Dispatch<SetStateAction<boolean>>;
+}
+
+// modal
+export interface ModalType {
+  modalClose: () => void;
 }

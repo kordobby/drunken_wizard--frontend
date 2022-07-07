@@ -1,35 +1,22 @@
 // package
 import React, { useCallback, useState } from "react";
-import axios from "axios";
 import { useMutation } from "react-query";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-// interface
-import { IUser } from "../typings/db";
-// fetcher
-import fetcher from "../utils/fetcher";
 // hooks
 import useInput from "../hooks/useInput";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
-// modules
-import { useAppDispatch } from "../hooks/tsHooks";
-import { AppDispatch } from "../redux/configStore";
-
-const signUpMT = (data: IUser) => {
-  return axios.post("http://3.35.53.184/user/signup", data);
-};
-const signUpIdCheckMT = (data: object) => {
-  return axios.post("http://3.35.53.184/user/dubcheck", data);
-};
+// apis
+import apis from "../shared/api/apis";
 
 const SignUp = () => {
-  const [username, setUsername] = useState("");
-  const [nickname, setNicname] = useInput("");
-  const [email, setEmail] = useInput("");
-  const [password, setPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [nickname, setNicname] = useInput<string>("");
+  const [email, setEmail] = useInput<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordCheck, setPasswordCheck] = useState<string>("");
   const [mismatchError, setMismatchError] = useState<boolean>(false);
-  const [signUpError, setSignUpError] = useState("");
+  const [signUpError, setSignUpError] = useState<string>("");
   const [signUpSuccess, setSignUpSuccess] = useState<boolean>(false);
   const [signUpCheckId, setSignUpCheckId] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -62,7 +49,7 @@ const SignUp = () => {
     else return false;
   };
 
-  // 아이디 onChangeEvent, 인풋창에 다시 작성하거나 지우면 다시 중복확인하게 함
+  // id onChangeEvent, 인풋창에 다시 작성하거나 지우면 다시 중복확인하게 함
   const onChangeIdCheck = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setUsername(e.target.value);
@@ -71,7 +58,7 @@ const SignUp = () => {
     [username]
   );
 
-  // 비밀번호 재확인
+  // password onChangeEvent
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(e.target.value);
@@ -88,8 +75,9 @@ const SignUp = () => {
   );
 
   // mutate
-  // id 중복확인 mutate
-  const { mutate: signUpidCheck } = useMutation(signUpIdCheckMT, {
+
+  // id check mutate
+  const { mutate: signUpidCheck } = useMutation(apis.signUpIdCheckMT, {
     onMutate: () => {
       setSignUpCheckId(true);
     },
@@ -103,8 +91,8 @@ const SignUp = () => {
     },
   });
 
-  // 회원가입 mutate
-  const { mutate: signUp } = useMutation(signUpMT, {
+  // signUp mutate
+  const { mutate: signUp } = useMutation(apis.signUpMT, {
     onSuccess: () => {
       setSignUpSuccess(true);
       navigate("/login");
@@ -115,7 +103,7 @@ const SignUp = () => {
     },
   });
 
-  // id 중복확인 이벤트
+  // id check handler
   const onIdCheck = useCallback(
     (e: React.FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
@@ -124,7 +112,7 @@ const SignUp = () => {
     [username, signUpidCheck]
   );
 
-  // submit
+  // submit handler
   const onSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();

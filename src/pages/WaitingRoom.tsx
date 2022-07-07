@@ -1,36 +1,40 @@
-import axios from "axios";
 import React, { useCallback, useEffect } from "react";
-import { useMutation } from "react-query";
-import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+import { useMutation, useQueryClient } from "react-query";
+import { Link, useNavigate, useParams } from "react-router-dom";
+// stomp
 import SockJS from "sockjs-client";
-import { getCookie } from "../shared/Cookies";
 import stompJS from "stompjs";
+// cookies
+import { getCookie } from "../shared/Cookies";
 
 const waitngRoomMT = (data: any) => {
   const accessToken = getCookie("token");
-  return axios.post(`http://13.124.63.214/chat/game/${data}/join`, data, {
+  return axios.post(`http://13.124.63.214/game/${data}/join`, data, {
     headers: {
       Authorization: accessToken,
     },
   });
 };
-// const exitRoomMT = (data: any) => {
-//   const accessToken = getCookie("token");
-//   return axios.post(`http://13.124.63.214/chat/game/${data}/join`, data, {
-//     headers: {
-//       Authorization: accessToken,
-//     },
-//   });
-// };
+const leaveRoomMT = (data: any) => {
+  const accessToken = getCookie("token");
+  return axios.post(`http://13.124.63.214/game/${data}/leave`, data, {
+    headers: {
+      Authorization: accessToken,
+    },
+  });
+};
 
 const WaitingRoom = () => {
-  // mutate
+  const navigate = useNavigate();
   const { roomid } = useParams();
-  const socket = new SockJS("http://13.124.63.214/chat"); //   /ws-stomp
+  const socket = new SockJS("http://13.124.63.214/SufficientAmountOfAlcohol"); //   /ws-stomp
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
-  const accessId = getCookie("username");
+  const accessId = getCookie("id");
+  const queryClient = useQueryClient();
 
+  // mutate
   const { mutate: waitingRoom } = useMutation(waitngRoomMT, {
     onSuccess: (res) => {
       console.log(res);
@@ -39,11 +43,28 @@ const WaitingRoom = () => {
       console.log(error);
     },
   });
+  const { mutate: leaveRoom } = useMutation(leaveRoomMT, {
+    onSuccess: (res) => {
+      console.log(res);
+      queryClient.invalidateQueries("room_list");
+      navigate("/lobby");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
+  // leaveHandler
+  const leaveHandler = () => {
+    leaveRoom(roomid);
+  };
+
+  // 방 접속 포스트 요청
   useEffect(() => {
     waitingRoom(roomid);
   }, [roomid, waitingRoom]);
 
+  // 구독
   useEffect(() => {
     socketSubscribe();
     return () => {
@@ -87,31 +108,6 @@ const WaitingRoom = () => {
     }
   };
 
-  //입장 메세지
-  const roomJoinMessage = () => {
-    const accessName = getCookie("nickname");
-    const data = {
-      type: "JOIN",
-      roomId: 1,
-      sender: accessName,
-      message: `${accessName}님이 채팅방에 참여하였습니다!`,
-    };
-    stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
-    console.log(data);
-  };
-
-  // const { mutate: exitRoom } = useMutation(exitRoomMT, {
-  //   onSuccess: (res) => {
-  //     console.log(res);
-  //   },
-  //   onError: (error) => {
-  //     console.log(error);
-  //   },
-  // });
-
-  // const exitHandler = () => {
-  //   exitRoom()
-  // }
   return (
     <div>
       웨이팅룸입니다.
@@ -128,9 +124,10 @@ const WaitingRoom = () => {
         <span>닉네임</span>
         <span>닉네임</span>
       </div>
-      <Link to={"/lobby"}>
-        <button>방에서 나가기</button>
-      </Link>
+      <button onClick={leaveHandler}>방에서 나가기</button>
+      {/* <Link to={"/lobby"}>
+        <button>로비로 가기</button>
+      </Link> */}
     </div>
   );
 };

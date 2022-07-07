@@ -10,6 +10,8 @@ import KakaoRedirect from "./pages/KakaoRedirect";
 // cookies
 import { getCookie, deleteCookie } from "./shared/Cookies";
 import WaitingRoom from "./pages/WaitingRoom";
+import NotFound from "./pages/NotFound";
+import Rule from "./pages/Rule";
 // import Lobby from "./pages/Lobby";
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
 
   const logoutHandler = () => {
     deleteCookie("token");
+    deleteCookie("id");
     deleteCookie("username");
     deleteCookie("nickname");
     alert("로그아웃 되었습니다!");
@@ -32,18 +35,23 @@ function App() {
   return (
     <>
       <Routes>
+        {loginState ? (
+          <Route path="/lobby" element={<Lobby />}></Route>
+        ) : (
+          <Route
+            path="/login"
+            element={<Login setLoginState={setLoginState} />}
+          />
+        )}
         <Route path="/" element={<Main />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
-        <Route
-          path="/login"
-          element={<Login setLoginState={setLoginState} />}
-        />
         <Route
           element={<KakaoRedirect setLoginState={setLoginState} />}
           path="/auth/kakao/callback"
         />
-        <Route path="/lobby" element={<Lobby />}></Route>
+        <Route path="/rule" element={<Rule />}></Route>
         <Route path="/waiting/:roomid" element={<WaitingRoom />}></Route>
+        <Route path="/*" element={<NotFound />}></Route>
       </Routes>
       <button onClick={logoutHandler}>로그아웃</button>
     </>
