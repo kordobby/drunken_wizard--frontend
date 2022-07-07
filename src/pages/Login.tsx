@@ -1,50 +1,42 @@
 // package
-import React, { Dispatch, SetStateAction, useCallback } from "react";
-import axios from "axios";
+import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 // hooks
 import useInput from "../hooks/useInput";
 import { passwordCheckF } from "../hooks/useCheck";
-// kakao
-import { KAKAO_AUTH_URL } from "../shared/Kakao";
 // cookies
 import { setCookie } from "../shared/Cookies";
-import { LogUser } from "../typings/db";
-
-const loginMT = async (data: LogUser) => {
-  const response = await axios.post("http://3.35.53.184/login", data);
-  return response;
-};
-
-interface loginStateProps {
-  setLoginState: Dispatch<SetStateAction<boolean>>;
-}
+// kakao
+import { KAKAO_AUTH_URL } from "../shared/Kakao";
+// interface
+import { loginStateProps } from "../typings/db";
+// apis
+import apis from "../shared/api/apis";
 
 const Login = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
-  const [username, setUsername] = useInput("");
-  const [password, setPassword] = useInput("");
+  const [username, setUsername] = useInput<string>("");
+  const [password, setPassword] = useInput<string>("");
 
   // mutate
-  const { mutate } = useMutation(loginMT, {
+  const { mutate } = useMutation(apis.loginMT, {
     onSuccess: (res) => {
-      console.log(res);
-      let idData = JSON.parse(res.config.data);
+      // console.log(res);
       setCookie("token", res.headers.authorization, {
         path: "/",
         expire: "after60m",
       });
-      setCookie("id", res.headers.id, {
+      setCookie("id", res.data.id, {
         path: "/",
         expire: "after60m",
       });
-      setCookie("username", res.headers.username, {
+      setCookie("username", res.data.username, {
         path: "/",
         expire: "after60m",
       });
-      setCookie("nickname", res.headers.nickname, {
+      setCookie("nickname", res.data.nickname, {
         path: "/",
         expire: "after60m",
       });

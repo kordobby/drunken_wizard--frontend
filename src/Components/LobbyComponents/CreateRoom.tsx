@@ -1,34 +1,26 @@
-import axios from "axios";
-import React, { PropsWithChildren, useCallback } from "react";
-import { useMutation } from "react-query";
+import React, { useCallback } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 // hooks
 import useInput from "../../hooks/useInput";
-import { getCookie } from "../../shared/Cookies";
 // css
 import flex from "../GlobalStyled/flex";
-
-interface ModalType {
-  modalClose: () => void;
-}
-
-const createRoomMT = (data: object) => {
-  const accessToken = getCookie("token");
-  return axios.post("http://13.124.63.214/chat/game/room", data, {
-    headers: {
-      Authorization: accessToken,
-    },
-  });
-};
+// interface
+import { ModalType } from "../../typings/db";
+// apis
+import apis from "../../shared/api/apis";
 
 const CreateRoom = ({ modalClose }: ModalType) => {
   const [roomName, setRoomName] = useInput("");
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const { mutate: createRoom } = useMutation(createRoomMT, {
+  // mutate
+  const { mutate: createRoom } = useMutation(apis.createRoomMT, {
     onSuccess: (res: any) => {
       console.log(res.data);
+      queryClient.invalidateQueries("room_list");
       navigate(`/waiting/${res.data}`);
     },
     onError: (error: any) => {
@@ -36,6 +28,7 @@ const CreateRoom = ({ modalClose }: ModalType) => {
     },
   });
 
+  // handler
   const onCreateRoom = useCallback(
     (e: React.FormEvent<HTMLButtonElement>) => {
       e.preventDefault();

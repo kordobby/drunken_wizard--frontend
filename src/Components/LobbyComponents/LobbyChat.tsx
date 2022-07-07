@@ -6,27 +6,18 @@ import { getCookie } from "../../shared/Cookies";
 import flex from "../GlobalStyled/flex";
 
 const LobbyChat = () => {
-  const [msg, setMsg] = useState<string>("");
   const iptRef = useRef<any>("");
   const [msgList, setMsgList] = useState<any>([]);
   const [subscribeState, setSubscribeState] = useState(false);
-  const socket = new sockJS("http://3.35.53.184/SufficientAmountOfAlcohol"); //   /ws-stomp
+  const socket = new sockJS("http://13.124.63.214/SufficientAmountOfAlcohol"); //   /ws-stomp
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
-  const accessId = getCookie("username");
+  const accessId = getCookie("id");
 
   // 채팅리스트 최대 개수 (휘발성)
   if (msgList.length > 20) {
     setMsgList(msgList.shift(0));
   }
-
-  const onChangeMsg = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setMsg(e.target.value);
-      // setMsg(iptRef.current.value); 재확인 필요
-    },
-    [msg]
-  );
 
   useEffect(() => {
     socketSubscribe();
@@ -35,29 +26,29 @@ const LobbyChat = () => {
     };
   }, [subscribeState]);
 
-  const trySocketConnect = () => {
-    stompClient.connect(
-      {
-        token: accessToken,
-        id: accessId,
-      },
-      () => {
-        console.log("connect success");
-      }
-    );
-    // try {
-    //   stompClient.connect(
-    //     {
-    //       token: accessToken,
-    //     },
-    //     () => {
-    //       console.log("connect success");
-    //     }
-    //   );
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
+  // const trySocketConnect = () => {
+  //   stompClient.connect(
+  //     {
+  //       token: accessToken,
+  //       id: accessId,
+  //     },
+  //     () => {
+  //       console.log("connect success");
+  //     }
+  //   );
+  //   // try {
+  //   //   stompClient.connect(
+  //   //     {
+  //   //       token: accessToken,
+  //   //     },
+  //   //     () => {
+  //   //       console.log("connect success");
+  //   //     }
+  //   //   );
+  //   // } catch (error) {
+  //   //   console.log(error);
+  //   // }
+  // };
 
   // /* function Subscribe */
   const socketSubscribe = useCallback(() => {
@@ -84,7 +75,7 @@ const LobbyChat = () => {
       console.log(error);
       setSubscribeState(false);
     }
-  }, [subscribeState]);
+  }, []);
 
   const socketUnsubscribe = () => {
     try {
@@ -98,14 +89,14 @@ const LobbyChat = () => {
     }
   };
 
-  const socketDisconnect = () => {
-    stompClient.disconnect(
-      () => {
-        console.log("disconnect");
-      },
-      { token: accessToken }
-    );
-  };
+  // const socketDisconnect = () => {
+  //   stompClient.disconnect(
+  //     () => {
+  //       console.log("disconnect");
+  //     },
+  //     { token: accessToken }
+  //   );
+  // };
 
   //입장 메세지
   const joinMessage = () => {
@@ -122,17 +113,17 @@ const LobbyChat = () => {
 
   // 채팅 메세지 보내기
   const sendMessage = () => {
-    if (msg !== "") {
+    if (iptRef.current.value !== "") {
       const accessName = getCookie("nickname");
       const data = {
         type: "CHAT",
         roomId: 1,
         sender: accessName,
-        message: msg,
+        message: iptRef.current.value,
       };
       stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
       setMsgList([...msgList, data]);
-      setMsg("");
+      iptRef.current.value = "";
       window.scrollTo(9000, 9000);
     }
   };
@@ -141,22 +132,20 @@ const LobbyChat = () => {
     <div>
       <input
         type="text"
-        value={msg}
         ref={iptRef}
-        onChange={onChangeMsg}
         onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-          if (msg !== "" && e.key === "Enter") {
+          if (iptRef.current.value !== "" && e.key === "Enter") {
             sendMessage();
             iptRef.current.value = "";
             // 재확인 필요
           }
         }}
       ></input>
-      <button onClick={trySocketConnect}>소켓연결</button>
+      {/* <button onClick={trySocketConnect}>소켓연결</button> */}
       <button onClick={socketSubscribe}>구독</button>
       <button onClick={sendMessage}>send</button>
       <button onClick={socketUnsubscribe}>구독해제</button>
-      <button onClick={socketDisconnect}>소켓 연결 해제</button>
+      {/* <button onClick={socketDisconnect}>소켓 연결 해제</button> */}
 
       <ChatWrap>
         {msgList.map((msg: any, idx: any) => {

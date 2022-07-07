@@ -1,17 +1,13 @@
-import axios from "axios";
-import React from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 // css
 import flex from "../GlobalStyled/flex";
-
-const getRoomListQR = () => {
-  return axios.get(`http://3.35.53.184/chat/game/rooms`);
-};
+// apis
+import apis from "../../shared/api/apis";
 
 const Rooms = () => {
-  const { data: roomList_query } = useQuery("room_list", getRoomListQR, {
+  const { data: roomList_query } = useQuery("room_list", apis.getRoomListQR, {
     onSuccess: (data: any) => {
       console.log("성공했어!");
     },
@@ -25,8 +21,10 @@ const Rooms = () => {
     <>
       {roomList_query &&
         roomList_query.data.map((room: any, i: any) => {
+          // console.log(room);
           return (
-            room.userList.length > 0 && (
+            room.userList.length > 0 &&
+            (room.userList.length < 5 ? (
               <Link
                 to={`/waiting/${room.roomId}`}
                 style={{ textDecoration: "none", color: "black" }}
@@ -39,17 +37,52 @@ const Rooms = () => {
                   <UsersWrap>
                     <span>팀1</span>
                     <br />
-                    {room.userList[0] && <Users>닉네임 1</Users>}
-                    {room.userList[2] && <Users>닉네임 3</Users>}
+                    {room.userList[0] && (
+                      <Users>{room.userList[0].nickname}</Users>
+                    )}
+                    {room.userList[2] && (
+                      <Users>{room.userList[2].nickname}</Users>
+                    )}
                     <br />
                     <span>팀2</span>
                     <br />
-                    {room.userList[1] && <Users>닉네임 2</Users>}
-                    {room.userList[3] && <Users>닉네임 4</Users>}
+                    {room.userList[1] && (
+                      <Users>{room.userList[1].nickname}</Users>
+                    )}
+                    {room.userList[3] && (
+                      <Users>{room.userList[3].nickname}</Users>
+                    )}
                   </UsersWrap>
                 </RoomWrap>
               </Link>
-            )
+            ) : (
+              <RoomWrap>
+                <RoomTitle>
+                  <span>{i + 1}</span>
+                  <span>{room?.roomName}</span>
+                </RoomTitle>
+                <UsersWrap>
+                  <span>팀1</span>
+                  <br />
+                  {room.userList[0] && (
+                    <Users>{room.userList[0].nickname}</Users>
+                  )}
+                  {room.userList[2] && (
+                    <Users>{room.userList[2].nickname}</Users>
+                  )}
+                  <br />
+                  <span>팀2</span>
+                  <br />
+                  {room.userList[1] && (
+                    <Users>{room.userList[1].nickname}</Users>
+                  )}
+                  {room.userList[3] && (
+                    <Users>{room.userList[3].nickname}</Users>
+                  )}
+                </UsersWrap>
+                <span>방이 가득찼습니다!</span>
+              </RoomWrap>
+            ))
           );
         })}
     </>

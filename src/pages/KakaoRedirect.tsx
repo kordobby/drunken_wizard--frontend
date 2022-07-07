@@ -1,15 +1,11 @@
-// KakaoRedirect.js
-import React, { Dispatch, SetStateAction } from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 // cookies
 import { setCookie } from "../shared/Cookies";
-
-import axios from "axios";
-
-export interface loginStateProps {
-  setLoginState: Dispatch<SetStateAction<boolean>>;
-}
+// interface
+import { loginStateProps } from "../typings/db";
+// api
+import api from "../shared/api/core/api";
 
 const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
@@ -17,9 +13,7 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   let code = new URL(window.location.href).searchParams.get("code");
 
   const kakaoQR = () => {
-    return axios.get(
-      `http://3.35.214.100:8000/user/kakao/callback?code=${code}`
-    );
+    return api.get(`/user/kakao/callback?code=${code}`);
   };
 
   const kakao_query = useQuery("kakao_login", kakaoQR, {
@@ -28,9 +22,8 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
         path: "/",
         expire: "after60m",
       });
-      // console.log("성공했어!", data.data);
-      // console.log(data.data.nickname);
-      setCookie("id", res.headers.id, {
+      // console.log("성공했어!", res.data);
+      setCookie("id", res.data.id, {
         path: "/",
         expire: "after60m",
       });
@@ -42,12 +35,12 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
         path: "/",
         expire: "after60m",
       });
-      navigate("/");
+      navigate("/lobby");
       setLoginState(true);
     },
     onError: (error) => {
       console.log("실패");
-      navigate("/");
+      navigate("/login");
       setLoginState(false);
     },
   });
