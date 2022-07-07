@@ -16,34 +16,35 @@ import { useAppDispatch } from "../hooks/tsHooks";
 import { AppDispatch } from "../redux/configStore";
 
 const signUpMT = (data: IUser) => {
-  return axios.post("http://3.35.214.100/user/signup", data);
+  return axios.post("http://3.35.53.184/user/signup", data);
 };
 const signUpIdCheckMT = (data: object) => {
-  return axios.post("http://3.35.214.100/user/dubcheck", data);
+  return axios.post("http://3.35.53.184/user/dubcheck", data);
 };
 
 const SignUp = () => {
-  const [username, setUsername] = useInput("");
+  const [username, setUsername] = useState("");
   const [nickname, setNicname] = useInput("");
   const [email, setEmail] = useInput("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
-  const [mismatchError, setMismatchError] = useState(false);
+  const [mismatchError, setMismatchError] = useState<boolean>(false);
   const [signUpError, setSignUpError] = useState("");
-  const [signUpSuccess, setSignUpSuccess] = useState(false);
-  const [signUpCheckId, setSignUpCheckId] = useState(false);
+  const [signUpSuccess, setSignUpSuccess] = useState<boolean>(false);
+  const [signUpCheckId, setSignUpCheckId] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // id disable
+  // id disable 올바른 형식이 아니거나 중복확인이 됬다면 버튼을 막아놈
   const idCheckDisabled = () => {
     if (!idCheck(username) === true) return true;
     if (username === "") return true;
+    if (signUpCheckId === true) return true;
     // 서버 리턴값 if (  === true ) return false;
     else return false;
   };
 
-  // button disable
+  // button disable 로그인 할 때 올바른 형식이 아니면 버튼을 막아놨음
   const disabledHandler = () => {
     if (idCheck(username) === false) return true;
     else if (signUpCheckId === false) return true;
@@ -61,6 +62,16 @@ const SignUp = () => {
     else return false;
   };
 
+  // 아이디 onChangeEvent, 인풋창에 다시 작성하거나 지우면 다시 중복확인하게 함
+  const onChangeIdCheck = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setUsername(e.target.value);
+      setSignUpCheckId(false);
+    },
+    [username]
+  );
+
+  // 비밀번호 재확인
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(e.target.value);
@@ -77,10 +88,14 @@ const SignUp = () => {
   );
 
   // mutate
+  // id 중복확인 mutate
   const { mutate: signUpidCheck } = useMutation(signUpIdCheckMT, {
-    onSuccess: (res) => {
+    onMutate: () => {
       setSignUpCheckId(true);
+    },
+    onSuccess: (res) => {
       console.log(res);
+      alert("사용할 수 있는 ID입니다.");
     },
     onError: (error: string) => {
       setSignUpCheckId(false);
@@ -88,6 +103,7 @@ const SignUp = () => {
     },
   });
 
+  // 회원가입 mutate
   const { mutate: signUp } = useMutation(signUpMT, {
     onSuccess: () => {
       setSignUpSuccess(true);
@@ -98,6 +114,8 @@ const SignUp = () => {
       setSignUpError(error);
     },
   });
+
+  // id 중복확인 이벤트
   const onIdCheck = useCallback(
     (e: React.FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
@@ -129,22 +147,31 @@ const SignUp = () => {
         <form onSubmit={onSubmit}>
           <label id="user-id-label">
             <span>아이디</span>
-            <button onClick={onIdCheck} disabled={idCheckDisabled()}>
-              중복확인
-            </button>
+            {signUpCheckId ? (
+              <button onClick={onIdCheck} disabled={idCheckDisabled()}>
+                사용가능
+              </button>
+            ) : (
+              <button onClick={onIdCheck} disabled={idCheckDisabled()}>
+                중복확인
+              </button>
+            )}
+
             <div>
               <input
                 type="text"
                 id="user-id"
                 name="user-id"
                 value={username}
-                onChange={setUsername}
+                onChange={onChangeIdCheck}
               />
               {idCheck(username) &&
-              username !== "" &&
-              signUpCheckId === true ? (
-                <span>사용가능한 ID입니다.</span>
-              ) : (
+                username !== "" &&
+                signUpCheckId === false && <span>ID중복 확인을 해주세요.</span>}
+              {idCheck(username) &&
+                username !== "" &&
+                signUpCheckId === true && <span>사용가능한 ID입니다.</span>}
+              {!idCheck(username) && username === "" && (
                 <span>올바른 아이디 형식이 아닙니다.</span>
               )}
             </div>

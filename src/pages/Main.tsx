@@ -10,6 +10,9 @@ const Main = () => {
       <Link to="/login">
         <button>로그인하기</button>
       </Link>
+      <Link to="/lobby">
+        <button>로비로가기</button>
+      </Link>
     </div>
   );
 };

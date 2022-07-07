@@ -1,4 +1,5 @@
 import styled from "styled-components";
+// css
 import flex from "../GlobalStyled/flex";
 
 export const StWrap = styled.div`

@@ -14,7 +14,7 @@ import { setCookie } from "../shared/Cookies";
 import { LogUser } from "../typings/db";
 
 const loginMT = async (data: LogUser) => {
-  const response = await axios.post("http://3.35.214.100/login", data);
+  const response = await axios.post("http://3.35.53.184/login", data);
   return response;
 };
 
@@ -36,11 +36,15 @@ const Login = ({ setLoginState }: loginStateProps) => {
         path: "/",
         expire: "after60m",
       });
-      setCookie("username", idData.username, {
+      setCookie("id", res.headers.id, {
         path: "/",
         expire: "after60m",
       });
-      setCookie("nickname", res.data.nickname, {
+      setCookie("username", res.headers.username, {
+        path: "/",
+        expire: "after60m",
+      });
+      setCookie("nickname", res.headers.nickname, {
         path: "/",
         expire: "after60m",
       });

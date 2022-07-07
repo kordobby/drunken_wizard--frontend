@@ -17,24 +17,31 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   let code = new URL(window.location.href).searchParams.get("code");
 
   const kakaoQR = () => {
-    return axios.get(`http://3.35.214.100/user/kakao/callback?code=${code}`);
+    return axios.get(
+      `http://3.35.214.100:8000/user/kakao/callback?code=${code}`
+    );
   };
 
   const kakao_query = useQuery("kakao_login", kakaoQR, {
-    onSuccess: (data) => {
-      setCookie("token", data.headers.authorization, {
+    onSuccess: (res) => {
+      setCookie("token", res.headers.authorization, {
         path: "/",
         expire: "after60m",
       });
-      console.log("성공했어!", data);
-      //   setCookie("username", res.data.username, {
-      //     path: "/",
-      //     expire: "after60m",
-      //   });
-      //   setCookie("nickname", res.data.nickname, {
-      //     path: "/",
-      //     expire: "after60m",
-      //   });
+      // console.log("성공했어!", data.data);
+      // console.log(data.data.nickname);
+      setCookie("id", res.headers.id, {
+        path: "/",
+        expire: "after60m",
+      });
+      setCookie("username", res.data.username, {
+        path: "/",
+        expire: "after60m",
+      });
+      setCookie("nickname", res.data.nickname, {
+        path: "/",
+        expire: "after60m",
+      });
       navigate("/");
       setLoginState(true);
     },
