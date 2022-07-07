@@ -16,10 +16,10 @@ import { useAppDispatch } from "../hooks/tsHooks";
 import { AppDispatch } from "../redux/configStore";
 
 const signUpMT = (data: IUser) => {
-  return axios.post("http://13.124.63.214/user/signup", data);
+  return axios.post("http://3.35.53.184/user/signup", data);
 };
 const signUpIdCheckMT = (data: object) => {
-  return axios.post("http://13.124.63.214/user/dubcheck", data);
+  return axios.post("http://3.35.53.184/user/dubcheck", data);
 };
 
 const SignUp = () => {

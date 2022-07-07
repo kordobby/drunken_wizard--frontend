@@ -7,9 +7,10 @@ import flex from "../GlobalStyled/flex";
 
 const LobbyChat = () => {
   const [msg, setMsg] = useState<string>("");
+  const iptRef = useRef<any>("");
   const [msgList, setMsgList] = useState<any>([]);
   const [subscribeState, setSubscribeState] = useState(false);
-  const socket = new sockJS("http://13.124.63.214/chat"); //   /ws-stomp
+  const socket = new sockJS("http://3.35.53.184/SufficientAmountOfAlcohol"); //   /ws-stomp
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const accessId = getCookie("username");
@@ -22,6 +23,7 @@ const LobbyChat = () => {
   const onChangeMsg = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setMsg(e.target.value);
+      // setMsg(iptRef.current.value); 재확인 필요
     },
     [msg]
   );
@@ -70,7 +72,7 @@ const LobbyChat = () => {
             "/sub/public",
             (data: any) => {
               const response = JSON.parse(data.body);
-              // console.log(response);
+              console.log(response);
             },
             { token: accessToken }
           );
@@ -140,11 +142,13 @@ const LobbyChat = () => {
       <input
         type="text"
         value={msg}
+        ref={iptRef}
         onChange={onChangeMsg}
         onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
           if (msg !== "" && e.key === "Enter") {
             sendMessage();
-            setMsg("");
+            iptRef.current.value = "";
+            // 재확인 필요
           }
         }}
       ></input>

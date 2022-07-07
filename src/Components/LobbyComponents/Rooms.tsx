@@ -7,7 +7,7 @@ import styled from "styled-components";
 import flex from "../GlobalStyled/flex";
 
 const getRoomListQR = () => {
-  return axios.get(`http://13.124.63.214/chat/game/rooms`);
+  return axios.get(`http://3.35.53.184/chat/game/rooms`);
 };
 
 const Rooms = () => {

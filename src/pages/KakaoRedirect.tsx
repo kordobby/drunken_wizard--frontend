@@ -23,20 +23,25 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   };
 
   const kakao_query = useQuery("kakao_login", kakaoQR, {
-    onSuccess: (data) => {
-      setCookie("token", data.headers.authorization, {
+    onSuccess: (res) => {
+      setCookie("token", res.headers.authorization, {
         path: "/",
         expire: "after60m",
       });
-      console.log("성공했어!", data);
-      //   setCookie("username", res.data.username, {
-      //     path: "/",
-      //     expire: "after60m",
-      //   });
-      //   setCookie("nickname", res.data.nickname, {
-      //     path: "/",
-      //     expire: "after60m",
-      //   });
+      // console.log("성공했어!", data.data);
+      // console.log(data.data.nickname);
+      setCookie("id", res.headers.id, {
+        path: "/",
+        expire: "after60m",
+      });
+      setCookie("username", res.data.username, {
+        path: "/",
+        expire: "after60m",
+      });
+      setCookie("nickname", res.data.nickname, {
+        path: "/",
+        expire: "after60m",
+      });
       navigate("/");
       setLoginState(true);
     },
