@@ -1,11 +1,11 @@
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 // cookies
-import { setCookie } from "../shared/Cookies";
+import { setCookie } from "../Shared/Cookies";
 // interface
 import { loginStateProps } from "../typings/db";
 // api
-import api from "../shared/api/core/api";
+import api from "../Shared/api/core/api";
 
 const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();

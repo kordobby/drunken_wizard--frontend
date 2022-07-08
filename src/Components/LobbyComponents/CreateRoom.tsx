@@ -9,7 +9,7 @@ import flex from "../GlobalStyled/flex";
 // interface
 import { ModalType } from "../../typings/db";
 // apis
-import apis from "../../shared/api/apis";
+import apis from "../../Shared/api/apis";
 
 const CreateRoom = ({ modalClose }: ModalType) => {
   const [roomName, setRoomName] = useInput("");

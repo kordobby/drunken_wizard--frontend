@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import sockJS from "sockjs-client";
 import stompJS from "stompjs";
 import styled from "styled-components";
-import { getCookie } from "../../shared/Cookies";
+import { getCookie } from "../../Shared/Cookies";
 import flex from "../GlobalStyled/flex";
 
 const LobbyChat = () => {

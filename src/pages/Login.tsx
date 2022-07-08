@@ -7,13 +7,13 @@ import { Link } from "react-router-dom";
 import useInput from "../hooks/useInput";
 import { passwordCheckF } from "../hooks/useCheck";
 // cookies
-import { setCookie } from "../shared/Cookies";
+import { setCookie } from "../Shared/Cookies";
 // kakao
-import { KAKAO_AUTH_URL } from "../shared/Kakao";
+import { KAKAO_AUTH_URL } from "../Shared/Kakao";
 // interface
 import { loginStateProps } from "../typings/db";
 // apis
-import apis from "../shared/api/apis";
+import apis from "../Shared/api/apis";
 
 const Login = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();

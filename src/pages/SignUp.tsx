@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import useInput from "../hooks/useInput";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
 // apis
-import apis from "../shared/api/apis";
+import apis from "../Shared/api/apis";
 
 const SignUp = () => {
   const [username, setUsername] = useState<string>("");

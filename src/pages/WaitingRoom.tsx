@@ -6,7 +6,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import stompJS from "stompjs";
 // cookies
-import { getCookie } from "../shared/Cookies";
+import { getCookie } from "../Shared/Cookies";
 
 const waitngRoomMT = (data: any) => {
   const accessToken = getCookie("token");
