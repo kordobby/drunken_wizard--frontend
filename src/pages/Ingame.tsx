@@ -4,7 +4,7 @@ import SockJS from "sockjs-client";
 import stompJS from "stompjs";
 
 import { getCookie } from "../Shared/Cookies";
-import PlayerField from "../Components/IngameComponents/PlayerField/PlayerFieldTs";
+import PlayerField from "../Components/IngameComponents/PlayerField/PlayerField";
 import DrawModal from "../Components/IngameComponents/Modals/DrawModal";
 import { stringify } from "querystring";
 
@@ -23,21 +23,24 @@ const Ingame = () => {
   /* about players */
   const [thisPlayer, setThisPlayer] = useState<any>({});
   const [myCards, setMyCards] = useState<object[]>([]);
-  const [teamPlayer, setTeamPlayer] = useState<object>({});
-  const [enemyPlayerA, setEnemyPlayerA] = useState<object>({});
-  const [enemyPlayerB, setEnemyPlayerB] = useState<object>({});
+  const [teamPlayer, setTeamPlayer] = useState<any>({});
+  const [enemyPlayerA, setEnemyPlayerA] = useState<any>({});
+  const [enemyPlayerB, setEnemyPlayerB] = useState<any>({});
 
   /* card draw setup */
   // 카드 선택하는 모달 창
   const [drawModalOpen, setDrawModalOpen] = useState<boolean>(false);
   // 선택 가능한 카드 카운트 & 카드 목록
   const [selectableCnt, setSelectableCnt] = useState<number>(0);
-  const [selectableCard, setSelectableCard] = useState<object[]>([]);
+  const [selectableCard, setSelectableCard] = useState<any[]>([]);
   // 선택 가능한 갯수가 되면 카드 선택버튼 비활성화 (취소 누르면 돌아옴)
   const [drawDisabled, setDrawDisabled] = useState<boolean>(false);
 
   // 소켓으로 보내줄 선택된 카드
   const [selectedCard, setSelectedCard] = useState<object[]>([]);
+
+  // 추가 드로우 성공한 카드
+  const [bonusCard, setBonusCard] = useState<object>({});
 
   /* action turn :: card-use, discard */
   // USECARD & DISCARD
@@ -123,9 +126,6 @@ const Ingame = () => {
                 default:
                   break;
               }
-              console.log("정보 저장 완료");
-              console.log(findNowPlayer[0].playerId);
-              console.log(myPlayerInfo[0].playerId);
               // #4. 첫 턴 시작이라면 프리턴 메세지 보내기
               // 그게 아니라면 대기
               if (findNowPlayer[0].playerId === myPlayerInfo[0].playerId) {
@@ -142,16 +142,12 @@ const Ingame = () => {
               // 게임이 끝났을 때
               // 게임이 진행될 때, => 나 / 다른 사람
               console.log("precheck 들어왔다!");
-              console.log(msgSender);
-              console.log(response);
-              console.log(myId);
               if (msgData.gameOver === true) {
                 console.log("게임이 끝이났습니다.");
                 // endgame으로 가야함
                 // setStatus("ENDGAME");
               } else if (msgSender == myId && msgData.gameOver === false) {
                 console.log("내 차례가 맞습니다.");
-                console.log(msgData.player);
                 setThisPlayer(msgData.player);
                 setStatus("PRECHECK");
               } else if (msgSender !== myId && msgData.gameOver === false) {
@@ -170,10 +166,46 @@ const Ingame = () => {
                 setSelectableCard(msgData.cardDrawed);
                 setSelectableCnt(msgData.selectable);
                 setDrawModalOpen(true);
+                setDrawDisabled(false);
                 setStatus("HEAVEN");
               } else {
                 setStatus("HEAVEN");
               }
+              break;
+            case "SELECT":
+              setDrawModalOpen(false);
+              console.log("추가 드로우가 있었단다");
+              console.log(myCards);
+              if (msgSender === Number(myId) && msgData.drawSuccess === true) {
+                console.log("카드 드로우 성공");
+                setBonusCard(msgData.card);
+                setStatus("DRAWSUCCESS");
+              } else if (
+                msgSender === Number(myId) &&
+                msgData.drawSuccess === false
+              ) {
+                console.log(msgData);
+                console.log("카드 드로우 실패");
+              } else if (msgSender !== Number(myId)) {
+                setStatus("HOHO");
+              }
+              break;
+            case "ENDDRAW":
+              setDrawModalOpen(false);
+              console.log("더이상 드로우는 없습니다.");
+              setStatus("DRAW");
+              // send action turn check
+              break;
+            case "USECARD":
+              setStatus("USECARDSUCCESS");
+              console.log("카드사용 결과는?");
+              break;
+            case "DISCARD":
+              //msgData = {cardId:2}
+              break;
+            case "ENDTURN":
+              setNowPlayer(msgData.nextPlayerId);
+              setThisPlayer(msgData.player);
               break;
             default:
               break;
@@ -207,7 +239,33 @@ const Ingame = () => {
         console.log("프리턴 플레이어를 확인합니다.");
         sendStompMsg("DRAW");
         break;
-      case "DRAW":
+      case "DRAWSUCCESS":
+        // bonusCard success
+        const newCardSet = [...myCards];
+        const copyBonusCard = bonusCard;
+        const newCardPlz = newCardSet.push(copyBonusCard);
+        setMyCards(newCardSet);
+        // send action turn check after 5 sec
+        sendStompMsg("TURNCHECK");
+        break;
+      case "DRAWFAIL":
+        // send action turn check after 5 sec
+        sendStompMsg("TURNCHECK");
+        break;
+      case "ENDDRAW":
+        // send action turn check after 5 sec
+        sendStompMsg("TURNCHECK");
+        break;
+      case "USECARDSUCCESS":
+        const myCardsSet = [...myCards];
+        const updateCards = myCardsSet.filter(
+          (value: any) => value.cardId == selectUseCard
+        );
+        setMyCards(updateCards);
+        // clear 작업
+        setSelectUseCard("");
+        setSelectTarget("");
+        setFindTargetGroup("");
         break;
       default:
         break;
@@ -245,7 +303,6 @@ const Ingame = () => {
         })
       );
     });
-    console.log(`sendMsgs to change turn to ${data}`);
   };
 
   // ready for "SELECT"
@@ -253,18 +310,14 @@ const Ingame = () => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const newSelectedCard: any[] = [...selectedCard];
-    const target = (event.target as HTMLButtonElement).id;
-    const setNew = newSelectedCard.push(Number(target));
-    console.log(target);
-    console.log(setNew);
-    console.log(newSelectedCard);
+    const { target } = event;
+    const targetId = (event.target as HTMLButtonElement).id;
+    const setNew = newSelectedCard.push(Number(targetId));
     const removeDup = newSelectedCard.filter(
       (value, index) => newSelectedCard.indexOf(value) === index
     );
-    console.log(removeDup);
     setSelectedCard(removeDup);
   };
-
   const cancelCardDrawTurnHandler = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -276,29 +329,33 @@ const Ingame = () => {
     setSelectedCard(setNew);
   };
 
-  console.log(selectedCard);
-  console.log(selectableCnt);
   useEffect(() => {
     if (selectableCnt === selectedCard.length) {
       setDrawDisabled(true);
     } else {
       setDrawDisabled(false);
     }
-  }, [selectUseCard]);
+  }, [selectedCard]);
 
   const selectTurnController = () => {
     // data setting
-    // const cardsMaker = selectUseCard.map(function (value: any) {
-    //   const selectedCardsObj = { cardId: 0 };
-    //   selectedCardsObj.cardId = value;
-    //   return selectedCardsObj;
-    // });
-    // setMyCards(cardsMaker);
-    // const data = {
-    //   selectedCards: cardsMaker,
-    // };
+    const cardsMaker = selectedCard.map(function (value: any) {
+      const selectedCardsObj = { cardId: 0 };
+      selectedCardsObj.cardId = value;
+      return selectedCardsObj;
+    });
+
+    // confirm my cardsList
+    const confirmDrawCards = selectedCard.map((value) =>
+      selectableCard.find((elem) => elem.cardId === value)
+    );
+
+    setMyCards(confirmDrawCards);
+    const data = {
+      selectedCards: cardsMaker,
+    };
+
     // send msg to select
-    const data = { selectedCards: [{ cardId: 1 }, { cardId: 2 }] };
     stompClient.send(
       "/pub/game/1",
       { token: accessToken },
@@ -309,43 +366,46 @@ const Ingame = () => {
         type: "SELECT",
       })
     );
-    // console.log(data);
     setStatus("SELECT");
   };
 
-  const next = () => {
-    stompClient.send(
-      "/pub/game/1",
-      { token: accessToken },
-      JSON.stringify({
-        roomId: "1",
-        sender: Number(myId),
-        content: null,
-        type: "TURNCHECK",
-      })
-    );
+  const selectUseCardHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const cardId = (event.target as HTMLButtonElement).id;
+    const targetGroup = (event.target as HTMLButtonElement).className;
+    // 카드의 이름과 타겟그룹을 저장
+    setSelectUseCard(Number(cardId));
+    setFindTargetGroup(targetGroup);
+    console.log(cardId);
+    console.log(targetGroup);
   };
 
-  const useCardTurn = () => {
-    const data = {
-      targetPlayerId: 3,
-      cardId: 2,
-    };
-    stompClient.send(
-      "/pub/game/1",
-      { token: accessToken },
-      JSON.stringify({
-        roomId: "1",
-        sender: Number(myId),
-        content: JSON.stringify(data),
-        type: "USECARD",
-      })
-    );
+  const sendUseCardHandler = () => {
+    if (selectTarget === "") {
+      alert("타겟을 설정해주세요!");
+    } else {
+      const data = {
+        targetPlayerId: String(selectTarget),
+        cardId: String(selectUseCard),
+      };
+      stompClient.send(
+        "/pub/game/1",
+        { token: accessToken },
+        JSON.stringify({
+          roomId: "1",
+          sender: Number(myId),
+          content: JSON.stringify(data),
+          type: "USECARD",
+        })
+      );
+      // 카드 사용 결과 msg 올 때 카드리스트 최신화해야겠다.
+    }
   };
 
-  const disCardTurn = () => {
+  const selectDisCardHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const cardId = (event.target as HTMLButtonElement).id;
+    setSelectUseCard(cardId);
     const data = {
-      cardId: 1,
+      cardId: selectUseCard,
     };
     stompClient.send(
       "/pub/game/1",
@@ -357,20 +417,16 @@ const Ingame = () => {
         type: "DISCARD",
       })
     );
+    const myCardsSet = [...myCards];
+    const updateCards = myCardsSet.filter(
+      (value: any) => value.cardId == cardId
+    );
+    setMyCards(updateCards);
+    setSelectUseCard("");
+    setSelectTarget("");
+    setFindTargetGroup("");
   };
 
-  const endTurn = () => {
-    stompClient.send(
-      "/pub/game/1",
-      { token: accessToken },
-      JSON.stringify({
-        roomId: "1",
-        sender: Number(myId),
-        content: null,
-        type: "ENDTURN",
-      })
-    );
-  };
   return (
     <>
       <span>{status}</span>
@@ -379,23 +435,27 @@ const Ingame = () => {
       <PlayerField
         findTargetGroup={findTargetGroup}
         myCards={myCards}
+        selectUseCardHandler={selectUseCardHandler}
+        sendUseCardHandler={sendUseCardHandler}
+        selectDisCardHandler={selectDisCardHandler}
+        enemyPlayerA={enemyPlayerA.playerId}
+        enemyPlayerB={enemyPlayerB.playerId}
+        teamPlayer={teamPlayer.playerId}
+        thisPlayer={thisPlayer.playerId}
+        setSelectTarget={setSelectTarget}
+        sendStompMsg={sendStompMsg}
       ></PlayerField>
       {drawModalOpen && (
         <DrawModal
           id={3}
           selectCardDrawTurnHandler={selectCardDrawTurnHandler}
           cancelCardDrawTurnHandler={cancelCardDrawTurnHandler}
+          selectTurnController={selectTurnController}
+          selectedCard={selectedCard}
           selectableCard={selectableCard}
           drawDisabled={drawDisabled}
         ></DrawModal>
       )}
-      <button style={{ marginTop: "500px" }} onClick={selectTurnController}>
-        확인확인
-      </button>
-      <button onClick={next}>TURNCHECK</button>
-      <button onClick={useCardTurn}>USECARD</button>
-      <button onClick={disCardTurn}>DISCARD</button>
-      <button onClick={endTurn}>ENDTURN</button>
     </>
   );
 };
