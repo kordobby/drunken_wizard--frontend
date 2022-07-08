@@ -18,7 +18,7 @@ const Ingame = () => {
   const [nowPlayer, setNowPlayer] = useState<string>("");
 
   /* about players */
-  const [thisPlayer, setThisPlayer] = useState<object>({});
+  const [thisPlayer, setThisPlayer] = useState<any>({});
   const [myCards, setMyCards] = useState<object[]>([]);
   const [teamPlayer, setTeamPlayer] = useState<object>({});
   const [enemyPlayerA, setEnemyPlayerA] = useState<object>({});
@@ -53,67 +53,112 @@ const Ingame = () => {
         stompClient.subscribe("/sub/game/1", (data: any) => {
           console.log(data);
           const response = JSON.parse(data.body);
-          console.log(response);
           const msgType = response?.type;
           const msgData = JSON.parse(response?.content);
           console.log(msgData);
           const msgSender = response?.sender;
-
-          const playersInfo = msgData[0].players;
+          const playersInfo = msgData.players;
           switch (msgType) {
             case "START":
               // #1 첫 번째 턴인 유저를 찾아 nowPlayer에 저장
               const findNowPlayer = playersInfo.filter(
                 (value: any) => value.turnOrder === 1
               ); // 나중에 받는 데이터보고 타입 지정해주자***
-              setNowPlayer(findNowPlayer);
-
+              setNowPlayer(findNowPlayer[0].playerId);
               // #2 로그인 유저의 게임 정보 저장
               const myPlayerInfo = playersInfo.filter(
-                (value: any) => value.playerID === myId
+                (value: any) => value.playerId === Number(myId)
               );
               setThisPlayer(myPlayerInfo[0]);
-
-              // #3. 다른 플레이어 정보 저장
-              if (myPlayerInfo[0].playerId === "A") {
-                setEnemyPlayerA(playersInfo[1]);
-                setTeamPlayer(playersInfo[2]);
-                setEnemyPlayerB(playersInfo[3]);
-              } else if (myPlayerInfo[0].playerId === "B") {
-                setEnemyPlayerA(playersInfo[0]);
-                setEnemyPlayerB(playersInfo[2]);
-                setTeamPlayer(playersInfo[3]);
-              } else if (myPlayerInfo[0].playerId === "C") {
-                setEnemyPlayerA(playersInfo[0]);
-                setEnemyPlayerB(playersInfo[1]);
-                setTeamPlayer(playersInfo[3]);
-              } else if (myPlayerInfo[0].playerId === "D") {
-                setEnemyPlayerA(playersInfo[0]);
-                setTeamPlayer(playersInfo[1]);
-                setEnemyPlayerB(playersInfo[2]);
+              setStatus("READY");
+              switch (myPlayerInfo[0].turnOrder) {
+                case 1:
+                  setTeamPlayer(
+                    playersInfo.filter((value: any) => value.turnOrder === 3)[0]
+                  );
+                  setEnemyPlayerA(
+                    playersInfo.filter((value: any) => value.turnOrder === 2)[0]
+                  );
+                  setEnemyPlayerB(
+                    playersInfo.filter((value: any) => value.turnOrder === 4)[0]
+                  );
+                  break;
+                case 2:
+                  setTeamPlayer(
+                    playersInfo.filter((value: any) => value.turnOrder === 4)[0]
+                  );
+                  setEnemyPlayerA(
+                    playersInfo.filter((value: any) => value.turnOrder === 1)[0]
+                  );
+                  setEnemyPlayerB(
+                    playersInfo.filter((value: any) => value.turnOrder === 3)[0]
+                  );
+                  break;
+                case 3:
+                  setTeamPlayer(
+                    playersInfo.filter((value: any) => value.turnOrder === 1)[0]
+                  );
+                  setEnemyPlayerA(
+                    playersInfo.filter((value: any) => value.turnOrder === 2)[0]
+                  );
+                  setEnemyPlayerB(
+                    playersInfo.filter((value: any) => value.turnOrder === 4)[0]
+                  );
+                  break;
+                case 4:
+                  setTeamPlayer(
+                    playersInfo.filter((value: any) => value.turnOrder === 2)[0]
+                  );
+                  setEnemyPlayerA(
+                    playersInfo.filter((value: any) => value.turnOrder === 1)[0]
+                  );
+                  setEnemyPlayerB(
+                    playersInfo.filter((value: any) => value.turnOrder === 3)[0]
+                  );
+                  break;
+                default:
+                  break;
               }
               console.log("정보 저장 완료");
+              console.log(findNowPlayer[0].playerId);
+              console.log(myPlayerInfo[0].playerId);
               // #4. 첫 턴 시작이라면 프리턴 메세지 보내기
               // 그게 아니라면 대기
-              if (findNowPlayer === myPlayerInfo[0].playerId) {
+              if (findNowPlayer[0].playerId === myPlayerInfo[0].playerId) {
                 // sendMsg to "PRECHECK";
-                sendStompMsg("PRECHECK");
                 setStatus("START");
+                console.log("내가 지금 플레이어임");
               } else {
-                setStatus("START");
+                // 내 턴이 아닐 때는 아예 다른 턴으로 보내는게 맞는 것 같음!
+                setStatus("HEAVEN");
+                console.log("아니니까쉬고있자");
               }
               break;
             case "PRECHECK":
               // 게임이 끝났을 때
               // 게임이 진행될 때, => 나 / 다른 사람
+              console.log("precheck 들어왔다!");
+              console.log(msgSender);
+              console.log(response);
+              console.log(myId);
               if (msgData.gameOver === true) {
                 console.log("게임이 끝이났습니다.");
                 // endgame으로 가야함
                 // setStatus("ENDGAME");
-              } else if (msgSender === myId && msgData.gameOver === false) {
+              } else if (
+                msgSender === thisPlayer.playerId &&
+                msgData.gameOver === false
+              ) {
                 console.log("내 차례가 맞습니다.");
-                // setStatus("DRAW");
-              } else if (msgSender !== myId && msgData.gameOver === false) {
+                setThisPlayer(msgData.player);
+                sendStompMsg("PRECHECK");
+                setStatus("DRAW");
+              } else if (
+                msgSender !== thisPlayer.playerId &&
+                msgData.gameOver === false
+              ) {
+                // 현재 진행중인 플레이어의 status를 바꿔줘야함 잊고있었네
+                setStatus("HEAVEN");
                 console.log("다른 플레이어가 게임을 하고있습니다.");
               }
               break;
@@ -130,6 +175,7 @@ const Ingame = () => {
     );
   }, []);
 
+  console.log(thisPlayer);
   useEffect(() => {
     switch (status) {
       case "READY":
@@ -138,16 +184,16 @@ const Ingame = () => {
         // show notice " 곧 게임이 시작됩니다!"
         setTimeout(() => {
           sendStompMsg("START");
-        }, 5000);
+        }, 1000);
         // start msg를 받으면 status change => "START"
         break;
       case "START":
         // 클래스와 순서를 확인하세요.
         setTimeout(() => {
           // send stompMsg "" after 5 sec
-          // sendStompMsg("PRECHECK");
+          sendStompMsg("PRECHECK");
           console.log("게임이 시작됩니다.");
-        });
+        }, 2000);
         break;
       case "PRECHECK":
         // send stompMsg "" after 5 sec
