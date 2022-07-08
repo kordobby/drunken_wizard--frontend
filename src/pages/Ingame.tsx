@@ -1,9 +1,12 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import stompJS from "stompjs";
 
 import { getCookie } from "../Shared/Cookies";
+import PlayerField from "../Components/IngameComponents/PlayerField/PlayerFieldTs";
+import DrawModal from "../Components/IngameComponents/Modals/DrawModal";
+import { stringify } from "querystring";
 
 const Ingame = () => {
   /* socket connect - token */
@@ -38,9 +41,10 @@ const Ingame = () => {
 
   /* action turn :: card-use, discard */
   // USECARD & DISCARD
-  const [selectUseCard, setSelectUseCard] = useState<string>("");
+  const [selectUseCard, setSelectUseCard] = useState<any>("");
   const [findTargetGroup, setFindTargetGroup] = useState<string>("");
   const [selectTarget, setSelectTarget] = useState<string>("");
+
   // 사용해서 무덤으로 보낸 카드!
   const [cardCrave, setCardCrave] = useState<string>("");
 
@@ -145,28 +149,32 @@ const Ingame = () => {
                 console.log("게임이 끝이났습니다.");
                 // endgame으로 가야함
                 // setStatus("ENDGAME");
-              } else if (
-                msgSender === thisPlayer.playerId &&
-                msgData.gameOver === false
-              ) {
+              } else if (msgSender == myId && msgData.gameOver === false) {
                 console.log("내 차례가 맞습니다.");
+                console.log(msgData.player);
                 setThisPlayer(msgData.player);
-                sendStompMsg("PRECHECK");
-                setStatus("DRAW");
-              } else if (
-                msgSender !== thisPlayer.playerId &&
-                msgData.gameOver === false
-              ) {
+                setStatus("PRECHECK");
+              } else if (msgSender !== myId && msgData.gameOver === false) {
                 // 현재 진행중인 플레이어의 status를 바꿔줘야함 잊고있었네
                 setStatus("HEAVEN");
                 console.log("다른 플레이어가 게임을 하고있습니다.");
+              } else {
+                console.log("nonononono");
               }
               break;
-            // case "DRAW":
-            //   if (msgSender === myId && thisPlayer === myId) {
-            //     console.log("카드를 드로우합니다.");
-            //     setMyCards(msgData.cardDrawed);
-            //   }
+            case "DRAW":
+              console.log("넘어왔다.");
+              if (msgSender == myId) {
+                console.log(msgData);
+                console.log("카드를 드로우합니다.");
+                setSelectableCard(msgData.cardDrawed);
+                setSelectableCnt(msgData.selectable);
+                setDrawModalOpen(true);
+                setStatus("HEAVEN");
+              } else {
+                setStatus("HEAVEN");
+              }
+              break;
             default:
               break;
           }
@@ -175,7 +183,6 @@ const Ingame = () => {
     );
   }, []);
 
-  console.log(thisPlayer);
   useEffect(() => {
     switch (status) {
       case "READY":
@@ -197,8 +204,10 @@ const Ingame = () => {
         break;
       case "PRECHECK":
         // send stompMsg "" after 5 sec
-        // sendStopmMsg("DRAW");
         console.log("프리턴 플레이어를 확인합니다.");
+        sendStompMsg("DRAW");
+        break;
+      case "DRAW":
         break;
       default:
         break;
@@ -210,8 +219,101 @@ const Ingame = () => {
     setStatus("READY");
   };
 
+  // send stompMsg
+  function waitForConnection(stompClient: stompJS.Client, callback: any) {
+    setTimeout(function () {
+      if (stompClient.ws.readyState === 1) {
+        callback();
+      } else {
+        waitForConnection(stompClient, callback);
+      }
+    }, 1);
+  }
+
   const sendStompMsg = (data: string) => {
+    console.log(`sendMsgs to change turn to ${data}`);
     // stompMsg
+    waitForConnection(stompClient, function () {
+      stompClient.send(
+        "/pub/game/1",
+        { token: accessToken },
+        JSON.stringify({
+          roomId: "1",
+          sender: Number(myId),
+          content: null,
+          type: data,
+        })
+      );
+    });
+    console.log(`sendMsgs to change turn to ${data}`);
+  };
+
+  // ready for "SELECT"
+  const selectCardDrawTurnHandler = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const newSelectedCard: any[] = [...selectedCard];
+    const target = (event.target as HTMLButtonElement).id;
+    const setNew = newSelectedCard.push(Number(target));
+    console.log(target);
+    console.log(setNew);
+    console.log(newSelectedCard);
+    const removeDup = newSelectedCard.filter(
+      (value, index) => newSelectedCard.indexOf(value) === index
+    );
+    console.log(removeDup);
+    setSelectedCard(removeDup);
+  };
+
+  const cancelCardDrawTurnHandler = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const newSelectedCard = [...selectedCard];
+    const target = (event.target as HTMLButtonElement).id;
+    const setNew = newSelectedCard.filter(
+      (value) => Number(value) !== Number(target)
+    );
+    setSelectedCard(setNew);
+  };
+
+  console.log(selectedCard);
+  console.log(selectableCnt);
+  useEffect(() => {
+    if (selectableCnt === selectedCard.length) {
+      setDrawDisabled(true);
+    } else {
+      setDrawDisabled(false);
+    }
+  }, [selectUseCard]);
+
+  const selectTurnController = () => {
+    // data setting
+    // const cardsMaker = selectUseCard.map(function (value: any) {
+    //   const selectedCardsObj = { cardId: 0 };
+    //   selectedCardsObj.cardId = value;
+    //   return selectedCardsObj;
+    // });
+    // setMyCards(cardsMaker);
+    // const data = {
+    //   selectedCards: cardsMaker,
+    // };
+    // send msg to select
+    const data = { selectedCards: [{ cardId: 1 }, { cardId: 2 }] };
+    stompClient.send(
+      "/pub/game/1",
+      { token: accessToken },
+      JSON.stringify({
+        roomId: "1",
+        sender: Number(myId),
+        content: JSON.stringify(data),
+        type: "SELECT",
+      })
+    );
+    // console.log(data);
+    setStatus("SELECT");
+  };
+
+  const next = () => {
     stompClient.send(
       "/pub/game/1",
       { token: accessToken },
@@ -219,16 +321,81 @@ const Ingame = () => {
         roomId: "1",
         sender: Number(myId),
         content: null,
-        type: data,
+        type: "TURNCHECK",
       })
     );
-    console.log(`sendMsgs to change turn to ${data}`);
+  };
+
+  const useCardTurn = () => {
+    const data = {
+      targetPlayerId: 3,
+      cardId: 2,
+    };
+    stompClient.send(
+      "/pub/game/1",
+      { token: accessToken },
+      JSON.stringify({
+        roomId: "1",
+        sender: Number(myId),
+        content: JSON.stringify(data),
+        type: "USECARD",
+      })
+    );
+  };
+
+  const disCardTurn = () => {
+    const data = {
+      cardId: 1,
+    };
+    stompClient.send(
+      "/pub/game/1",
+      { token: accessToken },
+      JSON.stringify({
+        roomId: "1",
+        sender: Number(myId),
+        content: JSON.stringify(data),
+        type: "DISCARD",
+      })
+    );
+  };
+
+  const endTurn = () => {
+    stompClient.send(
+      "/pub/game/1",
+      { token: accessToken },
+      JSON.stringify({
+        roomId: "1",
+        sender: Number(myId),
+        content: null,
+        type: "ENDTURN",
+      })
+    );
   };
   return (
     <>
       <span>{status}</span>
       {nowPlayer && <span>{nowPlayer}님의 차례입니다.</span>}
       <button onClick={readyTurnController}>sendStart</button>
+      <PlayerField
+        findTargetGroup={findTargetGroup}
+        myCards={myCards}
+      ></PlayerField>
+      {drawModalOpen && (
+        <DrawModal
+          id={3}
+          selectCardDrawTurnHandler={selectCardDrawTurnHandler}
+          cancelCardDrawTurnHandler={cancelCardDrawTurnHandler}
+          selectableCard={selectableCard}
+          drawDisabled={drawDisabled}
+        ></DrawModal>
+      )}
+      <button style={{ marginTop: "500px" }} onClick={selectTurnController}>
+        확인확인
+      </button>
+      <button onClick={next}>TURNCHECK</button>
+      <button onClick={useCardTurn}>USECARD</button>
+      <button onClick={disCardTurn}>DISCARD</button>
+      <button onClick={endTurn}>ENDTURN</button>
     </>
   );
 };
