@@ -53,8 +53,10 @@ const Ingame = () => {
         stompClient.subscribe("/sub/game/1", (data: any) => {
           console.log(data);
           const response = JSON.parse(data.body);
+          console.log(response);
           const msgType = response?.type;
-          const msgData = response?.content;
+          const msgData = JSON.parse(response?.content);
+          console.log(msgData);
           const msgSender = response?.sender;
 
           const playersInfo = msgData[0].players;
