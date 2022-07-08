@@ -30,9 +30,45 @@ export default function matchClassImg(data: string) {
   }
 }
 
-export const CardsWrap = styled.div`
+export const ScCardsWrap = styled.div`
   width: 100px;
   height: 100px;
+  background-color: yellow;
+  ${flex({ direction: "column", justify: "center" })};
+  margin-right: 20px;
+`;
+
+export const PlayerFieldWrap = styled.div`
+  width: 100vw;
+  height: 250px;
+  background-color: #3e2b4c;
+  ${flex({ justify: "space-around", align: "center" })}
+`;
+
+export const CardsArea = styled.div`
+  background-color: #ba74ff;
+  ${flex({ justify: "center", align: "center" })}
+`;
+
+export const PlayerCtrlWrap = styled.div`
+  background-color: #8aa2a2;
+  width: 300px;
+  height: 250px;
+  ${flex({ direction: "column", justify: "center", align: "center" })}
+`;
+
+export const DrawModalWrap = styled.div`
+  width: 100vw;
+  height: 400px;
+  position: fixed;
+  top: 50px;
+  ${flex({ justify: "center" })};
+  background-color: #81c4ff;
+`;
+
+export const DrawbleCardWrap = styled.div`
+  width: 100px;
+  height: 150px;
   background-color: yellow;
   ${flex({ direction: "column", justify: "center" })};
   margin-right: 20px;
