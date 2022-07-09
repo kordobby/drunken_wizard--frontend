@@ -14,6 +14,9 @@ import { KAKAO_AUTH_URL } from "../shared/Kakao";
 import { loginStateProps } from "../typings/db";
 // apis
 import apis from "../shared/api/apis";
+// css
+import { BackWrap } from "../Components/UserComponents/UserStyled";
+import logBack from "../images/background/loginBackground.svg";
 
 const Login = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
@@ -60,7 +63,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
   );
 
   return (
-    <div>
+    <BackWrap style={{ backgroundImage: `url(${logBack})` }}>
       <form onSubmit={handleLogin}>
         <label id="user-id-label">
           <span>아이디</span>
@@ -109,7 +112,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
       <Link to="/signup">
         <button>회원가입하기</button>
       </Link>
-    </div>
+    </BackWrap>
   );
 };
 
