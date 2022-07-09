@@ -8,6 +8,7 @@ import PlayerField from "../Components/IngameComponents/PlayerField/PlayerField"
 import DrawModal from "../Components/IngameComponents/Modals/DrawModal";
 import MainField from "../Components/IngameComponents/MainField/MainField";
 import { CardType } from "../typings/typedb";
+import NoticeField from "../Components/IngameComponents/NoticeField/NoticeField";
 const Ingame = () => {
   /* socket connect - token */
   const socket = new SockJS("http://13.124.63.214/SufficientAmountOfAlcohol");
@@ -220,7 +221,21 @@ const Ingame = () => {
         });
       }
     );
+    return () => {
+      socketUnsubscribe();
+    };
   }, []);
+
+  const socketUnsubscribe = () => {
+    try {
+      stompClient
+        .subscribe(`/sub/game/1`, function (data: any) {}, {})
+        .unsubscribe();
+      console.log("success to unsubscribe");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     switch (status) {
@@ -333,7 +348,7 @@ const Ingame = () => {
     const newSelectedCard: any[] = [...selectedCard];
     const { target } = event;
     const targetId = (event.target as HTMLButtonElement).id;
-    const setNew = newSelectedCard.push(Number(targetId));
+    const setNew = newSelectedCard.push(targetId);
     const removeDup = newSelectedCard.filter(
       (value, index) => newSelectedCard.indexOf(value) === index
     );
@@ -362,20 +377,22 @@ const Ingame = () => {
     // data setting
     const cardsMaker = selectedCard.map(function (value: any) {
       const selectedCardsObj = { cardId: 0 };
-      selectedCardsObj.cardId = value;
+      selectedCardsObj.cardId = Number(value);
       return selectedCardsObj;
     });
 
     // confirm my cardsList
     const confirmDrawCards = selectedCard.map((value) =>
-      selectableCard.find((elem) => elem.cardId === value)
+      selectableCard.find((elem) => Number(elem.cardId) === Number(value))
     );
 
+    console.log(confirmDrawCards);
     setMyCards(confirmDrawCards);
     const data = {
       selectedCards: cardsMaker,
     };
 
+    console.log(data);
     // send msg to select
     stompClient.send(
       "/pub/game/1",
@@ -427,11 +444,15 @@ const Ingame = () => {
   const selectDisCardHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     const cardId = (event.target as HTMLButtonElement).id;
     const cardName = (event.target as HTMLButtonElement).name;
+    console.log(cardId);
+    console.log(cardName);
     setCardCrave(cardName);
-    setSelectUseCard(cardId);
+    // setSelectUseCard(cardId);
     const data = {
-      cardId: selectUseCard,
+      cardId: Number(cardId),
     };
+    console.log("데이터확인");
+    console.log(data);
     stompClient.send(
       "/pub/game/1",
       { token: accessToken },
@@ -443,20 +464,20 @@ const Ingame = () => {
       })
     );
     const myCardsSet = [...myCards];
+    console.log(myCardsSet);
     const updateCards = myCardsSet.filter(
-      (value: any) => value.cardId == cardId
+      (value: any) => Number(value.cardId) !== Number(cardId)
     );
     setMyCards(updateCards);
-    setSelectUseCard("");
+    // setSelectUseCard("");
     setFindTargetGroup("");
   };
 
   return (
     <>
-      <span>{status}</span>
+      <NoticeField status={status} nowPlayer={nowPlayer}></NoticeField>
       {nowPlayer && <span>{nowPlayer}님의 차례입니다.</span>}
       <button onClick={readyTurnController}>sendStart</button>
-      <h1>사용된카드 : {cardCrave}</h1>
       <MainField
         enemyPlayerA={enemyPlayerA}
         enemyPlayerB={enemyPlayerB}
@@ -472,7 +493,8 @@ const Ingame = () => {
         enemyPlayerA={enemyPlayerA.playerId}
         enemyPlayerB={enemyPlayerB.playerId}
         teamPlayer={teamPlayer.playerId}
-        thisPlayer={thisPlayer.playerId}
+        thisPlayer={thisPlayer}
+        myState={thisPlayer}
         setSelectTarget={setSelectTarget}
         sendStompMsg={sendStompMsg}
       ></PlayerField>

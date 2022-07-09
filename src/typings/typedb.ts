@@ -1,5 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 
+// header types
+export interface HeaderProps {
+  status: string;
+  nowPlayer: string;
+}
+
 // playerField
 export interface PlayerProps {
   myCards: object[];
@@ -12,7 +18,13 @@ export interface PlayerProps {
   teamPlayer: number;
   thisPlayer: number;
   setSelectTarget: Dispatch<SetStateAction<string>>;
+  myState: PlayerSetProps;
   sendStompMsg: (data: string) => void;
+}
+
+// profile
+export interface ProfileProps {
+  myState: PlayerSetProps;
 }
 
 // cards
@@ -60,7 +72,7 @@ export interface MainProps {
   thisPlayer: PlayerSetProps;
 }
 
-interface PlayerSetProps {
+export interface PlayerSetProps {
   cardsOnHand: object[];
   charactorClass: string;
   playerId: number;

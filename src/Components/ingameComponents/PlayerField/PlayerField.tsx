@@ -3,7 +3,7 @@ import { PlayerFieldWrap } from "../InGameStyled";
 import { CardsArea, PlayerCtrlWrap } from "../InGameStyled";
 import Cards from "./Cards";
 import { PlayerProps } from "../../../typings/typedb";
-
+import MyProfile from "./MyProfile";
 const PlayerField: FunctionComponent<PlayerProps> = ({
   myCards,
   findTargetGroup,
@@ -16,6 +16,7 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
   thisPlayer,
   setSelectTarget,
   sendStompMsg,
+  myState,
 }) => {
   const confirmTargetHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     const targetId = (event.target as HTMLButtonElement).className;
@@ -24,8 +25,10 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
     //event.target.id
   };
 
+  console.log(myCards);
   return (
     <PlayerFieldWrap>
+      <MyProfile myState={myState}></MyProfile>
       <CardsArea>
         {myCards.map((value: any) => (
           <Cards

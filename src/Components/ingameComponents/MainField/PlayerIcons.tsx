@@ -4,7 +4,7 @@ import matchClassImg from "../InGameStyled";
 import { PlayerIconsFields, Profiles, PlayerNameTag } from "../InGameStyled";
 import { IconsImgProps } from "../../../typings/typedb";
 import { MainProps } from "../../../typings/typedb";
-import { stringify } from "querystring";
+
 const PlayerIcons = ({
   enemyPlayerA,
   enemyPlayerB,
