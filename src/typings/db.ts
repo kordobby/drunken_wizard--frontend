@@ -21,3 +21,10 @@ export interface loginStateProps {
 export interface ModalType {
   modalClose: () => void;
 }
+
+// chatList
+export interface ChatType {
+  type: string;
+  message: string;
+  sender: string;
+}

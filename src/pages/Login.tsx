@@ -46,12 +46,13 @@ const Login = ({ setLoginState }: loginStateProps) => {
     onError: (error) => {
       navigate("/login");
       setLoginState(false);
+      console.log(error);
     },
   });
 
   // submit
   const handleLogin = useCallback(
-    (e: any) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       mutate({ username, password });
     },

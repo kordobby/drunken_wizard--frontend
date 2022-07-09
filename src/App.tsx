@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-
 // pages
 import Main from "./pages/Main";
 import Login from "./pages/Login";
@@ -14,7 +13,6 @@ import { getCookie, deleteCookie } from "./shared/Cookies";
 import WaitingRoom from "./pages/WaitingRoom";
 import NotFound from "./pages/NotFound";
 import Rule from "./pages/Rule";
-// import Lobby from "./pages/Lobby";
 
 function App() {
   const navigate = useNavigate();

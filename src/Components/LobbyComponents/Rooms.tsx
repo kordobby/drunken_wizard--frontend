@@ -7,19 +7,19 @@ import flex from "../GlobalStyled/flex";
 import apis from "../../shared/api/apis";
 
 const Rooms = () => {
-  const { data: roomList_query } = useQuery("room_list", apis.getRoomListQR, {
-    onSuccess: (data: any) => {
-      console.log("성공했어!");
-    },
-    onError: (error: any) => {
-      console.log("실패", error);
-    },
-  });
+  // const { data: roomList_query } = useQuery("room_list", apis.getRoomListQR, {
+  //   onSuccess: (data: any) => {
+  //     console.log("성공했어!");
+  //   },
+  //   onError: (error: any) => {
+  //     console.log("실패", error);
+  //   },
+  // });
   // console.log(roomList_query);
 
   return (
     <>
-      {roomList_query &&
+      {/* {roomList_query &&
         roomList_query.data.map((room: any, i: any) => {
           // console.log(room);
           return (
@@ -84,7 +84,7 @@ const Rooms = () => {
               </RoomWrap>
             ))
           );
-        })}
+        })} */}
     </>
   );
 };

@@ -1,15 +1,20 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import flex from "../GlobalStyled/flex";
+// hooks
+import { getCookie } from "../../shared/Cookies";
+// stomp
 import sockJS from "sockjs-client";
 import stompJS from "stompjs";
-import styled from "styled-components";
-import { getCookie } from "../../shared/Cookies";
-import flex from "../GlobalStyled/flex";
+import { socket } from "../../shared/WebStomp";
+// interface
+import { ChatType } from "../../typings/db";
 
 const LobbyChat = () => {
   const iptRef = useRef<any>("");
   const [msgList, setMsgList] = useState<any>([]);
   const [subscribeState, setSubscribeState] = useState(false);
-  const socket = new sockJS("http://13.124.63.214/SufficientAmountOfAlcohol"); //   /ws-stomp
+  // const socket = new sockJS("http://3.35.53.184/SufficientAmountOfAlcohol"); //   /ws-stomp
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
@@ -26,30 +31,6 @@ const LobbyChat = () => {
     };
   }, [subscribeState]);
 
-  // const trySocketConnect = () => {
-  //   stompClient.connect(
-  //     {
-  //       token: accessToken,
-  //       id: accessId,
-  //     },
-  //     () => {
-  //       console.log("connect success");
-  //     }
-  //   );
-  //   // try {
-  //   //   stompClient.connect(
-  //   //     {
-  //   //       token: accessToken,
-  //   //     },
-  //   //     () => {
-  //   //       console.log("connect success");
-  //   //     }
-  //   //   );
-  //   // } catch (error) {
-  //   //   console.log(error);
-  //   // }
-  // };
-
   // /* function Subscribe */
   const socketSubscribe = useCallback(() => {
     try {
@@ -63,7 +44,7 @@ const LobbyChat = () => {
             "/sub/public",
             (data: any) => {
               const response = JSON.parse(data.body);
-              console.log(response);
+              // console.log(response);
             },
             { token: accessToken }
           );
@@ -88,15 +69,6 @@ const LobbyChat = () => {
       console.log(error);
     }
   };
-
-  // const socketDisconnect = () => {
-  //   stompClient.disconnect(
-  //     () => {
-  //       console.log("disconnect");
-  //     },
-  //     { token: accessToken }
-  //   );
-  // };
 
   //입장 메세지
   const joinMessage = () => {
@@ -148,7 +120,7 @@ const LobbyChat = () => {
       {/* <button onClick={socketDisconnect}>소켓 연결 해제</button> */}
 
       <ChatWrap>
-        {msgList.map((msg: any, idx: any) => {
+        {msgList.map((msg: ChatType, idx: number) => {
           if (msg.type === "JOIN") {
             return (
               <div
