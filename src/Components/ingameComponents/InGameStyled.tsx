@@ -5,6 +5,8 @@ import healer from "../../Public/Images/healer.png";
 import dealer from "../../Public/Images/dealer.png";
 import ghost from "../../Public/Images/ghost.png";
 import wizard from "../../Public/Images/wizard.png";
+import what from "../../Public/Images/what.png";
+import blood from "../../Public/Images/blood.png";
 
 export const StWrap = styled.div`
   width: 100%;
@@ -17,14 +19,18 @@ export const StWrap = styled.div`
 // default img 추가하기*
 export default function matchClassImg(data: string) {
   switch (data) {
-    case "healer":
+    case "HEALER":
       return healer;
-    case "dealer":
+    case "FARSEER":
       return dealer;
-    case "ghost":
+    case "ENCHANTER":
       return ghost;
-    case "wizard":
+    case "WAROCK":
       return wizard;
+    case "INVOKER":
+      return what;
+    case "BLOODMAGE":
+      return blood;
     default:
       return;
   }
@@ -72,4 +78,25 @@ export const DrawbleCardWrap = styled.div`
   background-color: yellow;
   ${flex({ direction: "column", justify: "center" })};
   margin-right: 20px;
+`;
+
+// main field
+// player icons
+
+export const PlayerIconsFields = styled.div`
+  width: 600px;
+  height: 300px;
+  background-color: white;
+  ${flex({ justify: "center", align: "center" })}
+`;
+export const Profiles = styled.div`
+  width: 100px;
+  height: 100px;
+  border-radius: 30px;
+`;
+export const PlayerNameTag = styled.div`
+  width: 80px;
+  height: 30px;
+  background-color: aqua;
+  ${flex({ justify: "center", align: "center" })}
 `;

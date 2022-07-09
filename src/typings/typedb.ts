@@ -19,6 +19,7 @@ export interface PlayerProps {
 export interface CardProps {
   id: number;
   className: string;
+  name: string;
   selectUseCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
   selectDisCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -49,4 +50,46 @@ export interface DrawCardsProps {
     event: React.MouseEvent<HTMLButtonElement>
   ) => void;
   drawDisabled: boolean;
+}
+
+// mainfield
+export interface MainProps {
+  enemyPlayerA: PlayerSetProps;
+  enemyPlayerB: PlayerSetProps;
+  teamPlayer: PlayerSetProps;
+  thisPlayer: PlayerSetProps;
+}
+
+interface PlayerSetProps {
+  cardsOnHand: object[];
+  charactorClass: string;
+  playerId: number;
+  health: number;
+  username: string;
+  dead: boolean;
+  mana: number;
+  manaCostModifierDuration: number;
+  muteDuration: number;
+  petrifiedDuration: number;
+  poisonedDuration: number;
+  shield: boolean;
+  sleepDuration: number;
+  stunnedDuration: number;
+  team: boolean;
+  turnOrder: number;
+  weakDuration: number;
+}
+
+// playerIcons
+export interface IconsImgProps {
+  job: string;
+}
+
+// cardType
+export interface CardType {
+  cardId: number;
+  cardName: string;
+  description: string;
+  manaCost: number;
+  target: string;
 }

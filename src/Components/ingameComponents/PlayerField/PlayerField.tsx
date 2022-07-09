@@ -32,6 +32,7 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
             key={value.cardId}
             id={value.cardId}
             className={value.target}
+            name={value.cardName}
             selectUseCardHandler={selectUseCardHandler}
             selectDisCardHandler={selectDisCardHandler}
           ></Cards>

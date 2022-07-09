@@ -6,8 +6,8 @@ import stompJS from "stompjs";
 import { getCookie } from "../Shared/Cookies";
 import PlayerField from "../Components/IngameComponents/PlayerField/PlayerField";
 import DrawModal from "../Components/IngameComponents/Modals/DrawModal";
-import { stringify } from "querystring";
-
+import MainField from "../Components/IngameComponents/MainField/MainField";
+import { CardType } from "../typings/typedb";
 const Ingame = () => {
   /* socket connect - token */
   const socket = new SockJS("http://13.124.63.214/SufficientAmountOfAlcohol");
@@ -47,6 +47,7 @@ const Ingame = () => {
   const [selectUseCard, setSelectUseCard] = useState<any>("");
   const [findTargetGroup, setFindTargetGroup] = useState<string>("");
   const [selectTarget, setSelectTarget] = useState<string>("");
+  const [changedState, setChangedState] = useState<any>({});
 
   // 사용해서 무덤으로 보낸 카드!
   const [cardCrave, setCardCrave] = useState<string>("");
@@ -186,6 +187,7 @@ const Ingame = () => {
               ) {
                 console.log(msgData);
                 console.log("카드 드로우 실패");
+                setCardCrave(msgData);
               } else if (msgSender !== Number(myId)) {
                 setStatus("HOHO");
               }
@@ -197,8 +199,13 @@ const Ingame = () => {
               // send action turn check
               break;
             case "USECARD":
-              setStatus("USECARDSUCCESS");
               console.log("카드사용 결과는?");
+              const targetState = msgData.players.filter(
+                (value: any) => Number(value.playerId) !== Number(myId)
+              );
+              console.log(targetState);
+              setChangedState(targetState);
+              setStatus("USECARDSUCCESS");
               break;
             case "DISCARD":
               //msgData = {cardId:2}
@@ -263,6 +270,20 @@ const Ingame = () => {
         );
         setMyCards(updateCards);
         // clear 작업
+        console.log(changedState);
+        if (selectTarget == enemyPlayerA.playerId) {
+          setEnemyPlayerA(changedState[0]);
+          console.log("a");
+        } else if (selectTarget == enemyPlayerB.playerId) {
+          setEnemyPlayerB(changedState[0]);
+          console.log("b");
+        } else if (selectTarget == teamPlayer.playerId) {
+          setTeamPlayer(changedState[0]);
+          console.log("c");
+        } else {
+          console.log("더는 ㄴ");
+        }
+        console.log("완료");
         setSelectUseCard("");
         setSelectTarget("");
         setFindTargetGroup("");
@@ -372,6 +393,8 @@ const Ingame = () => {
   const selectUseCardHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     const cardId = (event.target as HTMLButtonElement).id;
     const targetGroup = (event.target as HTMLButtonElement).className;
+    const cardName = (event.target as HTMLButtonElement).name;
+    setCardCrave(cardName);
     // 카드의 이름과 타겟그룹을 저장
     setSelectUseCard(Number(cardId));
     setFindTargetGroup(targetGroup);
@@ -403,6 +426,8 @@ const Ingame = () => {
 
   const selectDisCardHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     const cardId = (event.target as HTMLButtonElement).id;
+    const cardName = (event.target as HTMLButtonElement).name;
+    setCardCrave(cardName);
     setSelectUseCard(cardId);
     const data = {
       cardId: selectUseCard,
@@ -423,7 +448,6 @@ const Ingame = () => {
     );
     setMyCards(updateCards);
     setSelectUseCard("");
-    setSelectTarget("");
     setFindTargetGroup("");
   };
 
@@ -432,6 +456,13 @@ const Ingame = () => {
       <span>{status}</span>
       {nowPlayer && <span>{nowPlayer}님의 차례입니다.</span>}
       <button onClick={readyTurnController}>sendStart</button>
+      <h1>사용된카드 : {cardCrave}</h1>
+      <MainField
+        enemyPlayerA={enemyPlayerA}
+        enemyPlayerB={enemyPlayerB}
+        teamPlayer={teamPlayer}
+        thisPlayer={thisPlayer}
+      ></MainField>
       <PlayerField
         findTargetGroup={findTargetGroup}
         myCards={myCards}

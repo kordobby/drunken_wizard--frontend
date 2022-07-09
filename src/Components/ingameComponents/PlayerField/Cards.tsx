@@ -4,6 +4,7 @@ import { CardProps } from "../../../typings/typedb";
 const Cards = ({
   id,
   className,
+  name,
   selectUseCardHandler,
   selectDisCardHandler,
 }: CardProps) => {
@@ -13,6 +14,7 @@ const Cards = ({
       <span>target:</span>
       <button
         id={String(id)}
+        name={name}
         className={className}
         onClick={selectUseCardHandler}
       >
@@ -21,6 +23,7 @@ const Cards = ({
       <button
         id={String(id)}
         className={className}
+        name={name}
         onClick={selectDisCardHandler}
       >
         버리기
