@@ -12,18 +12,18 @@ import { ModalType } from "../../typings/db";
 import apis from "../../shared/api/apis";
 
 const CreateRoom = ({ modalClose }: ModalType) => {
-  const [roomName, setRoomName] = useInput("");
+  const [roomName, setRoomName] = useInput<string>("");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   // mutate
   const { mutate: createRoom } = useMutation(apis.createRoomMT, {
-    onSuccess: (res: any) => {
+    onSuccess: (res) => {
       console.log(res.data);
       queryClient.invalidateQueries("room_list");
       navigate(`/waiting/${res.data}`);
     },
-    onError: (error: any) => {
+    onError: (error) => {
       console.log(error);
     },
   });

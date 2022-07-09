@@ -35,13 +35,13 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
         path: "/",
         expire: "after60m",
       });
-      navigate("/lobby");
       setLoginState(true);
+      navigate("/lobby");
     },
     onError: (error) => {
       console.log("실패");
-      navigate("/login");
       setLoginState(false);
+      navigate("/login");
     },
   });
 

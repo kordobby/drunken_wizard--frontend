@@ -27,7 +27,6 @@ const SignUp = () => {
     if (!idCheck(username) === true) return true;
     if (username === "") return true;
     if (signUpCheckId === true) return true;
-    // 서버 리턴값 if (  === true ) return false;
     else return false;
   };
 
