@@ -1,30 +1,58 @@
 import { Dispatch, SetStateAction } from "react";
 
+// TK InitialState
+export interface Card {
+  cardId: number;
+  cardName: string;
+  description: string;
+  manaCost: number;
+  target: string;
+}
+
+export interface playersSetting {
+  cardsOnHand: any;
+  charactorClass: string;
+  playerId: number;
+  health: number;
+  username: string;
+  dead: boolean;
+  mana: number;
+  manaCostModifierDuration: number;
+  mutedDuration: number;
+  petrifiedDuration: number;
+  poisonedDuration: number;
+  shield: boolean;
+  sleepDuration: number;
+  stunnedDuration: number;
+  team: boolean;
+  turnOrder: number;
+  weakDuration: number;
+  damageModifierDuration: number;
+}
+
+// #1. 게임 시작
+export interface StartModalProps {
+  setStatus: Dispatch<SetStateAction<string>>;
+}
+
 // header types
 export interface HeaderProps {
   status: string;
-  nowPlayer: string;
 }
 
 // playerField
 export interface PlayerProps {
-  myCards: object[];
   findTargetGroup: string;
   selectUseCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
   sendUseCardHandler: () => void;
   selectDisCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  enemyPlayerA: number;
-  enemyPlayerB: number;
-  teamPlayer: number;
-  thisPlayer: number;
-  setSelectTarget: Dispatch<SetStateAction<string>>;
-  myState: PlayerSetProps;
-  sendStompMsg: (data: string) => void;
-}
-
-// profile
-export interface ProfileProps {
-  myState: PlayerSetProps;
+  setSelectTarget: Dispatch<SetStateAction<number>>;
+  sendStompMsgFunc: (
+    roomId: string,
+    sender: number,
+    msgType: string,
+    data: object | null
+  ) => void;
 }
 
 // cards
@@ -64,14 +92,6 @@ export interface DrawCardsProps {
   drawDisabled: boolean;
 }
 
-// mainfield
-export interface MainProps {
-  enemyPlayerA: PlayerSetProps;
-  enemyPlayerB: PlayerSetProps;
-  teamPlayer: PlayerSetProps;
-  thisPlayer: PlayerSetProps;
-}
-
 export interface PlayerSetProps {
   cardsOnHand: object[];
   charactorClass: string;
@@ -90,6 +110,7 @@ export interface PlayerSetProps {
   team: boolean;
   turnOrder: number;
   weakDuration: number;
+  damageModifierDuration: number;
 }
 
 // playerIcons
@@ -104,4 +125,20 @@ export interface CardType {
   description: string;
   manaCost: number;
   target: string;
+}
+
+export interface StatBarProps {
+  manaCostModifierDuration: number;
+  mutedDuration: number;
+  petrifiedDuration: number;
+  poisonedDuration: number;
+  shield: boolean;
+  sleepDuration: number;
+  stunnedDuration: number;
+  weakDuration: number;
+  damageModifierDuration: number;
+}
+
+export interface StatIconsImgProps {
+  stat: string;
 }
