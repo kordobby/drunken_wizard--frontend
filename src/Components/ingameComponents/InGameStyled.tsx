@@ -7,16 +7,121 @@ import ghost from "../../Public/Images/ghost.png";
 import wizard from "../../Public/Images/wizard.png";
 import what from "../../Public/Images/what.png";
 import blood from "../../Public/Images/blood.png";
+import { IconsImgProps } from "../../typings/typedb";
 
-export const StWrap = styled.div`
-  width: 100%;
+/* Common */
+
+export const StGameWrap = styled.div`
+  width: 100vw;
   height: 100vh;
-  background-color: ${(props) => props.theme.bgColor};
-  z-index: -5;
+  background-color: var(--brown);
+  ${flex({ direction: "column", justify: "space-between", align: "center" })};
 `;
 
-// 캐릭터 클래스에 따른 Img matching
-// default img 추가하기*
+export const TargetBtn = styled.button`
+  width: 100px;
+  height: 50px;
+  border-radius: 50px;
+  background-color: var(--orange);
+`;
+
+export const ScCardsWrap = styled.div`
+  width: 100px;
+  height: 100px;
+  background-color: #ffc080;
+  ${flex({ direction: "column", justify: "center" })};
+  margin: 0 10px;
+`;
+
+// 시작페이지 modal-bg
+export const StModalWrap = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--beige);
+  ${flex({ direction: "column", justify: "center", align: "center" })}
+  z-index: 5;
+  position: fixed;
+`;
+
+/* Footer - PlayerField :: left to right*/
+
+export const PlayerFieldWrap = styled.div`
+  width: 100vw;
+  height: 200px;
+  bottom: 0;
+  background-color: #3e2b4c;
+  ${flex({ justify: "space-between", align: "center" })}
+`;
+
+// left
+export const ProfileSizing = styled.div`
+  width: 200px;
+  height: 200px;
+  ${flex({ direction: "column", justify: "center", align: "center" })}
+`;
+
+export const ProfileIcon = styled.div<IconsImgProps>`
+  width: 120px;
+  height: 120px;
+  border: 5px solid white;
+  background-image: url(${(props) => matchClassImg(props.job)});
+  background-size: cover;
+  border-radius: 75px;
+`;
+
+export const CardsArea = styled.div`
+  background-color: #ba74ff;
+  ${flex({ justify: "center", align: "center" })}
+`;
+
+export const PlayerCtrlWrap = styled.div`
+  background-color: #8aa2a2;
+  width: 300px;
+  height: 200px;
+  ${flex({ direction: "column", justify: "center", align: "center" })}
+`;
+
+export const DrawModalWrap = styled.div`
+  width: 100vw;
+  height: 400px;
+  position: fixed;
+  border-radius: 30px;
+  top: 30%;
+  ${flex({ align: "center", justify: "center" })};
+  background-color: #ffffff;
+`;
+
+export const DrawbleCardWrap = styled.div`
+  width: 100px;
+  height: 150px;
+  background-color: yellow;
+  ${flex({ direction: "column", justify: "center" })};
+  margin-right: 20px;
+`;
+
+// main field
+// player icons
+
+export const PlayerIconsFields = styled.div`
+  width: 100%;
+  height: 300px;
+  ${flex({ justify: "space-around", align: "center" })}
+`;
+
+export const Profiles = styled.div`
+  width: 200px;
+  height: 300px;
+  border-radius: 30px;
+  background-color: var(--beige);
+  ${flex({ direction: "column", justify: "center", align: "center" })}
+`;
+export const PlayerNameTag = styled.div`
+  width: 80px;
+  height: 30px;
+  ${flex({ justify: "center", align: "center" })}
+`;
+
+/* character class images-matching func*/
 export default function matchClassImg(data: string) {
   switch (data) {
     case "HEALER":
@@ -35,68 +140,3 @@ export default function matchClassImg(data: string) {
       return;
   }
 }
-
-export const ScCardsWrap = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: yellow;
-  ${flex({ direction: "column", justify: "center" })};
-  margin-right: 20px;
-`;
-
-export const PlayerFieldWrap = styled.div`
-  width: 100vw;
-  height: 250px;
-  background-color: #3e2b4c;
-  ${flex({ justify: "space-around", align: "center" })}
-`;
-
-export const CardsArea = styled.div`
-  background-color: #ba74ff;
-  ${flex({ justify: "center", align: "center" })}
-`;
-
-export const PlayerCtrlWrap = styled.div`
-  background-color: #8aa2a2;
-  width: 300px;
-  height: 250px;
-  ${flex({ direction: "column", justify: "center", align: "center" })}
-`;
-
-export const DrawModalWrap = styled.div`
-  width: 100vw;
-  height: 400px;
-  position: fixed;
-  top: 50px;
-  ${flex({ justify: "center" })};
-  background-color: #81c4ff;
-`;
-
-export const DrawbleCardWrap = styled.div`
-  width: 100px;
-  height: 150px;
-  background-color: yellow;
-  ${flex({ direction: "column", justify: "center" })};
-  margin-right: 20px;
-`;
-
-// main field
-// player icons
-
-export const PlayerIconsFields = styled.div`
-  width: 600px;
-  height: 300px;
-  background-color: white;
-  ${flex({ justify: "center", align: "center" })}
-`;
-export const Profiles = styled.div`
-  width: 100px;
-  height: 100px;
-  border-radius: 30px;
-`;
-export const PlayerNameTag = styled.div`
-  width: 80px;
-  height: 30px;
-  background-color: aqua;
-  ${flex({ justify: "center", align: "center" })}
-`;

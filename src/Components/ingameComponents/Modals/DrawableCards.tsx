@@ -19,11 +19,7 @@ const DrawableCards: React.FC<DrawCardsProps> = ({
       >
         선택
       </button>
-      <button
-        id={String(id)}
-        onClick={cancelCardDrawTurnHandler}
-        disabled={drawDisabled}
-      >
+      <button id={String(id)} onClick={cancelCardDrawTurnHandler}>
         취소
       </button>
     </DrawbleCardWrap>

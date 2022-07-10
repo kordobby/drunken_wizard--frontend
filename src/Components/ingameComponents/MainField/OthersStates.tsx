@@ -1,13 +1,15 @@
-import { MainProps } from "../../../typings/typedb";
 import styled from "styled-components";
 import flex from "../../GlobalStyled/flex";
-
-const OthersStates = ({
-  enemyPlayerA,
-  enemyPlayerB,
-  teamPlayer,
-  thisPlayer,
-}: MainProps) => {
+import { useAppSelector } from "../../../hooks/tsHooks";
+const OthersStates = () => {
+  const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
+  const teamPlayer = useAppSelector((state) => state.game.players.teamPlayer);
+  const enemyPlayerA = useAppSelector(
+    (state) => state.game.players.enemyPlayerA
+  );
+  const enemyPlayerB = useAppSelector(
+    (state) => state.game.players.enemyPlayerB
+  );
   return (
     <StatsField>
       <PlayersStatField>

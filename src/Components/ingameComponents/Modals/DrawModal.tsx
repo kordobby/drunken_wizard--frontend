@@ -15,6 +15,7 @@ const DrawModal = ({
     <DrawModalWrap>
       {selectableCard.map((value: any) => (
         <DrawableCards
+          key={value.cardId}
           id={value.cardId}
           target={value.target}
           selectCardDrawTurnHandler={selectCardDrawTurnHandler}
