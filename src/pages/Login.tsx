@@ -1,11 +1,12 @@
 // package
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 // hooks
 import useInput from "../hooks/useInput";
 import { passwordCheckF } from "../hooks/useCheck";
+import { useFocusHandler } from "../hooks/focus";
 // cookies
 import { setCookie } from "../shared/Cookies";
 // kakao
@@ -15,13 +16,32 @@ import { loginStateProps } from "../typings/db";
 // apis
 import apis from "../shared/api/apis";
 // css
-import { BackWrap } from "../Components/UserComponents/UserStyled";
+import {
+  BackWrap,
+  LogLogo,
+  Input,
+  InputBoxId,
+  InputBoxPw,
+  Button,
+  RegiImg,
+  KakaoImg,
+  SpeechBubble,
+  SpeechSpan,
+} from "../Components/UserComponents/UserStyled";
+// svgs
 import logBack from "../images/background/loginBackground.svg";
+import logBtn from "../images/buttons/BTN_login.svg";
+import regBtn from "../images/buttons/BTN_register.svg";
+import kakaoBtn from "../images/buttons/BTN_kakao.svg";
+import logo from "../images/logo/logo.svg";
+import speechBubble from "../images/imgs/SpeechBubble.svg";
 
 const Login = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
   const [username, setUsername] = useInput<string>("");
   const [password, setPassword] = useInput<string>("");
+  const [idFocus, setIdFocus] = useFocusHandler<boolean>(false);
+  const [pwFocus, setPwFocus] = useFocusHandler<boolean>(false);
 
   // mutate
   const { mutate } = useMutation(apis.loginMT, {
@@ -55,7 +75,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
 
   // submit
   const handleLogin = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    (e: React.FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
       mutate({ username, password });
     },
@@ -64,54 +84,72 @@ const Login = ({ setLoginState }: loginStateProps) => {
 
   return (
     <BackWrap style={{ backgroundImage: `url(${logBack})` }}>
-      <form onSubmit={handleLogin}>
+      <LogLogo src={logo} />
+      <form>
         <label id="user-id-label">
-          <span>아이디</span>
-          <div>
-            <input
+          <InputBoxId>
+            <Input
               type="text"
               id="user-id"
               name="user-id"
               value={username}
               onChange={setUsername}
-              placeholder="로그인 시 사용할 ID를 입력해주세요."
+              placeholder="ID"
+              onFocus={setIdFocus}
+              onBlur={setIdFocus}
             />
-            {username === "" ? (
-              <span>ID를 입력 해주세요.</span>
-            ) : (
-              <span>올바른 형식의 ID입니다.</span>
+            {username === "" && idFocus && (
+              <SpeechBubble style={{ backgroundImage: `url(${speechBubble})` }}>
+                <SpeechSpan>ID를 입력 해주세요.</SpeechSpan>
+              </SpeechBubble>
             )}
-          </div>
+            {username !== "" && idFocus && (
+              <SpeechBubble style={{ backgroundImage: `url(${speechBubble})` }}>
+                <SpeechSpan>올바른 형식의 ID입니다.</SpeechSpan>
+              </SpeechBubble>
+            )}
+          </InputBoxId>
         </label>
         <label id="password-label">
-          <span>비밀번호</span>
-          <div>
-            <input
+          <InputBoxPw>
+            <Input
               type="password"
               id="password"
               name="password"
               value={password}
+              placeholder="Password"
               onChange={setPassword}
-              placeholder="비밀번호를 입력해주세요."
+              onFocus={setPwFocus}
+              onBlur={setPwFocus}
             />
-            {passwordCheckF(password) ? (
-              <span>올바른 형식의 비밀번호 입니다.</span>
-            ) : (
-              <span>영문, 숫자, 특수 문자 포함 6~15자</span>
+            {passwordCheckF(password) && pwFocus && (
+              <SpeechBubble style={{ backgroundImage: `url(${speechBubble})` }}>
+                <SpeechSpan>올바른 형식의 비밀번호 입니다.</SpeechSpan>
+              </SpeechBubble>
             )}
-          </div>
+            {!passwordCheckF(password) && pwFocus && (
+              <SpeechBubble style={{ backgroundImage: `url(${speechBubble})` }}>
+                <SpeechSpan>영문, 숫자, 특수 문자 포함 6~15자</SpeechSpan>
+              </SpeechBubble>
+            )}
+          </InputBoxPw>
         </label>
-        <button
+      </form>
+      <div>
+        <Button
+          onClick={handleLogin}
           type="submit"
           disabled={username === "" || password === "" ? true : false}
-        >
-          로그인
-        </button>
-      </form>
-      <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
-      <Link to="/signup">
-        <button>회원가입하기</button>
-      </Link>
+          style={{ backgroundImage: `url(${logBtn})` }}
+        ></Button>
+        <Link to="/signup">
+          <RegiImg src={regBtn} />
+        </Link>
+      </div>
+
+      <a href={KAKAO_AUTH_URL}>
+        <KakaoImg src={kakaoBtn} />
+      </a>
     </BackWrap>
   );
 };
