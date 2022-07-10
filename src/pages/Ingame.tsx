@@ -2,28 +2,45 @@ import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import stompJS from "stompjs";
-
 import { getCookie } from "../Shared/Cookies";
 import PlayerField from "../Components/IngameComponents/PlayerField/PlayerField";
 import DrawModal from "../Components/IngameComponents/Modals/DrawModal";
 import MainField from "../Components/IngameComponents/MainField/MainField";
-import { CardType } from "../typings/typedb";
 import NoticeField from "../Components/IngameComponents/NoticeField/NoticeField";
+
+import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
+import {
+  setThisPlayerTK,
+  setTeamPlayerTK,
+  setEnemyPlayerATK,
+  setEnemyPlayerBTK,
+  setMyCardsTK,
+  setNowPlayerTK,
+  setCraveTK,
+  addBonusCardTK,
+} from "../redux/modules/ingameSlice";
+import { StGameWrap } from "../Components/IngameComponents/InGameStyled";
+import StartModal from "../Components/IngameComponents/Modals/StartModal";
+
 const Ingame = () => {
+  /* tookit things */
+  const playersData = useAppSelector((state) => state.game.players);
+  const myCards = useAppSelector((state) => state.game.myCards);
+  const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
+  const dispatch = useAppDispatch();
+
   /* socket connect - token */
   const socket = new SockJS("http://13.124.63.214/SufficientAmountOfAlcohol");
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const { roomid } = useParams();
-  const myId = getCookie("id");
+  const myId = Number(getCookie("id"));
 
   /* about turn control */
   const [status, setStatus] = useState<string>("");
-  const [nowPlayer, setNowPlayer] = useState<string>("");
 
   /* about players */
-  const [thisPlayer, setThisPlayer] = useState<any>({});
-  const [myCards, setMyCards] = useState<object[]>([]);
+  // const [myCards, setMyCards] = useState<object[]>([]);
   const [teamPlayer, setTeamPlayer] = useState<any>({});
   const [enemyPlayerA, setEnemyPlayerA] = useState<any>({});
   const [enemyPlayerB, setEnemyPlayerB] = useState<any>({});
@@ -40,20 +57,26 @@ const Ingame = () => {
   // 소켓으로 보내줄 선택된 카드
   const [selectedCard, setSelectedCard] = useState<object[]>([]);
 
-  // 추가 드로우 성공한 카드
-  const [bonusCard, setBonusCard] = useState<object>({});
-
   /* action turn :: card-use, discard */
   // USECARD & DISCARD
   const [selectUseCard, setSelectUseCard] = useState<any>("");
   const [findTargetGroup, setFindTargetGroup] = useState<string>("");
-  const [selectTarget, setSelectTarget] = useState<string>("");
+  const [selectTarget, setSelectTarget] = useState<number>(0);
   const [changedState, setChangedState] = useState<any>({});
 
   // 사용해서 무덤으로 보낸 카드!
   const [cardCrave, setCardCrave] = useState<string>("");
 
+  const [timer, setTimer] = useState<boolean>(false);
+
   useEffect(() => {
+    socketSubscribe();
+    return () => {
+      socketUnsubscribe();
+    };
+  }, []);
+
+  const socketSubscribe = () => {
     stompClient.connect(
       {
         token: accessToken,
@@ -73,15 +96,37 @@ const Ingame = () => {
               const findNowPlayer = playersInfo.filter(
                 (value: any) => value.turnOrder === 1
               ); // 나중에 받는 데이터보고 타입 지정해주자***
-              setNowPlayer(findNowPlayer[0].playerId);
+              dispatch(setNowPlayerTK(findNowPlayer[0].username));
               // #2 로그인 유저의 게임 정보 저장
               const myPlayerInfo = playersInfo.filter(
-                (value: any) => value.playerId === Number(myId)
+                (value: any) => value.playerId === myId
               );
-              setThisPlayer(myPlayerInfo[0]);
-              setStatus("READY");
+              // toolkit
+              dispatch(setThisPlayerTK(myPlayerInfo[0]));
               switch (myPlayerInfo[0].turnOrder) {
                 case 1:
+                  dispatch(
+                    setTeamPlayerTK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 3
+                      )[0]
+                    )
+                  );
+                  dispatch(
+                    setEnemyPlayerATK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 2
+                      )[0]
+                    )
+                  );
+                  dispatch(
+                    setEnemyPlayerBTK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 4
+                      )[0]
+                    )
+                  );
+                  // useState => 필요없으면 여기는 지워야지
                   setTeamPlayer(
                     playersInfo.filter((value: any) => value.turnOrder === 3)[0]
                   );
@@ -93,6 +138,27 @@ const Ingame = () => {
                   );
                   break;
                 case 2:
+                  dispatch(
+                    setTeamPlayerTK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 4
+                      )[0]
+                    )
+                  );
+                  dispatch(
+                    setEnemyPlayerATK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 1
+                      )[0]
+                    )
+                  );
+                  dispatch(
+                    setEnemyPlayerBTK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 3
+                      )[0]
+                    )
+                  );
                   setTeamPlayer(
                     playersInfo.filter((value: any) => value.turnOrder === 4)[0]
                   );
@@ -104,6 +170,28 @@ const Ingame = () => {
                   );
                   break;
                 case 3:
+                  dispatch(
+                    setTeamPlayerTK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 1
+                      )[0]
+                    )
+                  );
+                  dispatch(
+                    setEnemyPlayerATK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 2
+                      )[0]
+                    )
+                  );
+                  dispatch(
+                    setEnemyPlayerBTK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 4
+                      )[0]
+                    )
+                  );
+
                   setTeamPlayer(
                     playersInfo.filter((value: any) => value.turnOrder === 1)[0]
                   );
@@ -115,6 +203,27 @@ const Ingame = () => {
                   );
                   break;
                 case 4:
+                  dispatch(
+                    setTeamPlayerTK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 2
+                      )[0]
+                    )
+                  );
+                  dispatch(
+                    setEnemyPlayerATK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 1
+                      )[0]
+                    )
+                  );
+                  dispatch(
+                    setEnemyPlayerBTK(
+                      playersInfo.filter(
+                        (value: any) => value.turnOrder === 3
+                      )[0]
+                    )
+                  );
                   setTeamPlayer(
                     playersInfo.filter((value: any) => value.turnOrder === 2)[0]
                   );
@@ -128,92 +237,75 @@ const Ingame = () => {
                 default:
                   break;
               }
-              // #4. 첫 턴 시작이라면 프리턴 메세지 보내기
-              // 그게 아니라면 대기
-              if (findNowPlayer[0].playerId === myPlayerInfo[0].playerId) {
-                // sendMsg to "PRECHECK";
-                setStatus("START");
-                console.log("내가 지금 플레이어임");
-              } else {
-                // 내 턴이 아닐 때는 아예 다른 턴으로 보내는게 맞는 것 같음!
-                setStatus("HEAVEN");
-                console.log("아니니까쉬고있자");
-              }
+              setStatus("START");
               break;
             case "PRECHECK":
-              // 게임이 끝났을 때
-              // 게임이 진행될 때, => 나 / 다른 사람
               console.log("precheck 들어왔다!");
+              // 여기는 나중에 작업할 예정 => 게임 종료 시 작업
               if (msgData.gameOver === true) {
                 console.log("게임이 끝이났습니다.");
-                // endgame으로 가야함
-                // setStatus("ENDGAME");
-              } else if (msgSender == myId && msgData.gameOver === false) {
+              } else if (msgData.player.dead === true) {
+                // 죽었을 때는 어떻게 할지? 논의 안해봄
+                console.log("플레이어가 죽었습니다.");
+                // setStatus("ENDTURN") or setStatus("DEAD") or ????
+                // 디자이너님한테 죽었을 때 초상화 변화 여쭤보기
+                setStatus("WAITING");
+              } else if (msgSender === myId && msgData.player.dead === false) {
                 console.log("내 차례가 맞습니다.");
-                setThisPlayer(msgData.player);
+                dispatch(setThisPlayerTK(msgData.player));
                 setStatus("PRECHECK");
-              } else if (msgSender !== myId && msgData.gameOver === false) {
-                // 현재 진행중인 플레이어의 status를 바꿔줘야함 잊고있었네
-                setStatus("HEAVEN");
-                console.log("다른 플레이어가 게임을 하고있습니다.");
-              } else {
-                console.log("nonononono");
+              } else if (msgSender !== myId && msgData.player.dead === false) {
+                setStatus("WAITING");
               }
               break;
             case "DRAW":
-              console.log("넘어왔다.");
-              if (msgSender == myId) {
-                console.log(msgData);
-                console.log("카드를 드로우합니다.");
+              if (msgSender === myId) {
                 setSelectableCard(msgData.cardDrawed);
                 setSelectableCnt(msgData.selectable);
-                setDrawModalOpen(true);
-                setDrawDisabled(false);
-                setStatus("HEAVEN");
+                setStatus("DRAW");
               } else {
-                setStatus("HEAVEN");
+                setStatus("WAITING");
               }
               break;
             case "SELECT":
+              setTimer(false);
               setDrawModalOpen(false);
-              console.log("추가 드로우가 있었단다");
-              console.log(myCards);
-              if (msgSender === Number(myId) && msgData.drawSuccess === true) {
-                console.log("카드 드로우 성공");
-                setBonusCard(msgData.card);
+              if (msgSender === myId && msgData.drawSuccess === true) {
+                // 문구 띄워줘야하면 status 추가
+                dispatch(addBonusCardTK(msgData.card));
                 setStatus("DRAWSUCCESS");
-              } else if (
-                msgSender === Number(myId) &&
-                msgData.drawSuccess === false
-              ) {
-                console.log(msgData);
-                console.log("카드 드로우 실패");
-                setCardCrave(msgData);
-              } else if (msgSender !== Number(myId)) {
-                setStatus("HOHO");
+                sendStompMsgFunc("1", myId, "TURNCHECK", null);
+              } else if (msgSender === myId && msgData.drawSuccess === false) {
+                // 문구 띄워줘야하면 status 추가
+                dispatch(setCraveTK(msgData));
+                sendStompMsgFunc("1", myId, "TURNCHECK", null);
+              }
+              break;
+            case "TURNCHECK":
+              if (msgSender === myId) {
+                console.log("액션턴 시작");
               }
               break;
             case "ENDDRAW":
               setDrawModalOpen(false);
-              console.log("더이상 드로우는 없습니다.");
-              setStatus("DRAW");
-              // send action turn check
+              if (msgSender === myId) {
+                sendStompMsgFunc("1", myId, "TURNCHECK", null);
+              }
               break;
             case "USECARD":
               console.log("카드사용 결과는?");
               const targetState = msgData.players.filter(
-                (value: any) => Number(value.playerId) !== Number(myId)
+                (value: any) => value.playerId !== myId
               );
-              console.log(targetState);
               setChangedState(targetState);
-              setStatus("USECARDSUCCESS");
-              break;
-            case "DISCARD":
-              //msgData = {cardId:2}
+              if (msgSender === myId) {
+                setStatus("USECARDSUCCESS");
+              }
               break;
             case "ENDTURN":
-              setNowPlayer(msgData.nextPlayerId);
-              setThisPlayer(msgData.player);
+              dispatch(setNowPlayerTK(msgData.nextPlayerId.usename));
+              dispatch(setThisPlayerTK(msgData.player));
+              setStatus("CHANGETURN");
               break;
             default:
               break;
@@ -221,97 +313,98 @@ const Ingame = () => {
         });
       }
     );
-    return () => {
-      socketUnsubscribe();
-    };
-  }, []);
+  };
 
-  const socketUnsubscribe = () => {
+  const socketUnsubscribe = React.useCallback(() => {
     try {
-      stompClient
-        .subscribe(`/sub/game/1`, function (data: any) {}, {})
-        .unsubscribe();
+      stompClient.unsubscribe("sub-0");
       console.log("success to unsubscribe");
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     switch (status) {
       case "READY":
-        console.log("waiting for game-start");
-        // send stompMsg "" after 5 sec
-        // show notice " 곧 게임이 시작됩니다!"
         setTimeout(() => {
-          sendStompMsg("START");
-        }, 1000);
-        // start msg를 받으면 status change => "START"
+          sendStompMsgFunc("1", myId, "START", null);
+        }, 3000);
+        break;
+      case "GREETING":
+        setTimeout(() => {
+          setStatus("START");
+        }, 7000);
+        break;
+      case "WAITING":
+        console.log("아직 내 턴이 아니옵니다.");
         break;
       case "START":
-        // 클래스와 순서를 확인하세요.
-        setTimeout(() => {
-          // send stompMsg "" after 5 sec
-          sendStompMsg("PRECHECK");
-          console.log("게임이 시작됩니다.");
-        }, 2000);
+        console.log(nowPlayer);
+        console.log(playersData.thisPlayer.username);
+        if (nowPlayer === playersData.thisPlayer.username) {
+          sendStompMsgFunc("1", myId, "PRECHECK", null);
+        } else {
+          setStatus("WAITING");
+        }
         break;
       case "PRECHECK":
-        // send stompMsg "" after 5 sec
-        console.log("프리턴 플레이어를 확인합니다.");
-        sendStompMsg("DRAW");
+        sendStompMsgFunc("1", myId, "DRAW", null);
         break;
-      case "DRAWSUCCESS":
-        // bonusCard success
-        const newCardSet = [...myCards];
-        const copyBonusCard = bonusCard;
-        const newCardPlz = newCardSet.push(copyBonusCard);
-        setMyCards(newCardSet);
-        // send action turn check after 5 sec
-        sendStompMsg("TURNCHECK");
+      case "DRAW":
+        setDrawModalOpen(true);
+        setDrawDisabled(false);
+        setTimer(true);
+        const countDown = setTimeout(() => {
+          setDrawModalOpen(false);
+          sendStompMsgFunc("1", myId, "SELECT", null);
+          setTimer(false);
+          alert("시간초과!");
+        }, 11000);
+        if (timer === false) {
+          clearTimeout(countDown);
+        }
         break;
-      case "DRAWFAIL":
-        // send action turn check after 5 sec
-        sendStompMsg("TURNCHECK");
-        break;
-      case "ENDDRAW":
-        // send action turn check after 5 sec
-        sendStompMsg("TURNCHECK");
+      case "ACTION":
+        setTimer(true);
+        const actionTimer = setTimeout(() => {
+          sendStompMsgFunc("1", myId, "SELECT", null);
+          setTimer(false);
+          alert("시간초과!");
+        }, 31000);
+        if (timer === false) {
+          clearTimeout(actionTimer);
+        }
         break;
       case "USECARDSUCCESS":
         const myCardsSet = [...myCards];
         const updateCards = myCardsSet.filter(
-          (value: any) => value.cardId == selectUseCard
+          (value: any) => value.cardId === Number(selectUseCard)
         );
-        setMyCards(updateCards);
-        // clear 작업
-        console.log(changedState);
-        if (selectTarget == enemyPlayerA.playerId) {
-          setEnemyPlayerA(changedState[0]);
-          console.log("a");
-        } else if (selectTarget == enemyPlayerB.playerId) {
-          setEnemyPlayerB(changedState[0]);
-          console.log("b");
-        } else if (selectTarget == teamPlayer.playerId) {
-          setTeamPlayer(changedState[0]);
-          console.log("c");
-        } else {
-          console.log("더는 ㄴ");
+        dispatch(setCraveTK(cardCrave));
+        dispatch(setMyCardsTK(updateCards));
+        if (selectTarget === playersData.enemyPlayerA.playerId) {
+          dispatch(setEnemyPlayerATK(changedState[0]));
+        } else if (selectTarget === playersData.enemyPlayerB.playerId) {
+          dispatch(setEnemyPlayerBTK(changedState[0]));
+        } else if (selectTarget === playersData.teamPlayer.playerId) {
+          dispatch(setTeamPlayerTK(changedState[0]));
         }
-        console.log("완료");
         setSelectUseCard("");
-        setSelectTarget("");
+        setSelectTarget(0);
         setFindTargetGroup("");
+        break;
+      case "CHANGETURN":
+        if (nowPlayer === playersData.thisPlayer.username) {
+          sendStompMsgFunc("1", myId, "PRECHECK", null);
+        } else {
+          setStatus("READY");
+        }
         break;
       default:
         break;
     }
   }, [status]);
-
-  // button 을 눌러서 게임 시작 요청 보내기 (send)
-  const readyTurnController = () => {
-    setStatus("READY");
-  };
 
   // send stompMsg
   function waitForConnection(stompClient: stompJS.Client, callback: any) {
@@ -324,29 +417,32 @@ const Ingame = () => {
     }, 1);
   }
 
-  const sendStompMsg = (data: string) => {
-    console.log(`sendMsgs to change turn to ${data}`);
-    // stompMsg
+  const sendStompMsgFunc = (
+    roomId: string,
+    sender: number,
+    msgType: string,
+    data: object | null
+  ) => {
     waitForConnection(stompClient, function () {
       stompClient.send(
         "/pub/game/1",
         { token: accessToken },
         JSON.stringify({
-          roomId: "1",
-          sender: Number(myId),
-          content: null,
-          type: data,
+          roomId: roomId,
+          sender: sender,
+          content: JSON.stringify(data),
+          type: msgType,
         })
       );
     });
   };
 
   // ready for "SELECT"
+  console.log(selectedCard);
   const selectCardDrawTurnHandler = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const newSelectedCard: any[] = [...selectedCard];
-    const { target } = event;
     const targetId = (event.target as HTMLButtonElement).id;
     const setNew = newSelectedCard.push(targetId);
     const removeDup = newSelectedCard.filter(
@@ -374,36 +470,20 @@ const Ingame = () => {
   }, [selectedCard]);
 
   const selectTurnController = () => {
-    // data setting
     const cardsMaker = selectedCard.map(function (value: any) {
       const selectedCardsObj = { cardId: 0 };
       selectedCardsObj.cardId = Number(value);
       return selectedCardsObj;
     });
-
-    // confirm my cardsList
     const confirmDrawCards = selectedCard.map((value) =>
       selectableCard.find((elem) => Number(elem.cardId) === Number(value))
     );
-
     console.log(confirmDrawCards);
-    setMyCards(confirmDrawCards);
+    dispatch(setMyCardsTK(confirmDrawCards));
     const data = {
       selectedCards: cardsMaker,
     };
-
-    console.log(data);
-    // send msg to select
-    stompClient.send(
-      "/pub/game/1",
-      { token: accessToken },
-      JSON.stringify({
-        roomId: "1",
-        sender: Number(myId),
-        content: JSON.stringify(data),
-        type: "SELECT",
-      })
-    );
+    sendStompMsgFunc("1", myId, "SELECT", data);
     setStatus("SELECT");
   };
 
@@ -412,103 +492,74 @@ const Ingame = () => {
     const targetGroup = (event.target as HTMLButtonElement).className;
     const cardName = (event.target as HTMLButtonElement).name;
     setCardCrave(cardName);
-    // 카드의 이름과 타겟그룹을 저장
     setSelectUseCard(Number(cardId));
     setFindTargetGroup(targetGroup);
-    console.log(cardId);
-    console.log(targetGroup);
   };
 
   const sendUseCardHandler = () => {
-    if (selectTarget === "") {
+    if (selectTarget === 0) {
       alert("타겟을 설정해주세요!");
     } else {
+      console.log(selectTarget);
       const data = {
-        targetPlayerId: String(selectTarget),
-        cardId: String(selectUseCard),
+        targetPlayerId: selectTarget,
+        cardId: selectUseCard,
       };
-      stompClient.send(
-        "/pub/game/1",
-        { token: accessToken },
-        JSON.stringify({
-          roomId: "1",
-          sender: Number(myId),
-          content: JSON.stringify(data),
-          type: "USECARD",
-        })
-      );
-      // 카드 사용 결과 msg 올 때 카드리스트 최신화해야겠다.
+      sendStompMsgFunc("1", myId, "USECARD", data);
     }
   };
 
   const selectDisCardHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     const cardId = (event.target as HTMLButtonElement).id;
     const cardName = (event.target as HTMLButtonElement).name;
-    console.log(cardId);
-    console.log(cardName);
-    setCardCrave(cardName);
-    // setSelectUseCard(cardId);
+    dispatch(setCraveTK(cardName));
     const data = {
       cardId: Number(cardId),
     };
-    console.log("데이터확인");
-    console.log(data);
-    stompClient.send(
-      "/pub/game/1",
-      { token: accessToken },
-      JSON.stringify({
-        roomId: "1",
-        sender: Number(myId),
-        content: JSON.stringify(data),
-        type: "DISCARD",
-      })
-    );
+    sendStompMsgFunc("1", myId, "DISCARD", data);
     const myCardsSet = [...myCards];
     console.log(myCardsSet);
+    console.log(cardId);
     const updateCards = myCardsSet.filter(
       (value: any) => Number(value.cardId) !== Number(cardId)
     );
-    setMyCards(updateCards);
-    // setSelectUseCard("");
+    dispatch(setMyCardsTK(updateCards));
     setFindTargetGroup("");
   };
 
   return (
     <>
-      <NoticeField status={status} nowPlayer={nowPlayer}></NoticeField>
-      {nowPlayer && <span>{nowPlayer}님의 차례입니다.</span>}
-      <button onClick={readyTurnController}>sendStart</button>
-      <MainField
-        enemyPlayerA={enemyPlayerA}
-        enemyPlayerB={enemyPlayerB}
-        teamPlayer={teamPlayer}
-        thisPlayer={thisPlayer}
-      ></MainField>
-      <PlayerField
-        findTargetGroup={findTargetGroup}
-        myCards={myCards}
-        selectUseCardHandler={selectUseCardHandler}
-        sendUseCardHandler={sendUseCardHandler}
-        selectDisCardHandler={selectDisCardHandler}
-        enemyPlayerA={enemyPlayerA.playerId}
-        enemyPlayerB={enemyPlayerB.playerId}
-        teamPlayer={teamPlayer.playerId}
-        thisPlayer={thisPlayer}
-        myState={thisPlayer}
-        setSelectTarget={setSelectTarget}
-        sendStompMsg={sendStompMsg}
-      ></PlayerField>
-      {drawModalOpen && (
-        <DrawModal
-          id={3}
-          selectCardDrawTurnHandler={selectCardDrawTurnHandler}
-          cancelCardDrawTurnHandler={cancelCardDrawTurnHandler}
-          selectTurnController={selectTurnController}
-          selectedCard={selectedCard}
-          selectableCard={selectableCard}
-          drawDisabled={drawDisabled}
-        ></DrawModal>
-      )}
+      {status === "" && <StartModal setStatus={setStatus}></StartModal>}
+      <StGameWrap>
+        <NoticeField status={status}></NoticeField>
+        <MainField></MainField>
+        <PlayerField
+          findTargetGroup={findTargetGroup}
+          selectUseCardHandler={selectUseCardHandler}
+          sendUseCardHandler={sendUseCardHandler}
+          selectDisCardHandler={selectDisCardHandler}
+          setSelectTarget={setSelectTarget}
+          sendStompMsgFunc={sendStompMsgFunc}
+        ></PlayerField>
+        {drawModalOpen && (
+          <DrawModal
+            id={0}
+            selectCardDrawTurnHandler={selectCardDrawTurnHandler}
+            cancelCardDrawTurnHandler={cancelCardDrawTurnHandler}
+            selectTurnController={selectTurnController}
+            selectedCard={selectedCard}
+            selectableCard={selectableCard}
+            drawDisabled={drawDisabled}
+          ></DrawModal>
+        )}
+        <button
+          onClick={() => {
+            sendStompMsgFunc("1", myId, "ENDGAME", null);
+          }}
+        >
+          게임 종료
+        </button>
+      </StGameWrap>
     </>
   );
 };
