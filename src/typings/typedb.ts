@@ -42,6 +42,7 @@ export interface HeaderProps {
 
 // playerField
 export interface PlayerProps {
+  setFindTargetGroup: Dispatch<SetStateAction<string>>;
   findTargetGroup: string;
   selectUseCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
   sendUseCardHandler: () => void;
@@ -53,6 +54,7 @@ export interface PlayerProps {
     msgType: string,
     data: object | null
   ) => void;
+  selectedCardName: string;
 }
 
 // cards

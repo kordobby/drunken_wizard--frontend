@@ -1,14 +1,7 @@
-import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import stompJS from "stompjs";
-import { getCookie } from "../Shared/Cookies";
-import PlayerField from "../Components/IngameComponents/PlayerField/PlayerField";
-import DrawModal from "../Components/IngameComponents/Modals/DrawModal";
-import MainField from "../Components/IngameComponents/MainField/MainField";
-import NoticeField from "../Components/IngameComponents/NoticeField/NoticeField";
 
-import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
 import {
   setThisPlayerTK,
   setTeamPlayerTK,
@@ -18,39 +11,36 @@ import {
   setNowPlayerTK,
   setCraveTK,
   addBonusCardTK,
+  setSelectedCardsTK,
 } from "../redux/modules/ingameSlice";
-import { StGameWrap } from "../Components/IngameComponents/InGameStyled";
+
+import { useParams } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
+
+import { getCookie } from "../Shared/Cookies";
+
+import PlayerField from "../Components/IngameComponents/PlayerField/PlayerField";
+import DrawModal from "../Components/IngameComponents/Modals/DrawModal";
+import MainField from "../Components/IngameComponents/MainField/MainField";
+import NoticeField from "../Components/IngameComponents/NoticeField/NoticeField";
 import StartModal from "../Components/IngameComponents/Modals/StartModal";
 
+import { StGameWrap } from "../Components/IngameComponents/InGameStyled";
+
+/* Page Components */
 const Ingame = () => {
-  /* tookit things */
-  const playersData = useAppSelector((state) => state.game.players);
-  const myCards = useAppSelector((state) => state.game.myCards);
-  const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
-  const dispatch = useAppDispatch();
-
-  /* socket connect - token */
-  const socket = new SockJS("http://13.124.63.214/SufficientAmountOfAlcohol");
-  const stompClient = stompJS.over(socket);
-  const accessToken = getCookie("token");
-  const { roomid } = useParams();
-  const myId = Number(getCookie("id"));
-
-  /* about turn control */
+  /* useState */
+  // about turn control
   const [status, setStatus] = useState<string>("");
 
-  /* about players */
-  // const [myCards, setMyCards] = useState<object[]>([]);
-  const [teamPlayer, setTeamPlayer] = useState<any>({});
-  const [enemyPlayerA, setEnemyPlayerA] = useState<any>({});
-  const [enemyPlayerB, setEnemyPlayerB] = useState<any>({});
-
-  /* card draw setup */
   // 카드 선택하는 모달 창
   const [drawModalOpen, setDrawModalOpen] = useState<boolean>(false);
+
   // 선택 가능한 카드 카운트 & 카드 목록
   const [selectableCnt, setSelectableCnt] = useState<number>(0);
   const [selectableCard, setSelectableCard] = useState<any[]>([]);
+  const [selectedCardName, setSelectedCardName] = useState<string>("");
+
   // 선택 가능한 갯수가 되면 카드 선택버튼 비활성화 (취소 누르면 돌아옴)
   const [drawDisabled, setDrawDisabled] = useState<boolean>(false);
 
@@ -62,12 +52,26 @@ const Ingame = () => {
   const [selectUseCard, setSelectUseCard] = useState<any>("");
   const [findTargetGroup, setFindTargetGroup] = useState<string>("");
   const [selectTarget, setSelectTarget] = useState<number>(0);
-  const [changedState, setChangedState] = useState<any>({});
 
   // 사용해서 무덤으로 보낸 카드!
   const [cardCrave, setCardCrave] = useState<string>("");
 
   const [timer, setTimer] = useState<boolean>(false);
+  const [actionTimer, setActionTimer] = useState<boolean>(false);
+  const [update, setUpdate] = useState<any>([]);
+
+  /* tookit things */
+  const dispatch = useAppDispatch();
+  const playersData = useAppSelector((state) => state.game.players);
+  const myCards = useAppSelector((state) => state.game.myCards);
+  const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
+
+  /* socket connect - token */
+  const socket = new SockJS("http://13.124.63.214/SufficientAmountOfAlcohol");
+  const stompClient = stompJS.over(socket);
+  const accessToken = getCookie("token");
+  const { roomid } = useParams();
+  const myId = Number(getCookie("id"));
 
   useEffect(() => {
     socketSubscribe();
@@ -126,16 +130,6 @@ const Ingame = () => {
                       )[0]
                     )
                   );
-                  // useState => 필요없으면 여기는 지워야지
-                  setTeamPlayer(
-                    playersInfo.filter((value: any) => value.turnOrder === 3)[0]
-                  );
-                  setEnemyPlayerA(
-                    playersInfo.filter((value: any) => value.turnOrder === 2)[0]
-                  );
-                  setEnemyPlayerB(
-                    playersInfo.filter((value: any) => value.turnOrder === 4)[0]
-                  );
                   break;
                 case 2:
                   dispatch(
@@ -158,15 +152,6 @@ const Ingame = () => {
                         (value: any) => value.turnOrder === 3
                       )[0]
                     )
-                  );
-                  setTeamPlayer(
-                    playersInfo.filter((value: any) => value.turnOrder === 4)[0]
-                  );
-                  setEnemyPlayerA(
-                    playersInfo.filter((value: any) => value.turnOrder === 1)[0]
-                  );
-                  setEnemyPlayerB(
-                    playersInfo.filter((value: any) => value.turnOrder === 3)[0]
                   );
                   break;
                 case 3:
@@ -191,16 +176,6 @@ const Ingame = () => {
                       )[0]
                     )
                   );
-
-                  setTeamPlayer(
-                    playersInfo.filter((value: any) => value.turnOrder === 1)[0]
-                  );
-                  setEnemyPlayerA(
-                    playersInfo.filter((value: any) => value.turnOrder === 2)[0]
-                  );
-                  setEnemyPlayerB(
-                    playersInfo.filter((value: any) => value.turnOrder === 4)[0]
-                  );
                   break;
                 case 4:
                   dispatch(
@@ -223,15 +198,6 @@ const Ingame = () => {
                         (value: any) => value.turnOrder === 3
                       )[0]
                     )
-                  );
-                  setTeamPlayer(
-                    playersInfo.filter((value: any) => value.turnOrder === 2)[0]
-                  );
-                  setEnemyPlayerA(
-                    playersInfo.filter((value: any) => value.turnOrder === 1)[0]
-                  );
-                  setEnemyPlayerB(
-                    playersInfo.filter((value: any) => value.turnOrder === 3)[0]
                   );
                   break;
                 default:
@@ -277,7 +243,7 @@ const Ingame = () => {
                 sendStompMsgFunc("1", myId, "TURNCHECK", null);
               } else if (msgSender === myId && msgData.drawSuccess === false) {
                 // 문구 띄워줘야하면 status 추가
-                dispatch(setCraveTK(msgData));
+                dispatch(setCraveTK(msgData.card.cardName));
                 sendStompMsgFunc("1", myId, "TURNCHECK", null);
               }
               break;
@@ -293,14 +259,12 @@ const Ingame = () => {
               }
               break;
             case "USECARD":
-              console.log("카드사용 결과는?");
-              const targetState = msgData.players.filter(
-                (value: any) => value.playerId !== myId
-              );
-              setChangedState(targetState);
-              if (msgSender === myId) {
-                setStatus("USECARDSUCCESS");
-              }
+              console.log("성공");
+
+              // 카드 셋팅
+              setUpdate(msgData.players);
+              setStatus("USECARD");
+
               break;
             case "ENDTURN":
               dispatch(setNowPlayerTK(msgData.nextPlayerId.usename));
@@ -352,21 +316,12 @@ const Ingame = () => {
         sendStompMsgFunc("1", myId, "DRAW", null);
         break;
       case "DRAW":
+        setTimer(true);
         setDrawModalOpen(true);
         setDrawDisabled(false);
-        setTimer(true);
-        const countDown = setTimeout(() => {
-          setDrawModalOpen(false);
-          sendStompMsgFunc("1", myId, "SELECT", null);
-          setTimer(false);
-          alert("시간초과!");
-        }, 11000);
-        if (timer === false) {
-          clearTimeout(countDown);
-        }
         break;
       case "ACTION":
-        setTimer(true);
+        setSelectedCard([]);
         const actionTimer = setTimeout(() => {
           sendStompMsgFunc("1", myId, "SELECT", null);
           setTimer(false);
@@ -376,21 +331,41 @@ const Ingame = () => {
           clearTimeout(actionTimer);
         }
         break;
+      case "USECARD":
+        setStatus("USECARDSUCCESS");
+        break;
       case "USECARDSUCCESS":
-        const myCardsSet = [...myCards];
-        const updateCards = myCardsSet.filter(
-          (value: any) => value.cardId === Number(selectUseCard)
+        console.log(update);
+        console.log("여기");
+        console.log(playersData.thisPlayer);
+        const thisPlayer = update.filter(
+          (value: any) =>
+            Number(value.playerId) === Number(playersData.thisPlayer.playerId)
         );
-        dispatch(setCraveTK(cardCrave));
-        dispatch(setMyCardsTK(updateCards));
-        if (selectTarget === playersData.enemyPlayerA.playerId) {
-          dispatch(setEnemyPlayerATK(changedState[0]));
-        } else if (selectTarget === playersData.enemyPlayerB.playerId) {
-          dispatch(setEnemyPlayerBTK(changedState[0]));
-        } else if (selectTarget === playersData.teamPlayer.playerId) {
-          dispatch(setTeamPlayerTK(changedState[0]));
+        console.log(thisPlayer);
+        dispatch(setThisPlayerTK(thisPlayer[0]));
+        console.log(thisPlayer[0].cardsOnHand);
+        dispatch(setMyCardsTK(thisPlayer[0].cardsOnHand));
+
+        const teamPlayer = update.filter(
+          (value: any) => value.playerId === playersData.teamPlayer.playerId
+        );
+        const enemyA = update.filter(
+          (value: any) => value.playerId === playersData.enemyPlayerA.playerId
+        );
+        const enemyB = update.filter(
+          (value: any) => value.playerId === playersData.enemyPlayerB.playerId
+        );
+        console.log(thisPlayer[0], enemyA[0], enemyB[0]);
+        if (teamPlayer[0] !== undefined) {
+          dispatch(setTeamPlayerTK(teamPlayer[0]));
         }
-        setSelectUseCard("");
+        if (enemyA[0] !== undefined) {
+          dispatch(setEnemyPlayerATK(enemyA[0]));
+        }
+        if (enemyB[0] !== undefined) {
+          dispatch(setEnemyPlayerBTK(enemyB[0]));
+        }
         setSelectTarget(0);
         setFindTargetGroup("");
         break;
@@ -398,13 +373,27 @@ const Ingame = () => {
         if (nowPlayer === playersData.thisPlayer.username) {
           sendStompMsgFunc("1", myId, "PRECHECK", null);
         } else {
-          setStatus("READY");
+          setStatus("WAITING");
         }
         break;
       default:
         break;
     }
   }, [status]);
+
+  useEffect(() => {
+    const countDownFunc = () => {
+      const countDown = setTimeout(() => {
+        setDrawModalOpen(false);
+        sendStompMsgFunc("1", myId, "SELECT", null);
+        setTimer(false);
+        alert("시간초과!");
+      }, 11000);
+      if (timer === true) {
+        clearTimeout(countDown);
+      }
+    };
+  }, [timer]);
 
   // send stompMsg
   function waitForConnection(stompClient: stompJS.Client, callback: any) {
@@ -438,7 +427,6 @@ const Ingame = () => {
   };
 
   // ready for "SELECT"
-  console.log(selectedCard);
   const selectCardDrawTurnHandler = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -459,6 +447,7 @@ const Ingame = () => {
       (value) => Number(value) !== Number(target)
     );
     setSelectedCard(setNew);
+    setTimer(true);
   };
 
   useEffect(() => {
@@ -479,6 +468,7 @@ const Ingame = () => {
       selectableCard.find((elem) => Number(elem.cardId) === Number(value))
     );
     console.log(confirmDrawCards);
+
     dispatch(setMyCardsTK(confirmDrawCards));
     const data = {
       selectedCards: cardsMaker,
@@ -492,21 +482,41 @@ const Ingame = () => {
     const targetGroup = (event.target as HTMLButtonElement).className;
     const cardName = (event.target as HTMLButtonElement).name;
     setCardCrave(cardName);
+    console.log(cardId);
+    console.log(cardName);
+    console.log("돌아감");
     setSelectUseCard(Number(cardId));
+    setSelectedCardsTK(Number(cardId));
+    console.log("돌아감");
     setFindTargetGroup(targetGroup);
+    const targetName = (event.target as HTMLButtonElement).name;
+    setSelectedCardName(targetName);
   };
 
+  const targeting = useAppSelector((state) => state.game.game.targetPlayer);
   const sendUseCardHandler = () => {
-    if (selectTarget === 0) {
+    console.log(findTargetGroup);
+    if (findTargetGroup === "SELECT" && targeting === 0) {
       alert("타겟을 설정해주세요!");
-    } else {
-      console.log(selectTarget);
+      return;
+    }
+    if (findTargetGroup === "SELECT") {
+      console.log("여기");
       const data = {
-        targetPlayerId: selectTarget,
+        targetPlayerId: Number(targeting),
+        cardId: selectUseCard,
+      };
+      sendStompMsgFunc("1", myId, "USECARD", data);
+    } else {
+      console.log("저기");
+      const data = {
+        targetPlayerId: "",
         cardId: selectUseCard,
       };
       sendStompMsgFunc("1", myId, "USECARD", data);
     }
+
+    setSelectedCardName("");
   };
 
   const selectDisCardHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -525,6 +535,8 @@ const Ingame = () => {
     );
     dispatch(setMyCardsTK(updateCards));
     setFindTargetGroup("");
+    setSelectUseCard("");
+    setSelectTarget(0);
   };
 
   return (
@@ -534,12 +546,14 @@ const Ingame = () => {
         <NoticeField status={status}></NoticeField>
         <MainField></MainField>
         <PlayerField
+          setFindTargetGroup={setFindTargetGroup}
           findTargetGroup={findTargetGroup}
           selectUseCardHandler={selectUseCardHandler}
           sendUseCardHandler={sendUseCardHandler}
           selectDisCardHandler={selectDisCardHandler}
           setSelectTarget={setSelectTarget}
           sendStompMsgFunc={sendStompMsgFunc}
+          selectedCardName={selectedCardName}
         ></PlayerField>
         {drawModalOpen && (
           <DrawModal

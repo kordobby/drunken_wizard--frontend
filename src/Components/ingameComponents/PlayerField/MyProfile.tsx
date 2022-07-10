@@ -9,8 +9,8 @@ const MyProfile = () => {
     <ProfileSizing>
       <ProfileIcon job={thisPlayer.charactorClass}></ProfileIcon>
       <div style={{ marginTop: "10px", color: "white" }}>
-        <span>HP : {thisPlayer.health}</span>
-        <span>MP : {thisPlayer.mana}</span>
+        <p>HP : {thisPlayer.health}</p>
+        <p>MP : {thisPlayer.mana}</p>
       </div>
     </ProfileSizing>
   );

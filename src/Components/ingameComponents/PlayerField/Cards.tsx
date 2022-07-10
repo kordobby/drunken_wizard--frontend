@@ -10,8 +10,8 @@ const Cards = ({
 }: CardProps) => {
   return (
     <ScCardsWrap>
-      <span>cardId:</span>
-      <span>target:</span>
+      <span>cardId: {name}</span>
+      <span>target: {className}</span>
       <button
         id={String(id)}
         name={name}
