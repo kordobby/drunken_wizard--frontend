@@ -58,15 +58,16 @@ export const ProfileSizing = styled.div`
   width: 200px;
   height: 200px;
   ${flex({ direction: "column", justify: "center", align: "center" })}
+  position : relative
 `;
 
 export const ProfileIcon = styled.div<IconsImgProps>`
   width: 120px;
   height: 120px;
-  border: 5px solid white;
   background-image: url(${(props) => matchClassImg(props.job)});
   background-size: cover;
   border-radius: 75px;
+  z-index: 1;
 `;
 
 export const CardsArea = styled.div`
@@ -140,3 +141,9 @@ export default function matchClassImg(data: string) {
       return;
   }
 }
+
+export const TimerWrap = styled.div`
+  position: absolute;
+  top: 10px;
+  z-index: 0;
+`;

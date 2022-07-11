@@ -1,17 +1,29 @@
-import React, { FunctionComponent } from "react";
-import { PlayerFieldWrap } from "../InGameStyled";
-import { CardsArea, PlayerCtrlWrap } from "../InGameStyled";
-import Cards from "./Cards";
-import { PlayerProps } from "../../../typings/typedb";
-import MyProfile from "./MyProfile";
-import { useAppSelector } from "../../../hooks/tsHooks";
-import { useState } from "react";
-import { TargetBtn } from "../InGameStyled";
+/* Package */
+import React, { FunctionComponent, useState } from "react";
+
+/* Hooks */
+import { useAppSelector, useAppDispatch } from "../../../hooks/tsHooks";
+
+/* Modules */
 import {
   setTargetTK,
-  setSelectedCardsTK,
+  setSelectedCardsTK, // delete
 } from "../../../redux/modules/ingameSlice";
-import { useAppDispatch } from "../../../hooks/tsHooks";
+
+/* Interface */
+import { PlayerProps } from "../../../typings/typedb";
+
+/* Components */
+import Cards from "./Cards";
+import MyProfile from "./MyProfile";
+
+/* CSS & SC */
+import {
+  PlayerFieldWrap,
+  CardsArea,
+  PlayerCtrlWrap,
+  TargetBtn,
+} from "../InGameStyled";
 
 const PlayerField: FunctionComponent<PlayerProps> = ({
   setFindTargetGroup,
@@ -23,14 +35,18 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
   sendStompMsgFunc,
   selectedCardName,
 }) => {
-  const dispatch = useAppDispatch();
+  /* useState */
   const [healCnt, setHealCnt] = useState<boolean>(false);
   const [disableHeal, setDisableHeal] = useState<boolean>(false);
 
+  /* tookit things */
+  const dispatch = useAppDispatch();
   const myCards = useAppSelector((state) => state.game?.myCards);
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
+  const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
   const playersData = useAppSelector((state) => state.game.players);
+  const targetSet = useAppSelector((state) => state.game.game.targetPlayer);
   const playersList = Object.values(playersData);
 
   /* Healer 고유 능력 */
@@ -50,7 +66,7 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
     setDisableHeal(true);
   };
 
-  // 힐러가 사용하는 버튼들
+  // HEALER BTN(COMPONENT)
   const HealTargetBtns = playersList.map((value) => (
     <TargetBtn
       id={String(value.playerId)}
@@ -65,12 +81,12 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
   /* 카드사용 관련 함수들 */
   const confirmTargetHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     const targetId = (event.target as HTMLButtonElement).id;
-    console.log(Number(targetId)); // 타겟을 찾는다
-    setSelectTarget(Number(targetId)); // 타겟을 보낸다
+    setSelectTarget(Number(targetId));
     dispatch(setTargetTK(targetId));
   };
+
+  // TARGETING BTN(COMPONENT) :: SELECT
   const TargetBtns = playersList.map((value) => (
-    // 타겟 버튼에 플레이어의 id와 유저 이름이 들어감
     <TargetBtn
       id={String(value.playerId)}
       onClick={confirmTargetHandler}
@@ -80,13 +96,14 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
       {value.username}
     </TargetBtn>
   ));
+
+  // TARGETING BTN(COMPONENT) :: ME / ALLY / ENEMY
   const TargetNullBtn = ["Me", "Ally", "Enemy"].map((value) => (
     <TargetBtn onClick={confirmTargetHandler} id="0" className="auto">
       {value}
     </TargetBtn>
   ));
 
-  const targetbaby = useAppSelector((state) => state.game.game.targetPlayer);
   return (
     <PlayerFieldWrap>
       <div>
@@ -124,11 +141,13 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
               <p>선택한 카드 : {selectedCardName}</p> {TargetNullBtn[2]}
             </div>
           )}
+          <p>{nowPlayerId}</p>
+          <p>{thisPlayer.playerId}</p>
           {findTargetGroup === "SELECT" && (
             <div>
               <p>선택한 카드 : {selectedCardName}</p>
               <p>타겟을 설정해주세요!</p>
-              <p>선택한 타켓 : {targetbaby}</p>
+              <p>선택한 타켓 : {targetSet}</p>
               {TargetBtns[0]}
               {TargetBtns[1]}
               {TargetBtns[2]}
@@ -136,7 +155,7 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
             </div>
           )}
           {/* 힐러일 때 나오는 모달 창 */}
-          {nowPlayer === thisPlayer.username &&
+          {nowPlayerId === thisPlayer.playerId &&
           thisPlayer.charactorClass === "HEALER" ? (
             <TargetBtn onClick={openHealModalHandler} disabled={disableHeal}>
               heal
@@ -152,7 +171,7 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
               {HealTargetBtns[3]}
             </div>
           )}
-          {nowPlayer === thisPlayer.username && (
+          {nowPlayerId === thisPlayer.playerId && (
             <div>
               <TargetBtn onClick={sendUseCardHandler}>카드 사용하기</TargetBtn>
               <TargetBtn

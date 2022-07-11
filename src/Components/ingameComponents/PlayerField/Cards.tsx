@@ -1,5 +1,8 @@
-import { ScCardsWrap } from "../InGameStyled";
+/* Interface */
 import { CardProps } from "../../../typings/typedb";
+
+/* CSS & SC */
+import { ScCardsWrap } from "../InGameStyled";
 
 const Cards = ({
   id,

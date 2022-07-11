@@ -1,5 +1,8 @@
-import { DrawbleCardWrap } from "../InGameStyled";
+/* Interface */
 import { DrawCardsProps } from "../../../typings/typedb";
+
+/* CSS & SC */
+import { DrawbleCardWrap } from "../InGameStyled";
 
 const DrawableCards: React.FC<DrawCardsProps> = ({
   id,

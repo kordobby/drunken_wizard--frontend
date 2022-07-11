@@ -13,9 +13,11 @@ interface ingameState {
     status: string;
     gamOver: boolean;
     nowPlayer: string;
+    nowPlayerId: number;
     cardCrave: string; // 버려진 카드, 사용한 카드, 드로우 실패 카드
     targetPlayer: number;
     selectedCard: number;
+    timer: string;
   };
 }
 
@@ -29,17 +31,17 @@ const initialState: ingameState = {
       username: "",
       dead: false,
       mana: 0,
-      manaCostModifierDuration: 0, //
-      mutedDuration: 0, //
-      petrifiedDuration: 0, //
-      poisonedDuration: 0, //
-      shield: false, //
-      sleepDuration: 0, //
-      stunnedDuration: 0, //
+      manaCostModifierDuration: 0,
+      mutedDuration: 0,
+      petrifiedDuration: 0,
+      poisonedDuration: 0,
+      shield: false,
+      sleepDuration: 0,
+      stunnedDuration: 0,
       team: false,
       turnOrder: 0,
-      weakDuration: 0, //
-      damageModifierDuration: 0, //
+      weakDuration: 0,
+      damageModifierDuration: 0,
     },
     teamPlayer: {
       cardsOnHand: "",
@@ -59,7 +61,7 @@ const initialState: ingameState = {
       team: false,
       turnOrder: 0,
       weakDuration: 0,
-      damageModifierDuration: 0, //
+      damageModifierDuration: 0,
     },
     enemyPlayerA: {
       cardsOnHand: "",
@@ -69,17 +71,17 @@ const initialState: ingameState = {
       username: "",
       dead: false,
       mana: 0,
-      manaCostModifierDuration: 0, //
-      mutedDuration: 0, //
+      manaCostModifierDuration: 0,
+      mutedDuration: 0,
       petrifiedDuration: 0,
-      poisonedDuration: 0, //
-      shield: false, //
-      sleepDuration: 0, //
-      stunnedDuration: 0, //
+      poisonedDuration: 0,
+      shield: false,
+      sleepDuration: 0,
+      stunnedDuration: 0,
       team: false,
       turnOrder: 0,
-      weakDuration: 0, //
-      damageModifierDuration: 0, //
+      weakDuration: 0,
+      damageModifierDuration: 0,
     },
     enemyPlayerB: {
       cardsOnHand: "",
@@ -99,7 +101,7 @@ const initialState: ingameState = {
       team: false,
       turnOrder: 0,
       weakDuration: 0,
-      damageModifierDuration: 0, //
+      damageModifierDuration: 0,
     },
   },
   myCards: [],
@@ -107,9 +109,11 @@ const initialState: ingameState = {
     status: "",
     gamOver: false, // 필요없을지도!
     nowPlayer: "",
+    nowPlayerId: 0,
     cardCrave: "",
     targetPlayer: 0,
     selectedCard: 0,
+    timer: "",
   },
 };
 
@@ -121,6 +125,9 @@ const gameSlice = createSlice({
     // 초기 셋팅, 매 턴마다 상태 변화시
     setNowPlayerTK: (state, action) => {
       state.game.nowPlayer = action.payload;
+    },
+    setNowPlayerIdTK: (state, action) => {
+      state.game.nowPlayerId = action.payload;
     },
     setThisPlayerTK: (state, action) => {
       state.players.thisPlayer = action.payload;
@@ -159,10 +166,14 @@ const gameSlice = createSlice({
     setTargetTK: (state, action) => {
       state.game.targetPlayer = action.payload;
     },
+    setTimerTK: (state, action) => {
+      state.game.timer = action.payload;
+    },
   },
 });
 
 export const {
+  setNowPlayerIdTK,
   setThisPlayerTK,
   setTeamPlayerTK,
   setEnemyPlayerATK,
@@ -174,5 +185,6 @@ export const {
   addBonusCardTK,
   useMyCardsTK,
   setSelectedCardsTK,
+  setTimerTK,
 } = gameSlice.actions;
 export default gameSlice.reducer;

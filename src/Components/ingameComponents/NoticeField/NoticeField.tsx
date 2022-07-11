@@ -1,7 +1,13 @@
+/* Hooks */
+import { useAppSelector } from "../../../hooks/tsHooks";
+
+/* Interface */
+import { HeaderProps } from "../../../typings/typedb";
+
+/* CSS & SC */
 import styled from "styled-components";
 import flex from "../../GlobalStyled/flex";
-import { HeaderProps } from "../../../typings/typedb";
-import { useAppSelector } from "../../../hooks/tsHooks";
+
 const NoticeField = ({ status }: HeaderProps) => {
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
