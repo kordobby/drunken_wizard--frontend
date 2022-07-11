@@ -79,6 +79,7 @@ export interface DrawProps {
   selectableCard: object[];
   selectedCard: any[];
   drawDisabled: boolean;
+  setDrawModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 // drawableCards

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import SockJS from "sockjs-client";
 import stompJS from "stompjs";
 
@@ -56,8 +56,6 @@ const Ingame = () => {
   // 사용해서 무덤으로 보낸 카드!
   const [cardCrave, setCardCrave] = useState<string>("");
 
-  const [timer, setTimer] = useState<boolean>(false);
-  const [actionTimer, setActionTimer] = useState<boolean>(false);
   const [update, setUpdate] = useState<any>([]);
 
   /* tookit things */
@@ -65,6 +63,7 @@ const Ingame = () => {
   const playersData = useAppSelector((state) => state.game.players);
   const myCards = useAppSelector((state) => state.game.myCards);
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
+  const cardTarget = useAppSelector((state) => state.game.game.targetPlayer);
 
   /* socket connect - token */
   const socket = new SockJS("http://13.124.63.214/SufficientAmountOfAlcohol");
@@ -217,24 +216,24 @@ const Ingame = () => {
                 // 디자이너님한테 죽었을 때 초상화 변화 여쭤보기
                 setStatus("WAITING");
               } else if (msgSender === myId && msgData.player.dead === false) {
-                console.log("내 차례가 맞습니다.");
+                // 만약 플레이어가 죽지 않았다면, 플레이어 스탯 업데이트하고 카드 드로우해도 되는지 확인
                 dispatch(setThisPlayerTK(msgData.player));
                 setStatus("PRECHECK");
-              } else if (msgSender !== myId && msgData.player.dead === false) {
+              } else if (msgSender !== myId) {
+                // 만약 이 플레이어가 현재 플레이어가 아니라면 대기
                 setStatus("WAITING");
               }
               break;
             case "DRAW":
               if (msgSender === myId) {
+                // 선택가능한 카드 수와 종류 저장
                 setSelectableCard(msgData.cardDrawed);
                 setSelectableCnt(msgData.selectable);
                 setStatus("DRAW");
-              } else {
-                setStatus("WAITING");
               }
               break;
             case "SELECT":
-              setTimer(false);
+              ClearTimer();
               setDrawModalOpen(false);
               if (msgSender === myId && msgData.drawSuccess === true) {
                 // 문구 띄워줘야하면 status 추가
@@ -248,8 +247,10 @@ const Ingame = () => {
               }
               break;
             case "TURNCHECK":
+              ClearTimer();
               if (msgSender === myId) {
                 console.log("액션턴 시작");
+                ActionTimer();
               }
               break;
             case "ENDDRAW":
@@ -267,6 +268,7 @@ const Ingame = () => {
 
               break;
             case "ENDTURN":
+              ClearTimer();
               dispatch(setNowPlayerTK(msgData.nextPlayerId.usename));
               dispatch(setThisPlayerTK(msgData.player));
               setStatus("CHANGETURN");
@@ -316,20 +318,12 @@ const Ingame = () => {
         sendStompMsgFunc("1", myId, "DRAW", null);
         break;
       case "DRAW":
-        setTimer(true);
         setDrawModalOpen(true);
         setDrawDisabled(false);
+        drawTimer();
         break;
       case "ACTION":
         setSelectedCard([]);
-        const actionTimer = setTimeout(() => {
-          sendStompMsgFunc("1", myId, "SELECT", null);
-          setTimer(false);
-          alert("시간초과!");
-        }, 31000);
-        if (timer === false) {
-          clearTimeout(actionTimer);
-        }
         break;
       case "USECARD":
         setStatus("USECARDSUCCESS");
@@ -381,20 +375,6 @@ const Ingame = () => {
     }
   }, [status]);
 
-  useEffect(() => {
-    const countDownFunc = () => {
-      const countDown = setTimeout(() => {
-        setDrawModalOpen(false);
-        sendStompMsgFunc("1", myId, "SELECT", null);
-        setTimer(false);
-        alert("시간초과!");
-      }, 11000);
-      if (timer === true) {
-        clearTimeout(countDown);
-      }
-    };
-  }, [timer]);
-
   // send stompMsg
   function waitForConnection(stompClient: stompJS.Client, callback: any) {
     setTimeout(function () {
@@ -426,7 +406,8 @@ const Ingame = () => {
     });
   };
 
-  // ready for "SELECT"
+  /* DRAW => SELECT */
+  // 드로우할 카드 배열 만드는 함수
   const selectCardDrawTurnHandler = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -438,6 +419,8 @@ const Ingame = () => {
     );
     setSelectedCard(removeDup);
   };
+
+  // 드로우할 카드 취소하는 함수
   const cancelCardDrawTurnHandler = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -447,7 +430,27 @@ const Ingame = () => {
       (value) => Number(value) !== Number(target)
     );
     setSelectedCard(setNew);
-    setTimer(true);
+  };
+
+  const timer: { current: NodeJS.Timeout | null } = useRef(null);
+
+  const drawTimer = () => {
+    timer.current = setTimeout(() => {
+      setDrawModalOpen(false);
+      sendStompMsgFunc("1", myId, "SELECT", null);
+      alert("시간초과!");
+    }, 10000);
+  };
+
+  const ActionTimer = () => {
+    timer.current = setTimeout(() => {
+      alert("시간초과!");
+      sendStompMsgFunc("1", myId, "ENDTURN", null);
+    }, 30000);
+  };
+  const ClearTimer = () => {
+    console.log("된다");
+    window.clearTimeout(timer.current || 0);
   };
 
   useEffect(() => {
@@ -457,7 +460,7 @@ const Ingame = () => {
       setDrawDisabled(false);
     }
   }, [selectedCard]);
-
+  console.log(selectedCard);
   const selectTurnController = () => {
     const cardsMaker = selectedCard.map(function (value: any) {
       const selectedCardsObj = { cardId: 0 };
@@ -467,8 +470,9 @@ const Ingame = () => {
     const confirmDrawCards = selectedCard.map((value) =>
       selectableCard.find((elem) => Number(elem.cardId) === Number(value))
     );
+    console.log(selectedCard);
     console.log(confirmDrawCards);
-
+    console.log(cardsMaker);
     dispatch(setMyCardsTK(confirmDrawCards));
     const data = {
       selectedCards: cardsMaker,
@@ -482,40 +486,37 @@ const Ingame = () => {
     const targetGroup = (event.target as HTMLButtonElement).className;
     const cardName = (event.target as HTMLButtonElement).name;
     setCardCrave(cardName);
-    console.log(cardId);
-    console.log(cardName);
-    console.log("돌아감");
     setSelectUseCard(Number(cardId));
     setSelectedCardsTK(Number(cardId));
-    console.log("돌아감");
     setFindTargetGroup(targetGroup);
     const targetName = (event.target as HTMLButtonElement).name;
     setSelectedCardName(targetName);
   };
 
-  const targeting = useAppSelector((state) => state.game.game.targetPlayer);
   const sendUseCardHandler = () => {
     console.log(findTargetGroup);
-    if (findTargetGroup === "SELECT" && targeting === 0) {
+    if (findTargetGroup === "SELECT" && cardTarget === 0) {
       alert("타겟을 설정해주세요!");
       return;
     }
+    // 여기는 잘 돌아가는데, 일부 카드에서는 돌아가지 않음
     if (findTargetGroup === "SELECT") {
-      console.log("여기");
+      console.log("한 사람만 선택합니다.");
       const data = {
-        targetPlayerId: Number(targeting),
+        targetPlayerId: Number(cardTarget),
         cardId: selectUseCard,
       };
       sendStompMsgFunc("1", myId, "USECARD", data);
     } else {
-      console.log("저기");
+      // 여기는 아예 안먹힘. targetPlayerId 뭐라고 보낼지?
+      console.log("SELECT 이외의 경우입니다.");
       const data = {
-        targetPlayerId: "",
+        targetPlayerId: null,
         cardId: selectUseCard,
       };
       sendStompMsgFunc("1", myId, "USECARD", data);
     }
-
+    setFindTargetGroup("");
     setSelectedCardName("");
   };
 
@@ -564,6 +565,7 @@ const Ingame = () => {
             selectedCard={selectedCard}
             selectableCard={selectableCard}
             drawDisabled={drawDisabled}
+            setDrawModalOpen={setDrawModalOpen}
           ></DrawModal>
         )}
         <button

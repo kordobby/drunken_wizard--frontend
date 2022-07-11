@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { DrawModalWrap } from "../InGameStyled";
 import DrawableCards from "./DrawableCards";
 import { DrawProps } from "../../../typings/typedb";
@@ -10,6 +10,7 @@ const DrawModal = ({
   selectableCard,
   selectedCard,
   drawDisabled,
+  setDrawModalOpen,
 }: DrawProps) => {
   return (
     <DrawModalWrap>

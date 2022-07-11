@@ -41,7 +41,7 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
   const sendHealMsgHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     const targetId = (event.target as HTMLButtonElement).id;
     const data = {
-      targetId: Number(targetId),
+      targetPlayerId: Number(targetId),
       cardId: 0,
     };
     setFindTargetGroup("SELECT");
