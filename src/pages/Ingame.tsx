@@ -66,8 +66,9 @@ const Ingame = () => {
   /* tookit things */
   const dispatch = useAppDispatch();
   const playersData = useAppSelector((state) => state.game.players);
+  const playersList = Object.values(playersData);
   const myCards = useAppSelector((state) => state.game.myCards);
-  const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
+  // const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
   const cardTarget = useAppSelector((state) => state.game.game.targetPlayer);
 
@@ -291,6 +292,10 @@ const Ingame = () => {
               ClearTimer();
               dispatch(setTimerTK(""));
               dispatch(setNowPlayerIdTK(msgData.nextPlayerId));
+              const nowPlayerName = playersList.filter(
+                (value: any) => value.playerId === msgData.nextPlayerId
+              );
+              dispatch(setNowPlayerTK(nowPlayerName[0].username));
               setStatus("CHANGETURN");
               break;
             default:

@@ -1,5 +1,5 @@
 /* Package */
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from "../../../hooks/tsHooks";
@@ -38,6 +38,7 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
   /* useState */
   const [healCnt, setHealCnt] = useState<boolean>(false);
   const [disableHeal, setDisableHeal] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   /* tookit things */
   const dispatch = useAppDispatch();
@@ -104,6 +105,11 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
     </TargetBtn>
   ));
 
+  // useEffect(() => {
+  //   if (nowPlayerId !1== thisPlayer.playerId) {
+  //     setDisabled(true);
+  //   }
+  // }, []);
   return (
     <PlayerFieldWrap>
       <div>
