@@ -4,7 +4,7 @@ import sockJS from "sockjs-client";
 
 // 소켓 연결
 export const socket = new sockJS(
-  "http://3.35.53.184/SufficientAmountOfAlcohol"
+  "http://13.124.63.214/SufficientAmountOfAlcohol"
 ); //   /ws-stomp
 const stompClient = stompJS.over(socket);
 const accessToken = getCookie("token");

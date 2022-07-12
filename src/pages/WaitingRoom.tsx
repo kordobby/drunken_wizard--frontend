@@ -3,7 +3,6 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 // stomp
-import SockJS from "sockjs-client";
 import stompJS from "stompjs";
 import { socket } from "../shared/WebStomp";
 // cookies
@@ -11,7 +10,7 @@ import { getCookie } from "../shared/Cookies";
 
 const waitngRoomMT = (data: any) => {
   const accessToken = getCookie("token");
-  return axios.post(`http://3.35.53.184/game/${data}/join`, data, {
+  return axios.post(`http://13.124.63.214/game/${data}/join`, data, {
     headers: {
       Authorization: accessToken,
     },
@@ -19,7 +18,7 @@ const waitngRoomMT = (data: any) => {
 };
 const leaveRoomMT = (data: any) => {
   const accessToken = getCookie("token");
-  return axios.post(`http://3.35.53.184/game/${data}/leave`, data, {
+  return axios.post(`http://13.124.63.214/game/${data}/leave`, data, {
     headers: {
       Authorization: accessToken,
     },
@@ -63,7 +62,7 @@ const WaitingRoom = () => {
   // 방 접속 포스트 요청
   useEffect(() => {
     waitingRoom(roomid);
-  }, [roomid, waitingRoom]);
+  }, [roomid]);
 
   // 구독
   useEffect(() => {
@@ -99,16 +98,25 @@ const WaitingRoom = () => {
     }
   }, []);
 
-  const socketUnsubscribe = () => {
+  const socketUnsubscribe = useCallback(() => {
     try {
-      stompClient
-        .subscribe(`/sub/public`, function (data: any) {}, {})
-        .unsubscribe();
+      stompClient.unsubscribe("sub-0");
       console.log("success to unsubscribe");
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
+
+  // const joinMessage = () => {
+  //   const accessName = getCookie("nickname");
+  //   const data = {
+  //     type: "JOIN",
+  //     roomId: 1,
+  //     sender: accessName,
+  //     message: `${accessName}님이 채팅방에 참여하였습니다!`,
+  //   };
+  //   stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
+  // };
 
   return (
     <div>
@@ -127,9 +135,6 @@ const WaitingRoom = () => {
         <span>닉네임</span>
       </div>
       <button onClick={leaveHandler}>방에서 나가기</button>
-      {/* <Link to={"/lobby"}>
-        <button>로비로 가기</button>
-      </Link> */}
     </div>
   );
 };

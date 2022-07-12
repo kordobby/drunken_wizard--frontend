@@ -19,7 +19,7 @@ const CreateRoom = ({ modalClose }: ModalType) => {
   // mutate
   const { mutate: createRoom } = useMutation(apis.createRoomMT, {
     onSuccess: (res) => {
-      console.log(res.data);
+      // console.log(res.data);
       queryClient.invalidateQueries("room_list");
       navigate(`/waiting/${res.data}`);
     },

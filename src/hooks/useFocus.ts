@@ -12,7 +12,7 @@ type ReturnTypes<T> = [
   Dispatch<SetStateAction<T>>
 ];
 
-export const useFocusHandler = <T>(initialData: T): ReturnTypes<T> => {
+export const useFocus = <T>(initialData: T): ReturnTypes<T> => {
   const [value, setValue] = useState(initialData);
   const handler = useCallback(
     value

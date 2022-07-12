@@ -12,22 +12,27 @@ export const BackWrap = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   z-index: -1000;
 `;
+export const Wrap = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: center; ;
+`;
 
 export const LogLogo = styled.img`
   display: flex;
-  margin: 0 0 80px 0;
+  margin: 130px 0 80px 0;
 `;
 export const SignLogo = styled.img`
   display: flex;
-  margin: 0 0 40px 0;
+  margin: 130px 0 40px 0;
 `;
 
 export const InputBoxId = styled.div`
@@ -49,12 +54,20 @@ export const Input = styled.input`
   outline-offset: -1px;
   font-size: 24px;
   position: relative;
+  /* color: #fd6f33; */
+  &::placeholder {
+    /* color: #fd6f33; */
+  }
 
+  &:focus::placeholder {
+    color: white;
+  }
   &:focus {
+    color: white;
     outline: 1px solid #fd6f33;
     outline-offset: -1px;
     box-shadow: 0px 0px 10px 2px #fd6f33;
-    text-shadow: 0px 0px 0.5px black, 0 0 0em blue, 0 0 0.1em #fd6f33;
+    text-shadow: 0px 0px 4px #a13202, 0 0 0em blue, 0 0 0.1em #fd6f33;
   }
   &:hover {
     filter: brightness(110%);
@@ -121,16 +134,21 @@ export const Button = styled.button`
     box-shadow: 0px 0px 10px 2px #fd6f33;
   }
 `;
+export const Button1 = styled.button`
+  width: 211px;
+  height: 83px;
+  border: none;
 
-export const RegiImg = styled.img`
   &:hover {
     cursor: pointer;
     filter: brightness(110%);
     box-shadow: 0px 0px 10px 2px #fd6f33;
   }
 `;
-
-export const KakaoImg = styled.img`
+export const Button2 = styled.button`
+  width: 438px;
+  height: 83px;
+  border: none;
   margin-top: 28px;
   &:hover {
     cursor: pointer;
@@ -156,4 +174,17 @@ export const SpeechSpan = styled.div`
 
 export const ButtonBox = styled.div`
   margin: 0;
+`;
+
+export const ResizeBtn = styled.button`
+  border: none;
+  background-color: transparent;
+  position: fixed;
+  top: 50px;
+  right: 50px;
+  &:hover {
+    cursor: pointer;
+    filter: brightness(110%);
+    box-shadow: 0px 0px 10px 2px #fd6f33;
+  }
 `;
