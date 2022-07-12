@@ -28,7 +28,6 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
   selectUseCardHandler,
   sendUseCardHandler,
   selectDisCardHandler,
-  setSelectTarget,
   sendStompMsgFunc,
   selectedCardName,
 }) => {
@@ -78,7 +77,6 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
   /* 카드사용 관련 함수들 */
   const confirmTargetHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     const targetId = (event.target as HTMLButtonElement).id;
-    setSelectTarget(Number(targetId));
     dispatch(setTargetTK(targetId));
   };
 

@@ -1,4 +1,6 @@
 import { useState } from "react";
+/* Hooks */
+import { useAppSelector } from "../../../hooks/tsHooks";
 
 /* Interface */
 import { DrawCardsProps } from "../../../typings/typedb";
@@ -6,7 +8,6 @@ import { DrawCardsProps } from "../../../typings/typedb";
 /* CSS & SC */
 import { DrawbleCardWrap } from "../InGameStyled";
 
-import { useAppSelector } from "../../../hooks/tsHooks";
 const DrawableCards: React.FC<DrawCardsProps> = ({
   id,
   target,

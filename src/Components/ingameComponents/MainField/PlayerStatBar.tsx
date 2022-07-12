@@ -1,9 +1,16 @@
-import styled from "styled-components";
-import flex from "../../GlobalStyled/flex";
-import matchStatusImg from "../StatusIcon";
-import { StatIconsImgProps, StatBarProps } from "../../../typings/typedb";
+/* modules */
+import { StatBarProps } from "../../../typings/typedb";
+
+/* CSS & SC */
+import {
+  StatBarWrap,
+  StatBarRow,
+  StatIconBox,
+  StatIcon,
+  StatCnt,
+} from "../InGameStyled";
 const PlayerStatBar = ({
-  manaCostModifierDuration,
+  manaCostModifierDuration, // 나중에 추가될 상태이상
   mutedDuration,
   petrifiedDuration,
   poisonedDuration,
@@ -75,48 +82,5 @@ const PlayerStatBar = ({
     </StatBarWrap>
   );
 };
-
-const StatBarWrap = styled.div`
-  width: 100%;
-  height: 70px;
-  ${flex({ direction: "column", justify: "center", align: "center" })}
-`;
-
-const StatBarRow = styled.div`
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0 10px;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const StatIconBox = styled.div`
-  width: 30px;
-  height: 30px;
-  ${flex({
-    justify: "center",
-    align: "center",
-  })}
-  position: relative;
-`;
-
-const StatIcon = styled.div<StatIconsImgProps>`
-  width: 28px;
-  height: 28px;
-  background-image: url(${(props) => matchStatusImg(props.stat)});
-  background-size: cover;
-  border-radius: 24px;
-`;
-const StatCnt = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 12px;
-  height: 12px;
-  border-radius: 10px;
-  background-color: var(--beige);
-  ${flex({ justify: "center", align: "center" })}
-  font-size : 6px;
-`;
 
 export default PlayerStatBar;

@@ -47,7 +47,6 @@ export interface PlayerProps {
   selectUseCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
   sendUseCardHandler: () => void;
   selectDisCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  setSelectTarget: Dispatch<SetStateAction<number>>;
   sendStompMsgFunc: (
     roomId: string,
     sender: number,

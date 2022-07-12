@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+/* Hooks */
+import { useAppSelector } from "../../../hooks/tsHooks";
+
+/* Modules */
+import { DrawProps } from "../../../typings/typedb";
+
+/* CSS & SC */
 import { DrawModalWrap, DrawableCardsWrap } from "../InGameStyled";
 import DrawableCards from "./DrawableCards";
-import { DrawProps } from "../../../typings/typedb";
-import { useAppSelector } from "../../../hooks/tsHooks";
-import { useState } from "react";
+
 const DrawModal = ({
   selectTurnController,
   selectedCard,
@@ -17,7 +21,6 @@ const DrawModal = ({
     (state) => state.game.game.selectableCards
   );
 
-  console.log(selectableCards);
   return (
     <DrawModalWrap>
       {thisPlayer === "FARSEER" ? (

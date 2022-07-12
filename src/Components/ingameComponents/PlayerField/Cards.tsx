@@ -1,13 +1,17 @@
 import { useState } from "react";
 
+/* Hooks */
+import { useAppSelector } from "../../../hooks/tsHooks";
+
+/* Cookies */
+import { getCookie } from "../../../Shared/Cookies";
+
 /* Interface */
 import { CardProps } from "../../../typings/typedb";
 
 /* CSS & SC */
 import { ScCardsWrap } from "../InGameStyled";
 
-import { useAppSelector } from "../../../hooks/tsHooks";
-import { getCookie } from "../../../Shared/Cookies";
 const Cards = ({
   id,
   className,

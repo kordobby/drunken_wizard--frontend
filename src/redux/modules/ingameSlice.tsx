@@ -14,9 +14,10 @@ interface ingameState {
     gamOver: boolean;
     nowPlayer: string;
     nowPlayerId: number;
-    cardCrave: string; // 버려진 카드, 사용한 카드, 드로우 실패 카드
+    cardCrave: string;
     targetPlayer: number;
-    selectedCard: number;
+    selectForUseCardId: number;
+    selectForUseCardName: string;
     selectableCards: Card[];
     selectedDrawCard: number[];
     timer: string;
@@ -114,7 +115,8 @@ const initialState: ingameState = {
     nowPlayerId: 0,
     cardCrave: "",
     targetPlayer: 0,
-    selectedCard: 0,
+    selectForUseCardId: 0,
+    selectForUseCardName: "",
     selectableCards: [],
     selectedDrawCard: [],
     timer: "",
@@ -168,12 +170,6 @@ const gameSlice = createSlice({
         (value) => value !== action.payload
       );
     },
-    // 사용한 카드 삭제하기 (사용하기 성공 또는 버리기 시 dispatch)
-    useMyCardsTK: (state, action) => {
-      state.myCards = state.myCards.filter(
-        ({ cardId }) => cardId !== action.payload
-      );
-    },
     // 사용한 카드, 버려진 카드, 드로우 실패한 카드
     setCraveTK: (state, action) => {
       state.game.cardCrave = action.payload;
@@ -184,6 +180,12 @@ const gameSlice = createSlice({
     },
     setTimerTK: (state, action) => {
       state.game.timer = action.payload;
+    },
+    setSelectUseCardIdTK: (state, action) => {
+      state.game.selectForUseCardId = action.payload;
+    },
+    setSelectUseCardNameTK: (state, action) => {
+      state.game.selectForUseCardName = action.payload;
     },
   },
 });
@@ -199,11 +201,12 @@ export const {
   setCraveTK,
   setTargetTK,
   addBonusCardTK,
-  useMyCardsTK,
   setTimerTK,
   setSelectDrawCardsTK,
   cancelSelectDrawCardsTK,
   setSelectableCardTK,
   setMyCardsUpdateTK,
+  setSelectUseCardIdTK,
+  setSelectUseCardNameTK,
 } = gameSlice.actions;
 export default gameSlice.reducer;

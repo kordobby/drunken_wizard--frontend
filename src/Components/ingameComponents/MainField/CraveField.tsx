@@ -1,5 +1,8 @@
-import { CraveWrap } from "../InGameStyled";
+/* Hooks */
 import { useAppSelector } from "../../../hooks/tsHooks";
+
+/* CSS & SC */
+import { CraveWrap } from "../InGameStyled";
 
 const CraveField = () => {
   const Crave = useAppSelector((state) => state.game.game.cardCrave);

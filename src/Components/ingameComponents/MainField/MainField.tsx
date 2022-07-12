@@ -1,5 +1,7 @@
+/* CSS & SC */
 import PlayerIcons from "./PlayerIcons";
 import CraveField from "./CraveField";
+
 const MainField = () => {
   return (
     <div

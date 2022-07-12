@@ -1,11 +1,18 @@
-import styled from "styled-components";
-import flex from "../../GlobalStyled/flex";
-import matchClassImg from "../InGameStyled";
-import { PlayerIconsFields, Profiles } from "../InGameStyled";
-import { IconsImgProps } from "../../../typings/typedb";
+/* Hooks */
 import { useAppSelector } from "../../../hooks/tsHooks";
+
+/* Modules */
 import { playersSetting } from "../../../typings/typedb";
+
+/* CSS & SC */
 import PlayerStatBar from "./PlayerStatBar";
+import {
+  PlayerIconsFields,
+  Profiles,
+  ProfilesImage,
+  StatBarTop,
+} from "../InGameStyled";
+
 const PlayerIcons = () => {
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
@@ -41,21 +48,5 @@ const PlayerIcons = () => {
     </PlayerIconsFields>
   );
 };
-export const ProfilesImage = styled.div<IconsImgProps>`
-  width: 120px;
-  height: 130px;
-  border-radius: 40px;
-  background-size: cover;
-  background-image: url(${(props) => matchClassImg(props.job)});
-  margin-bottom: 10px;
-  ${flex({ justify: "center", align: "center" })}
-`;
-
-const StatBarTop = styled.div`
-  width: 100%;
-  height: 30px;
-  box-sizing: border-box;
-  padding: 0 10px;
-`;
 
 export default PlayerIcons;

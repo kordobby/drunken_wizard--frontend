@@ -1,6 +1,10 @@
+/* Hooks */
+import { useAppSelector } from "../../../hooks/tsHooks";
+
+/* CSS & SC */
 import styled from "styled-components";
 import flex from "../../GlobalStyled/flex";
-import { useAppSelector } from "../../../hooks/tsHooks";
+
 const OthersStates = () => {
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
   const teamPlayer = useAppSelector((state) => state.game.players.teamPlayer);

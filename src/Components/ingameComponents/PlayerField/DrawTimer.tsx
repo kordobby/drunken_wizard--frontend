@@ -1,3 +1,4 @@
+/* CSS & SC */
 import { TimerWrap } from "../InGameStyled";
 
 const DrawTimer = () => {

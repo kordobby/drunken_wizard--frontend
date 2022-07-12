@@ -7,7 +7,13 @@ import ghost from "../../Public/Images/ghost.png";
 import wizard from "../../Public/Images/wizard.png";
 import what from "../../Public/Images/what.png";
 import blood from "../../Public/Images/blood.png";
-import { IconsImgProps, CardBg, DrawCards } from "../../typings/typedb";
+import {
+  StatIconsImgProps,
+  IconsImgProps,
+  CardBg,
+  DrawCards,
+} from "../../typings/typedb";
+import matchStatusImg from "./StatusIcon";
 
 /* Common */
 
@@ -58,7 +64,7 @@ export const ProfileSizing = styled.div`
   width: 200px;
   height: 200px;
   ${flex({ direction: "column", justify: "center", align: "center" })}
-  position : relative
+  position : relative;
 `;
 
 export const ProfileIcon = styled.div<IconsImgProps>`
@@ -162,4 +168,65 @@ export const TimerWrap = styled.div`
   position: absolute;
   top: 10px;
   z-index: 0;
+`;
+
+export const ProfilesImage = styled.div<IconsImgProps>`
+  width: 120px;
+  height: 130px;
+  border-radius: 40px;
+  background-size: cover;
+  background-image: url(${(props) => matchClassImg(props.job)});
+  margin-bottom: 10px;
+  ${flex({ justify: "center", align: "center" })}
+`;
+
+export const StatBarTop = styled.div`
+  width: 100%;
+  height: 30px;
+  box-sizing: border-box;
+  padding: 0 10px;
+`;
+
+export const StatBarWrap = styled.div`
+  width: 100%;
+  height: 70px;
+  ${flex({ direction: "column", justify: "center", align: "center" })}
+`;
+
+export const StatBarRow = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 10px;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+export const StatIconBox = styled.div`
+  width: 30px;
+  height: 30px;
+  ${flex({
+    justify: "center",
+    align: "center",
+  })}
+  position: relative;
+`;
+
+export const StatIcon = styled.div<StatIconsImgProps>`
+  width: 28px;
+  height: 28px;
+  background-image: url(${(props) => matchStatusImg(props.stat)});
+  background-size: cover;
+  border-radius: 24px;
+`;
+
+export const StatCnt = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 10px;
+  background-color: var(--beige);
+  ${flex({ justify: "center", align: "center" })}
+  font-size : 6px;
 `;

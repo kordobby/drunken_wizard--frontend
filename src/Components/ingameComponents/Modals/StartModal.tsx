@@ -1,6 +1,11 @@
-import { StModalWrap } from "../InGameStyled";
+/* Package */
 import { useState, useEffect } from "react";
+
+/* Modules */
 import { StartModalProps } from "../../../typings/typedb";
+
+/* Components */
+import { StModalWrap } from "../InGameStyled";
 
 const StartModal = ({ setStatus }: StartModalProps) => {
   const [BtnActive, setBtnActive] = useState<boolean>(true);
