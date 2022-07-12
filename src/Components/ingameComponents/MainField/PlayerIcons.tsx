@@ -9,12 +9,13 @@ import PlayerStatBar from "./PlayerStatBar";
 const PlayerIcons = () => {
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
+  const nowPlayer = useAppSelector((state) => state.game.game.nowPlayerId);
 
   return (
     <PlayerIconsFields>
       {/* 여기 줄일방ㅇ법... */}
       {playersList.map((value: playersSetting) => (
-        <Profiles>
+        <Profiles team={value.team} playing={value.playerId === nowPlayer}>
           <ProfilesImage job={value.charactorClass}></ProfilesImage>
           <span>{value.username}</span>
           <div>

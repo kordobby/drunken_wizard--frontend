@@ -7,7 +7,7 @@ import ghost from "../../Public/Images/ghost.png";
 import wizard from "../../Public/Images/wizard.png";
 import what from "../../Public/Images/what.png";
 import blood from "../../Public/Images/blood.png";
-import { IconsImgProps } from "../../typings/typedb";
+import { IconsImgProps, CardBg, DrawCards } from "../../typings/typedb";
 
 /* Common */
 
@@ -27,7 +27,7 @@ export const TargetBtn = styled.button`
 
 export const ScCardsWrap = styled.div`
   width: 100px;
-  height: 100px;
+  height: 100%;
   background-color: #ffc080;
   ${flex({ direction: "column", justify: "center" })};
   margin: 0 10px;
@@ -88,14 +88,19 @@ export const DrawModalWrap = styled.div`
   position: fixed;
   border-radius: 30px;
   top: 30%;
-  ${flex({ align: "center", justify: "center" })};
+  ${flex({ direction: "column", align: "center", justify: "center" })};
   background-color: #ffffff;
 `;
 
-export const DrawbleCardWrap = styled.div`
+export const DrawableCardsWrap = styled.div`
+  width: 100%;
+  height: 100%;
+  ${flex({ align: "center", justify: "center" })};
+`;
+export const DrawbleCardWrap = styled.div<DrawCards>`
   width: 100px;
   height: 150px;
-  background-color: yellow;
+  background-color: ${(props) => (props.selected ? "blue" : "yellow")};
   ${flex({ direction: "column", justify: "center" })};
   margin-right: 20px;
 `;
@@ -109,13 +114,23 @@ export const PlayerIconsFields = styled.div`
   ${flex({ justify: "space-around", align: "center" })}
 `;
 
-export const Profiles = styled.div`
+export const Profiles = styled.div<CardBg>`
   width: 200px;
   height: 300px;
   border-radius: 30px;
-  background-color: var(--beige);
+  border: ${(props) => (props.playing ? `5px solid yellow` : "none")};
+  background-color: ${(props) => (props.team ? "red" : "blue")};
   ${flex({ direction: "column", justify: "center", align: "center" })}
 `;
+
+export const CraveWrap = styled.div`
+  width: 240px;
+  height: 300px;
+  border-radius: 30px;
+  background-color: white;
+  ${flex({ direction: "column", justify: "center", align: "center" })};
+`;
+
 export const PlayerNameTag = styled.div`
   width: 80px;
   height: 30px;

@@ -105,11 +105,6 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
     </TargetBtn>
   ));
 
-  // useEffect(() => {
-  //   if (nowPlayerId !1== thisPlayer.playerId) {
-  //     setDisabled(true);
-  //   }
-  // }, []);
   return (
     <PlayerFieldWrap>
       <div>
@@ -119,6 +114,7 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
         {myCards.map((value: any) => (
           <Cards
             key={value?.cardId}
+            team={value?.team}
             id={value?.cardId}
             className={value?.target}
             name={value?.cardName}

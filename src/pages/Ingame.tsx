@@ -269,9 +269,11 @@ const Ingame = () => {
             case "TURNCHECK":
               ClearTimer();
               dispatch(setTimerTK(""));
-              if (msgSender === myId) {
+              if (msgSender === myId && msgData.action === true) {
                 dispatch(setTimerTK("action"));
                 ActionTimer();
+              } else if (msgSender === myId && msgData.action === false) {
+                sendStompMsgFunc("1", Number(myId), "ENDTURN", null);
               }
               break;
             case "ENDDRAW":
@@ -292,12 +294,10 @@ const Ingame = () => {
               ClearTimer();
               dispatch(setTimerTK(""));
               dispatch(setNowPlayerIdTK(msgData.nextPlayerId));
-              const nowPlayerName = playersList.filter(
-                (value: any) => value.playerId === msgData.nextPlayerId
-              );
-              dispatch(setNowPlayerTK(nowPlayerName[0].username));
               setStatus("CHANGETURN");
               break;
+            case "ENDGAME":
+              console.log("게임끝");
             default:
               break;
           }
@@ -374,6 +374,10 @@ const Ingame = () => {
         setFindTargetGroup("");
         break;
       case "CHANGETURN":
+        const nowPlayerName = playersList.filter(
+          (value: any) => value.playerId === nowPlayerId
+        );
+        dispatch(setNowPlayerTK(nowPlayerName[0].username));
         if (nowPlayerId === Number(playersData.thisPlayer.playerId)) {
           sendStompMsgFunc("1", myId, "PRECHECK", null);
         } else {
@@ -414,32 +418,6 @@ const Ingame = () => {
         })
       );
     });
-  };
-
-  /* DRAW => SELECT */
-  // 드로우할 카드 배열 만드는 함수
-  const selectCardDrawTurnHandler = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const newSelectedCard: any[] = [...selectedCard];
-    const targetId = (event.target as HTMLButtonElement).id;
-    const setNew = newSelectedCard.push(targetId);
-    const removeDup = newSelectedCard.filter(
-      (value, index) => newSelectedCard.indexOf(value) === index
-    );
-    setSelectedCard(removeDup);
-  };
-
-  // 드로우할 카드 취소하는 함수
-  const cancelCardDrawTurnHandler = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const newSelectedCard = [...selectedCard];
-    const target = (event.target as HTMLButtonElement).id;
-    const setNew = newSelectedCard.filter(
-      (value) => Number(value) !== Number(target)
-    );
-    setSelectedCard(setNew);
   };
 
   /* TIMER */
@@ -562,13 +540,11 @@ const Ingame = () => {
         {drawModalOpen && (
           <DrawModal
             id={0}
-            selectCardDrawTurnHandler={selectCardDrawTurnHandler}
-            cancelCardDrawTurnHandler={cancelCardDrawTurnHandler}
             selectTurnController={selectTurnController}
+            setSelectedCard={setSelectedCard}
             selectedCard={selectedCard}
             selectableCard={selectableCard}
             drawDisabled={drawDisabled}
-            setDrawModalOpen={setDrawModalOpen}
           ></DrawModal>
         )}
         <button
