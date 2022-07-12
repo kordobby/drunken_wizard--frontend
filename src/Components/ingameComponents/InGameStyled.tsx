@@ -119,7 +119,8 @@ export const Profiles = styled.div<CardBg>`
   height: 300px;
   border-radius: 30px;
   border: ${(props) => (props.playing ? `5px solid yellow` : "none")};
-  background-color: ${(props) => (props.team ? "red" : "blue")};
+  background-color: ${(props) =>
+    props.team ? "var(--orange)" : "var(--beige)"};
   ${flex({ direction: "column", justify: "center", align: "center" })}
 `;
 

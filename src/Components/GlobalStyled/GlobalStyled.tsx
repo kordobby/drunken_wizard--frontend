@@ -29,7 +29,6 @@ body {
     --brown : #89504E;
     --beige : #DDC1A5;
     --white : #FFF;
-
 }
 `;
 

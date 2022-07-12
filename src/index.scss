@@ -53,9 +53,9 @@ $progressColor: #03c75a;
   }
 
   @if ($type == "left_bar") {
-    @include animation(left 20s linear 0s infinite);
+    @include animation(left 20s linear 0s);
   } @else if ($type == "right_bar") {
-    @include animation(right 20s linear 0s infinite);
+    @include animation(right 20s linear 0s);
   }
 }
 

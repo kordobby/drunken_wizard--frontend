@@ -6,7 +6,6 @@ import { useAppSelector } from "../../../hooks/tsHooks";
 import { useState } from "react";
 const DrawModal = ({
   selectTurnController,
-  selectableCard,
   selectedCard,
   drawDisabled,
   setSelectedCard,
@@ -14,7 +13,11 @@ const DrawModal = ({
   const thisPlayer = useAppSelector(
     (state) => state.game.players.thisPlayer.charactorClass
   );
+  const selectableCards = useAppSelector(
+    (state) => state.game.game.selectableCards
+  );
 
+  console.log(selectableCards);
   return (
     <DrawModalWrap>
       {thisPlayer === "FARSEER" ? (
@@ -27,7 +30,7 @@ const DrawModal = ({
         <p>드로우할 카드를 선택하세요.</p>
       )}
       <DrawableCardsWrap>
-        {selectableCard.map((value: any) => (
+        {selectableCards?.map((value: any) => (
           <DrawableCards
             key={value.cardId}
             id={value.cardId}
@@ -38,7 +41,7 @@ const DrawModal = ({
           ></DrawableCards>
         ))}
       </DrawableCardsWrap>
-      <span> 선택된 카드 {selectedCard}</span>
+      {/* <span> 선택된 카드 {selectedCard}</span> */}
       <button onClick={selectTurnController}> 선택 완료하기</button>
     </DrawModalWrap>
   );

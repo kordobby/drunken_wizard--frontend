@@ -71,7 +71,6 @@ export interface CardProps {
 export interface DrawProps {
   id: number;
   selectTurnController: () => void;
-  selectableCard: object[];
   selectedCard: any[];
   drawDisabled: boolean;
   setSelectedCard: Dispatch<SetStateAction<object[]>>;

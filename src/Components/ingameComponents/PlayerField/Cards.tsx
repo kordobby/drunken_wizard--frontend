@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 /* Interface */
 import { CardProps } from "../../../typings/typedb";
 
@@ -5,7 +7,7 @@ import { CardProps } from "../../../typings/typedb";
 import { ScCardsWrap } from "../InGameStyled";
 
 import { useAppSelector } from "../../../hooks/tsHooks";
-
+import { getCookie } from "../../../Shared/Cookies";
 const Cards = ({
   id,
   className,
@@ -13,28 +15,34 @@ const Cards = ({
   selectUseCardHandler,
   selectDisCardHandler,
 }: CardProps) => {
-  const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
+  const myId = getCookie("id");
+  const nowPlayer = useAppSelector((state) => state.game.game.nowPlayerId);
+
   return (
     <>
       <ScCardsWrap>
         <span>cardId: {name}</span>
         <span>target: {className}</span>
-        <button
-          id={String(id)}
-          name={name}
-          className={className}
-          onClick={selectUseCardHandler}
-        >
-          선택
-        </button>
-        <button
-          id={String(id)}
-          className={className}
-          name={name}
-          onClick={selectDisCardHandler}
-        >
-          버리기
-        </button>
+        {Number(myId) === Number(nowPlayer) && (
+          <>
+            <button
+              id={String(id)}
+              name={name}
+              className={className}
+              onClick={selectUseCardHandler}
+            >
+              선택
+            </button>
+            <button
+              id={String(id)}
+              className={className}
+              name={name}
+              onClick={selectDisCardHandler}
+            >
+              버리기
+            </button>
+          </>
+        )}
       </ScCardsWrap>
     </>
   );

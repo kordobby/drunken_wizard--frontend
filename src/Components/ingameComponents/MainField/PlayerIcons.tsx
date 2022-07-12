@@ -20,6 +20,7 @@ const PlayerIcons = () => {
           <span>{value.username}</span>
           <div>
             <StatBarTop>
+              <p>{value.charactorClass}</p>
               <p>HP :{value.health}</p>
               <p>MP :{value.mana}</p>
             </StatBarTop>

@@ -1,14 +1,11 @@
 /* Package */
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from "../../../hooks/tsHooks";
 
 /* Modules */
-import {
-  setTargetTK,
-  setSelectedCardsTK, // delete
-} from "../../../redux/modules/ingameSlice";
+import { setTargetTK } from "../../../redux/modules/ingameSlice";
 
 /* Interface */
 import { PlayerProps } from "../../../typings/typedb";
@@ -38,12 +35,11 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
   /* useState */
   const [healCnt, setHealCnt] = useState<boolean>(false);
   const [disableHeal, setDisableHeal] = useState<boolean>(false);
-  const [disabled, setDisabled] = useState<boolean>(false);
 
   /* tookit things */
   const dispatch = useAppDispatch();
   const myCards = useAppSelector((state) => state.game?.myCards);
-  const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
+  console.log(myCards);
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
   const playersData = useAppSelector((state) => state.game.players);
