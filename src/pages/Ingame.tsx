@@ -107,6 +107,8 @@ const Ingame = () => {
           const msgData = JSON.parse(response?.content);
           const msgSender = response?.sender;
           const playersInfo = msgData.players;
+          console.log(msgData);
+          console.log(msgType);
           switch (msgType) {
             case "START":
               const findNowPlayer = playersInfo.filter(
@@ -284,7 +286,7 @@ const Ingame = () => {
               // 카드 셋팅
               console.log("hello");
               setUpdate(msgData.players);
-              setStatus("USECARDSUCCESS");
+              setStatus("USECARD");
               break;
             case "ENDTURN":
               if (msgSender === myId) {
@@ -346,16 +348,16 @@ const Ingame = () => {
         setStatus("USECARDSUCCESS");
         break;
       case "USECARDSUCCESS":
-        console.log("heater");
+        // 내 턴 입장에서 => 나는 마나를 썼기 때문에 내 기준에서는 상태가 바뀌어야함
         const thisPlayer = update.filter(
           (value: any) =>
             Number(value.playerId) === Number(playersData.thisPlayer.playerId)
         );
-        console.log(thisPlayer);
-        console.log(thisPlayer[0].cardsOnHand);
-        if (nowPlayerId === playersData.thisPlayer.playerId) {
+        if (thisPlayer[0] !== undefined) {
           dispatch(setThisPlayerTK(thisPlayer[0]));
           dispatch(setMyCardsUpdateTK(thisPlayer[0].cardsOnHand));
+          console.log(thisPlayer[0]);
+          console.log(thisPlayer[0].cardsOnHand);
         }
         const teamPlayer = update.filter(
           (value: any) => value.playerId === playersData.teamPlayer.playerId
@@ -366,6 +368,9 @@ const Ingame = () => {
         const enemyB = update.filter(
           (value: any) => value.playerId === playersData.enemyPlayerB.playerId
         );
+        console.log(teamPlayer);
+        console.log(enemyA);
+        console.log(enemyB);
         if (teamPlayer[0] !== undefined) {
           dispatch(setTeamPlayerTK(teamPlayer[0]));
         }
