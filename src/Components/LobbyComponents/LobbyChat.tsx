@@ -4,7 +4,6 @@ import flex from "../GlobalStyled/flex";
 // hooks
 import { getCookie } from "../../shared/Cookies";
 // stomp
-import sockJS from "sockjs-client";
 import stompJS from "stompjs";
 import { socket } from "../../shared/WebStomp";
 // interface
@@ -12,24 +11,31 @@ import { ChatType } from "../../typings/db";
 
 const LobbyChat = () => {
   const iptRef = useRef<any>("");
-  const [msgList, setMsgList] = useState<any>([]);
+  const [semiMsgList, setSemiMsgList] = useState<any>();
+  const [msgList, setMsgList] = useState<any[]>([]);
+  const [userList, setUserList] = useState<any[]>([]);
   const [subscribeState, setSubscribeState] = useState(false);
-  // const socket = new sockJS("http://3.35.53.184/SufficientAmountOfAlcohol"); //   /ws-stomp
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
 
   // 채팅리스트 최대 개수 (휘발성)
-  if (msgList.length > 20) {
-    setMsgList(msgList.shift(0));
-  }
+  // if (msgList.length > 20) {
+  //   setMsgList(msgList.shift(0));
+  // }
 
   useEffect(() => {
     socketSubscribe();
     return () => {
       socketUnsubscribe();
     };
-  }, [subscribeState]);
+  }, []);
+
+  useEffect(() => {
+    const list: any[] = [...msgList];
+    const newList = list.push(semiMsgList);
+    setMsgList(list);
+  }, [semiMsgList]);
 
   // /* function Subscribe */
   const socketSubscribe = useCallback(() => {
@@ -39,15 +45,21 @@ const LobbyChat = () => {
           token: accessToken,
           id: accessId,
         },
-        () => {
+        (data: any) => {
+          console.log(data);
           stompClient.subscribe(
             "/sub/public",
             (data: any) => {
               const response = JSON.parse(data.body);
-              // console.log(response);
+              console.log(data);
+              setSemiMsgList(response);
+              if (response.type === "JOIN") {
+                setUserList(response.userList);
+              }
             },
             { token: accessToken }
           );
+
           joinMessage();
           setSubscribeState(true);
         }
@@ -80,7 +92,6 @@ const LobbyChat = () => {
       message: `${accessName}님이 채팅방에 참여하였습니다!`,
     };
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
-    setMsgList([...msgList, data]);
   };
 
   // 채팅 메세지 보내기
@@ -94,7 +105,6 @@ const LobbyChat = () => {
         message: iptRef.current.value,
       };
       stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
-      setMsgList([...msgList, data]);
       iptRef.current.value = "";
       window.scrollTo(9000, 9000);
     }
@@ -120,7 +130,10 @@ const LobbyChat = () => {
       {/* <button onClick={socketDisconnect}>소켓 연결 해제</button> */}
 
       <ChatWrap>
-        {msgList.map((msg: ChatType, idx: number) => {
+        {msgList?.map((msg: ChatType, idx: number) => {
+          if (msg === undefined) {
+            return null;
+          }
           if (msg.type === "JOIN") {
             return (
               <div

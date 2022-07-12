@@ -13,6 +13,9 @@ const Main = () => {
       <Link to="/lobby">
         <button>로비로가기</button>
       </Link>
+      <Link to="/rule">
+        <button>룰 북</button>
+      </Link>
     </div>
   );
 };
