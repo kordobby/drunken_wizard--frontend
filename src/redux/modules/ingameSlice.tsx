@@ -17,6 +17,7 @@ interface ingameState {
     cardCrave: string; // 버려진 카드, 사용한 카드, 드로우 실패 카드
     targetPlayer: number;
     selectedCard: number;
+    selectableCards: Card[];
     selectedDrawCard: number[];
     timer: string;
   };
@@ -114,6 +115,7 @@ const initialState: ingameState = {
     cardCrave: "",
     targetPlayer: 0,
     selectedCard: 0,
+    selectableCards: [],
     selectedDrawCard: [],
     timer: "",
   },
@@ -144,17 +146,20 @@ const gameSlice = createSlice({
       state.players.enemyPlayerB = action.payload;
     },
     // 서버에서 받아온 카드를 그리자
-    setMyCardsTK: (state, action) => {
+    setMyCardsUpdateTK: (state, action) => {
       state.myCards = action.payload;
+    },
+    setMyCardsTK: (state, action) => {
+      state.myCards.push.apply(state.myCards, action.payload);
+    },
+    setSelectableCardTK: (state, action) => {
+      state.game.selectableCards = action.payload;
     },
     // 추가 드로우 카드
     addBonusCardTK: (state, action) => {
       state.myCards.push(action.payload);
     },
     // 카드 사용
-    setSelectedCardsTK: (state, action) => {
-      state.game.selectedCard = action.payload;
-    },
     setSelectDrawCardsTK: (state, action) => {
       state.game.selectedDrawCard = action.payload;
     },
@@ -195,9 +200,10 @@ export const {
   setTargetTK,
   addBonusCardTK,
   useMyCardsTK,
-  setSelectedCardsTK,
   setTimerTK,
   setSelectDrawCardsTK,
   cancelSelectDrawCardsTK,
+  setSelectableCardTK,
+  setMyCardsUpdateTK,
 } = gameSlice.actions;
 export default gameSlice.reducer;
