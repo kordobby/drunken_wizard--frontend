@@ -62,6 +62,7 @@ export interface CardProps {
   id: number;
   className: string;
   name: string;
+  team: boolean;
   selectUseCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
   selectDisCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -69,30 +70,20 @@ export interface CardProps {
 // drawModal
 export interface DrawProps {
   id: number;
-  selectCardDrawTurnHandler: (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => void;
-  cancelCardDrawTurnHandler: (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => void;
   selectTurnController: () => void;
   selectableCard: object[];
   selectedCard: any[];
   drawDisabled: boolean;
-  setDrawModalOpen: Dispatch<SetStateAction<boolean>>;
+  setSelectedCard: Dispatch<SetStateAction<object[]>>;
 }
 
 // drawableCards
 export interface DrawCardsProps {
   id: number;
   target: string;
-  selectCardDrawTurnHandler: (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => void;
-  cancelCardDrawTurnHandler: (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => void;
   drawDisabled: boolean;
+  setSelectedCard: Dispatch<SetStateAction<object[]>>;
+  selectedCard: any[];
 }
 
 export interface PlayerSetProps {
@@ -144,4 +135,12 @@ export interface StatBarProps {
 
 export interface StatIconsImgProps {
   stat: string;
+}
+
+export interface CardBg {
+  team: boolean;
+  playing: boolean;
+}
+export interface DrawCards {
+  selected: boolean;
 }
