@@ -24,6 +24,11 @@ body {
     
 }
 :root {
+    --orange : #FD6F33;
+    --wine : #5D180A;
+    --brown : #89504E;
+    --beige : #DDC1A5;
+    --white : #FFF;
 }
 `;
 

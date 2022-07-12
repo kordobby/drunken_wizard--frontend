@@ -6,7 +6,7 @@ import { createRoot } from "react-dom/client";
 /* Styles settings */
 import "./index.css";
 import GlobalStyled from "./Components/GlobalStyled/GlobalStyled";
-
+import "./index.scss";
 /* Redux-toolkit settings */
 import { Provider } from "react-redux";
 import { store } from "./redux/configStore";

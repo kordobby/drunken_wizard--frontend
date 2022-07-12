@@ -1,0 +1,215 @@
+$size: 138px;
+$circleColor: #222;
+$progressBackgroundColor: #fff;
+$progressColor: #03c75a;
+
+@mixin animation($animate...) {
+  $max: length($animate);
+  $animations: "";
+  @for $i from 1 through $max {
+    $animations: #{$animations + nth($animate, $i)};
+    @if $i < $max {
+      $animations: #{$animations + ", "};
+    }
+  }
+  animation: $animations;
+}
+
+@mixin frame($type) {
+  @if ($type == "circle_progress") {
+    position: relative;
+    width: $size;
+    height: $size;
+    background-color: $circleColor;
+  } @else {
+    position: absolute;
+  }
+
+  @if ($type == "left") or ($type == "right") {
+    top: 0;
+    left: 0;
+    width: $size;
+    height: $size;
+  } @else if ($type == "left_bar") or ($type == "right_bar") {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  border-radius: 50%;
+
+  @if ($type == "left") or ($type == "right_bar") {
+    clip: rect(0, $size/2, $size, 0);
+  } @else if ($type == "right") or ($type == "left_bar") {
+    clip: rect(0, $size, $size, $size/2);
+  }
+
+  @if ($type == "left") or ($type == "right") {
+    background-color: $progressBackgroundColor;
+  } @else if ($type == "left_bar") or ($type == "right_bar") {
+    background-color: $progressColor;
+  } @else if ($type == "value") {
+    background-color: $circleColor;
+  }
+
+  @if ($type == "left_bar") {
+    @include animation(left 20s linear 0s);
+  } @else if ($type == "right_bar") {
+    @include animation(right 20s linear 0s);
+  }
+}
+
+.circle_progress {
+  @include frame("circle_progress");
+  .left {
+    @include frame("left");
+    .bar {
+      @include frame("left_bar");
+    }
+  }
+  .right {
+    @include frame("right");
+    .bar {
+      @include frame("right_bar");
+    }
+  }
+  .value {
+    @include frame("value");
+  }
+}
+
+@keyframes left {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes right {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(180deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// action
+$progressColor-action: #ffdd00;
+
+@mixin frame($type) {
+  @if ($type == "circle_progress-action") {
+    position: relative;
+    width: $size;
+    height: $size;
+    background-color: $circleColor;
+  } @else {
+    position: absolute;
+  }
+
+  @if ($type == "left-action") or ($type == "right-action") {
+    top: 0;
+    left: 0;
+    width: $size;
+    height: $size;
+  } @else if ($type == "left_bar-action") or ($type == "right_bar-action") {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  border-radius: 50%;
+
+  @if ($type == "left-action") or ($type == "right_bar-action") {
+    clip: rect(0, $size/2, $size, 0);
+  } @else if ($type == "right-action") or ($type == "left_bar-action") {
+    clip: rect(0, $size, $size, $size/2);
+  }
+
+  @if ($type == "left-action") or ($type == "right-action") {
+    background-color: $progressBackgroundColor;
+  } @else if ($type == "left_bar-action") or ($type == "right_bar-action") {
+    background-color: $progressColor-action;
+  } @else if ($type == "value-action") {
+    background-color: $circleColor;
+  }
+
+  @if ($type == "left_bar-action") {
+    @include animation(left 60s linear 0s infinite);
+  } @else if ($type == "right_bar-action") {
+    @include animation(right 60s linear 0s infinite);
+  }
+}
+
+.circle_progress-action {
+  @include frame("circle_progress-action");
+  .left-action {
+    @include frame("left-action");
+    .bar-action {
+      @include frame("left_bar-action");
+    }
+  }
+  .right-action {
+    @include frame("right-action");
+    .bar-action {
+      @include frame("right_bar-action");
+    }
+  }
+  .value-action {
+    @include frame("value-action");
+  }
+}
+
+@keyframes left-action {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes right-action {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(180deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
