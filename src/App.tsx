@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 // pages
 import Main from "./pages/Main";
@@ -12,16 +12,30 @@ import Ingame from "./pages/Ingame";
 import { getCookie, deleteCookie } from "./shared/Cookies";
 import WaitingRoom from "./pages/WaitingRoom";
 import NotFound from "./pages/NotFound";
-import Rule from "./pages/Rule";
+import Rule from "./Components/RuleComponents/Rule";
+import { toggleFullScreen } from "./hooks/fullScreen";
+import { ResizeBtn, RuleBtn } from "./Components/UserComponents/UserStyled";
+import resize from "./images/imgs/Resize.svg";
 
 function App() {
   const navigate = useNavigate();
   const [loginState, setLoginState] = useState(false);
+  const [ruleModal, setRuleMoadl] = useState<boolean>(false);
   console.log(loginState);
   const token = getCookie("token");
   useEffect(() => {
     token ? setLoginState(true) : setLoginState(false);
   }, [token]);
+
+  const modalOpen = useCallback(() => {
+    setRuleMoadl(!ruleModal);
+    document.body.style.overflow = "hidden";
+  }, [ruleModal]);
+
+  const modalClose = useCallback(() => {
+    setRuleMoadl(!ruleModal);
+    document.body.style.overflow = "unset";
+  }, [ruleModal]);
 
   const logoutHandler = () => {
     deleteCookie("token");
@@ -47,13 +61,21 @@ function App() {
         <Route path="/signup" element={<SignUp />}></Route>
         <Route
           element={<KakaoRedirect setLoginState={setLoginState} />}
-          path="/auth/kakao/callback"
+          path="/auth/kakao/callback/"
         />
-        <Route path="/rule" element={<Rule />}></Route>
         <Route path="/waiting/:roomid" element={<WaitingRoom />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
         <Route path="/ingame" element={<Ingame></Ingame>}></Route>
       </Routes>
+      <ResizeBtn
+        onClick={() => {
+          toggleFullScreen(document.body);
+        }}
+      >
+        <img src={resize} />
+      </ResizeBtn>
+      {ruleModal && <Rule modalClose={modalClose} />}
+      <RuleBtn onClick={modalOpen}>룰북</RuleBtn>
       <button onClick={logoutHandler}>로그아웃</button>
     </>
   );

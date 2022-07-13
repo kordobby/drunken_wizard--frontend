@@ -5,7 +5,6 @@ import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 import useSound from "use-sound";
 // hooks
-import { toggleFullScreen } from "../hooks/fullScreen";
 import useInput from "../hooks/useInput";
 import { passwordCheckF } from "../hooks/useCheck";
 import { useFocus } from "../hooks/useFocus";
@@ -39,7 +38,6 @@ import regBtn from "../images/buttons/BTN_register.svg";
 import kakaoBtn from "../images/buttons/BTN_kakao.svg";
 import logo from "../images/logo/logo.svg";
 import speechBubble from "../images/imgs/SpeechBubble.svg";
-import resize from "../images/imgs/Resize.svg";
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
 
@@ -180,13 +178,6 @@ const Login = ({ setLoginState }: loginStateProps) => {
           />
         </a>
       </Wrap>
-      <ResizeBtn
-        onClick={() => {
-          toggleFullScreen(document.body);
-        }}
-      >
-        <img src={resize} />
-      </ResizeBtn>
     </BackWrap>
   );
 };

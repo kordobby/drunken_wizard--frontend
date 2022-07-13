@@ -10,7 +10,7 @@ import { getCookie } from "../shared/Cookies";
 
 const waitngRoomMT = (data: any) => {
   const accessToken = getCookie("token");
-  return axios.post(`http://13.124.63.214/game/${data}/join`, data, {
+  return axios.post(`http://3.35.53.184/game/${data}/join`, data, {
     headers: {
       Authorization: accessToken,
     },
@@ -18,7 +18,7 @@ const waitngRoomMT = (data: any) => {
 };
 const leaveRoomMT = (data: any) => {
   const accessToken = getCookie("token");
-  return axios.post(`http://13.124.63.214/game/${data}/leave`, data, {
+  return axios.post(`http://3.35.53.184/game/${data}/leave`, data, {
     headers: {
       Authorization: accessToken,
     },
@@ -28,7 +28,6 @@ const leaveRoomMT = (data: any) => {
 const WaitingRoom = () => {
   const navigate = useNavigate();
   const { roomid } = useParams();
-  // const socket = new SockJS("http://3.35.53.184/SufficientAmountOfAlcohol"); //   /ws-stomp
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const accessId = getCookie("id");

@@ -7,15 +7,15 @@ import LobbyChat from "../Components/LobbyComponents/LobbyChat";
 import Rooms from "../Components/LobbyComponents/Rooms";
 
 const Lobby = () => {
-  const [createRoomModal, setCreateRooMoadl] = useState<boolean>(false);
+  const [createRoomModal, setCreateRoomMoadl] = useState<boolean>(false);
 
   const modalOpen = useCallback(() => {
-    setCreateRooMoadl(!createRoomModal);
+    setCreateRoomMoadl(!createRoomModal);
     document.body.style.overflow = "hidden";
   }, [createRoomModal]);
 
   const modalClose = useCallback(() => {
-    setCreateRooMoadl(!createRoomModal);
+    setCreateRoomMoadl(!createRoomModal);
     document.body.style.overflow = "unset";
   }, [createRoomModal]);
 
