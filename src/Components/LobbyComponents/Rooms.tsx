@@ -4,7 +4,7 @@ import styled from "styled-components";
 // css
 import flex from "../GlobalStyled/flex";
 // apis
-import apis from "../../Shared/api/apis";
+import apis from "../../shared/api/apis";
 
 const Rooms = () => {
   const { data: roomList_query } = useQuery("room_list", apis.getRoomListQR, {

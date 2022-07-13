@@ -6,7 +6,7 @@ import useInput from "../../hooks/useInput";
 // interface
 import { ModalType } from "../../typings/db";
 // apis
-import apis from "../../Shared/api/apis";
+import apis from "../../shared/api/apis";
 // css
 import { Backdrop, CreatRoomBox, ModalContainer } from "./LobbyStyled";
 

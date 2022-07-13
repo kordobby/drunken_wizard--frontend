@@ -8,7 +8,7 @@ import useInput from "../hooks/useInput";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
 import { useFocus } from "../hooks/useFocus";
 // apis
-import apis from "../Shared/api/apis";
+import apis from "../shared/api/apis";
 // css
 import {
   BackWrap,

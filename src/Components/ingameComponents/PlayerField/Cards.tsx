@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAppSelector } from "../../../hooks/tsHooks";
 
 /* Cookies */
-import { getCookie } from "../../../Shared/Cookies";
+import { getCookie } from "../../../shared/Cookies";
 
 /* Interface */
 import { CardProps } from "../../../typings/typedb";

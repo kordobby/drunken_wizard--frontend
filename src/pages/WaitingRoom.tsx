@@ -4,9 +4,9 @@ import { useMutation, useQueryClient } from "react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 // stomp
 import stompJS from "stompjs";
-import { socket } from "../Shared/WebStomp";
+import { socket } from "../shared/WebStomp";
 // cookies
-import { getCookie } from "../Shared/Cookies";
+import { getCookie } from "../shared/Cookies";
 
 const waitngRoomMT = (data: any) => {
   const accessToken = getCookie("token");

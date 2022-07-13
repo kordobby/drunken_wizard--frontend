@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import flex from "../GlobalStyled/flex";
 // hooks
-import { getCookie } from "../../Shared/Cookies";
+import { getCookie } from "../../shared/Cookies";
 // stomp
 import stompJS from "stompjs";
-import { socket } from "../../Shared/WebStomp";
+import { socket } from "../../shared/WebStomp";
 // interface
 import { ChatType } from "../../typings/db";
 

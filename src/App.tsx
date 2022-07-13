@@ -7,9 +7,8 @@ import SignUp from "./pages/SignUp";
 import Lobby from "./pages/Lobby";
 import KakaoRedirect from "./pages/KakaoRedirect";
 import Ingame from "./pages/Ingame";
-
 // cookies
-import { getCookie, deleteCookie } from "./Shared/Cookies";
+import { getCookie, deleteCookie } from "./shared/Cookies";
 import WaitingRoom from "./pages/WaitingRoom";
 import NotFound from "./pages/NotFound";
 import Rule from "./Components/RuleComponents/Rule";
