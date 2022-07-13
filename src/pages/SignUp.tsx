@@ -8,7 +8,7 @@ import useInput from "../hooks/useInput";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
 import { useFocus } from "../hooks/useFocus";
 // apis
-import apis from "../shared/api/apis";
+import apis from "../Shared/api/apis";
 // css
 import {
   BackWrap,
@@ -23,7 +23,6 @@ import {
   IdCheckButton1,
   IdCheckButton2,
   Wrap,
-  ResizeBtn,
   Button1,
 } from "../Components/UserComponents/UserStyled";
 // svgs

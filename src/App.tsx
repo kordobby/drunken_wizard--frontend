@@ -6,8 +6,10 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Lobby from "./pages/Lobby";
 import KakaoRedirect from "./pages/KakaoRedirect";
+import Ingame from "./pages/Ingame";
+
 // cookies
-import { getCookie, deleteCookie } from "./shared/Cookies";
+import { getCookie, deleteCookie } from "./Shared/Cookies";
 import WaitingRoom from "./pages/WaitingRoom";
 import NotFound from "./pages/NotFound";
 import Rule from "./Components/RuleComponents/Rule";
@@ -63,6 +65,7 @@ function App() {
         />
         <Route path="/waiting/:roomid" element={<WaitingRoom />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
+        <Route path="/ingame" element={<Ingame></Ingame>}></Route>
       </Routes>
       <ResizeBtn
         onClick={() => {
