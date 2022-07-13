@@ -20,9 +20,9 @@ const LobbyChat = () => {
   const accessId = getCookie("id");
 
   // 채팅리스트 최대 개수 (휘발성)
-  // if (msgList.length > 20) {
-  //   setMsgList(msgList.shift(0));
-  // }
+  if (msgList.length > 20) {
+    setMsgList(msgList.shift());
+  }
 
   useEffect(() => {
     socketSubscribe();

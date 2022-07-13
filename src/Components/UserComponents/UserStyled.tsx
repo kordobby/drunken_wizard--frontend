@@ -28,11 +28,11 @@ export const Wrap = styled.div`
 
 export const LogLogo = styled.img`
   display: flex;
-  margin: 130px 0 80px 0;
+  margin: 50px 0 80px 0;
 `;
 export const SignLogo = styled.img`
   display: flex;
-  margin: 130px 0 40px 0;
+  margin: 50px 0 40px 0;
 `;
 
 export const InputBoxId = styled.div`
@@ -54,20 +54,12 @@ export const Input = styled.input`
   outline-offset: -1px;
   font-size: 24px;
   position: relative;
-  /* color: #fd6f33; */
-  &::placeholder {
-    /* color: #fd6f33; */
-  }
-
-  &:focus::placeholder {
-    color: white;
-  }
   &:focus {
-    color: white;
+    color: #fd6f33;
     outline: 1px solid #fd6f33;
     outline-offset: -1px;
     box-shadow: 0px 0px 10px 2px #fd6f33;
-    text-shadow: 0px 0px 4px #a13202, 0 0 0em blue, 0 0 0.1em #fd6f33;
+    text-shadow: 0px 0px 4px #ffffff, 0 0 0em blue, 0 0 0.1em #ffffff;
   }
   &:hover {
     filter: brightness(110%);
@@ -176,12 +168,29 @@ export const ButtonBox = styled.div`
   margin: 0;
 `;
 
+// 전체화면 전환
 export const ResizeBtn = styled.button`
   border: none;
   background-color: transparent;
   position: fixed;
   top: 50px;
   right: 50px;
+  &:hover {
+    cursor: pointer;
+    filter: brightness(110%);
+    box-shadow: 0px 0px 10px 2px #fd6f33;
+  }
+`;
+
+// 룰북 바로가기
+export const RuleBtn = styled.button`
+  border: none;
+  background-color: transparent;
+  position: fixed;
+  top: 50px;
+  right: 120px;
+  color: #fd6f33;
+  font-size: 20px;
   &:hover {
     cursor: pointer;
     filter: brightness(110%);

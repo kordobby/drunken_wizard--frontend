@@ -1,15 +1,16 @@
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 // cookies
-import { setCookie } from "../shared/Cookies";
+import { getCookie, setCookie } from "../shared/Cookies";
 // interface
 import { loginStateProps } from "../typings/db";
 // api
 import api from "../shared/api/core/api";
+import { useEffect, useState } from "react";
 
 const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
-
+  const accessToken = getCookie("token");
   let code = new URL(window.location.href).searchParams.get("code");
 
   const kakaoQR = () => {
@@ -22,7 +23,6 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
         path: "/",
         expire: "after60m",
       });
-      // console.log("성공했어!", res.data);
       setCookie("id", res.data.id, {
         path: "/",
         expire: "after60m",
@@ -35,6 +35,7 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
         path: "/",
         expire: "after60m",
       });
+
       setLoginState(true);
       navigate("/lobby");
     },
@@ -45,6 +46,11 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
     },
   });
 
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/lobby");
+    }
+  }, [accessToken]);
   return (
     <div>
       <div>

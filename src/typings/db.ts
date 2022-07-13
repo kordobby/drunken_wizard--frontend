@@ -8,6 +8,7 @@ export interface IUser {
   password: string;
   passwordCheck: string;
 }
+
 // login
 export interface LogUser {
   username: string;

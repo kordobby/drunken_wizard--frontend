@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import useSound from "use-sound";
 // hooks
 import useInput from "../hooks/useInput";
-import { toggleFullScreen } from "../hooks/fullScreen";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
 import { useFocus } from "../hooks/useFocus";
 // apis
@@ -34,7 +33,6 @@ import regBtn from "../images/buttons/BTN_register.svg";
 import regBtn2 from "../images/buttons/BTN_register2.svg";
 import logo from "../images/logo/logo.svg";
 import speechBubble from "../images/imgs/SpeechBubble.svg";
-import resize from "../images/imgs/Resize.svg";
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
 
@@ -374,13 +372,6 @@ const SignUp = () => {
           </Link>
         </ButtonBox>
       </Wrap>
-      <ResizeBtn
-        onClick={() => {
-          toggleFullScreen(document.body);
-        }}
-      >
-        <img src={resize} />
-      </ResizeBtn>
     </BackWrap>
   );
 };
