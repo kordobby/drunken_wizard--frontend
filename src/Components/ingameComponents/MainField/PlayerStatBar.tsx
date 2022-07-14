@@ -24,56 +24,56 @@ const PlayerStatBar = ({
     <StatBarWrap>
       <StatBarRow>
         {/* 수면 */}
-        {sleepDuration !== 0 && (
+        {sleepDuration === 0 && (
           <StatIconBox>
             <StatIcon stat="sleepDuration"></StatIcon>
             <StatCnt>{sleepDuration}</StatCnt>
           </StatIconBox>
         )}
         {/* 침묵 */}
-        {mutedDuration !== 0 && (
+        {mutedDuration === 0 && (
           <StatIconBox>
             <StatIcon stat="mutedDuration"></StatIcon>
             <StatCnt>{mutedDuration}</StatCnt>
           </StatIconBox>
         )}
         {/* 석화 */}
-        {petrifiedDuration !== 0 && (
+        {petrifiedDuration === 0 && (
           <StatIconBox>
             <StatIcon stat="petrifiedDuration"></StatIcon>
             <StatCnt>{petrifiedDuration}</StatCnt>
           </StatIconBox>
         )}
         {/* 독 */}
-        {poisonedDuration !== 0 && (
+        {poisonedDuration === 0 && (
           <StatIconBox>
             <StatIcon stat="poisonedDuration"></StatIcon>
             <StatCnt>{poisonedDuration}</StatCnt>
           </StatIconBox>
         )}
         {/* 기절 */}
-        {stunnedDuration !== 0 && (
+        {stunnedDuration === 0 && (
           <StatIconBox>
             <StatIcon stat="stunnedDuration"></StatIcon>
             <StatCnt>{stunnedDuration}</StatCnt>
           </StatIconBox>
         )}
         {/* 약화 */}
-        {weakDuration !== 0 && (
+        {weakDuration === 0 && (
           <StatIconBox>
             <StatIcon stat="weakDuration"></StatIcon>
             <StatCnt>{weakDuration}</StatCnt>
           </StatIconBox>
         )}
         {/* 뎀증? */}
-        {damageModifierDuration !== 0 && (
+        {damageModifierDuration === 0 && (
           <StatIconBox>
             <StatIcon stat="damageModifierDuration"></StatIcon>
             <StatCnt>{weakDuration}</StatCnt>
           </StatIconBox>
         )}
         {/* 실드 */}
-        {shield && (
+        {!shield && (
           <StatIconBox>
             <StatIcon stat="shield"></StatIcon>
           </StatIconBox>

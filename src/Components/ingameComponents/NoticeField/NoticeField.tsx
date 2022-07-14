@@ -5,8 +5,7 @@ import { useAppSelector } from "../../../hooks/tsHooks";
 import { HeaderProps } from "../../../typings/typedb";
 
 /* CSS & SC */
-import styled from "styled-components";
-import flex from "../../GlobalStyled/flex";
+import { HeaderWrap } from "../InGameStyled";
 
 const NoticeField = ({ status }: HeaderProps) => {
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
@@ -17,7 +16,6 @@ const NoticeField = ({ status }: HeaderProps) => {
 
   return (
     <>
-      {thisPlayerId === nowPlayerId && <h1>내 턴입니다.</h1>}
       <HeaderWrap>
         {status === "READY" && <h1>게임이 곧 시작됩니다.</h1>}
         {status === "GREETING" && <h1>내 직업을 확인하세요!</h1>}
@@ -27,12 +25,5 @@ const NoticeField = ({ status }: HeaderProps) => {
     </>
   );
 };
-
-const HeaderWrap = styled.div`
-  width: 100%;
-  height: 100px;
-  background-color: #9c71e1;
-  ${flex({ direction: "column", justify: "center", align: "center" })}
-`;
 
 export default NoticeField;

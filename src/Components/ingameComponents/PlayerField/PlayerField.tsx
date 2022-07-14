@@ -5,13 +5,20 @@ import React, { FunctionComponent, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../../hooks/tsHooks";
 
 /* Modules */
-import { setTargetTK } from "../../../redux/modules/ingameSlice";
+import {
+  setSelectUseCardIdTK,
+  setTargetTK,
+} from "../../../redux/modules/ingameSlice";
 
 /* Interface */
-import { PlayerProps } from "../../../typings/typedb";
+import {
+  Card,
+  PlayerFieldProps,
+  playersSetting,
+} from "../../../typings/typedb";
 
 /* Components */
-import Cards from "./Cards";
+// import Cards from "./Cards";
 import MyProfile from "./MyProfile";
 
 /* CSS & SC */
@@ -19,31 +26,110 @@ import {
   PlayerFieldWrap,
   CardsArea,
   PlayerCtrlWrap,
+  TurnOverBtn,
   TargetBtn,
+  TargetNullBtn,
+  PlayerCards,
 } from "../InGameStyled";
 
-const PlayerField: FunctionComponent<PlayerProps> = ({
-  setFindTargetGroup,
-  findTargetGroup,
-  selectUseCardHandler,
-  sendUseCardHandler,
-  selectDisCardHandler,
+const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   sendStompMsgFunc,
-  selectedCardName,
 }) => {
   /* useState */
   const [healCnt, setHealCnt] = useState<boolean>(false);
   const [disableHeal, setDisableHeal] = useState<boolean>(false);
 
+  // card Use & Discard
+  const [target, setTarget] = useState(0);
+  const [mouseIn, setMouseIn] = useState(false);
+  const [error, setError] = useState(false);
+
   /* tookit things */
   const dispatch = useAppDispatch();
-  const myCards = useAppSelector((state) => state.game?.myCards);
-  console.log(myCards);
-  const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
+  // card Use & Targeting settings
+  const selectedUseCardId = useAppSelector(
+    (state) => state.game.game.selectForUseCardId
+  );
+  const selectedTarget = useAppSelector(
+    (state) => state.game.game.targetPlayer
+  );
+
+  // find my states
+  const nowPlayer = useAppSelector((state) => state.game.game.nowPlayerId);
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
+
+  // settings for make buttons
   const playersData = useAppSelector((state) => state.game.players);
-  const targetSet = useAppSelector((state) => state.game.game.targetPlayer);
   const playersList = Object.values(playersData);
+
+  /* UseCard Functions */
+  // 카드 위로 마우스가 올라가면, 카드 아이디를 스토어에 저장
+  const onMouseOverCards = (
+    event: React.MouseEvent<HTMLDivElement>,
+    cardId: number,
+    mana: number
+  ) => {
+    setTarget(cardId); // 마우스를 오버했을 때 해당 item의 값으로 target 변경
+    setMouseIn(Boolean(event)); // 마우스 오버 확인
+    dispatch(setSelectUseCardIdTK(cardId));
+    if (mana < thisPlayer.mana) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+  };
+
+  // 카드를 떠나면 선택된 카드 초기화
+  const onMouseLeaveCards = (event: React.MouseEvent<HTMLDivElement>) => {
+    setTarget(0);
+    setMouseIn(!event);
+    dispatch(setSelectUseCardIdTK(0));
+  };
+
+  // 타겟팅 버튼 함수들
+  const onMouseOverTargeting = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    value: playersSetting
+  ) => {
+    dispatch(setTargetTK(value));
+  };
+  const onMouseLeaveTargeting = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    dispatch(setTargetTK(0));
+  };
+
+  // USECARD FUNC
+  const useCardHandler = () => {
+    const data = {
+      cardId: selectedUseCardId,
+      targetId: selectedTarget,
+    };
+    sendStompMsgFunc("1", thisPlayer.playerId, "USECARD", data);
+  };
+
+  // DISCARD FUNC
+  const discardHanlder = () => {
+    const data = {
+      cardId: selectedUseCardId,
+    };
+    sendStompMsgFunc("1", thisPlayer.playerId, "DISCARD", data);
+  };
+
+  // about CSS function
+  const generateClassName = (
+    target: number,
+    itemValue: number,
+    isMouseIn: boolean
+  ) => {
+    if (itemValue === target && isMouseIn) {
+      return "active";
+    }
+    if (itemValue === target || mouseIn) {
+      return "normal";
+    }
+    return "default";
+  };
 
   /* Healer 고유 능력 */
   const openHealModalHandler = () => {
@@ -56,7 +142,6 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
       targetPlayerId: Number(targetId),
       cardId: 0,
     };
-    setFindTargetGroup("SELECT");
     sendStompMsgFunc("1", thisPlayer.playerId, "USECARD", data);
     setHealCnt(false);
     setDisableHeal(true);
@@ -64,39 +149,36 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
 
   // HEALER BTN(COMPONENT)
   const HealTargetBtns = playersList.map((value) => (
-    <TargetBtn
+    <button
       id={String(value.playerId)}
       onClick={sendHealMsgHandler}
       className={String(value.playerId)}
       name={value.username}
     >
       {value.username}
-    </TargetBtn>
+    </button>
   ));
 
   /* 카드사용 관련 함수들 */
-  const confirmTargetHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const targetId = (event.target as HTMLButtonElement).id;
-    dispatch(setTargetTK(targetId));
-  };
 
   // TARGETING BTN(COMPONENT) :: SELECT
   const TargetBtns = playersList.map((value) => (
     <TargetBtn
-      id={String(value.playerId)}
-      onClick={confirmTargetHandler}
-      className={String(value.playerId)}
-      name={value.username}
+      key={value.playerId}
+      onMouseOver={(event: any) => onMouseOverTargeting(event, value)}
+      onMouseLeave={onMouseLeaveTargeting}
+      onClick={useCardHandler}
+      disabled={error}
     >
       {value.username}
     </TargetBtn>
   ));
 
   // TARGETING BTN(COMPONENT) :: ME / ALLY / ENEMY
-  const TargetNullBtn = ["Me", "Ally", "Enemy"].map((value) => (
-    <TargetBtn onClick={confirmTargetHandler} id="0" className="auto">
+  const TargetNullBtns = ["Me", "Ally", "Enemy"].map((value, index: number) => (
+    <TargetNullBtn key={index} onClick={useCardHandler}>
       {value}
-    </TargetBtn>
+    </TargetNullBtn>
   ));
 
   return (
@@ -105,57 +187,62 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
         <MyProfile></MyProfile>
       </div>
       <CardsArea>
-        {myCards.map((value: any) => (
-          <Cards
-            key={value?.cardId}
-            team={value?.team}
-            id={value?.cardId}
-            className={value?.target}
-            name={value?.cardName}
-            selectUseCardHandler={selectUseCardHandler}
-            selectDisCardHandler={selectDisCardHandler}
-          ></Cards>
+        {thisPlayer.cardsOnHand.map((value: Card, index: number) => (
+          <PlayerCards
+            key={value.cardId}
+            className={generateClassName(target, index + 1, mouseIn)}
+            onMouseOver={(event: any) =>
+              onMouseOverCards(event, value.cardId, value.manaCost)
+            }
+            onMouseLeave={onMouseLeaveCards}
+            value={value}
+          >
+            {nowPlayer === thisPlayer.playerId &&
+              value.target === "SELECT" &&
+              mouseIn &&
+              target === value.cardId && (
+                <>
+                  {TargetBtns}
+                  <button onClick={discardHanlder}>버리기</button>
+                </>
+              )}
+            {nowPlayer === thisPlayer.playerId &&
+              value.target === "Me" &&
+              mouseIn && (
+                <>
+                  {TargetNullBtns[0]}
+                  <button onClick={discardHanlder}>버리기</button>
+                </>
+              )}
+            {nowPlayer === thisPlayer.playerId &&
+              value.target === "Ally" &&
+              mouseIn &&
+              target === value.cardId && (
+                <>
+                  {TargetNullBtns[1]}
+                  <button onClick={discardHanlder}>버리기</button>
+                </>
+              )}
+            {nowPlayer === thisPlayer.playerId &&
+              value.target === "Enemy" &&
+              mouseIn &&
+              target === value.cardId && (
+                <>
+                  {TargetNullBtns[2]}
+                  <button onClick={discardHanlder}>버리기</button>
+                </>
+              )}
+          </PlayerCards>
         ))}
       </CardsArea>
       <div>
         <PlayerCtrlWrap>
-          {/* TARGET GROUP => "ME : 자신", "SELECT : 나 포함 모든 사람 중 하나", "ENEMY : 모든 적", "ALLY : 모든 아군"*/}
-          {/* ME, ENEMY, ALLY => null, SELECT => targetID */}
-
-          {findTargetGroup === "ME" && (
-            <div>
-              <p>선택한 카드 : {selectedCardName}</p> {TargetNullBtn[0]}
-            </div>
-          )}
-          {findTargetGroup === "ALLY" && (
-            <div>
-              <p>선택한 카드 : {selectedCardName}</p> {TargetNullBtn[1]}
-            </div>
-          )}
-          {findTargetGroup === "ENEMY" && (
-            <div>
-              <p>선택한 카드 : {selectedCardName}</p> {TargetNullBtn[2]}
-            </div>
-          )}
-          <p>{nowPlayerId}</p>
-          <p>{thisPlayer.playerId}</p>
-          {findTargetGroup === "SELECT" && (
-            <div>
-              <p>선택한 카드 : {selectedCardName}</p>
-              <p>타겟을 설정해주세요!</p>
-              <p>선택한 타켓 : {targetSet}</p>
-              {TargetBtns[0]}
-              {TargetBtns[1]}
-              {TargetBtns[2]}
-              {TargetBtns[3]}
-            </div>
-          )}
           {/* 힐러일 때 나오는 모달 창 */}
-          {nowPlayerId === thisPlayer.playerId &&
+          {nowPlayer === thisPlayer.playerId &&
           thisPlayer.charactorClass === "HEALER" ? (
-            <TargetBtn onClick={openHealModalHandler} disabled={disableHeal}>
+            <button onClick={openHealModalHandler} disabled={disableHeal}>
               heal
-            </TargetBtn>
+            </button>
           ) : (
             <></>
           )}
@@ -167,18 +254,13 @@ const PlayerField: FunctionComponent<PlayerProps> = ({
               {HealTargetBtns[3]}
             </div>
           )}
-          {nowPlayerId === thisPlayer.playerId && (
-            <div>
-              <TargetBtn onClick={sendUseCardHandler}>카드 사용하기</TargetBtn>
-              <TargetBtn
-                onClick={() =>
-                  sendStompMsgFunc("1", thisPlayer.playerId, "ENDTURN", null)
-                }
-              >
-                내 턴 종료하기
-              </TargetBtn>
-            </div>
-          )}
+          <TurnOverBtn
+            onClick={() =>
+              sendStompMsgFunc("1", thisPlayer.playerId, "ENDTURN", null)
+            }
+          >
+            내 턴 종료하기
+          </TurnOverBtn>
         </PlayerCtrlWrap>
       </div>
     </PlayerFieldWrap>

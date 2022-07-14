@@ -15,10 +15,12 @@ const MyProfile = () => {
     <>
       <ProfileSizing>
         <ProfileIcon job={thisPlayer.charactorClass}></ProfileIcon>
-        <div style={{ marginTop: "10px", color: "white" }}>
-          <p>{thisPlayer.charactorClass}</p>
-          <p>HP : {thisPlayer.health}</p>
-          <p>MP : {thisPlayer.mana}</p>
+        <div style={{ marginTop: "20px", color: "white" }}>
+          <p style={{ marginRight: "15px" }}>
+            player{thisPlayer.charactorClass}
+          </p>
+          <span style={{ marginRight: "15px" }}>HP : {thisPlayer.health}</span>
+          <span>MP : {thisPlayer.mana}</span>
         </div>
         {timerCtrl === "draw" && <DrawTimer />}
         {timerCtrl === "action" && <ActionTimer />}

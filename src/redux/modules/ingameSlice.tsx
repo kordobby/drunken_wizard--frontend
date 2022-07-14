@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { playersSetting, Card } from "../../typings/typedb";
+import { playersSetting, Card, DrawCard } from "../../typings/typedb";
 
 interface ingameState {
   players: {
@@ -18,18 +18,20 @@ interface ingameState {
     targetPlayer: number;
     selectForUseCardId: number;
     selectForUseCardName: string;
+    selectableCnt: number;
     selectableCards: Card[];
     selectedDrawCard: number[];
     timer: string;
+    drawSelectCards: DrawCard[];
   };
 }
 
 const initialState: ingameState = {
   players: {
     thisPlayer: {
-      cardsOnHand: "",
+      cardsOnHand: [],
       charactorClass: "",
-      playerId: 0,
+      playerId: 1,
       health: 0,
       username: "",
       dead: false,
@@ -47,9 +49,9 @@ const initialState: ingameState = {
       damageModifierDuration: 0,
     },
     teamPlayer: {
-      cardsOnHand: "",
+      cardsOnHand: [],
       charactorClass: "",
-      playerId: 0,
+      playerId: 2,
       health: 0,
       username: "",
       dead: false,
@@ -67,9 +69,9 @@ const initialState: ingameState = {
       damageModifierDuration: 0,
     },
     enemyPlayerA: {
-      cardsOnHand: "",
+      cardsOnHand: [],
       charactorClass: "",
-      playerId: 0,
+      playerId: 3,
       health: 0,
       username: "",
       dead: false,
@@ -87,9 +89,9 @@ const initialState: ingameState = {
       damageModifierDuration: 0,
     },
     enemyPlayerB: {
-      cardsOnHand: "",
+      cardsOnHand: [],
       charactorClass: "",
-      playerId: 0,
+      playerId: 4,
       health: 0,
       username: "",
       dead: false,
@@ -112,12 +114,14 @@ const initialState: ingameState = {
     status: "",
     gamOver: false, // 필요없을지도!
     nowPlayer: "",
-    nowPlayerId: 0,
+    nowPlayerId: 1,
     cardCrave: "",
     targetPlayer: 0,
     selectForUseCardId: 0,
     selectForUseCardName: "",
+    drawSelectCards: [],
     selectableCards: [],
+    selectableCnt: 0,
     selectedDrawCard: [],
     timer: "",
   },
@@ -129,7 +133,7 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     // 초기 셋팅, 매 턴마다 상태 변화시
-    setNowPlayerTK: (state, action) => {
+    setNowPlayerNameTK: (state, action) => {
       state.game.nowPlayer = action.payload;
     },
     setNowPlayerIdTK: (state, action) => {
@@ -165,11 +169,6 @@ const gameSlice = createSlice({
     setSelectDrawCardsTK: (state, action) => {
       state.game.selectedDrawCard = action.payload;
     },
-    cancelSelectDrawCardsTK: (state, action) => {
-      state.game.selectedDrawCard = state.game.selectedDrawCard.filter(
-        (value) => value !== action.payload
-      );
-    },
     // 사용한 카드, 버려진 카드, 드로우 실패한 카드
     setCraveTK: (state, action) => {
       state.game.cardCrave = action.payload;
@@ -181,32 +180,52 @@ const gameSlice = createSlice({
     setTimerTK: (state, action) => {
       state.game.timer = action.payload;
     },
+    setSelectableCardCnt: (state, action) => {
+      state.game.selectableCnt = action.payload;
+    },
     setSelectUseCardIdTK: (state, action) => {
       state.game.selectForUseCardId = action.payload;
     },
     setSelectUseCardNameTK: (state, action) => {
       state.game.selectForUseCardName = action.payload;
     },
+    setDrawCardSelectTK: (state, action) => {
+      state.game.drawSelectCards.push(action.payload);
+    },
+    cancelSelectDrawCardsTK: (state, action) => {
+      state.game.drawSelectCards = state.game.drawSelectCards.filter(
+        (value) => value.cardId !== action.payload.cardId
+      );
+    },
+    clearDrawCardsTK: (state, action) => {
+      state.game.drawSelectCards = [];
+    },
+    updateMyCardsTK: (state, action) => {
+      state.players.thisPlayer.cardsOnHand = action.payload;
+    },
   },
 });
 
 export const {
   setNowPlayerIdTK,
-  setThisPlayerTK,
-  setTeamPlayerTK,
-  setEnemyPlayerATK,
-  setEnemyPlayerBTK,
-  setMyCardsTK,
-  setNowPlayerTK,
+  setNowPlayerNameTK,
+  setThisPlayerTK, // use
+  setTeamPlayerTK, // use
+  setEnemyPlayerATK, // use
+  setEnemyPlayerBTK, // use
+  setMyCardsTK, // delete
   setCraveTK,
-  setTargetTK,
+  setTargetTK, // use
   addBonusCardTK,
-  setTimerTK,
-  setSelectDrawCardsTK,
-  cancelSelectDrawCardsTK,
+  setTimerTK, // use
+  cancelSelectDrawCardsTK, // use
+  setSelectableCardCnt, //use
   setSelectableCardTK,
   setMyCardsUpdateTK,
-  setSelectUseCardIdTK,
+  setSelectUseCardIdTK, // use
   setSelectUseCardNameTK,
+  setDrawCardSelectTK, // use
+  clearDrawCardsTK, // use
+  updateMyCardsTK, // use
 } = gameSlice.actions;
 export default gameSlice.reducer;
