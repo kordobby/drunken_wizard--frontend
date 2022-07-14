@@ -10,9 +10,9 @@ import { HeaderWrap } from "../InGameStyled";
 const NoticeField = ({ status }: HeaderProps) => {
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
-  const thisPlayerId = useAppSelector(
-    (state) => state.game.players.thisPlayer.playerId
-  );
+  // const thisPlayerId = useAppSelector(
+  //   (state) => state.game.players.thisPlayer.playerId
+  // );
 
   return (
     <>

@@ -16,9 +16,12 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
   const selectableCnt = useAppSelector(
     (state) => state.game.game.selectableCnt
   );
+  console.log(selectableCnt);
   const selectableCards = useAppSelector(
     (state) => state.game.game.selectableCards
   );
+  console.log(selectableCards);
+  console.log(selectableCards);
   const selectedCardsArr = useAppSelector(
     (state) => state.game.game.drawSelectCards
   );
@@ -40,15 +43,6 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
   };
   return (
     <DrawModalWrap>
-      {thisPlayer.charactorClass === "FARSEER" ? (
-        <div>
-          <p>당신은 미래를 보는 파시어입니다.</p>
-          <p>원하는 카드 두장을 선택하세요.</p>
-          <p>선택하지 않은 카드는 카드 덱으로 돌아갑니다.</p>
-        </div>
-      ) : (
-        <p>드로우할 카드를 선택하세요.</p>
-      )}
       <DrawableCardsWrap>
         {selectableCards?.map((value: any) => (
           <DrawableCards

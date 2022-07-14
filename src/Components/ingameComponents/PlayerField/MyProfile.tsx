@@ -14,7 +14,10 @@ const MyProfile = () => {
   return (
     <>
       <ProfileSizing>
-        <ProfileIcon job={thisPlayer.charactorClass}></ProfileIcon>
+        <ProfileIcon
+          job={thisPlayer.charactorClass}
+          dead={thisPlayer.dead}
+        ></ProfileIcon>
         <div style={{ marginTop: "20px", color: "white" }}>
           <p style={{ marginRight: "15px" }}>
             player{thisPlayer.charactorClass}

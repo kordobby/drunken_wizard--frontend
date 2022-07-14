@@ -31,7 +31,7 @@ const initialState: ingameState = {
     thisPlayer: {
       cardsOnHand: [],
       charactorClass: "",
-      playerId: 1,
+      playerId: 0,
       health: 0,
       username: "",
       dead: false,
@@ -51,7 +51,7 @@ const initialState: ingameState = {
     teamPlayer: {
       cardsOnHand: [],
       charactorClass: "",
-      playerId: 2,
+      playerId: 0,
       health: 0,
       username: "",
       dead: false,
@@ -71,7 +71,7 @@ const initialState: ingameState = {
     enemyPlayerA: {
       cardsOnHand: [],
       charactorClass: "",
-      playerId: 3,
+      playerId: 0,
       health: 0,
       username: "",
       dead: false,
@@ -91,7 +91,7 @@ const initialState: ingameState = {
     enemyPlayerB: {
       cardsOnHand: [],
       charactorClass: "",
-      playerId: 4,
+      playerId: 0,
       health: 0,
       username: "",
       dead: false,
@@ -114,7 +114,7 @@ const initialState: ingameState = {
     status: "",
     gamOver: false, // 필요없을지도!
     nowPlayer: "",
-    nowPlayerId: 1,
+    nowPlayerId: 0,
     cardCrave: "",
     targetPlayer: 0,
     selectForUseCardId: 0,

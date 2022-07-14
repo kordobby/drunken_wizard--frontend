@@ -42,7 +42,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // card Use & Discard
   const [target, setTarget] = useState(0);
   const [mouseIn, setMouseIn] = useState(false);
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
 
   /* tookit things */
   const dispatch = useAppDispatch();
@@ -72,11 +72,11 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     setTarget(cardId); // 마우스를 오버했을 때 해당 item의 값으로 target 변경
     setMouseIn(Boolean(event)); // 마우스 오버 확인
     dispatch(setSelectUseCardIdTK(cardId));
-    if (mana < thisPlayer.mana) {
-      setError(true);
-    } else {
-      setError(false);
-    }
+    // if (mana < thisPlayer.mana) {
+    //   setError(true);
+    // } else {
+    //   setError(false);
+    // }
   };
 
   // 카드를 떠나면 선택된 카드 초기화
@@ -91,7 +91,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     event: React.MouseEvent<HTMLButtonElement>,
     value: playersSetting
   ) => {
-    dispatch(setTargetTK(value));
+    dispatch(setTargetTK(value.playerId));
   };
   const onMouseLeaveTargeting = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -103,7 +103,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   const useCardHandler = () => {
     const data = {
       cardId: selectedUseCardId,
-      targetId: selectedTarget,
+      targetPlayerId: selectedTarget,
     };
     sendStompMsgFunc("1", thisPlayer.playerId, "USECARD", data);
   };
@@ -168,7 +168,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       onMouseOver={(event: any) => onMouseOverTargeting(event, value)}
       onMouseLeave={onMouseLeaveTargeting}
       onClick={useCardHandler}
-      disabled={error}
     >
       {value.username}
     </TargetBtn>
@@ -197,6 +196,9 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
             onMouseLeave={onMouseLeaveCards}
             value={value}
           >
+            <span>{value.cardName}</span>
+            <span>{value.manaCost}</span>
+            <span>{value.target}</span>
             {nowPlayer === thisPlayer.playerId &&
               value.target === "SELECT" &&
               mouseIn &&
@@ -207,15 +209,16 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
                 </>
               )}
             {nowPlayer === thisPlayer.playerId &&
-              value.target === "Me" &&
-              mouseIn && (
+              value.target === "ME" &&
+              mouseIn &&
+              target === value.cardId && (
                 <>
                   {TargetNullBtns[0]}
                   <button onClick={discardHanlder}>버리기</button>
                 </>
               )}
             {nowPlayer === thisPlayer.playerId &&
-              value.target === "Ally" &&
+              value.target === "ALLY" &&
               mouseIn &&
               target === value.cardId && (
                 <>
@@ -224,7 +227,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
                 </>
               )}
             {nowPlayer === thisPlayer.playerId &&
-              value.target === "Enemy" &&
+              value.target === "ENEMY" &&
               mouseIn &&
               target === value.cardId && (
                 <>

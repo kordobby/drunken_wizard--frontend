@@ -26,7 +26,6 @@ const PlayerIcons = () => {
         <Profiles team={value.team} playing={value.playerId === nowPlayer}>
           <ProfilesImage job={value.charactorClass} dead={value.dead}>
             <PlayerNameTag>
-              <span>hello</span>
               <span>{value.username}</span>
             </PlayerNameTag>
           </ProfilesImage>

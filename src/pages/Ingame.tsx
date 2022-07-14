@@ -39,7 +39,7 @@ import {
   StGameWrap,
   MainWrap,
 } from "../Components/IngameComponents/InGameStyled";
-import { playersSetting } from "../typings/typedb";
+import { playersSetting, Card } from "../typings/typedb";
 
 const Ingame = () => {
   /* useState */
@@ -49,6 +49,45 @@ const Ingame = () => {
   // #DRAW-TURN :: Modal Ctrl
   const [drawModalOpen, setDrawModalOpen] = useState<boolean>(false);
   const [update, setUpdate] = useState<playersSetting[]>([]);
+  const [updateOne, setUpdateOne] = useState<{
+    cardsOnHand: Card[];
+    charactorClass: string;
+    playerId: number;
+    health: number;
+    username: string;
+    dead: boolean;
+    mana: number;
+    manaCostModifierDuration: number;
+    mutedDuration: number;
+    petrifiedDuration: number;
+    poisonedDuration: number;
+    shield: boolean;
+    sleepDuration: number;
+    stunnedDuration: number;
+    team: boolean;
+    turnOrder: number;
+    weakDuration: number;
+    damageModifierDuration: number;
+  }>({
+    cardsOnHand: [],
+    charactorClass: "",
+    playerId: 0,
+    health: 0,
+    username: "",
+    dead: false,
+    mana: 0,
+    manaCostModifierDuration: 0,
+    mutedDuration: 0,
+    petrifiedDuration: 0,
+    poisonedDuration: 0,
+    shield: false,
+    sleepDuration: 0,
+    stunnedDuration: 0,
+    team: false,
+    turnOrder: 0,
+    weakDuration: 0,
+    damageModifierDuration: 0,
+  });
 
   /* tookit things */
   const dispatch = useAppDispatch();
@@ -90,6 +129,8 @@ const Ingame = () => {
           const msgData = JSON.parse(response?.content);
           const msgSender = response?.sender;
           const playersInfo = msgData.players;
+          console.log(response);
+          console.log(msgData);
           switch (msgType) {
             case "START":
               const findNowPlayer = playersInfo.filter(
@@ -207,11 +248,8 @@ const Ingame = () => {
             case "PRECHECK":
               if (msgData.gameOver === true) {
                 sendStompMsgFunc("1", myId, "ENDGAME", null);
-              } else if (
-                msgSender === myId &&
-                msgData.player[0].dead === false
-              ) {
-                dispatch(setThisPlayerTK(msgData.player[0]));
+              } else if (msgSender === myId && msgData.player.dead === false) {
+                dispatch(setThisPlayerTK(msgData.player));
                 dispatch(setSelectableCardTK(msgData.cardsDrawed));
                 sendStompMsgFunc("1", myId, "DRAW", null);
               } else if (msgSender !== myId) {
@@ -261,18 +299,19 @@ const Ingame = () => {
               if (msgSender === myId && msgData === "마나부족") {
                 alert("마나가 부족합니다!");
               } else {
-                setUpdate(msgData.player);
+                setUpdate(msgData.players);
                 setStatus("USECARD");
               }
               break;
             case "DISCARD":
               if (msgSender === myId) {
-                dispatch(setMyCardsUpdateTK(msgData.player[0].cardsOnHand));
+                console.log("카드 바꿉니다");
+                dispatch(setMyCardsUpdateTK(msgData.cardsOnHand));
               }
               break;
             case "ENDTURN":
               clearActionTurnFunc();
-              setUpdate(msgData.player);
+              setUpdateOne(msgData.player);
               dispatch(setNowPlayerIdTK(msgData.nextPlayerId));
               setStatus("CHANGETURN");
               break;
@@ -294,11 +333,6 @@ const Ingame = () => {
         setTimeout(() => {
           sendStompMsgFunc("1", myId, "START", null);
         }, 3000);
-        break;
-      case "GREETING":
-        setTimeout(() => {
-          setStatus("START");
-        }, 7000);
         break;
       case "WAITING":
         console.log("아직 내 턴이 아니옵니다.");
@@ -340,18 +374,18 @@ const Ingame = () => {
         );
         dispatch(setNowPlayerNameTK(nowPlayerName[0].username));
 
-        switch (update[0].playerId) {
+        switch (updateOne.playerId) {
           case playersData.thisPlayer.playerId:
-            dispatch(setThisPlayerTK(update[0]));
+            dispatch(setThisPlayerTK(updateOne));
             break;
           case playersData.teamPlayer.playerId:
-            dispatch(setTeamPlayerTK(update[0]));
+            dispatch(setTeamPlayerTK(updateOne));
             break;
           case playersData.enemyPlayerA.playerId:
-            dispatch(setEnemyPlayerATK(update[0]));
+            dispatch(setEnemyPlayerATK(updateOne));
             break;
           case playersData.enemyPlayerB.playerId:
-            dispatch(setEnemyPlayerBTK(update[0]));
+            dispatch(setEnemyPlayerBTK(updateOne));
             break;
           default:
             break;
@@ -430,7 +464,7 @@ const Ingame = () => {
 
   return (
     <>
-      {/* {status === "" && <StartModal setStatus={setStatus}></StartModal>} */}
+      {status === "" && <StartModal setStatus={setStatus}></StartModal>}
       <StGameWrap>
         <NoticeField status={status}></NoticeField>
         <MainWrap>

@@ -52,7 +52,9 @@ const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
           selectCardHandler(event, value);
         }}
         selected={selected}
-      ></DrawableCard>
+      >
+        <p>나와라 얍</p>
+      </DrawableCard>
     </>
   );
 };
