@@ -16,6 +16,7 @@ import {
   UseCardProps,
 } from "../../typings/typedb";
 import matchStatusImg from "./StatusIcon";
+import matchCardImg from "./CardFactory";
 
 /* Common */
 export const StGameWrap = styled.div`
@@ -40,14 +41,16 @@ export const MainWrap = styled.div`
 
 // Main => PlayerIcons
 export const PlayerIconsFields = styled.div`
-  width: 100%;
-  height: 300px;
+  width: calc(100vw - 20vw);
+  height: 100%;
+  background-color: yellow;
   ${flex({ justify: "space-around", align: "center" })}
 `;
 
 export const Profiles = styled.div<CardBg>`
   width: 200px;
   height: 300px;
+  margin: 0 15px;
   border-radius: 30px;
   border: ${(props) => (props.playing ? `5px solid yellow` : "none")};
   background-color: ${(props) =>
@@ -132,9 +135,8 @@ export const StatCnt = styled.div`
 
 // Main => Crave Field
 export const CraveWrap = styled.div`
-  width: 240px;
-  height: 300px;
-  border-radius: 30px;
+  height: calc(100vh - 40vh);
+  width: calc(100vw - 80vw);
   background-color: white;
   ${flex({ direction: "column", justify: "center", align: "center" })};
 `;
@@ -148,8 +150,9 @@ export const PlayerFieldWrap = styled.div`
 
 // PlayerField => [LEFT] PlayerIcon
 export const ProfileSizing = styled.div`
-  height: 100%;
-  width: 250px;
+  height: calc(100vh - 70vh);
+  width: 200px;
+  background-color: #4282ba;
   ${flex({ direction: "column", justify: "center", align: "center" })};
   position: relative;
   margin-top: 10px;
@@ -174,39 +177,51 @@ export const TimerWrap = styled.div`
 
 // PlayerField => [CENTER] Cards
 export const CardsArea = styled.div`
-  background-color: #ba74ff;
-  ${flex({ justify: "center", align: "center" })}
-`;
-
-export const PlayerCards = styled.div<UseCardProps>`
-  height: 160px;
-  width: 120px;
+  height: calc(100vh - 70vh);
+  width: calc(100vw - 20vw);
+  ${flex({ justify: "space-around", align: "center" })};
   .active {
-    background-color: blue;
   }
 
   .normal {
-    background: red;
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
     transform: scale(0.8);
   }
   .default {
-    background: yellow;
+    /* background: yellow; */
   }
   transition: all 100ms ease-in-out;
 `;
 
+export const PlayerCards = styled.div<UseCardProps>`
+  height: 220px;
+  width: 160px;
+  margin: 0 10px;
+  background-size: cover;
+  font-size: 15px;
+  box-sizing: border-box;
+  padding-bottom: 30px;
+  background-image: url(${(props) => matchCardImg(props.value.cardId)});
+  ${flex({ direction: "column", justify: "flex-end", align: "center" })}
+`;
+
 export const PlayerCtrlWrap = styled.div`
+  position: relative;
   background-color: #8aa2a2;
-  width: 300px;
-  height: 200px;
+  height: calc(100vh - 70vh);
+  width: 50px;
   ${flex({ direction: "column", justify: "center", align: "center" })}
 `;
 
 export const TurnOverBtn = styled.button`
-  width: 100px;
+  width: 50px;
   height: 50px;
   border-radius: 50px;
-  background-color: var(--orange);
+  background-color: green;
+  right: 10px;
+  bottom: 10px;
+  position: absolute;
 `;
 
 export const TargetBtn = styled.button<TargetBtnProps>`

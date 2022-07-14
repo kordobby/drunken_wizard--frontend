@@ -80,21 +80,21 @@ const IngameTest = () => {
   };
   const cardSet = [
     {
-      cardId: 1,
+      cardId: 1124,
       cardName: "11",
       description: "111",
       manaCost: 1,
       target: "SELECT",
     },
     {
-      cardId: 2,
+      cardId: 123,
       cardName: "12",
       description: "1221",
       manaCost: 3,
       target: "ENEMY",
     },
     {
-      cardId: 3,
+      cardId: 123341,
       cardName: "31",
       description: "133",
       manaCost: 2,
@@ -258,7 +258,7 @@ const TargetBtn = styled.button<TargetBtnProps>`
 const CardSample = styled.div<UseCardProps>`
   height: 160px;
   width: 120px;
-  .active {
+  /* .active {
     background-color: blue;
   }
 
@@ -269,5 +269,5 @@ const CardSample = styled.div<UseCardProps>`
   .default {
     background: yellow;
   }
-  transition: all 100ms ease-in-out;
+  transition: all 100ms ease-in-out; */
 `;

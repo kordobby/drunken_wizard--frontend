@@ -31,6 +31,7 @@ import {
   TargetNullBtn,
   PlayerCards,
 } from "../InGameStyled";
+import { createImportSpecifier } from "typescript";
 
 const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   sendStompMsgFunc,
@@ -66,11 +67,12 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // 카드 위로 마우스가 올라가면, 카드 아이디를 스토어에 저장
   const onMouseOverCards = (
     event: React.MouseEvent<HTMLDivElement>,
-    cardId: number,
-    mana: number
+    cardId: number
   ) => {
     setTarget(cardId); // 마우스를 오버했을 때 해당 item의 값으로 target 변경
+    console.log(target);
     setMouseIn(Boolean(event)); // 마우스 오버 확인
+    console.log(mouseIn);
     dispatch(setSelectUseCardIdTK(cardId));
     // if (mana < thisPlayer.mana) {
     //   setError(true);
@@ -83,6 +85,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   const onMouseLeaveCards = (event: React.MouseEvent<HTMLDivElement>) => {
     setTarget(0);
     setMouseIn(!event);
+    console.log(!event);
     dispatch(setSelectUseCardIdTK(0));
   };
 
@@ -122,6 +125,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     itemValue: number,
     isMouseIn: boolean
   ) => {
+    console.log(itemValue);
     if (itemValue === target && isMouseIn) {
       return "active";
     }
@@ -180,25 +184,66 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     </TargetNullBtn>
   ));
 
+  const CardsMoonghi = [
+    {
+      cardId: 1,
+      cardName: "hoho",
+      description: "Hehe",
+      manaCost: 3,
+      target: "ME",
+    },
+    {
+      cardId: 35,
+      cardName: "asd",
+      description: "Hehe",
+      manaCost: 3,
+      target: "ME",
+    },
+    {
+      cardId: 264,
+      cardName: "hoasdzcxvho",
+      description: "Hehe",
+      manaCost: 3,
+      target: "ENEMY",
+    },
+    {
+      cardId: 26,
+      cardName: "asdfdf",
+      description: "Hehe",
+      manaCost: 3,
+      target: "ME",
+    },
+    {
+      cardId: 1243,
+      cardName: "asdf",
+      description: "Hehe",
+      manaCost: 2,
+      target: "ENEMY",
+    },
+    {
+      cardId: 3,
+      cardName: "hohasdfo",
+      description: "Hezvhe",
+      manaCost: 3,
+      target: "SELECT",
+    },
+  ];
   return (
     <PlayerFieldWrap>
       <div>
         <MyProfile></MyProfile>
       </div>
       <CardsArea>
-        {thisPlayer.cardsOnHand.map((value: Card, index: number) => (
+        {CardsMoonghi.map((value: Card, index: number) => (
           <PlayerCards
             key={value.cardId}
-            className={generateClassName(target, index + 1, mouseIn)}
-            onMouseOver={(event: any) =>
-              onMouseOverCards(event, value.cardId, value.manaCost)
-            }
+            className={generateClassName(target, value.cardId, mouseIn)}
+            onMouseOver={(event: any) => onMouseOverCards(event, value.cardId)}
             onMouseLeave={onMouseLeaveCards}
             value={value}
           >
             <span>{value.cardName}</span>
             <span>{value.manaCost}</span>
-            <span>{value.target}</span>
             {nowPlayer === thisPlayer.playerId &&
               value.target === "SELECT" &&
               mouseIn &&
@@ -257,13 +302,15 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
               {HealTargetBtns[3]}
             </div>
           )}
-          <TurnOverBtn
-            onClick={() =>
-              sendStompMsgFunc("1", thisPlayer.playerId, "ENDTURN", null)
-            }
-          >
-            내 턴 종료하기
-          </TurnOverBtn>
+          {nowPlayer === thisPlayer.playerId && (
+            <TurnOverBtn
+              onClick={() =>
+                sendStompMsgFunc("1", thisPlayer.playerId, "ENDTURN", null)
+              }
+            >
+              완료
+            </TurnOverBtn>
+          )}
         </PlayerCtrlWrap>
       </div>
     </PlayerFieldWrap>

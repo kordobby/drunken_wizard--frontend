@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
 
 /* Modules */
 import {
+  setGameStateTK, // use
   setNowPlayerIdTK, // use
   setThisPlayerTK, // use
   setTeamPlayerTK, // use
@@ -133,6 +134,7 @@ const Ingame = () => {
           console.log(msgData);
           switch (msgType) {
             case "START":
+              dispatch(setGameStateTK("START"));
               const findNowPlayer = playersInfo.filter(
                 (value: playersSetting) => value.turnOrder === 1
               );
@@ -145,6 +147,7 @@ const Ingame = () => {
               switch (myPlayerInfo[0].turnOrder) {
                 case 1:
                   // 만약 필요하면 여기서 순서 저장하면 됨!
+                  // 나 => enemyA => 팀 => enemyB
                   dispatch(
                     setTeamPlayerTK(
                       playersInfo.filter(
@@ -251,17 +254,21 @@ const Ingame = () => {
               } else if (msgSender === myId && msgData.player.dead === false) {
                 dispatch(setThisPlayerTK(msgData.player));
                 dispatch(setSelectableCardTK(msgData.cardsDrawed));
-                sendStompMsgFunc("1", myId, "DRAW", null);
               } else if (msgSender !== myId) {
-                setStatus("WAITING");
+                setUpdateOne(msgData.player);
               }
+              setStatus("PRECHECK");
               break;
             case "DRAW":
+              // dispatch(setGameStateTK("DRAW"));
               if (msgSender === myId) {
                 dispatch(setSelectableCardCnt(msgData.selectable));
                 setDrawModalOpen(true);
                 timerFunc(10000, "SELECT");
                 dispatch(setTimerTK("draw"));
+                setStatus("DRAW");
+              } else {
+                setStatus("DRAW");
               }
               break;
             case "ENDDRAW":
@@ -271,6 +278,8 @@ const Ingame = () => {
               if (msgSender === myId) {
                 dispatch(updateMyCardsTK(msgData.cardsOnHand));
                 sendStompMsgFunc("1", myId, "TURNCHECK", null);
+              } else {
+                setStatus("ACTION");
               }
               break;
             case "SELECT":
@@ -284,6 +293,8 @@ const Ingame = () => {
                 // setStatus => card draw Failed!
                 dispatch(updateMyCardsTK(msgData.cardsOnHand));
                 sendStompMsgFunc("1", myId, "TURNCHECK", null);
+              } else if (msgSender !== myId) {
+                setStatus("ACTION");
               }
               break;
             case "TURNCHECK":
@@ -291,22 +302,24 @@ const Ingame = () => {
               if (msgSender === myId && msgData.action === true) {
                 dispatch(setTimerTK("action"));
                 timerFunc(30000, "ENDTURN");
+                setStatus("ACTION");
               } else if (msgSender === myId && msgData.action === false) {
                 sendStompMsgFunc("1", Number(myId), "ENDTURN", null);
               }
               break;
             case "USECARD":
-              if (msgSender === myId && msgData === "마나부족") {
+              setUpdate(msgData.players);
+              setStatus("USECARD");
+              break;
+            case "USEFAIL":
+              if (msgSender === myId) {
                 alert("마나가 부족합니다!");
-              } else {
-                setUpdate(msgData.players);
-                setStatus("USECARD");
               }
               break;
             case "DISCARD":
               if (msgSender === myId) {
                 console.log("카드 바꿉니다");
-                dispatch(setMyCardsUpdateTK(msgData.cardsOnHand));
+                dispatch(setThisPlayerTK(msgData));
               }
               break;
             case "ENDTURN":
@@ -317,6 +330,7 @@ const Ingame = () => {
               break;
             case "ENDGAME":
               // 여기서 win/lose Modal
+              console.log("게임 끝!");
               alert("게임 끝! 이거는 나중에 만들게요!");
               break;
             default:
@@ -337,7 +351,34 @@ const Ingame = () => {
       case "WAITING":
         console.log("아직 내 턴이 아니옵니다.");
         break;
+      case "PRECHECK":
+        if (nowPlayerId === playersData.thisPlayer.playerId) {
+          sendStompMsgFunc("1", myId, "DRAW", null);
+        } else {
+          switch (updateOne.playerId) {
+            case playersData.teamPlayer.playerId:
+              dispatch(setTeamPlayerTK(updateOne));
+              break;
+            case playersData.enemyPlayerA.playerId:
+              dispatch(setEnemyPlayerATK(updateOne));
+              break;
+            case playersData.enemyPlayerB.playerId:
+              dispatch(setEnemyPlayerBTK(updateOne));
+              break;
+            default:
+              break;
+          }
+        }
+        console.log("휴");
+        break;
+      case "DRAW":
+        break;
+      case "ACTION":
+        break;
       case "USECARD":
+        setStatus("USECARDSUCCESS");
+        break;
+      case "USECARDSUCCESS":
         const thisPlayer = update.filter(
           (value: playersSetting) =>
             Number(value.playerId) === Number(playersData.thisPlayer.playerId)
@@ -392,9 +433,15 @@ const Ingame = () => {
         }
 
         if (nowPlayerId === Number(playersData.thisPlayer.playerId)) {
-          sendStompMsgFunc("1", myId, "PRECHECK", null);
+          setTimeout(function () {
+            if (stompClient.ws.readyState === 1) {
+              sendStompMsgFunc("1", myId, "PRECHECK", null);
+            }
+          }, 3000);
         } else {
-          setStatus("WAITING");
+          setTimeout(function () {
+            setStatus("WAITING");
+          }, 1000);
         }
         break;
       default:

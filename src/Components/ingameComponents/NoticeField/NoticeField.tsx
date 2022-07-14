@@ -10,17 +10,64 @@ import { HeaderWrap } from "../InGameStyled";
 const NoticeField = ({ status }: HeaderProps) => {
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
+  const players = useAppSelector((state) => state.game.players);
   // const thisPlayerId = useAppSelector(
   //   (state) => state.game.players.thisPlayer.playerId
   // );
-
+  // 나 => enemyA => 팀 => enemyB
+  // A => 나 => B => 팀
+  // 팀 => A => 나 => B
+  // A => 팀 => B => 나
   return (
     <>
       <HeaderWrap>
-        {status === "READY" && <h1>게임이 곧 시작됩니다.</h1>}
-        {status === "GREETING" && <h1>내 직업을 확인하세요!</h1>}
-        <h1>지금은 {status} 턴입니다.</h1>
-        {status === "WAITING" && <h1>{nowPlayer}님이 플레이중입니다.</h1>}
+        {players.thisPlayer.turnOrder === 1 && (
+          <h1>
+            {players.thisPlayer.username} - {players.enemyPlayerA.username} -
+            {players.teamPlayer.username} - {players.enemyPlayerB.username}
+          </h1>
+        )}
+        {players.thisPlayer.turnOrder === 2 && (
+          <h1>
+            {players.enemyPlayerA.username} - {players.thisPlayer.username} -
+            {players.enemyPlayerB.username} - {players.teamPlayer.username}
+          </h1>
+        )}
+        {players.thisPlayer.turnOrder === 3 && (
+          <h1>
+            {players.teamPlayer.username} - {players.enemyPlayerA.username} -
+            {players.thisPlayer.username}- {players.enemyPlayerB.username}
+          </h1>
+        )}
+        {players.thisPlayer.turnOrder === 4 && (
+          <h1>
+            {players.enemyPlayerA.username} - {players.teamPlayer.username}-
+            {players.enemyPlayerB.username} - {players.thisPlayer.username}
+          </h1>
+        )}
+        {nowPlayer !== players.thisPlayer.username &&
+          status ===
+            ("PRECHECK" || "ACTION" || "USECARD" || "USECARDSUCCESS") && (
+            <h1>{nowPlayer} 님이 게임을 플레이하고 있습니다.</h1>
+          )}
+        {nowPlayer !== players.thisPlayer.username && status === "DRAW" && (
+          <h1>{nowPlayer} 님이 게임을 카드를 드로우합니다.</h1>
+        )}
+        {nowPlayer !== players.thisPlayer.username && status === "ENDTURN" && (
+          <h1>{nowPlayer} 님이 게임을 카드를 드로우합니다.</h1>
+        )}
+        {nowPlayer !== players.thisPlayer.username && status === "WAITING" && (
+          <h1>{nowPlayer} 님이 곧 게임을 시작합니다.</h1>
+        )}
+        {nowPlayer === players.thisPlayer.username && status === "DRAW" && (
+          <h1>10초 안에 카드를 드로우하세요!</h1>
+        )}
+        {nowPlayer === players.thisPlayer.username &&
+          status === ("ACTION" || "USECARD" || "USECARDSUCCESS") && (
+            <h1>30초 안에 플레이를 진행해주세요!</h1>
+          )}
+        {nowPlayer === players.thisPlayer.username &&
+          status === "CHANGETURN" && <h1>턴이 종료되었습니다.</h1>}
       </HeaderWrap>
     </>
   );

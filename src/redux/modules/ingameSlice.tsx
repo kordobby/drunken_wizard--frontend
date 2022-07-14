@@ -132,6 +132,9 @@ const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
+    setGameStateTK: (state, action) => {
+      state.game.status = action.payload;
+    },
     // 초기 셋팅, 매 턴마다 상태 변화시
     setNowPlayerNameTK: (state, action) => {
       state.game.nowPlayer = action.payload;
@@ -207,6 +210,7 @@ const gameSlice = createSlice({
 });
 
 export const {
+  setGameStateTK, // use
   setNowPlayerIdTK,
   setNowPlayerNameTK,
   setThisPlayerTK, // use
