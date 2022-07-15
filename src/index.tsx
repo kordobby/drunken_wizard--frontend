@@ -19,14 +19,15 @@ import { BrowserRouter } from "react-router-dom";
 /* Cookies settings */
 import { CookiesProvider } from "react-cookie";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000,
-      suspense: true,
-    },
-  },
-});
+const queryClient = new QueryClient();
+//   {
+//   defaultOptions: {
+//     queries: {
+//       staleTime: 5 * 60 * 1000,
+//       suspense: true,
+//     },
+//   },
+// }
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement as Element);

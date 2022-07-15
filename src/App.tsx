@@ -17,6 +17,7 @@ import Rule from "./Components/RuleComponents/Rule";
 import { toggleFullScreen } from "./hooks/fullScreen";
 import { ResizeBtn, RuleBtn } from "./Components/UserComponents/UserStyled";
 import resize from "./images/imgs/Resize.svg";
+import ruleBook from "./images/rules/rulebook.svg";
 
 function App() {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ function App() {
           element={<KakaoRedirect setLoginState={setLoginState} />}
           path="/auth/kakao/callback/"
         />
-        <Route path="/waiting/:roomid" element={<WaitingRoom />}></Route>
+        <Route path="/waiting/:roomId" element={<WaitingRoom />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
         <Route path="/ingame" element={<Ingame></Ingame>}></Route>
       </Routes>
@@ -77,7 +78,9 @@ function App() {
         <img src={resize} />
       </ResizeBtn>
       {ruleModal && <Rule modalClose={modalClose} />}
-      <RuleBtn onClick={modalOpen}>룰북</RuleBtn>
+      <RuleBtn onClick={modalOpen}>
+        <img src={ruleBook} />
+      </RuleBtn>
       <button onClick={logoutHandler}>로그아웃</button>
     </>
   );

@@ -96,7 +96,7 @@ const Ingame = () => {
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
 
   /* socket connect - token */
-  const socket = new SockJS("http://13.124.63.214/SufficientAmountOfAlcohol");
+  const socket = new SockJS("http://3.35.53.184/SufficientAmountOfAlcohol");
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const { roomid } = useParams();
@@ -316,7 +316,7 @@ const Ingame = () => {
             case "DISCARD":
               if (msgSender === myId) {
                 console.log("카드 바꿉니다");
-                dispatch(updateMyCardsTK(msgData.cardsOnHand));
+                dispatch(setThisPlayerTK(msgData));
                 // dispatch(setThisPlayerTK(msgData));
               }
               break;
@@ -432,9 +432,7 @@ const Ingame = () => {
 
         if (nowPlayerId === Number(playersData.thisPlayer.playerId)) {
           setTimeout(function () {
-            if (stompClient.ws.readyState === 1) {
-              sendStompMsgFunc("1", myId, "PRECHECK", null);
-            }
+            sendStompMsgFunc("1", myId, "PRECHECK", null);
           }, 3000);
         } else {
           setTimeout(function () {

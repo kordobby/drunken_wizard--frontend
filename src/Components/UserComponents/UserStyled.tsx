@@ -177,23 +177,28 @@ export const ResizeBtn = styled.button`
   right: 50px;
   &:hover {
     cursor: pointer;
-    filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
+    filter: brightness(120%);
+    /* box-shadow: 0px 0px 10px 2px #fd6f33; */
   }
 `;
 
-// 룰북 바로가기
+// 룰북 모달
 export const RuleBtn = styled.button`
   border: none;
   background-color: transparent;
   position: fixed;
-  top: 50px;
+  top: 37px;
   right: 120px;
   color: #fd6f33;
   font-size: 20px;
+  img {
+    width: 60px;
+    height: 80px;
+  }
+
   &:hover {
     cursor: pointer;
-    filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
+    filter: brightness(120%);
+    /* box-shadow: 0px 0px 10px 2px #fd6f33; */
   }
 `;
