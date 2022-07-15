@@ -94,9 +94,9 @@ const Ingame = () => {
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
-
+  const API_URL = process.env.REACT_APP_API_URL;
   /* socket connect - token */
-  const socket = new SockJS("http://3.35.53.184/SufficientAmountOfAlcohol");
+  const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const { roomid } = useParams();
