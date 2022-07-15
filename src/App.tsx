@@ -21,11 +21,11 @@ function App() {
   const navigate = useNavigate();
   const [loginState, setLoginState] = useState(false);
   const [ruleModal, setRuleMoadl] = useState<boolean>(false);
-  console.log(loginState);
   const token = getCookie("token");
   useEffect(() => {
     token ? setLoginState(true) : setLoginState(false);
   }, [token]);
+  console.log(loginState);
 
   const modalOpen = useCallback(() => {
     setRuleMoadl(!ruleModal);
@@ -43,20 +43,17 @@ function App() {
     deleteCookie("username");
     deleteCookie("nickname");
     alert("로그아웃 되었습니다!");
-    navigate("/");
+    navigate("/login");
   };
 
   return (
     <>
       <Routes>
-        {loginState ? (
-          <Route path="/lobby" element={<Lobby />}></Route>
-        ) : (
-          <Route
-            path="/login"
-            element={<Login setLoginState={setLoginState} />}
-          />
-        )}
+        <Route path="/lobby" element={<Lobby />}></Route>
+        <Route
+          path="/login"
+          element={<Login setLoginState={setLoginState} />}
+        />
         <Route path="/" element={<Main />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route

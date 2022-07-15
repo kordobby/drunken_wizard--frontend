@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { useQueryClient } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+// hooks
+import { deleteCookie, getCookie } from "../shared/Cookies";
 // components
 import CreateRoom from "../Components/LobbyComponents/CreateRoom";
 import LobbyChat from "../Components/LobbyComponents/LobbyChat";
@@ -17,10 +19,11 @@ import { Header } from "../Components/LobbyComponents/LobbyStyled";
 // svgs
 import header from "../images/lobby/header.svg";
 import logout from "../images/lobby/logout.svg";
-import { getCookie } from "../shared/Cookies";
-import flex from "../Components/GlobalStyled/flex";
+import roomout from "../images/lobby/roomout.svg";
+import Back from "../images/background/ruleBackground.svg";
 
 const Lobby = () => {
+  const navigate = useNavigate();
   const accessNick = getCookie("nickname");
   const queryClient = useQueryClient();
   const [createRoomModal, setCreateRoomMoadl] = useState<boolean>(false);
@@ -35,22 +38,29 @@ const Lobby = () => {
     document.body.style.overflow = "unset";
   }, [createRoomModal]);
 
+  const logoutHandler = () => {
+    deleteCookie("token");
+    deleteCookie("id");
+    deleteCookie("username");
+    deleteCookie("nickname");
+    alert("로그아웃 되었습니다!");
+    navigate("/login");
+  };
+
   return (
-    <Main>
+    <Main style={{ backgroundImage: `url(${Back})` }}>
       <Header style={{ backgroundImage: `url(${header})` }}>
-        <LogoutBtn>
+        <LogoutBtn onClick={logoutHandler}>
           <img src={logout} />
         </LogoutBtn>
-        <UserInfo>
+        {/* <UserInfo>
           <NickName>{accessNick}</NickName>
           <Record>7승 8패</Record>
-        </UserInfo>
+        </UserInfo> */}
       </Header>
       {createRoomModal && <CreateRoom modalClose={modalClose} />}
-      <button onClick={modalOpen} style={{ float: "right" }}>
-        방만들기
-      </button>
-      <Link to="/signup">
+
+      {/* <Link to="/signup">
         <button>회원가입하기</button>
       </Link>
       <Link to="/login">
@@ -62,10 +72,16 @@ const Lobby = () => {
         }}
       >
         리패치
-      </button>
+      </button> */}
       <LobbyWrap>
         <Rooms />
-        <LobbyChat />
+        <SideBar>
+          <LobbyChat />
+          <Button
+            onClick={modalOpen}
+            style={{ backgroundImage: `url(${roomout})` }}
+          ></Button>
+        </SideBar>
       </LobbyWrap>
     </Main>
   );
@@ -76,6 +92,9 @@ export default Lobby;
 const Main = styled.div`
   width: 100%;
   height: 100vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   /* display: flex;
   flex-direction: column;
   align-items: center; */
@@ -85,6 +104,27 @@ const LobbyWrap = styled.div`
   height: 100vh;
   display: flex;
   justify-content: stretch;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+`;
+const SideBar = styled.div`
+  width: 350px;
+  height: 940px;
+  display: flex;
+  justify-content: stretch;
+  flex-direction: column;
+  /* background-color: rgba(45, 5, 90, 0.1); */
+`;
+const Button = styled.div`
+  width: 330px;
+  height: 100px;
+  display: flex;
+  &:hover {
+    cursor: pointer;
+    filter: brightness(110%);
+    box-shadow: 0px 0px 10px 2px #fd6f33;
+  }
   /* display: flex;
   flex-direction: column;
   align-items: center; */

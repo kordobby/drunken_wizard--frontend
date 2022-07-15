@@ -1,17 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect } from "react";
 // stomp
 import stompJS from "stompjs";
 import { socket } from "../../shared/WebStomp";
 // css
 import flex from "../GlobalStyled/flex";
+import team1 from "../../images/lobby/team1.jpg";
+import team2 from "../../images/lobby/team2.jpg";
+import noteam from "../../images/lobby/noteam.jpg";
+import vs from "../../images/lobby/vs.svg";
 // apis
 import apis from "../../shared/api/apis";
 import axios from "axios";
 import { getCookie } from "../../shared/Cookies";
+// interface
 import { AddRoomType, joinRoomType } from "../../typings/db";
-import { useEffect } from "react";
 
 const joinRoomMT = (data: AddRoomType) => {
   const accessToken = getCookie("token");
@@ -60,7 +65,7 @@ const Rooms = () => {
   const pleaseMessage = () => {
     const accessName = getCookie("nickname");
     const data = {
-      type: "JOIN",
+      type: "LEAVE",
       roomId: 1,
       sender: accessName,
       message: `${accessName}님이 채팅방에서 나갔습니다.`,
@@ -68,8 +73,21 @@ const Rooms = () => {
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
   };
 
+  const socketUnsubscribe = () => {
+    try {
+      stompClient
+        .subscribe(`/sub/public`, function (data: any) {}, {})
+        .unsubscribe();
+
+      console.log("success to unsubscribe");
+      pleaseMessage();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onClick = (e: React.MouseEvent<HTMLDivElement>, room: string) => {
-    pleaseMessage();
+    socketUnsubscribe();
     navigate(`/waiting/${room}`);
   };
 
@@ -93,28 +111,46 @@ const Rooms = () => {
                 <RoomNumber>
                   <span>{i + 1}</span>
                 </RoomNumber>
-
                 <RoomName>{room?.roomName}</RoomName>
               </RoomTitle>
               <UsersWrap>
                 <Team1>
-                  {room.userList[0] && (
-                    <Users>{room.userList[0].nickname}</Users>
+                  {room.userList[0] ? (
+                    <Users style={{ backgroundImage: `url(${team1})` }}></Users>
+                  ) : (
+                    <Users
+                      style={{ backgroundImage: `url(${noteam})` }}
+                    ></Users>
                   )}
 
-                  {room.userList[2] && (
-                    <Users>{room.userList[2].nickname}</Users>
+                  {room.userList[2] ? (
+                    <Users style={{ backgroundImage: `url(${team1})` }}></Users>
+                  ) : (
+                    <Users
+                      style={{ backgroundImage: `url(${noteam})` }}
+                    ></Users>
                   )}
                 </Team1>
-                <br />
+                <img src={vs}></img>
                 <Team2>
-                  {room.userList[1] && (
-                    <Users2>{room.userList[1].nickname}</Users2>
+                  {room.userList[1] ? (
+                    <Users style={{ backgroundImage: `url(${team2})` }}></Users>
+                  ) : (
+                    <Users
+                      style={{ backgroundImage: `url(${noteam})` }}
+                    ></Users>
                   )}
-                  {room.userList[3] && (
-                    <Users2>{room.userList[3].nickname}</Users2>
+                  {room.userList[3] ? (
+                    <Users style={{ backgroundImage: `url(${team2})` }}></Users>
+                  ) : (
+                    <Users
+                      style={{ backgroundImage: `url(${noteam})` }}
+                    ></Users>
                   )}
                 </Team2>
+                <ComeIn>
+                  <span>입장하기</span>
+                </ComeIn>
               </UsersWrap>
             </RoomBox>
           ) : (
@@ -132,31 +168,25 @@ const Rooms = () => {
                 <RoomName>{room?.roomName}</RoomName>
               </RoomTitle>
               <UsersWrap>
-                <span>팀1</span>
                 <br />
-                {room.userList[0] && (
-                  <Users>
-                    <span>{room.userList[0].nickname}</span>
-                  </Users>
-                )}
-                {room.userList[2] && (
-                  <Users>
-                    <span>{room.userList[2].nickname}</span>
-                  </Users>
-                )}
+                {room.userList[0] && <Users></Users>}
+                {room.userList[2] && <Users></Users>}
                 <br />
-                <span>팀2</span>
+
                 <br />
                 {room.userList[1] && (
                   <Users>
-                    <span>{room.userList[1].nickname}</span>
+                    <span></span>
                   </Users>
                 )}
                 {room.userList[3] && (
                   <Users>
-                    <span>{room.userList[3].nickname}</span>
+                    {/* <span>{room.userList[3].nickname}</span> */}
                   </Users>
                 )}
+                <Impossible>
+                  <span>입장불가</span>
+                </Impossible>
               </UsersWrap>
             </RoomBox>
           );
@@ -177,17 +207,24 @@ const RoomWrap = styled.div`
   box-sizing: border-box;
 `;
 const RoomBox = styled.div<joinRoomType>`
-  width: 320px;
-  height: 420px;
+  width: 720px;
+  height: 220px;
   background-color: #b68961;
   border-radius: 24px;
   margin: 10px;
+  box-sizing: border-box;
   ${flex({ direction: "column" })};
+
+  &:hover {
+    filter: brightness(110%);
+    box-shadow: 0px 0px 10px 2px #fd6f33;
+  }
 `;
 
 const RoomTitle = styled.div`
-  width: 320px;
+  width: 720px;
   height: 90px;
+  box-sizing: border-box;
   border-radius: 24px 24px 0 0;
   background-color: #5d180a;
   ${flex}
@@ -217,44 +254,67 @@ const RoomName = styled.span`
 `;
 
 const UsersWrap = styled.div`
-  width: 80%;
-  height: 100%;
-  ${flex({ direction: "column", justify: "center" })};
+  width: 100%;
+  height: 130px;
+  ${flex};
 `;
 const Users = styled.div`
-  width: 168px;
-  height: 58px;
-  margin: 10px;
-  padding-left: 10px;
-  color: white;
-  font-size: 24px;
-  font-weight: 1000;
+  width: 90px;
+  height: 90px;
+  margin: 0 5px;
   ${flex({ align: "center" })};
-  border-radius: 6px;
-  background-color: #d6b27f;
-  box-shadow: 5px 5px 5px 0.1px gray;
+  border-radius: 45px;
+  box-shadow: 5px 5px 5px 0.1px black;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
-const Users2 = styled.div`
-  width: 168px;
-  height: 58px;
-  margin: 10px 0 0 75px;
-  padding-left: 10px;
-  color: white;
-  font-size: 24px;
-  font-weight: 1000;
+const ComeIn = styled.div`
+  width: 148px;
+  height: 70px;
+  margin: 0;
+  span {
+    color: white;
+    font-size: 24px;
+    font-weight: 1000;
+    margin: auto;
+  }
+
   ${flex({ align: "center" })};
-  border-radius: 6px;
+  border-radius: 20px;
   background-color: #d6b27f;
-  box-shadow: 5px 5px 5px 0.1px gray;
+  /* box-shadow: 5px 5px 5px 0.1px black inset; */
+`;
+const Impossible = styled.div`
+  width: 148px;
+  height: 70px;
+  margin: 0;
+  span {
+    color: white;
+    font-size: 24px;
+    font-weight: 1000;
+    margin: auto;
+  }
+
+  ${flex({ align: "center" })};
+  border-radius: 20px;
+  outline: 2px solid #d6b27f;
+  outline-offset: -2px;
+  background-color: #b68961;
+  box-shadow: 5px 5px 5px 0.1px black inset;
 `;
 
 const Team1 = styled.div`
-  width: 100%;
-  height: 40%;
-  margin: 10px 70px 5px 20px;
+  width: 30%;
+  height: 100%;
+  margin: 0 0 0 15px;
+  display: flex;
+  align-items: center;
 `;
 const Team2 = styled.div`
-  width: 100%;
-  height: 40%;
-  margin: 10px 20px 5px 70px;
+  width: 30%;
+  height: 100%;
+  margin: 0 10px 0 10px;
+  display: flex;
+  align-items: center;
 `;
