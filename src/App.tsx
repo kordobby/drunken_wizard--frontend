@@ -1,3 +1,5 @@
+import IngameTest from "./pages/IngameTest";
+
 import { useCallback, useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 // pages
@@ -49,6 +51,7 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="/testing" element={<IngameTest></IngameTest>}></Route>
         {loginState ? (
           <Route path="/lobby" element={<Lobby />}></Route>
         ) : (
