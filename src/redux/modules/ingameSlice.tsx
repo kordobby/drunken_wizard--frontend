@@ -44,7 +44,7 @@ const initialState: ingameState = {
       sleepDuration: 0,
       stunnedDuration: 0,
       team: false,
-      turnOrder: 0,
+      turnOrder: 3,
       weakDuration: 0,
       damageModifierDuration: 0,
     },
@@ -132,46 +132,35 @@ const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    setGameStateTK: (state, action) => {
-      state.game.status = action.payload;
-    },
     // 초기 셋팅, 매 턴마다 상태 변화시
     setNowPlayerNameTK: (state, action) => {
       state.game.nowPlayer = action.payload;
-    },
+    }, // use
     setNowPlayerIdTK: (state, action) => {
       state.game.nowPlayerId = action.payload;
-    },
+    }, // use
     setThisPlayerTK: (state, action) => {
       state.players.thisPlayer = action.payload;
-    },
+    }, // use
     setTeamPlayerTK: (state, action) => {
       state.players.teamPlayer = action.payload;
-    },
+    }, // use
     setEnemyPlayerATK: (state, action) => {
       state.players.enemyPlayerA = action.payload;
-    },
+    }, // use
     setEnemyPlayerBTK: (state, action) => {
       state.players.enemyPlayerB = action.payload;
-    },
+    }, // use
     // 서버에서 받아온 카드를 그리자
     setMyCardsUpdateTK: (state, action) => {
       state.myCards = action.payload;
-    },
-    setMyCardsTK: (state, action) => {
-      state.myCards.push.apply(state.myCards, action.payload);
-    },
+    }, // use
     setSelectableCardTK: (state, action) => {
       state.game.selectableCards = action.payload;
-    },
-    // 추가 드로우 카드
-    addBonusCardTK: (state, action) => {
-      state.myCards.push(action.payload);
-    },
-    // 카드 사용
+    }, // use
     setSelectDrawCardsTK: (state, action) => {
       state.game.selectedDrawCard = action.payload;
-    },
+    }, // use
     // 사용한 카드, 버려진 카드, 드로우 실패한 카드
     setCraveTK: (state, action) => {
       state.game.cardCrave = action.payload;
@@ -210,22 +199,19 @@ const gameSlice = createSlice({
 });
 
 export const {
-  setGameStateTK, // use
   setNowPlayerIdTK,
   setNowPlayerNameTK,
   setThisPlayerTK, // use
   setTeamPlayerTK, // use
   setEnemyPlayerATK, // use
   setEnemyPlayerBTK, // use
-  setMyCardsTK, // delete
   setCraveTK,
   setTargetTK, // use
-  addBonusCardTK,
   setTimerTK, // use
   cancelSelectDrawCardsTK, // use
   setSelectableCardCnt, //use
-  setSelectableCardTK,
-  setMyCardsUpdateTK,
+  setSelectableCardTK, // use
+  setMyCardsUpdateTK, // use
   setSelectUseCardIdTK, // use
   setSelectUseCardNameTK,
   setDrawCardSelectTK, // use

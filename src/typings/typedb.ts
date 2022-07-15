@@ -1,4 +1,3 @@
-import { DrawableCardsWrap } from "./../Components/IngameComponents/InGameStyled";
 import { Dispatch, SetStateAction } from "react";
 
 // TK InitialState
@@ -8,7 +7,7 @@ export interface Card {
   description: string;
   manaCost: number;
   target: string;
-}
+} // use
 
 export interface DrawCard {
   cardId: number;
@@ -32,7 +31,7 @@ export interface playersSetting {
   turnOrder: number;
   weakDuration: number;
   damageModifierDuration: number;
-}
+} // use
 
 // #1. 게임 시작
 export interface StartModalProps {

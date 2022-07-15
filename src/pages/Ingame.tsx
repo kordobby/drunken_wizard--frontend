@@ -9,7 +9,6 @@ import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
 
 /* Modules */
 import {
-  setGameStateTK, // use
   setNowPlayerIdTK, // use
   setThisPlayerTK, // use
   setTeamPlayerTK, // use
@@ -134,7 +133,6 @@ const Ingame = () => {
           console.log(msgData);
           switch (msgType) {
             case "START":
-              dispatch(setGameStateTK("START"));
               const findNowPlayer = playersInfo.filter(
                 (value: playersSetting) => value.turnOrder === 1
               );
@@ -260,7 +258,6 @@ const Ingame = () => {
               setStatus("PRECHECK");
               break;
             case "DRAW":
-              // dispatch(setGameStateTK("DRAW"));
               if (msgSender === myId) {
                 dispatch(setSelectableCardCnt(msgData.selectable));
                 setDrawModalOpen(true);
@@ -319,7 +316,8 @@ const Ingame = () => {
             case "DISCARD":
               if (msgSender === myId) {
                 console.log("카드 바꿉니다");
-                dispatch(setThisPlayerTK(msgData));
+                dispatch(updateMyCardsTK(msgData.cardsOnHand));
+                // dispatch(setThisPlayerTK(msgData));
               }
               break;
             case "ENDTURN":

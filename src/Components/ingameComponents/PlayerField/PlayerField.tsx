@@ -1,5 +1,5 @@
 /* Package */
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useState, useEffect } from "react";
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from "../../../hooks/tsHooks";
@@ -31,7 +31,6 @@ import {
   TargetNullBtn,
   PlayerCards,
 } from "../InGameStyled";
-import { createImportSpecifier } from "typescript";
 
 const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   sendStompMsgFunc,
@@ -43,7 +42,14 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // card Use & Discard
   const [target, setTarget] = useState(0);
   const [mouseIn, setMouseIn] = useState(false);
+  const [clicked, setClicked] = useState(false);
   // const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setClicked(false);
+    }, 1000);
+  }, [clicked]);
 
   /* tookit things */
   const dispatch = useAppDispatch();
@@ -70,9 +76,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     cardId: number
   ) => {
     setTarget(cardId); // 마우스를 오버했을 때 해당 item의 값으로 target 변경
-    console.log(target);
     setMouseIn(Boolean(event)); // 마우스 오버 확인
-    console.log(mouseIn);
     dispatch(setSelectUseCardIdTK(cardId));
     // if (mana < thisPlayer.mana) {
     //   setError(true);
@@ -85,7 +89,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   const onMouseLeaveCards = (event: React.MouseEvent<HTMLDivElement>) => {
     setTarget(0);
     setMouseIn(!event);
-    console.log(!event);
     dispatch(setSelectUseCardIdTK(0));
   };
 
@@ -108,6 +111,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       cardId: selectedUseCardId,
       targetPlayerId: selectedTarget,
     };
+    setClicked(true); // 중복클릭 방지
     sendStompMsgFunc("1", thisPlayer.playerId, "USECARD", data);
   };
 
@@ -116,6 +120,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     const data = {
       cardId: selectedUseCardId,
     };
+    setClicked(true); // 중복클릭 방지
     sendStompMsgFunc("1", thisPlayer.playerId, "DISCARD", data);
   };
 
@@ -125,7 +130,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     itemValue: number,
     isMouseIn: boolean
   ) => {
-    console.log(itemValue);
     if (itemValue === target && isMouseIn) {
       return "active";
     }
@@ -158,6 +162,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       onClick={sendHealMsgHandler}
       className={String(value.playerId)}
       name={value.username}
+      disabled={clicked}
     >
       {value.username}
     </button>
@@ -172,6 +177,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       onMouseOver={(event: any) => onMouseOverTargeting(event, value)}
       onMouseLeave={onMouseLeaveTargeting}
       onClick={useCardHandler}
+      disabled={clicked}
     >
       {value.username}
     </TargetBtn>
@@ -179,62 +185,18 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
 
   // TARGETING BTN(COMPONENT) :: ME / ALLY / ENEMY
   const TargetNullBtns = ["Me", "Ally", "Enemy"].map((value, index: number) => (
-    <TargetNullBtn key={index} onClick={useCardHandler}>
+    <TargetNullBtn key={index} onClick={useCardHandler} disabled={clicked}>
       {value}
     </TargetNullBtn>
   ));
 
-  const CardsMoonghi = [
-    {
-      cardId: 1,
-      cardName: "hoho",
-      description: "Hehe",
-      manaCost: 3,
-      target: "ME",
-    },
-    {
-      cardId: 35,
-      cardName: "asd",
-      description: "Hehe",
-      manaCost: 3,
-      target: "ME",
-    },
-    {
-      cardId: 264,
-      cardName: "hoasdzcxvho",
-      description: "Hehe",
-      manaCost: 3,
-      target: "ENEMY",
-    },
-    {
-      cardId: 26,
-      cardName: "asdfdf",
-      description: "Hehe",
-      manaCost: 3,
-      target: "ME",
-    },
-    {
-      cardId: 1243,
-      cardName: "asdf",
-      description: "Hehe",
-      manaCost: 2,
-      target: "ENEMY",
-    },
-    {
-      cardId: 3,
-      cardName: "hohasdfo",
-      description: "Hezvhe",
-      manaCost: 3,
-      target: "SELECT",
-    },
-  ];
   return (
     <PlayerFieldWrap>
       <div>
         <MyProfile></MyProfile>
       </div>
       <CardsArea>
-        {CardsMoonghi.map((value: Card, index: number) => (
+        {thisPlayer.cardsOnHand.map((value: Card, index: number) => (
           <PlayerCards
             key={value.cardId}
             className={generateClassName(target, value.cardId, mouseIn)}

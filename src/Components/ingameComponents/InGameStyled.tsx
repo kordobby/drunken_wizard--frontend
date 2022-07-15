@@ -29,7 +29,7 @@ export const StGameWrap = styled.div`
 export const HeaderWrap = styled.div`
   height: calc(100vh - 90vh);
   background-color: #9c71e1;
-  ${flex({ justify: "center", align: "center" })};
+  ${flex({ direction: "column", justify: "center", align: "center" })};
 `;
 
 /* Main Section */
@@ -150,9 +150,7 @@ export const PlayerFieldWrap = styled.div`
 
 // PlayerField => [LEFT] PlayerIcon
 export const ProfileSizing = styled.div`
-  height: calc(100vh - 70vh);
   width: 200px;
-  background-color: #4282ba;
   ${flex({ direction: "column", justify: "center", align: "center" })};
   position: relative;
   margin-top: 10px;
