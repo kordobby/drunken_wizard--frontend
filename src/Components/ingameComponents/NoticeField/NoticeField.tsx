@@ -45,26 +45,37 @@ const NoticeField = ({ status }: HeaderProps) => {
             {players.enemyPlayerB.username} - {players.thisPlayer.username}
           </h1>
         )}
-        {nowPlayer !== players.thisPlayer.username &&
-          status ===
-            ("PRECHECK" || "ACTION" || "USECARD" || "USECARDSUCCESS") && (
-            <h1>{nowPlayer} 님이 게임을 플레이하고 있습니다.</h1>
-          )}
+        {/* If not my TURN */}
+        {nowPlayer !== players.thisPlayer.username && status === "ACTION" && (
+          <h1>{nowPlayer} 님이 게임을 플레이하고 있습니다.</h1>
+        )}
         {nowPlayer !== players.thisPlayer.username && status === "DRAW" && (
           <h1>{nowPlayer} 님이 게임을 카드를 드로우합니다.</h1>
         )}
-        {nowPlayer !== players.thisPlayer.username && status === "ENDTURN" && (
-          <h1>{nowPlayer} 님이 게임을 카드를 드로우합니다.</h1>
-        )}
+        {nowPlayer !== players.thisPlayer.username &&
+          status === "ACTIONFAILED" && (
+            <h1>
+              {nowPlayer} 님이 상태이상으로 인해 게임을 진행할 수 없어
+              다음턴으로 넘어갑니다.
+            </h1>
+          )}
         {nowPlayer !== players.thisPlayer.username && status === "WAITING" && (
           <h1>{nowPlayer} 님이 곧 게임을 시작합니다.</h1>
         )}
+        {/* If my TURN */}
         {nowPlayer === players.thisPlayer.username && status === "DRAW" && (
           <h1>10초 안에 카드를 드로우하세요!</h1>
         )}
         {nowPlayer === players.thisPlayer.username &&
-          status === ("ACTION" || "USECARD" || "USECARDSUCCESS") && (
+          status ===
+            ("ACTION" || "USECARD" || "USECARDSUCCESS" || "DISCARD") && (
             <h1>30초 안에 플레이를 진행해주세요!</h1>
+          )}
+        {nowPlayer === players.thisPlayer.username &&
+          status === "ACTIONFAILED" && (
+            <h1>
+              상태이상으로 인해 게임을 진행할 수 없어 다음턴으로 넘어갑니다.
+            </h1>
           )}
         {nowPlayer === players.thisPlayer.username &&
           status === "CHANGETURN" && <h1>턴이 종료되었습니다.</h1>}
