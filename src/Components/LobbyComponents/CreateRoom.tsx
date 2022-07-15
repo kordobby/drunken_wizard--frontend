@@ -9,9 +9,12 @@ import { ModalType } from "../../typings/db";
 import apis from "../../shared/api/apis";
 // css
 import { Backdrop, CreatRoomBox, ModalContainer } from "./LobbyStyled";
+import { getCookie } from "../../shared/Cookies";
 
 const CreateRoom = ({ modalClose }: ModalType) => {
   const [roomName, setRoomName] = useInput<string>("");
+  const accessId = getCookie("id");
+  const accessNickname = getCookie("nickname");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -20,10 +23,11 @@ const CreateRoom = ({ modalClose }: ModalType) => {
     onSuccess: (res) => {
       console.log(res.data);
       queryClient.invalidateQueries("room_list");
-      navigate(`/waiting/${res.data}`);
+      navigate(`/waiting/${res.data.roomId}`);
     },
     onError: (error) => {
       console.log(error);
+      navigate(`/lobby`);
     },
   });
 
@@ -31,9 +35,13 @@ const CreateRoom = ({ modalClose }: ModalType) => {
   const onCreateRoom = useCallback(
     (e: React.FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      createRoom({ roomName: roomName });
+      createRoom({
+        roomName: roomName,
+        // id: accessId,
+        // nickname: accessNickname,
+      });
     },
-    [roomName, createRoom]
+    [roomName, accessId, accessNickname, createRoom]
   );
 
   return (
@@ -45,6 +53,7 @@ const CreateRoom = ({ modalClose }: ModalType) => {
             type="text"
             id="room-name"
             name="room-name"
+            maxLength={6}
             value={roomName}
             onChange={setRoomName}
           ></input>

@@ -9,6 +9,51 @@ export const StWrap = styled.div`
   z-index: -5;
 `;
 
+// Header
+export const Header = styled.header`
+  width: 100vw;
+  min-width: 70vw;
+  height: 150px;
+  display: flex;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  ${flex({ align: "center", justify: "space-between" })}/* img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+  } */
+`;
+export const LogoutBtn = styled.button`
+  border: none;
+  background-color: transparent;
+  margin-left: 50px;
+  &:hover {
+    cursor: pointer;
+    filter: brightness(120%);
+    /* box-shadow: 0px 0px 10px 2px #fd6f33; */
+  }
+`;
+
+export const UserInfo = styled.div`
+  margin: 0;
+  margin-right: 220px;
+  ${flex({ direction: "column" })};
+`;
+export const NickName = styled.span`
+  border: none;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 1000;
+  color: white;
+`;
+export const Record = styled.span`
+  font-size: 15px;
+  font-weight: 1000;
+  color: white;
+`;
+
+// lobby
 export const ModalContainer = styled.div`
   width: 100%;
   height: 100vh;
@@ -38,3 +83,5 @@ export const Backdrop = styled.div`
   -webkit-backdrop-filter: blur(1px);
   z-index: 9999;
 `;
+
+// chat

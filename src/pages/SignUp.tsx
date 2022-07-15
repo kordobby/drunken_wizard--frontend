@@ -173,6 +173,7 @@ const SignUp = () => {
                   id="user-id"
                   name="user-id"
                   placeholder="ID"
+                  maxLength={15}
                   value={username}
                   onChange={onChangeIdCheck}
                   onFocus={setIdFocus}
@@ -239,6 +240,7 @@ const SignUp = () => {
                 id="nickname"
                 name="nickname"
                 placeholder="NickName"
+                maxLength={10}
                 value={nickname}
                 onChange={setNickname}
                 onFocus={setNickFocus}
@@ -248,7 +250,7 @@ const SignUp = () => {
                 <SpeechBubble
                   style={{ backgroundImage: `url(${speechBubble})` }}
                 >
-                  <SpeechSpan>닉네임을 입력해주세요.</SpeechSpan>
+                  <SpeechSpan>닉네임을 입력해주세요! 1~10자</SpeechSpan>
                 </SpeechBubble>
               )}
               {nickname && nickFocus && (
@@ -295,6 +297,7 @@ const SignUp = () => {
                 id="password"
                 name="password"
                 value={password}
+                maxLength={15}
                 placeholder="PassWord"
                 onChange={onChangePassword}
                 onFocus={setPwFocus}
@@ -323,6 +326,7 @@ const SignUp = () => {
                 id="password-check"
                 name="password-check"
                 placeholder="PassWordCheck"
+                maxLength={15}
                 value={passwordCheck}
                 onChange={onChangePasswordCheck}
                 onFocus={setPwCheckFocus}

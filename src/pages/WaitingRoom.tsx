@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -7,10 +7,12 @@ import stompJS from "stompjs";
 import { socket } from "../shared/WebStomp";
 // cookies
 import { getCookie } from "../shared/Cookies";
+// interface
+import { AddRoomType } from "../typings/db";
 
-const waitngRoomMT = (data: any) => {
+const joinRoomMT = (data: AddRoomType) => {
   const accessToken = getCookie("token");
-  return axios.post(`http://3.35.53.184/game/${data}/join`, data, {
+  return axios.post(`http://13.124.63.214/game/${data.roomId}/join`, data, {
     headers: {
       Authorization: accessToken,
     },
@@ -18,7 +20,7 @@ const waitngRoomMT = (data: any) => {
 };
 const leaveRoomMT = (data: any) => {
   const accessToken = getCookie("token");
-  return axios.post(`http://3.35.53.184/game/${data}/leave`, data, {
+  return axios.post(`http://13.124.63.214/game/${data.roomId}/leave`, data, {
     headers: {
       Authorization: accessToken,
     },
@@ -26,25 +28,32 @@ const leaveRoomMT = (data: any) => {
 };
 
 const WaitingRoom = () => {
+  const [userList, setUserList] = useState<any>();
   const navigate = useNavigate();
-  const { roomid } = useParams();
+  const { roomId } = useParams();
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
   const queryClient = useQueryClient();
 
   // mutate
-  const { mutate: waitingRoom } = useMutation(waitngRoomMT, {
+  const { mutate: joinRoom } = useMutation(joinRoomMT, {
+    onMutate: (res) => {
+      // queryClient.invalidateQueries();
+    },
     onSuccess: (res) => {
       console.log(res);
+      queryClient.invalidateQueries("room_list");
     },
     onError: (error) => {
       console.log(error);
+      navigate("/lobby");
     },
   });
   const { mutate: leaveRoom } = useMutation(leaveRoomMT, {
     onSuccess: (res) => {
       console.log(res);
+      leaveRoomMessage();
       queryClient.invalidateQueries("room_list");
       navigate("/lobby");
     },
@@ -55,13 +64,13 @@ const WaitingRoom = () => {
 
   // leaveHandler
   const leaveHandler = () => {
-    leaveRoom(roomid);
+    leaveRoom({ roomId: roomId, id: accessId });
   };
 
   // 방 접속 포스트 요청
   useEffect(() => {
-    waitingRoom(roomid);
-  }, [roomid]);
+    joinRoom({ roomId: roomId, id: accessId });
+  }, [roomId]);
 
   // 구독
   useEffect(() => {
@@ -81,7 +90,7 @@ const WaitingRoom = () => {
         },
         () => {
           stompClient.subscribe(
-            `/sub/game/${roomid}`,
+            `/sub/game/${roomId}`,
             (data: any) => {
               console.log(data);
               const response = JSON.parse(data.body);
@@ -89,7 +98,7 @@ const WaitingRoom = () => {
             },
             { token: accessToken }
           );
-          // roomJoinMessage();
+          joinRoomMessage();
         }
       );
     } catch (error) {
@@ -99,23 +108,36 @@ const WaitingRoom = () => {
 
   const socketUnsubscribe = useCallback(() => {
     try {
-      stompClient.unsubscribe("sub-0");
+      stompClient
+        .subscribe(`/sub/game/${roomId}`, function (data: any) {}, {})
+        .unsubscribe();
+      leaveRoomMessage();
       console.log("success to unsubscribe");
     } catch (error) {
       console.log(error);
     }
   }, []);
 
-  // const joinMessage = () => {
-  //   const accessName = getCookie("nickname");
-  //   const data = {
-  //     type: "JOIN",
-  //     roomId: 1,
-  //     sender: accessName,
-  //     message: `${accessName}님이 채팅방에 참여하였습니다!`,
-  //   };
-  //   stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
-  // };
+  const joinRoomMessage = () => {
+    const data = {
+      type: "UPDATE",
+      roomId: roomId,
+      sender: accessId,
+      content: null,
+      // message: `${accessName}님이 채팅방에 참여하였습니다!`,
+    };
+    stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
+  };
+
+  const leaveRoomMessage = () => {
+    const data = {
+      type: "LEAVE",
+      roomId: roomId,
+      sender: accessId,
+      // message: `${accessName}님이 채팅방에 참여하였습니다!`,
+    };
+    stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
+  };
 
   return (
     <div>
@@ -123,7 +145,7 @@ const WaitingRoom = () => {
       <div>
         <span>1팀</span>
         <br />
-        <span>닉네임</span>
+        <span>{userList}</span>
         <span>닉네임</span>
       </div>
       <br />
