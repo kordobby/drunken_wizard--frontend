@@ -6,7 +6,7 @@ import { createRoot } from "react-dom/client";
 /* Styles settings */
 import "./index.css";
 import GlobalStyled from "./Components/GlobalStyled/GlobalStyled";
-
+import "./index.scss";
 /* Redux-toolkit settings */
 import { Provider } from "react-redux";
 import { store } from "./redux/configStore";
@@ -19,14 +19,15 @@ import { BrowserRouter } from "react-router-dom";
 /* Cookies settings */
 import { CookiesProvider } from "react-cookie";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000,
-      suspense: true,
-    },
-  },
-});
+const queryClient = new QueryClient();
+//   {
+//   defaultOptions: {
+//     queries: {
+//       staleTime: 5 * 60 * 1000,
+//       suspense: true,
+//     },
+//   },
+// }
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement as Element);

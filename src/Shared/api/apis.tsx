@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { IUser, LogUser } from "../../typings/db";
 import { getCookie } from "../Cookies";
 import api from "./core/api";
 
-const accessToken = getCookie("token");
+export const accessToken = getCookie("token");
 
 const apis = {
   // example
@@ -10,7 +11,7 @@ const apis = {
   signUpIdCheckMT: (data: object) => api.post("/user/dubcheck", data),
   loginMT: (data: LogUser) => api.post("/login", data),
   getRoomListQR: () => api.get("/game/rooms"),
-  createRoomMT: (data: object) =>
+  createRoomMT: (data: any) =>
     api.post("/game/room", data, {
       headers: {
         Authorization: accessToken,
