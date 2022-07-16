@@ -94,9 +94,9 @@ const Ingame = () => {
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
-
+  const API_URL = process.env.REACT_APP_API_URL;
   /* socket connect - token */
-  const socket = new SockJS("http://3.35.53.184/SufficientAmountOfAlcohol");
+  const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const { roomid } = useParams();
@@ -129,8 +129,6 @@ const Ingame = () => {
           const msgData = JSON.parse(response?.content);
           const msgSender = response?.sender;
           const playersInfo = msgData.players;
-          console.log(response);
-          console.log(msgData);
           switch (msgType) {
             case "START":
               const findNowPlayer = playersInfo.filter(
@@ -247,11 +245,14 @@ const Ingame = () => {
               }
               break;
             case "PRECHECK":
+              // 게임이 만약 끝났다면, ENDGAME 처리
               if (msgData.gameOver === true) {
                 sendStompMsgFunc("1", myId, "ENDGAME", null);
+                // 만약 현재 플레이어가 나이고 죽은게 아니라면?
               } else if (msgSender === myId && msgData.player.dead === false) {
                 dispatch(setThisPlayerTK(msgData.player));
                 dispatch(setSelectableCardTK(msgData.cardsDrawed));
+                // 내가 지금 플레이를 하는게 아니라면, 해당 유저의 데이터를 바꾸러 갈 것이다.
               } else if (msgSender !== myId) {
                 setUpdateOne(msgData.player);
               }
@@ -286,6 +287,7 @@ const Ingame = () => {
                 // setStatus => card draw success!
                 dispatch(updateMyCardsTK(msgData.cardsOnHand));
                 sendStompMsgFunc("1", myId, "TURNCHECK", null);
+                // open drawsuccess modal for 3sec
               } else if (msgSender === myId && msgData.isSuccess === false) {
                 // setStatus => card draw Failed!
                 dispatch(updateMyCardsTK(msgData.cardsOnHand));
@@ -301,7 +303,9 @@ const Ingame = () => {
                 timerFunc(30000, "ENDTURN");
                 setStatus("ACTION");
               } else if (msgSender === myId && msgData.action === false) {
-                sendStompMsgFunc("1", Number(myId), "ENDTURN", null);
+                setStatus("ACTIONFAILED");
+              } else if (msgSender !== myId && msgData.action === false) {
+                setStatus("ACTIONFAILED");
               }
               break;
             case "USECARD":
@@ -310,14 +314,17 @@ const Ingame = () => {
               break;
             case "USEFAIL":
               if (msgSender === myId) {
-                alert("마나가 부족합니다!");
+                alert("마나가 부족하거나 니가 침묵에 걸렸겠지!");
               }
               break;
             case "DISCARD":
               if (msgSender === myId) {
-                console.log("카드 바꿉니다");
                 dispatch(setThisPlayerTK(msgData));
+                setStatus("ACTION");
                 // dispatch(setThisPlayerTK(msgData));
+              } else {
+                setUpdateOne(msgData);
+                setStatus("DISCARD");
               }
               break;
             case "ENDTURN":
@@ -350,28 +357,24 @@ const Ingame = () => {
         console.log("아직 내 턴이 아니옵니다.");
         break;
       case "PRECHECK":
+        // 만약 그게 나라면 이제 드로우를 하러 갑니다.
         if (nowPlayerId === playersData.thisPlayer.playerId) {
           sendStompMsgFunc("1", myId, "DRAW", null);
         } else {
-          switch (updateOne.playerId) {
-            case playersData.teamPlayer.playerId:
-              dispatch(setTeamPlayerTK(updateOne));
-              break;
-            case playersData.enemyPlayerA.playerId:
-              dispatch(setEnemyPlayerATK(updateOne));
-              break;
-            case playersData.enemyPlayerB.playerId:
-              dispatch(setEnemyPlayerBTK(updateOne));
-              break;
-            default:
-              break;
-          }
+          // 만약 내가 아니라면 지금 플레이하는 사람의 상태를 최신화할 것이다.
+          updatePlayersFunc();
         }
-        console.log("휴");
         break;
       case "DRAW":
         break;
       case "ACTION":
+        break;
+      case "ACTIONFAILED":
+        if (nowPlayerId === playersData.thisPlayer.playerId) {
+          setTimeout(() => {
+            sendStompMsgFunc("1", Number(myId), "ENDTURN", null);
+          }, 3000);
+        }
         break;
       case "USECARD":
         setStatus("USECARDSUCCESS");
@@ -407,29 +410,18 @@ const Ingame = () => {
           dispatch(setEnemyPlayerBTK(enemyB[0]));
         }
         break;
+      case "DISCARD":
+        if (nowPlayerId !== playersData.thisPlayer.playerId) {
+          updatePlayersFunc();
+          setStatus("ACTION");
+        }
+        break;
       case "CHANGETURN":
         const nowPlayerName = playersList.filter(
           (value: playersSetting) => value.playerId === nowPlayerId
         );
         dispatch(setNowPlayerNameTK(nowPlayerName[0].username));
-
-        switch (updateOne.playerId) {
-          case playersData.thisPlayer.playerId:
-            dispatch(setThisPlayerTK(updateOne));
-            break;
-          case playersData.teamPlayer.playerId:
-            dispatch(setTeamPlayerTK(updateOne));
-            break;
-          case playersData.enemyPlayerA.playerId:
-            dispatch(setEnemyPlayerATK(updateOne));
-            break;
-          case playersData.enemyPlayerB.playerId:
-            dispatch(setEnemyPlayerBTK(updateOne));
-            break;
-          default:
-            break;
-        }
-
+        updatePlayersFunc();
         if (nowPlayerId === Number(playersData.thisPlayer.playerId)) {
           setTimeout(function () {
             sendStompMsgFunc("1", myId, "PRECHECK", null);
@@ -503,6 +495,23 @@ const Ingame = () => {
   const clearActionTurnFunc = () => {
     ClearTimer();
     dispatch(setTimerTK(""));
+  };
+
+  const updatePlayersFunc = () => {
+    switch (updateOne.playerId) {
+      case playersData.thisPlayer.playerId:
+        dispatch(setThisPlayerTK(updateOne));
+        break;
+      case playersData.teamPlayer.playerId:
+        dispatch(setTeamPlayerTK(updateOne));
+        break;
+      case playersData.enemyPlayerA.playerId:
+        dispatch(setEnemyPlayerATK(updateOne));
+        break;
+      case playersData.enemyPlayerB.playerId:
+        dispatch(setEnemyPlayerBTK(updateOne));
+        break;
+    }
   };
 
   return (

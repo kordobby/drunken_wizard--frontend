@@ -47,14 +47,27 @@ const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
 
   return (
     <>
-      <DrawableCard
-        onClick={(event: React.MouseEvent<HTMLDivElement>) => {
-          selectCardHandler(event, value);
-        }}
-        selected={selected}
-      >
-        <p>나와라 얍</p>
-      </DrawableCard>
+      {thisPlayer === "FARSEER" ? (
+        <DrawableCard
+          onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+            selectCardHandler(event, value);
+          }}
+          selected={selected}
+          cardId={0}
+        >
+          <p>나와라 얍</p>
+        </DrawableCard>
+      ) : (
+        <DrawableCard
+          onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+            selectCardHandler(event, value);
+          }}
+          selected={selected}
+          cardId={value.cardId}
+        >
+          <p>나와라 얍</p>
+        </DrawableCard>
+      )}
     </>
   );
 };

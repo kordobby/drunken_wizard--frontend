@@ -266,6 +266,8 @@ export const DrawableCardsWrap = styled.div`
 export const DrawableCard = styled.div<DrawableCardSC>`
   width: 100px;
   height: 150px;
+  border: ${(props) => props.selected && "red"};
+  background-image: url(${(props) => matchCardImg(props.cardId)});
   background-color: ${(props) => (props.selected ? "blue" : "yellow")};
   ${flex({ direction: "column", justify: "center" })};
   margin-right: 20px;
