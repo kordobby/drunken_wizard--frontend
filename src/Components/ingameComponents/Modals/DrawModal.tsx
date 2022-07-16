@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 /* Hooks */
 import { useAppSelector } from "../../../hooks/tsHooks";
 
@@ -8,44 +9,50 @@ import { DrawProps } from "../../../typings/typedb";
 import { DrawModalWrap, DrawableCardsWrap } from "../InGameStyled";
 import DrawableCards from "./DrawableCards";
 
-const DrawModal = ({
-  selectTurnController,
-  selectedCard,
-  drawDisabled,
-  setSelectedCard,
-}: DrawProps) => {
-  const thisPlayer = useAppSelector(
-    (state) => state.game.players.thisPlayer.charactorClass
+const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
+  const [drawDisabled, setDrawDisabled] = useState<boolean>(false);
+
+  const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
+  const selectableCnt = useAppSelector(
+    (state) => state.game.game.selectableCnt
   );
+  console.log(selectableCnt);
   const selectableCards = useAppSelector(
     (state) => state.game.game.selectableCards
   );
+  console.log(selectableCards);
+  console.log(selectableCards);
+  const selectedCardsArr = useAppSelector(
+    (state) => state.game.game.drawSelectCards
+  );
+  const removeDupSelectedCard = selectedCardsArr.filter(
+    (value, index) => selectedCardsArr.indexOf(value) === index
+  );
 
+  useEffect(() => {
+    if (selectableCnt === removeDupSelectedCard.length) {
+      setDrawDisabled(true);
+    } else {
+      setDrawDisabled(false);
+    }
+  }, [removeDupSelectedCard]);
+
+  const sendDrawCardsHandler = () => {
+    const data = { selectedCards: removeDupSelectedCard };
+    sendStompMsgFunc("1", thisPlayer.playerId, "SELECT", data);
+  };
   return (
     <DrawModalWrap>
-      {thisPlayer === "FARSEER" ? (
-        <div>
-          <p>당신은 미래를 보는 파시어입니다.</p>
-          <p>원하는 카드 두장을 선택하세요.</p>
-          <p>선택하지 않은 카드는 카드 덱으로 돌아갑니다.</p>
-        </div>
-      ) : (
-        <p>드로우할 카드를 선택하세요.</p>
-      )}
       <DrawableCardsWrap>
         {selectableCards?.map((value: any) => (
           <DrawableCards
             key={value.cardId}
-            id={value.cardId}
-            target={value.target}
             drawDisabled={drawDisabled}
-            setSelectedCard={setSelectedCard}
-            selectedCard={selectedCard}
+            value={value}
           ></DrawableCards>
         ))}
       </DrawableCardsWrap>
-      {/* <span> 선택된 카드 {selectedCard}</span> */}
-      <button onClick={selectTurnController}> 선택 완료하기</button>
+      <button onClick={sendDrawCardsHandler}> 선택 완료하기</button>
     </DrawModalWrap>
   );
 };

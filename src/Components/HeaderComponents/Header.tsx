@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { getCookie } from "../../Shared/Cookies";
+import { getCookie } from "../../shared/Cookies";
 
 const Header = () => {
   const userNick = getCookie("nickname");

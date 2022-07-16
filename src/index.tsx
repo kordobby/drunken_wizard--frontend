@@ -20,11 +20,20 @@ import { BrowserRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 
 const queryClient = new QueryClient();
+//   {
+//   defaultOptions: {
+//     queries: {
+//       staleTime: 5 * 60 * 1000,
+//       suspense: true,
+//     },
+//   },
+// }
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement as Element);
 
 root.render(
+  // <React.Suspense fallback={<div>로딩 중이에요!</div>}>
   <CookiesProvider>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -37,6 +46,7 @@ root.render(
       </BrowserRouter>
     </QueryClientProvider>
   </CookiesProvider>
+  // </React.Suspense>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -7,10 +7,13 @@ export interface Card {
   description: string;
   manaCost: number;
   target: string;
-}
+} // use
 
+export interface DrawCard {
+  cardId: number;
+}
 export interface playersSetting {
-  cardsOnHand: any;
+  cardsOnHand: Card[];
   charactorClass: string;
   playerId: number;
   health: number;
@@ -28,7 +31,7 @@ export interface playersSetting {
   turnOrder: number;
   weakDuration: number;
   damageModifierDuration: number;
-}
+} // use
 
 // #1. 게임 시작
 export interface StartModalProps {
@@ -41,38 +44,23 @@ export interface HeaderProps {
 }
 
 // playerField
-export interface PlayerProps {
-  setFindTargetGroup: Dispatch<SetStateAction<string>>;
-  findTargetGroup: string;
-  selectUseCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  sendUseCardHandler: () => void;
-  selectDisCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
+export interface PlayerFieldProps {
   sendStompMsgFunc: (
     roomId: string,
     sender: number,
     msgType: string,
     data: object | null
   ) => void;
-  selectedCardName: string;
-}
-
-// cards
-export interface CardProps {
-  id: number;
-  className: string;
-  name: string;
-  team: boolean;
-  selectUseCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  selectDisCardHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 // drawModal
 export interface DrawProps {
-  id: number;
-  selectTurnController: () => void;
-  selectedCard: any[];
-  drawDisabled: boolean;
-  setSelectedCard: Dispatch<SetStateAction<object[]>>;
+  sendStompMsgFunc: (
+    roomId: string,
+    sender: number,
+    msgType: string,
+    data: object | null
+  ) => void;
 }
 
 // drawableCards
@@ -108,6 +96,7 @@ export interface PlayerSetProps {
 // playerIcons
 export interface IconsImgProps {
   job: string;
+  dead: boolean;
 }
 
 // cardType
@@ -141,4 +130,36 @@ export interface CardBg {
 }
 export interface DrawCards {
   selected: boolean;
+}
+
+export interface CardSelectProps {
+  selected: boolean;
+  value: Card;
+}
+export interface CardProps {
+  value: Card;
+}
+
+export interface DrawableCardsProps {
+  value: Card;
+  drawDisabled: boolean;
+}
+
+export interface DrawableCardSC {
+  cardId: number;
+  selected: boolean;
+}
+export interface UseCardProps {
+  onMouseOver: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onMouseLeave: (event: React.MouseEvent<HTMLDivElement>) => void;
+  value: Card;
+  className: string;
+}
+export interface TargetBtnProps {
+  onMouseOver: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+export interface SampleCardProps {
+  value: Card;
+  className: string;
 }

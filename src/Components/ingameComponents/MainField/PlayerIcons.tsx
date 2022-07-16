@@ -11,6 +11,7 @@ import {
   Profiles,
   ProfilesImage,
   StatBarTop,
+  PlayerNameTag,
 } from "../InGameStyled";
 
 const PlayerIcons = () => {
@@ -23,13 +24,16 @@ const PlayerIcons = () => {
       {/* 여기 줄일방ㅇ법... */}
       {playersList.map((value: playersSetting) => (
         <Profiles team={value.team} playing={value.playerId === nowPlayer}>
-          <ProfilesImage job={value.charactorClass}></ProfilesImage>
-          <span>{value.username}</span>
+          <ProfilesImage job={value.charactorClass} dead={value.dead}>
+            <PlayerNameTag>
+              <span>{value.username}</span>
+            </PlayerNameTag>
+          </ProfilesImage>
           <div>
             <StatBarTop>
-              <p>{value.charactorClass}</p>
-              <p>HP :{value.health}</p>
-              <p>MP :{value.mana}</p>
+              <p>Class: {value.charactorClass}</p>
+              <span>HP :{value.health}</span>
+              <span style={{ marginLeft: "40px" }}>MP :{value.mana}</span>
             </StatBarTop>
             <PlayerStatBar
               manaCostModifierDuration={value.manaCostModifierDuration}

@@ -1,113 +1,72 @@
 import { useState } from "react";
 /* Hooks */
-import { useAppSelector } from "../../../hooks/tsHooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/tsHooks";
 
 /* Interface */
-import { DrawCardsProps } from "../../../typings/typedb";
+import { Card, DrawableCardsProps } from "../../../typings/typedb";
+
+/* modules */
+import {
+  setDrawCardSelectTK,
+  cancelSelectDrawCardsTK,
+} from "../../../redux/modules/ingameSlice";
 
 /* CSS & SC */
-import { DrawbleCardWrap } from "../InGameStyled";
+import { DrawableCard } from "../InGameStyled";
 
-const DrawableCards: React.FC<DrawCardsProps> = ({
-  id,
-  target,
-  drawDisabled,
-  setSelectedCard,
-  selectedCard,
-}) => {
+const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
   const [selected, setSelected] = useState(false);
+
+  // find 파시어
+  const dispatch = useAppDispatch();
   const thisPlayer = useAppSelector(
     (state) => state.game.players.thisPlayer.charactorClass
   );
+
   /* DRAW :: SELECT <==> CANCEL */
-  const selectCardHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+  const selectCardHandler = (
+    event: React.MouseEvent<HTMLDivElement>,
+    value: Card
+  ) => {
+    const cardMaker = {
+      cardId: value.cardId,
+    };
+    console.log(cardMaker);
     if (selected === false && drawDisabled === false) {
-      console.log("클릭감지1");
-      const newSelectedCard: any[] = [...selectedCard];
-      const targetId = (event.target as HTMLDivElement).id;
-      console.log(targetId);
-      if (targetId === null || undefined) {
-        alert("꽝카드!");
-        return;
-      } else {
-        const setNew = newSelectedCard.push(targetId);
-        const removeDup = newSelectedCard.filter(
-          (value, index) => newSelectedCard.indexOf(value) === index
-        );
-        setSelected(true);
-        setSelectedCard(removeDup);
-      }
+      console.log("추가");
+      dispatch(setDrawCardSelectTK(cardMaker));
+      setSelected(true);
     } else if (selected === false && drawDisabled === true) {
       alert("선택가능한 카드수를 초과했습니다!");
     } else if (selected === true) {
-      console.log("클릭감지2");
-      const newSelectedCard = [...selectedCard];
-      const target = (event.target as HTMLDivElement).id;
-      console.log(target);
-      const setNew = newSelectedCard.filter(
-        (value) => Number(value) !== Number(target)
-      );
+      console.log("제거");
+      dispatch(cancelSelectDrawCardsTK(cardMaker));
       setSelected(false);
-      setSelectedCard(setNew);
     }
   };
-  const selectCardBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (selected === false && drawDisabled === false) {
-      console.log("클릭감지1");
-      const newSelectedCard: any[] = [...selectedCard];
-      const targetId = (event.target as HTMLButtonElement).id;
-      console.log(targetId);
-      if (targetId === "" || null || undefined) {
-        alert("꽝카드!");
-        return;
-      } else {
-        const setNew = newSelectedCard.push(targetId);
-        const removeDup = newSelectedCard.filter(
-          (value, index) => newSelectedCard.indexOf(value) === index
-        );
-        setSelected(true);
-        setSelectedCard(removeDup);
-      }
-    } else if (selected === false && drawDisabled === true) {
-      alert("선택가능한 카드수를 초과했습니다!");
-    } else if (selected === true) {
-      console.log("클릭감지2");
-      const newSelectedCard = [...selectedCard];
-      const target = (event.target as HTMLButtonElement).id;
-      console.log(target);
-      const setNew = newSelectedCard.filter(
-        (value) => Number(value) !== Number(target)
-      );
-      setSelected(false);
-      setSelectedCard(setNew);
-    }
-  };
+
   return (
     <>
       {thisPlayer === "FARSEER" ? (
-        <DrawbleCardWrap
+        <DrawableCard
+          onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+            selectCardHandler(event, value);
+          }}
           selected={selected}
-          id={String(id)}
-          className={target}
-          onClick={selectCardHandler}
+          cardId={0}
         >
-          <button id={String(id)} onClick={selectCardBtn}>
-            선택
-          </button>
-          <span>cardId: </span>
-        </DrawbleCardWrap>
+          <p>나와라 얍</p>
+        </DrawableCard>
       ) : (
-        <DrawbleCardWrap
+        <DrawableCard
+          onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+            selectCardHandler(event, value);
+          }}
           selected={selected}
-          id={String(id)}
-          className={target}
-          onClick={selectCardHandler}
+          cardId={value.cardId}
         >
-          <button id={String(id)} onClick={selectCardBtn}>
-            선택
-          </button>
-          <span>뭘까요?</span>
-        </DrawbleCardWrap>
+          <p>나와라 얍</p>
+        </DrawableCard>
       )}
     </>
   );

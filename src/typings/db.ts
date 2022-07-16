@@ -8,6 +8,7 @@ export interface IUser {
   password: string;
   passwordCheck: string;
 }
+
 // login
 export interface LogUser {
   username: string;
@@ -20,4 +21,21 @@ export interface loginStateProps {
 // modal
 export interface ModalType {
   modalClose: () => void;
+}
+
+// chatList
+export interface ChatType {
+  type: string;
+  message: string;
+  sender: string;
+}
+
+// chatList
+export interface AddRoomType {
+  roomId: string | undefined;
+  id: string;
+}
+
+export interface joinRoomType {
+  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
