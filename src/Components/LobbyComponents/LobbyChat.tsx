@@ -14,12 +14,13 @@ import { useQueryClient } from "react-query";
 import user from "../../images/lobby/noteam.jpg";
 
 const LobbyChat = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const iptRef = useRef<any>("");
   const [semiMsgList, setSemiMsgList] = useState<any>();
   const [msgList, setMsgList] = useState<any[]>([]);
   const [userList, setUserList] = useState<any>();
   const [subscribeState, setSubscribeState] = useState(false);
-  const socket = new sockJS("http://3.35.53.184/SufficientAmountOfAlcohol");
+  const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
   const queryClient = useQueryClient();
   const accessToken = getCookie("token");

@@ -16,8 +16,9 @@ import { getCookie } from "../../shared/Cookies";
 import axios from "axios";
 
 const createRoomMT = (data: any) => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const accessToken = getCookie("token");
-  return axios.post(`http://3.35.53.184/game/room`, data, {
+  return axios.post(`${API_URL}game/room`, data, {
     headers: {
       Authorization: accessToken,
     },

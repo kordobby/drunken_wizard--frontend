@@ -12,16 +12,18 @@ import { getCookie } from "../shared/Cookies";
 import { AddRoomType } from "../typings/db";
 
 const joinRoomMT = (data: AddRoomType) => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const accessToken = getCookie("token");
-  return axios.post(`http://3.35.53.184/game/${data.roomId}/join`, data, {
+  return axios.post(`${API_URL}game/${data.roomId}/join`, data, {
     headers: {
       Authorization: accessToken,
     },
   });
 };
 const leaveRoomMT = (data: any) => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const accessToken = getCookie("token");
-  return axios.post(`http://3.35.53.184/game/${data.roomId}/leave`, data, {
+  return axios.post(`${API_URL}game/${data.roomId}/leave`, data, {
     headers: {
       Authorization: accessToken,
     },
@@ -29,10 +31,11 @@ const leaveRoomMT = (data: any) => {
 };
 
 const WaitingRoom = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const [waitingUsers, setWaitingUsers] = useState<any>();
   const navigate = useNavigate();
   const { roomId } = useParams();
-  const socket = new sockJS("http://3.35.53.184/SufficientAmountOfAlcohol");
+  const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const accessId = getCookie("id");

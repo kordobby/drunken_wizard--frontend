@@ -19,8 +19,9 @@ import { getCookie } from "../../shared/Cookies";
 import { AddRoomType, joinRoomType } from "../../typings/db";
 
 const joinRoomMT = (data: AddRoomType) => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const accessToken = getCookie("token");
-  return axios.post(`http://13.124.63.214/game/${data.roomId}/join`, data, {
+  return axios.post(`${API_URL}game/${data.roomId}/join`, data, {
     headers: {
       Authorization: accessToken,
     },
@@ -48,19 +49,19 @@ const Rooms = () => {
     console.log("확인용");
   }, []);
 
-  // const { mutate: joinRoom } = useMutation(joinRoomMT, {
-  //   onMutate: (res) => {
-  //     // queryClient.invalidateQueries();
-  //   },
-  //   onSuccess: (res) => {
-  //     console.log(res);
-  //     queryClient.invalidateQueries("room_list");
-  //   },
-  //   onError: (error) => {
-  //     console.log(error);
-  //     navigate("/lobby");
-  //   },
-  // });
+  const { mutate: joinRoom } = useMutation(joinRoomMT, {
+    onMutate: (res) => {
+      // queryClient.invalidateQueries();
+    },
+    onSuccess: (res) => {
+      console.log(res);
+      queryClient.invalidateQueries("room_list");
+    },
+    onError: (error) => {
+      console.log(error);
+      navigate("/lobby");
+    },
+  });
 
   const pleaseMessage = () => {
     const accessName = getCookie("nickname");
