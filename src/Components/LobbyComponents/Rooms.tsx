@@ -1,32 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect } from "react";
 // stomp
 import stompJS from "stompjs";
 import { socket } from "../../shared/WebStomp";
+// apis
+import apis from "../../shared/api/apis";
+import { getCookie } from "../../shared/Cookies";
+// interface
+import { joinRoomType } from "../../typings/db";
 // css
 import flex from "../GlobalStyled/flex";
+// imgs
 import team1 from "../../images/lobby/team1.jpg";
 import team2 from "../../images/lobby/team2.jpg";
 import noteam from "../../images/lobby/noteam.jpg";
 import vs from "../../images/lobby/vs.svg";
-// apis
-import apis from "../../shared/api/apis";
-import axios from "axios";
-import { getCookie } from "../../shared/Cookies";
-// interface
-import { AddRoomType, joinRoomType } from "../../typings/db";
-
-const joinRoomMT = (data: AddRoomType) => {
-  const API_URL = process.env.REACT_APP_API_URL;
-  const accessToken = getCookie("token");
-  return axios.post(`${API_URL}game/${data.roomId}/join`, data, {
-    headers: {
-      Authorization: accessToken,
-    },
-  });
-};
 
 const Rooms = () => {
   const queryClient = useQueryClient();
@@ -49,7 +39,7 @@ const Rooms = () => {
     console.log("확인용");
   }, []);
 
-  const { mutate: joinRoom } = useMutation(joinRoomMT, {
+  const { mutate: joinRoom } = useMutation(apis.joinRoomMT, {
     onMutate: (res) => {
       // queryClient.invalidateQueries();
     },
@@ -199,13 +189,11 @@ const Rooms = () => {
 export default Rooms;
 
 const RoomWrap = styled.div`
-  width: 65vw;
+  width: 70vw;
   margin: 10px 100px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: top;
-  box-sizing: border-box;
+  align-content: flex-start;
 `;
 const RoomBox = styled.div<joinRoomType>`
   width: 720px;

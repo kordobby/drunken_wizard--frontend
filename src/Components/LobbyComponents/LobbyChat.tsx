@@ -150,16 +150,21 @@ const LobbyChat = () => {
           <span style={{ fontSize: "24px" }}></span>
         </Profile>
       </ProfileBox>
-      {userList &&
-        userList.map((v: any, i: number) => {
-          return (
-            <Users key={i}>
-              <UsersImg style={{ backgroundImage: `url(${user})` }}></UsersImg>
-              <span style={{ fontSize: "24px" }}>{v.id}</span>
-              <span style={{ fontSize: "24px" }}>{v.nickname}</span>
-            </Users>
-          );
-        })}
+      <Users>
+        {userList &&
+          userList.map((v: any, i: number) => {
+            return (
+              <div key={i}>
+                {" "}
+                <UsersImg
+                  style={{ backgroundImage: `url(${user})` }}
+                ></UsersImg>
+                <span style={{ fontSize: "24px" }}>{v.id}</span>
+                <span style={{ fontSize: "24px" }}>{v.nickname}</span>
+              </div>
+            );
+          })}
+      </Users>
       <ChatBox>
         <ChatWrap>
           {msgList?.map((msg: ChatType, idx: number) => {
@@ -208,15 +213,17 @@ const LobbyChat = () => {
 export default LobbyChat;
 
 const Wrap = styled.div`
-  /* width: 30vh;
-  height: 100vh; */
-  margin-top: 20px;
+  width: 330px;
+  height: 805px;
+  margin-top: 10px;
+
   ${flex({ direction: "column", align: "center" })}
 `;
 const ProfileBox = styled.div`
   width: 330px;
   height: 145px;
   margin-bottom: 10px;
+  box-sizing: border-box;
   border-radius: 12px;
   background-color: rgba(255, 255, 255, 0.5);
   ${flex({ align: "center" })};
@@ -235,6 +242,7 @@ const Profile = styled.div``;
 const Users = styled.div`
   width: 330px;
   height: 220px;
+  box-sizing: border-box;
   border-radius: 12px;
   overflow: auto;
   background-color: rgba(255, 255, 255, 0.5);
@@ -254,13 +262,17 @@ const ChatWrap = styled.div`
   width: 300px;
   height: 350px;
   overflow-y: auto;
+  background-color: rgba(202, 37, 37, 0.5);
   ${flex({ direction: "column", align: "left" })};
 `;
 
 const ChatBox = styled.div`
   width: 330px;
   height: 420px;
+  margin-top: 10px;
   border-radius: 12px;
+  display: flex;
+  align-items: center;
   background-color: rgba(255, 255, 255, 0.5);
   ${flex({ direction: "column", align: "left" })};
 `;

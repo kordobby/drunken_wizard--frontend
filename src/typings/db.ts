@@ -30,12 +30,17 @@ export interface ChatType {
   sender: string;
 }
 
-// chatList
+// createroom
 export interface AddRoomType {
-  roomId: string | undefined;
-  id: string;
+  roomName: string;
 }
 
 export interface joinRoomType {
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+}
+
+// joinroom
+export interface waitingRoom {
+  roomId: string | undefined;
+  id: string;
 }

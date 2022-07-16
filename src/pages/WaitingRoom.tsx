@@ -8,27 +8,8 @@ import sockJS from "sockjs-client";
 // import { socket } from "../shared/WebStomp";
 // cookies
 import { getCookie } from "../shared/Cookies";
-// interface
-import { AddRoomType } from "../typings/db";
-
-const joinRoomMT = (data: AddRoomType) => {
-  const API_URL = process.env.REACT_APP_API_URL;
-  const accessToken = getCookie("token");
-  return axios.post(`${API_URL}game/${data.roomId}/join`, data, {
-    headers: {
-      Authorization: accessToken,
-    },
-  });
-};
-const leaveRoomMT = (data: any) => {
-  const API_URL = process.env.REACT_APP_API_URL;
-  const accessToken = getCookie("token");
-  return axios.post(`${API_URL}game/${data.roomId}/leave`, data, {
-    headers: {
-      Authorization: accessToken,
-    },
-  });
-};
+// apis
+import apis from "../shared/api/apis";
 
 const WaitingRoom = () => {
   const API_URL = process.env.REACT_APP_API_URL;
@@ -42,7 +23,7 @@ const WaitingRoom = () => {
   const queryClient = useQueryClient();
 
   // mutate
-  const { mutate: joinRoom } = useMutation(joinRoomMT, {
+  const { mutate: joinRoom } = useMutation(apis.joinRoomMT, {
     onMutate: (res) => {
       // queryClient.invalidateQueries();
     },
@@ -55,7 +36,7 @@ const WaitingRoom = () => {
       navigate("/lobby");
     },
   });
-  const { mutate: leaveRoom } = useMutation(leaveRoomMT, {
+  const { mutate: leaveRoom } = useMutation(apis.leaveRoomMT, {
     onSuccess: (res) => {
       console.log(res);
       // leaveRoomMessage();

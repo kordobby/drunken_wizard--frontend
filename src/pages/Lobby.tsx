@@ -49,30 +49,19 @@ const Lobby = () => {
 
   return (
     <Main style={{ backgroundImage: `url(${Back})` }}>
+      {createRoomModal && <CreateRoom modalClose={modalClose} />}
       <Header style={{ backgroundImage: `url(${header})` }}>
         <LogoutBtn onClick={logoutHandler}>
           <img src={logout} />
         </LogoutBtn>
-        {/* <UserInfo>
-          <NickName>{accessNick}</NickName>
-          <Record>7승 8패</Record>
-        </UserInfo> */}
       </Header>
-      {createRoomModal && <CreateRoom modalClose={modalClose} />}
-
-      {/* <Link to="/signup">
-        <button>회원가입하기</button>
-      </Link>
-      <Link to="/login">
-        <button>로그인하기</button>
-      </Link>
       <button
         onClick={() => {
           queryClient.invalidateQueries("room_list");
         }}
       >
         리패치
-      </button> */}
+      </button>
       <LobbyWrap>
         <Rooms />
         <SideBar>
@@ -90,36 +79,32 @@ const Lobby = () => {
 export default Lobby;
 
 const Main = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
 `;
 const LobbyWrap = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: stretch;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
 `;
 const SideBar = styled.div`
   width: 350px;
-  height: 940px;
+  height: 100%;
   display: flex;
   justify-content: stretch;
   flex-direction: column;
+  align-items: center;
   /* background-color: rgba(45, 5, 90, 0.1); */
 `;
 const Button = styled.div`
   width: 330px;
   height: 100px;
   display: flex;
+
   &:hover {
     cursor: pointer;
     filter: brightness(110%);
