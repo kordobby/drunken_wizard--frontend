@@ -3,27 +3,42 @@ import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 // hooks
 import useInput from "../../hooks/useInput";
+// stomp
+import stompJS from "stompjs";
+import { socket } from "../../shared/WebStomp";
 // interface
-import { ModalType } from "../../typings/db";
+import { AddRoomType, ModalType } from "../../typings/db";
 // apis
 import apis from "../../shared/api/apis";
 // css
 import { Backdrop, CreatRoomBox, ModalContainer } from "./LobbyStyled";
 import { getCookie } from "../../shared/Cookies";
+import axios from "axios";
+
+const createRoomMT = (data: any) => {
+  const accessToken = getCookie("token");
+  return axios.post(`http://3.35.53.184/game/room`, data, {
+    headers: {
+      Authorization: accessToken,
+    },
+  });
+};
 
 const CreateRoom = ({ modalClose }: ModalType) => {
   const [roomName, setRoomName] = useInput<string>("");
   const accessId = getCookie("id");
+  const accessToken = getCookie("token");
   const accessNickname = getCookie("nickname");
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const stompClient = stompJS.over(socket);
+  const navigate = useNavigate();
 
   // mutate
-  const { mutate: createRoom } = useMutation(apis.createRoomMT, {
+  const { mutate: createRoom } = useMutation(createRoomMT, {
     onSuccess: (res) => {
       console.log(res.data);
-      queryClient.invalidateQueries("room_list");
       navigate(`/waiting/${res.data.roomId}`);
+      pleaseMessage();
     },
     onError: (error) => {
       console.log(error);
@@ -34,7 +49,7 @@ const CreateRoom = ({ modalClose }: ModalType) => {
   // handler
   const onCreateRoom = useCallback(
     (e: React.FormEvent<HTMLButtonElement>) => {
-      e.preventDefault();
+      accessToken && e.preventDefault();
       createRoom({
         roomName: roomName,
         // id: accessId,
@@ -43,6 +58,18 @@ const CreateRoom = ({ modalClose }: ModalType) => {
     },
     [roomName, accessId, accessNickname, createRoom]
   );
+
+  // send
+  const pleaseMessage = () => {
+    const accessName = getCookie("nickname");
+    const data = {
+      type: "LEAVE",
+      roomId: 1,
+      sender: accessName,
+      message: `${accessName}님이 채팅방에서 나갔습니다.`,
+    };
+    stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
+  };
 
   return (
     <>

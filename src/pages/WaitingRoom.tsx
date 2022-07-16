@@ -4,7 +4,8 @@ import { useMutation, useQueryClient } from "react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 // stomp
 import stompJS from "stompjs";
-import { socket } from "../shared/WebStomp";
+import sockJS from "sockjs-client";
+// import { socket } from "../shared/WebStomp";
 // cookies
 import { getCookie } from "../shared/Cookies";
 // interface
@@ -12,7 +13,7 @@ import { AddRoomType } from "../typings/db";
 
 const joinRoomMT = (data: AddRoomType) => {
   const accessToken = getCookie("token");
-  return axios.post(`http://13.124.63.214/game/${data.roomId}/join`, data, {
+  return axios.post(`http://3.35.53.184/game/${data.roomId}/join`, data, {
     headers: {
       Authorization: accessToken,
     },
@@ -20,7 +21,7 @@ const joinRoomMT = (data: AddRoomType) => {
 };
 const leaveRoomMT = (data: any) => {
   const accessToken = getCookie("token");
-  return axios.post(`http://13.124.63.214/game/${data.roomId}/leave`, data, {
+  return axios.post(`http://3.35.53.184/game/${data.roomId}/leave`, data, {
     headers: {
       Authorization: accessToken,
     },
@@ -28,9 +29,10 @@ const leaveRoomMT = (data: any) => {
 };
 
 const WaitingRoom = () => {
-  const [userList, setUserList] = useState<any>();
+  const [waitingUsers, setWaitingUsers] = useState<any>();
   const navigate = useNavigate();
   const { roomId } = useParams();
+  const socket = new sockJS("http://3.35.53.184/SufficientAmountOfAlcohol");
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
@@ -53,8 +55,8 @@ const WaitingRoom = () => {
   const { mutate: leaveRoom } = useMutation(leaveRoomMT, {
     onSuccess: (res) => {
       console.log(res);
-      leaveRoomMessage();
-      queryClient.invalidateQueries("room_list");
+      // leaveRoomMessage();
+      // queryClient.invalidateQueries("room_list");
       navigate("/lobby");
     },
     onError: (error) => {
@@ -92,9 +94,9 @@ const WaitingRoom = () => {
           stompClient.subscribe(
             `/sub/game/${roomId}`,
             (data: any) => {
-              console.log(data);
-              const response = JSON.parse(data.body);
-              console.log(response);
+              const response = JSON.parse(data?.body);
+              const res = JSON.parse(response?.content);
+              setWaitingUsers(res?.userList);
             },
             { token: accessToken }
           );
@@ -111,7 +113,7 @@ const WaitingRoom = () => {
       stompClient
         .subscribe(`/sub/game/${roomId}`, function (data: any) {}, {})
         .unsubscribe();
-      leaveRoomMessage();
+      // leaveRoomMessage();
       console.log("success to unsubscribe");
     } catch (error) {
       console.log(error);
@@ -129,32 +131,75 @@ const WaitingRoom = () => {
     stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
   };
 
-  const leaveRoomMessage = () => {
-    const data = {
-      type: "LEAVE",
-      roomId: roomId,
-      sender: accessId,
-      // message: `${accessName}님이 채팅방에 참여하였습니다!`,
-    };
-    stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
-  };
+  // const leaveRoomMessage = () => {
+  //   const data = {
+  //     type: "LEAVE",
+  //     roomId: roomId,
+  //     sender: accessId,
+  //     content: null,
+  //     // message: `${accessName}님이 채팅방에 참여하였습니다!`,
+  //   };
+  //   stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
+  // };
 
   return (
     <div>
       웨이팅룸입니다.
-      <div>
-        <span>1팀</span>
-        <br />
-        <span>{userList}</span>
-        <span>닉네임</span>
-      </div>
-      <br />
-      <div>
-        <span>2팀</span>
-        <br />
-        <span>닉네임</span>
-        <span>닉네임</span>
-      </div>
+      {waitingUsers && (
+        <>
+          <div>
+            <span>1팀</span>
+            <br />
+            {waitingUsers[0] ? (
+              <div>
+                <span>{waitingUsers[0].id}</span>
+                <span>{waitingUsers[0].nickname}</span>
+              </div>
+            ) : (
+              <div>
+                <span>유저 없음</span>
+              </div>
+            )}
+            <br />
+            {waitingUsers[2] ? (
+              <div>
+                <span>{waitingUsers[2].id}</span>
+                <span>{waitingUsers[2].nickname}</span>
+              </div>
+            ) : (
+              <div>
+                <span>유저 없음</span>
+              </div>
+            )}
+          </div>
+          <br />
+          <div>
+            <span>2팀</span>
+            <br />
+            {waitingUsers[1] ? (
+              <div>
+                <span>{waitingUsers[1].id}</span>{" "}
+                <span>{waitingUsers[1].nickname}</span>
+              </div>
+            ) : (
+              <div>
+                <span>유저 없음</span>
+              </div>
+            )}
+            <br />
+            {waitingUsers[3] ? (
+              <div>
+                <span>{waitingUsers[3].id}</span>
+                <span>{waitingUsers[3].nickname}</span>
+              </div>
+            ) : (
+              <div>
+                <span>유저 없음</span>
+              </div>
+            )}
+          </div>
+        </>
+      )}
       <button onClick={leaveHandler}>방에서 나가기</button>
     </div>
   );
