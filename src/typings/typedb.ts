@@ -146,6 +146,7 @@ export interface DrawableCardsProps {
 }
 
 export interface DrawableCardSC {
+  cardId: number;
   selected: boolean;
 }
 export interface UseCardProps {
