@@ -14,25 +14,26 @@ const NoticeField = ({ status }: HeaderProps) => {
   return (
     <>
       <HeaderWrap>
-        {players.thisPlayer.turnOrder === 1 && (
+        {status === "" && <span>waiting for players...</span>}
+        {status !== "" && players.thisPlayer.turnOrder === 1 && (
           <h1>
             {players.thisPlayer.username} - {players.enemyPlayerA.username} -
             {players.teamPlayer.username} - {players.enemyPlayerB.username}
           </h1>
         )}
-        {players.thisPlayer.turnOrder === 2 && (
+        {status !== "" && players.thisPlayer.turnOrder === 2 && (
           <h1>
             {players.enemyPlayerA.username} - {players.thisPlayer.username} -
             {players.enemyPlayerB.username} - {players.teamPlayer.username}
           </h1>
         )}
-        {players.thisPlayer.turnOrder === 3 && (
+        {status !== "" && players.thisPlayer.turnOrder === 3 && (
           <h1>
             {players.teamPlayer.username} - {players.enemyPlayerA.username} -
             {players.thisPlayer.username}- {players.enemyPlayerB.username}
           </h1>
         )}
-        {players.thisPlayer.turnOrder === 4 && (
+        {status !== "" && players.thisPlayer.turnOrder === 4 && (
           <h1>
             {players.enemyPlayerA.username} - {players.teamPlayer.username}-
             {players.enemyPlayerB.username} - {players.thisPlayer.username}

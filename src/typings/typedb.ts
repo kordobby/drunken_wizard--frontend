@@ -105,3 +105,8 @@ export interface TargetBtnProps {
 export interface BtnSettings {
   disabled: boolean;
 }
+
+export interface StatProps {
+  stat: string;
+  point: number;
+}

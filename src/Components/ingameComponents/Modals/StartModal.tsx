@@ -20,12 +20,11 @@ const StartModal = ({ setStatus }: StartModalProps) => {
   return (
     <StGameWrap>
       <BeerIcons></BeerIcons>
-      {BtnActive ? (
-        <h1>유저들이 들어오는 중이랍니다!</h1>
-      ) : (
-        <h1>선빵필승! 제일 먼저 게임 시작을 눌러주세요!</h1>
-      )}
       <StartDiv>
+        <span className="start__notice">선빵필승!</span>
+        <span className="start__notice start__notice--btm">
+          제일 먼저 게임 스타트를 눌러보세요!
+        </span>
         <IngameBtn
           disabled={BtnActive}
           onClick={() => {

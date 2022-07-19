@@ -19,6 +19,7 @@ import {
   TargetBtnProps,
   UseCardProps,
   BtnSettings,
+  StatProps,
 } from "../../typings/typedb";
 import matchStatusImg from "./StatusIcon";
 import matchCardImg from "./CardFactory";
@@ -27,41 +28,59 @@ import matchCardImg from "./CardFactory";
 export const StGameWrap = styled.div`
   width: 100vw;
   height: 100vh;
+  box-sizing: border-box;
+  padding-top: 6.25vw;
   background-image: url(${InGameBackground});
-  ${flex({ direction: "column", justify: "center", align: "center" })};
+  ${flex({ direction: "column", align: "center" })};
 `;
 
 /* Notice Section */
 export const HeaderWrap = styled.div`
-  height: calc(100vh - 90vh);
-  background-color: #9c71e1;
+  height: 6.25vw;
+  background-color: var(--grey);
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  font-size: 3.33vh;
+  color: white;
   ${flex({ direction: "column", justify: "center", align: "center" })};
 `;
 
 /* Main Section */
 export const MainWrap = styled.div`
   width: 100vw;
-  height: calc(100vh - 40vh);
-  ${flex({ justify: "flex-start", align: "center" })}
+  height: calc(100vh - 30.5vh);
+  box-sizing: border-box;
+  ${flex({ justify: "center", align: "center" })}
 `;
 
 // Main => PlayerIcons
 export const PlayerIconsFields = styled.div`
-  width: calc(100vw - 20vw);
-  height: 100%;
-  background-color: yellow;
   ${flex({ justify: "space-around", align: "center" })}
 `;
 
 export const Profiles = styled.div<CardBg>`
-  width: 200px;
-  height: 300px;
-  margin: 0 15px;
-  border-radius: 30px;
-  border: ${(props) => (props.playing ? `5px solid yellow` : "none")};
+  width: 16.66vw; // 320px;
+  height: 42.59vh; // 460px;
+  border-radius: 2.96vw; // 32px;
+  box-sizing: border-box;
+  margin-right: 1.56vw;
+  /* border: ${(props) => (props.playing ? `5px solid yellow` : "none")}; */
   background-color: ${(props) =>
-    props.team ? "var(--orange)" : "var(--beige)"};
-  ${flex({ direction: "column", justify: "center", align: "center" })}
+    props.team ? "var(--purple-3)" : "var(--brown-3)"};
+  ${flex({ direction: "column", align: "center", justify: "flex-start" })};
+  .profiles__header {
+    font-size: 1.875vw;
+    box-sizing: border-box;
+    width: 16.66vw;
+    height: 7.4vh;
+    border-top-left-radius: 2.96vw;
+    border-top-right-radius: 2.96vw;
+    color: white;
+    ${flex({ align: "center", justify: "center" })};
+    background-color: ${(props) =>
+      props.team ? "var(--purple-1)" : "var(--brown-1)"};
+  }
 `;
 
 // Main => PlayerIcons : 캐릭터 직업 이미지
@@ -133,7 +152,7 @@ export const StatCnt = styled.div`
   bottom: 0;
   width: 12px;
   height: 12px;
-  border-radius: 10px;
+  border-radius: 0.52vh;
   background-color: white;
   ${flex({ justify: "center", align: "center" })}
   font-size : 6px;
@@ -141,35 +160,80 @@ export const StatCnt = styled.div`
 
 // Main => Crave Field
 export const CraveWrap = styled.div`
-  height: calc(100vh - 40vh);
-  width: calc(100vw - 80vw);
-  background-color: white;
-  ${flex({ direction: "column", justify: "center", align: "center" })};
+  height: 52.7vh; //570px;
+  width: 22.91vw; // 440px;
+  background-color: var(--white);
+  opacity: 80%;
+  border-radius: 10px;
+  position: relative;
+  .crave__under {
+    width: 14.11vw;
+    height: 35.18vh;
+    border-radius: 1.66vw;
+    top: 7.87vh;
+    left: 3.28vw;
+    position: absolute;
+    background-color: var(--brown-1);
+  }
+  .crave__top {
+    width: 14.11vw;
+    height: 35.18vh;
+    border-radius: 1.66vw;
+    background-color: var(--purple-2);
+    position: absolute;
+    top: 10.18vh;
+    left: 6.14vw;
+    transform: rotate(10deg);
+    z-index: 1;
+  }
 `;
 
 /* PlayerField */
 export const PlayerFieldWrap = styled.div`
-  height: calc(100vh - 70vh);
-  background-color: #3e2b4c;
+  height: 30.5vh;
+  width: 100vw;
+  box-sizing: border-box;
+  padding-left: 1.04vw;
+  background-color: var(--brown-3);
   ${flex({ justify: "space-between", align: "center" })};
 `;
 
 // PlayerField => [LEFT] PlayerIcon
 export const ProfileSizing = styled.div`
-  width: 200px;
-  ${flex({ direction: "column", justify: "center", align: "center" })};
+  width: 40vw;
+  ${flex({ direction: "column", justify: "center", align: "flex-start" })};
   position: relative;
-  margin-top: 10px;
+
+  .profile__stats {
+    width: 32.8125vw;
+    height: 12.96vh;
+    background-color: var(--white);
+    position: absolute;
+    border-top-right-radius: 1.48vw;
+    border-bottom-right-radius: 1.48vw;
+    ${flex({ direction: "column", justify: "center", align: "flex-end" })};
+    right: 0;
+    top: 0;
+  }
 `;
 
 // PlayerField => [LEFT] PlayerIcon : images
 export const ProfileIcon = styled.div<IconsImgProps>`
-  height: 140px;
-  width: 140px;
-  border-radius: 70px;
+  height: 24.07vh;
+  width: 24.07vh;
+  border-radius: 24.07vh;
   background-image: url(${(props) => matchClassImg(props.job)});
   background-size: cover;
   z-index: 1;
+`;
+
+export const MyStatBar = styled.div<StatProps>`
+  .stat__full {
+    width: 21.35vw;
+    height: 2.77vh;
+    border-radius: 2.77vh;
+    border: 1px solid var(--orange);
+  }
 `;
 
 // PlayerField => [LEFT] Timer(back)
@@ -300,10 +364,10 @@ export default function matchClassImg(data: string) {
 }
 
 export const IngameBtn = styled.div<BtnSettings>`
-  width: 330px;
-  height: 100px;
+  width: 330px; // 17.18vw;
+  height: 100px; // 9.25vh;
   background-size: cover;
-  font-size: 36px;
+  font-size: 3.33vh;
   color: var(--white);
   ${flex({ justify: "center", align: "center" })};
   background-image: url(${(props) =>
@@ -311,14 +375,26 @@ export const IngameBtn = styled.div<BtnSettings>`
 `;
 
 export const BeerIcons = styled.div`
-  width: 228px;
-  height: 306px;
+  width: 11.875vw;
+  height: 28.3vh;
   background-size: cover;
   background-image: url(${BeerIcon});
+  margin-top: 16.6vh;
+  margin-bottom: 7.13vh;
 `;
 
 export const StartDiv = styled.div`
-  width: 900px;
-  height: 306px;
-  background-color: var(--brown2);
+  width: 46.875vw;
+  height: 28.3vh;
+  background-color: var(--brown-3);
+  border-radius: 32px;
+  ${flex({ direction: "column", justify: "center", align: "center" })};
+  .start__notice {
+    color: var(--brown-1);
+    font-size: 3.3vh;
+    margin-bottom: 1.85vh;
+  }
+  .start__notice--btm {
+    margin-bottom: 3.05vh;
+  }
 `;

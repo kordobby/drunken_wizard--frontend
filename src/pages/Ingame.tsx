@@ -517,28 +517,30 @@ const Ingame = () => {
 
   return (
     <>
-      {status === "" ? (
-        <StartModal setStatus={setStatus}></StartModal>
-      ) : (
-        <StGameWrap>
-          <NoticeField status={status}></NoticeField>
-          <MainWrap>
-            <PlayerIcons></PlayerIcons>
-            <CraveField></CraveField>
-          </MainWrap>
-          <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
-          {drawModalOpen && (
-            <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
-          )}
-          <button
-            onClick={() => {
-              sendStompMsgFunc(roomid, myId, "ENDGAME", null);
-            }}
-          >
-            게임 종료
-          </button>
-        </StGameWrap>
-      )}
+      <NoticeField status={status}></NoticeField>
+      <StGameWrap>
+        {status !== "" ? (
+          <StartModal setStatus={setStatus}></StartModal>
+        ) : (
+          <>
+            <MainWrap>
+              <PlayerIcons></PlayerIcons>
+              <CraveField></CraveField>
+            </MainWrap>
+            <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
+            {drawModalOpen && (
+              <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
+            )}
+          </>
+        )}
+      </StGameWrap>
+      <button
+        onClick={() => {
+          sendStompMsgFunc(roomid, myId, "ENDGAME", null);
+        }}
+      >
+        게임 종료
+      </button>
     </>
   );
 };
