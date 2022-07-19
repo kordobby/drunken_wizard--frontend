@@ -1,17 +1,17 @@
 import { Dispatch, SetStateAction } from "react";
 
-// TK InitialState
 export interface Card {
   cardId: number;
   cardName: string;
   description: string;
   manaCost: number;
   target: string;
-} // use
+}
 
 export interface DrawCard {
   cardId: number;
 }
+
 export interface playersSetting {
   cardsOnHand: Card[];
   charactorClass: string;
@@ -31,19 +31,15 @@ export interface playersSetting {
   turnOrder: number;
   weakDuration: number;
   damageModifierDuration: number;
-} // use
-
-// #1. 게임 시작
+}
 export interface StartModalProps {
   setStatus: Dispatch<SetStateAction<string>>;
 }
 
-// header types
 export interface HeaderProps {
   status: string;
 }
 
-// playerField
 export interface PlayerFieldProps {
   sendStompMsgFunc: (
     roomId: string,
@@ -53,7 +49,6 @@ export interface PlayerFieldProps {
   ) => void;
 }
 
-// drawModal
 export interface DrawProps {
   sendStompMsgFunc: (
     roomId: string,
@@ -62,50 +57,9 @@ export interface DrawProps {
     data: object | null
   ) => void;
 }
-
-// drawableCards
-export interface DrawCardsProps {
-  id: number;
-  target: string;
-  drawDisabled: boolean;
-  setSelectedCard: Dispatch<SetStateAction<object[]>>;
-  selectedCard: any[];
-}
-
-export interface PlayerSetProps {
-  cardsOnHand: object[];
-  charactorClass: string;
-  playerId: number;
-  health: number;
-  username: string;
-  dead: boolean;
-  mana: number;
-  manaCostModifierDuration: number;
-  muteDuration: number;
-  petrifiedDuration: number;
-  poisonedDuration: number;
-  shield: boolean;
-  sleepDuration: number;
-  stunnedDuration: number;
-  team: boolean;
-  turnOrder: number;
-  weakDuration: number;
-  damageModifierDuration: number;
-}
-
-// playerIcons
 export interface IconsImgProps {
   job: string;
   dead: boolean;
-}
-
-// cardType
-export interface CardType {
-  cardId: number;
-  cardName: string;
-  description: string;
-  manaCost: number;
-  target: string;
 }
 
 export interface StatBarProps {
@@ -119,7 +73,6 @@ export interface StatBarProps {
   weakDuration: number;
   damageModifierDuration: number;
 }
-
 export interface StatIconsImgProps {
   stat: string;
 }
@@ -127,17 +80,6 @@ export interface StatIconsImgProps {
 export interface CardBg {
   team: boolean;
   playing: boolean;
-}
-export interface DrawCards {
-  selected: boolean;
-}
-
-export interface CardSelectProps {
-  selected: boolean;
-  value: Card;
-}
-export interface CardProps {
-  value: Card;
 }
 
 export interface DrawableCardsProps {
@@ -158,8 +100,4 @@ export interface UseCardProps {
 export interface TargetBtnProps {
   onMouseOver: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void;
-}
-export interface SampleCardProps {
-  value: Card;
-  className: string;
 }

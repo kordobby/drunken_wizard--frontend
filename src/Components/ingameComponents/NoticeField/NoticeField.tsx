@@ -9,15 +9,8 @@ import { HeaderWrap } from "../InGameStyled";
 
 const NoticeField = ({ status }: HeaderProps) => {
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
-  const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
   const players = useAppSelector((state) => state.game.players);
-  // const thisPlayerId = useAppSelector(
-  //   (state) => state.game.players.thisPlayer.playerId
-  // );
-  // 나 => enemyA => 팀 => enemyB
-  // A => 나 => B => 팀
-  // 팀 => A => 나 => B
-  // A => 팀 => B => 나
+
   return (
     <>
       <HeaderWrap>
