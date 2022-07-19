@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import flex from "../GlobalStyled/flex";
 
+import ingameBg from "../../images/background/IngameBackground.png";
 import healer from "../../Public/Images/healer.png";
 import dealer from "../../Public/Images/dealer.png";
 import ghost from "../../Public/Images/ghost.png";
@@ -22,13 +23,16 @@ import matchCardImg from "./CardFactory";
 export const StGameWrap = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: var(--brown);
+  background-image: url(${ingameBg});
 `;
 
 /* Notice Section */
 export const HeaderWrap = styled.div`
-  height: calc(100vh - 90vh);
-  background-color: #9c71e1;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 120px;
+  background-color: var(--grey);
   ${flex({ direction: "column", justify: "center", align: "center" })};
 `;
 
@@ -43,7 +47,7 @@ export const MainWrap = styled.div`
 export const PlayerIconsFields = styled.div`
   width: calc(100vw - 20vw);
   height: 100%;
-  background-color: yellow;
+  /* background-color: yellow; */
   ${flex({ justify: "space-around", align: "center" })}
 `;
 
@@ -299,6 +303,5 @@ export default function matchClassImg(data: string) {
       return blood;
     default:
       return blood;
-      return;
   }
 }
