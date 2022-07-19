@@ -101,3 +101,7 @@ export interface TargetBtnProps {
   onMouseOver: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
+
+export interface BtnSettings {
+  disabled: boolean;
+}

@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import flex from "../GlobalStyled/flex";
 
+import BeerIcon from "../../images/icons/BeerIcon.png";
+import InGameBackground from "../../images/background/IngameBackground.png";
+import BtnActive from "../../images/buttons/BTN_active.png";
+import BtnInActive from "../../images/buttons/BTN_inActive.png";
 import healer from "../../Public/Images/healer.png";
 import dealer from "../../Public/Images/dealer.png";
 import ghost from "../../Public/Images/ghost.png";
@@ -14,6 +18,7 @@ import {
   DrawableCardSC,
   TargetBtnProps,
   UseCardProps,
+  BtnSettings,
 } from "../../typings/typedb";
 import matchStatusImg from "./StatusIcon";
 import matchCardImg from "./CardFactory";
@@ -22,7 +27,8 @@ import matchCardImg from "./CardFactory";
 export const StGameWrap = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: var(--brown);
+  background-image: url(${InGameBackground});
+  ${flex({ direction: "column", justify: "center", align: "center" })};
 `;
 
 /* Notice Section */
@@ -273,15 +279,6 @@ export const DrawableCard = styled.div<DrawableCardSC>`
   margin-right: 20px;
 `;
 
-// main field
-// player icons
-
-// export const PlayerNameTag = styled.div`
-//   width: 80px;
-//   height: 30px;
-//   ${flex({ justify: "center", align: "center" })}
-// `;
-
 /* character class images-matching func*/
 export default function matchClassImg(data: string) {
   switch (data) {
@@ -299,6 +296,29 @@ export default function matchClassImg(data: string) {
       return blood;
     default:
       return blood;
-      return;
   }
 }
+
+export const IngameBtn = styled.div<BtnSettings>`
+  width: 330px;
+  height: 100px;
+  background-size: cover;
+  font-size: 36px;
+  color: var(--white);
+  ${flex({ justify: "center", align: "center" })};
+  background-image: url(${(props) =>
+    props.disabled ? BtnInActive : BtnActive});
+`;
+
+export const BeerIcons = styled.div`
+  width: 228px;
+  height: 306px;
+  background-size: cover;
+  background-image: url(${BeerIcon});
+`;
+
+export const StartDiv = styled.div`
+  width: 900px;
+  height: 306px;
+  background-color: var(--brown2);
+`;
