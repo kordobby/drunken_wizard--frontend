@@ -33,6 +33,7 @@ import {
 } from "./RuleStyled";
 
 const Rule = ({ modalClose }: ModalType) => {
+  console.log("렌더링 테스트 : Rule");
   const book = useRef<any>();
   const [play, { stop }] = useSound(pageflip);
 

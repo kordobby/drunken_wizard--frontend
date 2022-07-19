@@ -20,6 +20,7 @@ import resize from "./images/imgs/Resize.svg";
 import ruleBook from "./images/rules/rulebook.svg";
 
 function App() {
+  console.log("렌더링 테스트 : 최상위 컴포넌트 App");
   const navigate = useNavigate();
   const [loginState, setLoginState] = useState(false);
   const [ruleModal, setRuleMoadl] = useState<boolean>(false);

@@ -38,6 +38,7 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
   }, [removeDupSelectedCard]);
 
   const sendDrawCardsHandler = () => {
+    console.log("렌더링 테스트: Draw Modal Component");
     const data = { selectedCards: removeDupSelectedCard };
     sendStompMsgFunc("1", thisPlayer.playerId, "SELECT", data);
   };

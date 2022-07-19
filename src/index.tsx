@@ -37,12 +37,12 @@ root.render(
   <CookiesProvider>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <React.StrictMode>
-          <GlobalStyled />
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </React.StrictMode>
+        {/* <React.StrictMode> */}
+        <GlobalStyled />
+        <Provider store={store}>
+          <App />
+        </Provider>
+        {/* </React.StrictMode> */}
       </BrowserRouter>
     </QueryClientProvider>
   </CookiesProvider>

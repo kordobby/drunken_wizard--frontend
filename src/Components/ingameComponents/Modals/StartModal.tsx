@@ -8,6 +8,7 @@ import { StartModalProps } from "../../../typings/typedb";
 import { StModalWrap } from "../InGameStyled";
 
 const StartModal = ({ setStatus }: StartModalProps) => {
+  console.log("렌더링 테스트: Start Modal Component");
   const [BtnActive, setBtnActive] = useState<boolean>(true);
 
   // 유저 접속 텀을 고려해서, 5초 뒤에 버튼 활성화

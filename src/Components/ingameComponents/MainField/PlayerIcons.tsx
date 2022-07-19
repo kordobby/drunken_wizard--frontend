@@ -15,6 +15,7 @@ import {
 } from "../InGameStyled";
 
 const PlayerIcons = () => {
+  console.log("렌더링 테스트: Player Icons Component");
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayerId);

@@ -9,6 +9,7 @@ import DrawTimer from "./DrawTimer";
 import { ProfileSizing, ProfileIcon } from "../InGameStyled";
 
 const MyProfile = () => {
+  console.log("렌더링 테스트: My Profile Component");
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
   const timerCtrl = useAppSelector((state) => state?.game.game.timer);
   return (

@@ -20,6 +20,7 @@ const PlayerStatBar = ({
   weakDuration,
   damageModifierDuration,
 }: StatBarProps) => {
+  console.log("렌더링 테스트: PlayerStatBar Component");
   return (
     <StatBarWrap>
       <StatBarRow>

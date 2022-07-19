@@ -35,6 +35,7 @@ import {
 const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   sendStompMsgFunc,
 }) => {
+  console.log("렌더링 테스트: Player Field Component");
   /* useState */
   const [healCnt, setHealCnt] = useState<boolean>(false);
   const [disableHeal, setDisableHeal] = useState<boolean>(false);

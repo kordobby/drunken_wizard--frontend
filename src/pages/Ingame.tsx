@@ -42,6 +42,8 @@ import {
 import { playersSetting, Card } from "../typings/typedb";
 
 const Ingame = () => {
+  console.log("렌더링 테스트: Ingame Page Component");
+
   /* useState */
   // #GAME :: Turn Ctrl
   const [status, setStatus] = useState<string>("");
@@ -124,6 +126,7 @@ const Ingame = () => {
       },
       () => {
         stompClient.subscribe("/sub/game/1", (data: any) => {
+          console.log("렌더링 테스트: socket msg function");
           const response = JSON.parse(data.body);
           const msgType = response?.type;
           const msgData = JSON.parse(response?.content);
@@ -336,7 +339,7 @@ const Ingame = () => {
             case "ENDGAME":
               // 여기서 win/lose Modal
               console.log("게임 끝!");
-              alert("게임 끝! 이거는 나중에 만들게요!");
+              // alert("게임 끝! 이거는 나중에 만들게요!");
               break;
             default:
               break;
@@ -347,6 +350,7 @@ const Ingame = () => {
   };
 
   useEffect(() => {
+    console.log("렌더링 테스트: status func");
     switch (status) {
       case "READY":
         setTimeout(() => {
@@ -439,6 +443,7 @@ const Ingame = () => {
 
   // send stompMsg
   function waitForConnection(stompClient: stompJS.Client, callback: any) {
+    console.log("wait for connection 은 얼마나 자주 걸릴까?");
     setTimeout(function () {
       if (stompClient.ws.readyState === 1) {
         callback();
@@ -472,15 +477,17 @@ const Ingame = () => {
   const timer: { current: NodeJS.Timeout | null } = useRef(null);
 
   const timerFunc = (sec: number, turn: string) => {
+    console.log("렌더링 테스트: timer function");
     timer.current = setTimeout(() => {
       setDrawModalOpen(false);
       sendStompMsgFunc("1", myId, turn, null);
       dispatch(setTimerTK(""));
-      alert("시간초과!");
+      // alert("시간초과!");
     }, sec);
   };
 
   const ClearTimer = () => {
+    console.log("clear timer function");
     window.clearTimeout(timer.current || 0);
   };
 
@@ -498,6 +505,7 @@ const Ingame = () => {
   };
 
   const updatePlayersFunc = () => {
+    console.log("update player func");
     switch (updateOne.playerId) {
       case playersData.thisPlayer.playerId:
         dispatch(setThisPlayerTK(updateOne));

@@ -15,6 +15,7 @@ import {
 import { DrawableCard } from "../InGameStyled";
 
 const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
+  console.log("렌더링 테스트: Drawable Cards Component");
   const [selected, setSelected] = useState(false);
 
   // find 파시어

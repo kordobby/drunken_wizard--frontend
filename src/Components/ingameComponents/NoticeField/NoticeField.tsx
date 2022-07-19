@@ -8,6 +8,7 @@ import { HeaderProps } from "../../../typings/typedb";
 import { HeaderWrap } from "../InGameStyled";
 
 const NoticeField = ({ status }: HeaderProps) => {
+  console.log("렌더링 테스트: Notice Component");
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
   const players = useAppSelector((state) => state.game.players);
