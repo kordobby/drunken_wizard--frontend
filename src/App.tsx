@@ -65,7 +65,7 @@ function App() {
         />
         <Route path="/waiting/:roomId" element={<WaitingRoom />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
-        <Route path="/ingame" element={<Ingame></Ingame>}></Route>
+        <Route path="/ingame:roomId" element={<Ingame></Ingame>}></Route>
       </Routes>
       <ResizeBtn
         onClick={() => {

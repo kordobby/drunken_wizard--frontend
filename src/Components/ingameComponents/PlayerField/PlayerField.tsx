@@ -3,6 +3,7 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from "../../../hooks/tsHooks";
+import { useParams } from "react-router-dom";
 
 /* Modules */
 import {
@@ -69,6 +70,8 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
 
+  const { roomid } = useParams<{ roomid?: string }>();
+
   /* UseCard Functions */
   // 카드 위로 마우스가 올라가면, 카드 아이디를 스토어에 저장
   const onMouseOverCards = (
@@ -78,11 +81,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     setTarget(cardId); // 마우스를 오버했을 때 해당 item의 값으로 target 변경
     setMouseIn(Boolean(event)); // 마우스 오버 확인
     dispatch(setSelectUseCardIdTK(cardId));
-    // if (mana < thisPlayer.mana) {
-    //   setError(true);
-    // } else {
-    //   setError(false);
-    // }
   };
 
   // 카드를 떠나면 선택된 카드 초기화
@@ -112,7 +110,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       targetPlayerId: selectedTarget,
     };
     setClicked(true); // 중복클릭 방지
-    sendStompMsgFunc("1", thisPlayer.playerId, "USECARD", data);
+    sendStompMsgFunc(roomid, thisPlayer.playerId, "USECARD", data);
   };
 
   // DISCARD FUNC
@@ -121,7 +119,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       cardId: selectedUseCardId,
     };
     setClicked(true); // 중복클릭 방지
-    sendStompMsgFunc("1", thisPlayer.playerId, "DISCARD", data);
+    sendStompMsgFunc(roomid, thisPlayer.playerId, "DISCARD", data);
   };
 
   // about CSS function
@@ -150,7 +148,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       targetPlayerId: Number(targetId),
       cardId: 0,
     };
-    sendStompMsgFunc("1", thisPlayer.playerId, "USECARD", data);
+    sendStompMsgFunc(roomid, thisPlayer.playerId, "USECARD", data);
     setHealCnt(false);
     setDisableHeal(true);
   };
@@ -267,7 +265,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
           {nowPlayer === thisPlayer.playerId && (
             <TurnOverBtn
               onClick={() =>
-                sendStompMsgFunc("1", thisPlayer.playerId, "ENDTURN", null)
+                sendStompMsgFunc(roomid, thisPlayer.playerId, "ENDTURN", null)
               }
             >
               완료

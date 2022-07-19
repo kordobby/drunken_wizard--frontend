@@ -42,7 +42,7 @@ export interface HeaderProps {
 
 export interface PlayerFieldProps {
   sendStompMsgFunc: (
-    roomId: string,
+    roomId: string | undefined,
     sender: number,
     msgType: string,
     data: object | null
@@ -51,7 +51,7 @@ export interface PlayerFieldProps {
 
 export interface DrawProps {
   sendStompMsgFunc: (
-    roomId: string,
+    roomId: string | undefined,
     sender: number,
     msgType: string,
     data: object | null
