@@ -5,11 +5,12 @@ import { useAppSelector } from "../../../hooks/tsHooks";
 import { CraveWrap } from "../InGameStyled";
 
 const CraveField = () => {
-  const Crave = useAppSelector((state) => state.game.game.cardCrave);
+  // const Crave = useAppSelector((state) => state.game.game.cardCrave);
   return (
     <CraveWrap>
-      <span>카드무덤</span>
-      <span>{Crave}</span>
+      <div className="crave__under"></div>
+      <div className="crave__top"></div>
+      {/* <span>{Crave}</span> */}
     </CraveWrap>
   );
 };
