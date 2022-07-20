@@ -38,7 +38,6 @@ import CraveField from "../Components/IngameComponents/MainField/CraveField";
 import {
   StGameWrap,
   MainWrap,
-  IngameBtn,
 } from "../Components/IngameComponents/InGameStyled";
 import { playersSetting, Card } from "../typings/typedb";
 
@@ -310,8 +309,13 @@ const Ingame = () => {
               }
               break;
             case "USECARD":
-              setUpdate(msgData.players);
-              setStatus("USECARD");
+              if (msgData.gameOver === true) {
+                sendStompMsgFunc(roomid, myId, "ENDGAME", null);
+                // 만약 현재 플레이어가 나이고 죽은게 아니라면?
+              } else {
+                setUpdate(msgData.players);
+                setStatus("USECARD");
+              }
               break;
             case "USEFAIL":
               if (msgSender === myId) {
@@ -519,7 +523,7 @@ const Ingame = () => {
     <>
       <NoticeField status={status}></NoticeField>
       <StGameWrap>
-        {status !== "" ? (
+        {status === "" ? (
           <StartModal setStatus={setStatus}></StartModal>
         ) : (
           <>

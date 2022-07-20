@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { StartModalProps } from "../../../typings/typedb";
 
 /* Components */
-import { StGameWrap, IngameBtn, BeerIcons, StartDiv } from "../InGameStyled";
+import { IngameBtn, BeerIcons, StartDiv } from "../InGameStyled";
 
 const StartModal = ({ setStatus }: StartModalProps) => {
   const [BtnActive, setBtnActive] = useState<boolean>(true);
@@ -18,7 +18,7 @@ const StartModal = ({ setStatus }: StartModalProps) => {
   }, []);
 
   return (
-    <StGameWrap>
+    <>
       <BeerIcons></BeerIcons>
       <StartDiv>
         <span className="start__notice">선빵필승!</span>
@@ -34,7 +34,7 @@ const StartModal = ({ setStatus }: StartModalProps) => {
           Start!
         </IngameBtn>
       </StartDiv>
-    </StGameWrap>
+    </>
   );
 };
 

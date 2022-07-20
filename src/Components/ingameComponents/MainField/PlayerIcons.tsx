@@ -26,15 +26,12 @@ const PlayerIcons = () => {
         {playersList.map((value: playersSetting) => (
           <Profiles team={value.team} playing={value.playerId === nowPlayer}>
             <div className="profiles__header">
-              {value.playerId === playersData.thisPlayer.playerId && (
-                <span>나의 팀 (나)</span>
-              )}
-              {value.team !== playersData.thisPlayer.team && (
-                <span>남의 팀</span>
-              )}
-              {value.playerId === playersData.teamPlayer.playerId && (
-                <span>나의 팀</span>
-              )}
+              {value.playerId === playersData.thisPlayer.playerId &&
+                nowPlayer !== 0 && <span>나의 팀 (나)</span>}
+              {value.team !== playersData.thisPlayer.team &&
+                nowPlayer !== 0 && <span>남의 팀</span>}
+              {value.playerId === playersData.teamPlayer.playerId &&
+                nowPlayer !== 0 && <span>나의 팀</span>}
             </div>
             <ProfilesImage job={value.charactorClass} dead={value.dead}>
               <PlayerNameTag>
@@ -42,11 +39,13 @@ const PlayerIcons = () => {
               </PlayerNameTag>
             </ProfilesImage>
             <div>
-              <StatBarTop>
-                <p>Class: {value.charactorClass}</p>
-                <span>HP :{value.health}</span>
-                <span style={{ marginLeft: "40px" }}>MP :{value.mana}</span>
-              </StatBarTop>
+              {nowPlayer !== 0 && (
+                <StatBarTop>
+                  <p>Class: {value.charactorClass}</p>
+                  <span>HP :{value.health}</span>
+                  <span style={{ marginLeft: "40px" }}>MP :{value.mana}</span>
+                </StatBarTop>
+              )}
               <PlayerStatBar
                 manaCostModifierDuration={value.manaCostModifierDuration}
                 mutedDuration={value.mutedDuration}

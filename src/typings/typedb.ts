@@ -107,6 +107,6 @@ export interface BtnSettings {
 }
 
 export interface StatProps {
-  stat: string;
+  stat: boolean;
   point: number;
 }
