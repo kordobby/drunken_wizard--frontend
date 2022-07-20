@@ -78,7 +78,7 @@ function App() {
       <RuleBtn onClick={modalOpen}>
         <img src={ruleBook} />
       </RuleBtn>
-      <button onClick={logoutHandler}>로그아웃</button>
+      {/* <button onClick={logoutHandler}>로그아웃</button> */}
     </>
   );
 }

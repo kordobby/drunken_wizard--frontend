@@ -1,11 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
-import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // stomp
 import stompJS from "stompjs";
 import sockJS from "sockjs-client";
-// import { socket } from "../shared/WebStomp";
 // cookies
 import { getCookie } from "../shared/Cookies";
 // apis
@@ -24,12 +22,9 @@ const WaitingRoom = () => {
 
   // mutate
   const { mutate: joinRoom } = useMutation(apis.joinRoomMT, {
-    onMutate: (res) => {
-      // queryClient.invalidateQueries();
-    },
     onSuccess: (res) => {
       console.log(res);
-      queryClient.invalidateQueries("room_list");
+      queryClient.invalidateQueries(["room_list"]);
     },
     onError: (error) => {
       console.log(error);
@@ -39,8 +34,7 @@ const WaitingRoom = () => {
   const { mutate: leaveRoom } = useMutation(apis.leaveRoomMT, {
     onSuccess: (res) => {
       console.log(res);
-      // leaveRoomMessage();
-      // queryClient.invalidateQueries("room_list");
+      queryClient.invalidateQueries(["room_list"]);
       navigate("/lobby");
     },
     onError: (error) => {
@@ -49,14 +43,14 @@ const WaitingRoom = () => {
   });
 
   // leaveHandler
-  const leaveHandler = () => {
+  const leaveHandler = useCallback(() => {
     leaveRoom({ roomId: roomId, id: accessId });
-  };
+  }, [leaveRoom, roomId, accessId]);
 
   // 방 접속 포스트 요청
   useEffect(() => {
     joinRoom({ roomId: roomId, id: accessId });
-  }, [roomId]);
+  }, [joinRoom, roomId, accessId]);
 
   // 구독
   useEffect(() => {
@@ -80,6 +74,7 @@ const WaitingRoom = () => {
             (data: any) => {
               const response = JSON.parse(data?.body);
               const res = JSON.parse(response?.content);
+              console.log(res);
               setWaitingUsers(res?.userList);
             },
             { token: accessToken }
@@ -94,10 +89,7 @@ const WaitingRoom = () => {
 
   const socketUnsubscribe = useCallback(() => {
     try {
-      stompClient
-        .subscribe(`/sub/game/${roomId}`, function (data: any) {}, {})
-        .unsubscribe();
-      // leaveRoomMessage();
+      stompClient.unsubscribe(`/sub/game/${roomId}`);
       console.log("success to unsubscribe");
     } catch (error) {
       console.log(error);
@@ -110,21 +102,23 @@ const WaitingRoom = () => {
       roomId: roomId,
       sender: accessId,
       content: null,
-      // message: `${accessName}님이 채팅방에 참여하였습니다!`,
     };
     stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
   };
 
-  // const leaveRoomMessage = () => {
-  //   const data = {
-  //     type: "LEAVE",
-  //     roomId: roomId,
-  //     sender: accessId,
-  //     content: null,
-  //     // message: `${accessName}님이 채팅방에 참여하였습니다!`,
-  //   };
-  //   stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
-  // };
+  const gameReady = () => {
+    const data = {
+      type: "UPDATE",
+      roomId: roomId,
+      sender: accessId,
+      content: null,
+    };
+    stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
+  };
+
+  const readyHandler = () => {
+    gameReady();
+  };
 
   return (
     <div>
@@ -184,6 +178,7 @@ const WaitingRoom = () => {
           </div>
         </>
       )}
+      <button onClick={readyHandler}>준비완료</button>
       <button onClick={leaveHandler}>방에서 나가기</button>
     </div>
   );

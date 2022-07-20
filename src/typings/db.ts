@@ -35,12 +35,25 @@ export interface AddRoomType {
   roomName: string;
 }
 
-export interface joinRoomType {
+// joinroom
+export interface JoinRoomType {
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-// joinroom
-export interface waitingRoom {
+// waitngroom
+export interface WaitingRoom {
   roomId: string | undefined;
   id: string;
 }
+
+// roompgae
+export interface RoomPage {
+  page: number;
+}
+export interface PageProps {
+  page: number;
+}
+
+export type PageNum = {
+  queryKey: [string, { page: number }];
+};

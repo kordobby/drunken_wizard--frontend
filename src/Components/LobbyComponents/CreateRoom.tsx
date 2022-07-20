@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 // hooks
+import { getCookie } from "../../shared/Cookies";
 import useInput from "../../hooks/useInput";
 // stomp
 import stompJS from "stompjs";
@@ -11,8 +12,16 @@ import { ModalType } from "../../typings/db";
 // apis
 import apis from "../../shared/api/apis";
 // css
-import { Backdrop, CreatRoomBox, ModalContainer } from "./LobbyStyled";
-import { getCookie } from "../../shared/Cookies";
+import {
+  Backdrop,
+  CreateInput,
+  CreateButton,
+  CreateRoomTitle,
+  CreateRoomBox,
+  ModalContainer,
+} from "./LobbyStyled";
+// svg
+import createButton from "../../images/buttons/BTN_createRoom.svg";
 
 const CreateRoom = ({ modalClose }: ModalType) => {
   const [roomName, setRoomName] = useInput<string>("");
@@ -60,26 +69,28 @@ const CreateRoom = ({ modalClose }: ModalType) => {
   return (
     <>
       <ModalContainer>
-        <CreatRoomBox>
-          <span>방만들기</span>
-          <input
+        <CreateRoomBox>
+          <CreateRoomTitle>
+            <span>방만들기</span>
+          </CreateRoomTitle>
+          <CreateInput
             type="text"
             id="room-name"
             name="room-name"
-            maxLength={6}
+            placeholder="방 이름을 입력하세요."
+            maxLength={11}
             value={roomName}
             onChange={setRoomName}
-          ></input>
-          <button
+          ></CreateInput>
+          <CreateButton
+            style={{ backgroundImage: `url(${createButton})` }}
             onClick={(e) => {
               onCreateRoom(e);
               modalClose();
               navigate("/waiting");
             }}
-          >
-            방 생성
-          </button>
-        </CreatRoomBox>
+          ></CreateButton>
+        </CreateRoomBox>
         <Backdrop onClick={modalClose} />
       </ModalContainer>
     </>
