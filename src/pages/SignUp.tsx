@@ -109,10 +109,9 @@ const SignUp = () => {
 
   // id check mutate
   const { mutate: signUpidCheck } = useMutation(apis.signUpIdCheckMT, {
-    onMutate: () => {
-      setSignUpCheckId(true);
-    },
+    onMutate: () => {},
     onSuccess: (res) => {
+      setSignUpCheckId(true);
       console.log(res);
       alert("사용할 수 있는 ID입니다.");
     },
@@ -240,7 +239,7 @@ const SignUp = () => {
                 id="nickname"
                 name="nickname"
                 placeholder="NickName"
-                maxLength={10}
+                maxLength={13}
                 value={nickname}
                 onChange={setNickname}
                 onFocus={setNickFocus}
@@ -250,7 +249,7 @@ const SignUp = () => {
                 <SpeechBubble
                   style={{ backgroundImage: `url(${speechBubble})` }}
                 >
-                  <SpeechSpan>닉네임을 입력해주세요! 1~10자</SpeechSpan>
+                  <SpeechSpan>닉네임을 입력해주세요! 1~13자</SpeechSpan>
                 </SpeechBubble>
               )}
               {nickname && nickFocus && (
