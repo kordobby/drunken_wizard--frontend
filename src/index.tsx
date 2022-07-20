@@ -12,7 +12,7 @@ import { Provider } from "react-redux";
 import { store } from "./redux/configStore";
 /* react-query */
 import { QueryClient, QueryClientProvider } from "react-query";
-
+import { ReactQueryDevtools } from "react-query/devtools";
 /* Router settings */
 import { BrowserRouter } from "react-router-dom";
 
@@ -36,6 +36,7 @@ root.render(
   // <React.Suspense fallback={<div>로딩 중이에요!</div>}>
   <CookiesProvider>
     <QueryClientProvider client={queryClient}>
+      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
       <BrowserRouter>
         <React.StrictMode>
           <GlobalStyled />

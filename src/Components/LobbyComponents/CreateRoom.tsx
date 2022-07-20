@@ -2,44 +2,40 @@ import React, { useCallback } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 // hooks
+import { getCookie } from "../../shared/Cookies";
 import useInput from "../../hooks/useInput";
 // stomp
 import stompJS from "stompjs";
 import { socket } from "../../shared/WebStomp";
 // interface
-import { AddRoomType, ModalType } from "../../typings/db";
+import { ModalType } from "../../typings/db";
 // apis
 import apis from "../../shared/api/apis";
 // css
-import { Backdrop, CreatRoomBox, ModalContainer } from "./LobbyStyled";
-import { getCookie } from "../../shared/Cookies";
-import axios from "axios";
-
-const createRoomMT = (data: any) => {
-  const API_URL = process.env.REACT_APP_API_URL;
-  const accessToken = getCookie("token");
-  return axios.post(`${API_URL}game/room`, data, {
-    headers: {
-      Authorization: accessToken,
-    },
-  });
-};
+import {
+  Backdrop,
+  CreateInput,
+  CreateButton,
+  CreateRoomTitle,
+  CreateRoomBox,
+  ModalContainer,
+} from "./LobbyStyled";
+// svg
+import createButton from "../../images/buttons/BTN_createRoom.svg";
 
 const CreateRoom = ({ modalClose }: ModalType) => {
   const [roomName, setRoomName] = useInput<string>("");
-  const accessId = getCookie("id");
   const accessToken = getCookie("token");
-  const accessNickname = getCookie("nickname");
   const queryClient = useQueryClient();
   const stompClient = stompJS.over(socket);
   const navigate = useNavigate();
 
   // mutate
-  const { mutate: createRoom } = useMutation(createRoomMT, {
+  const { mutate: createRoom } = useMutation(apis.createRoomMT, {
     onSuccess: (res) => {
       console.log(res.data);
       navigate(`/waiting/${res.data.roomId}`);
-      pleaseMessage();
+      lobbyLeaveMessage();
     },
     onError: (error) => {
       console.log(error);
@@ -53,15 +49,13 @@ const CreateRoom = ({ modalClose }: ModalType) => {
       accessToken && e.preventDefault();
       createRoom({
         roomName: roomName,
-        // id: accessId,
-        // nickname: accessNickname,
       });
     },
-    [roomName, accessId, accessNickname, createRoom]
+    [roomName, createRoom]
   );
 
   // send
-  const pleaseMessage = () => {
+  const lobbyLeaveMessage = () => {
     const accessName = getCookie("nickname");
     const data = {
       type: "LEAVE",
@@ -75,26 +69,28 @@ const CreateRoom = ({ modalClose }: ModalType) => {
   return (
     <>
       <ModalContainer>
-        <CreatRoomBox>
-          <span>방만들기</span>
-          <input
+        <CreateRoomBox>
+          <CreateRoomTitle>
+            <span>방만들기</span>
+          </CreateRoomTitle>
+          <CreateInput
             type="text"
             id="room-name"
             name="room-name"
-            maxLength={6}
+            placeholder="방 이름을 입력하세요."
+            maxLength={11}
             value={roomName}
             onChange={setRoomName}
-          ></input>
-          <button
+          ></CreateInput>
+          <CreateButton
+            style={{ backgroundImage: `url(${createButton})` }}
             onClick={(e) => {
               onCreateRoom(e);
               modalClose();
               navigate("/waiting");
             }}
-          >
-            방 생성
-          </button>
-        </CreatRoomBox>
+          ></CreateButton>
+        </CreateRoomBox>
         <Backdrop onClick={modalClose} />
       </ModalContainer>
     </>
