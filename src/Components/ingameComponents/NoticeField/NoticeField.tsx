@@ -6,40 +6,35 @@ import { HeaderProps } from "../../../typings/typedb";
 
 /* CSS & SC */
 import { HeaderWrap } from "../InGameStyled";
-
+import LogoutBtn from "../../../elem/Button";
 const NoticeField = ({ status }: HeaderProps) => {
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
-  const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
   const players = useAppSelector((state) => state.game.players);
-  // const thisPlayerId = useAppSelector(
-  //   (state) => state.game.players.thisPlayer.playerId
-  // );
-  // 나 => enemyA => 팀 => enemyB
-  // A => 나 => B => 팀
-  // 팀 => A => 나 => B
-  // A => 팀 => B => 나
+
   return (
     <>
       <HeaderWrap>
-        {players.thisPlayer.turnOrder === 1 && (
+        <LogoutBtn />
+        {status === "" && <span>waiting for players...</span>}
+        {status !== "" && players.thisPlayer.turnOrder === 1 && (
           <h1>
             {players.thisPlayer.username} - {players.enemyPlayerA.username} -
             {players.teamPlayer.username} - {players.enemyPlayerB.username}
           </h1>
         )}
-        {players.thisPlayer.turnOrder === 2 && (
+        {status !== "" && players.thisPlayer.turnOrder === 2 && (
           <h1>
             {players.enemyPlayerA.username} - {players.thisPlayer.username} -
             {players.enemyPlayerB.username} - {players.teamPlayer.username}
           </h1>
         )}
-        {players.thisPlayer.turnOrder === 3 && (
+        {status !== "" && players.thisPlayer.turnOrder === 3 && (
           <h1>
             {players.teamPlayer.username} - {players.enemyPlayerA.username} -
             {players.thisPlayer.username}- {players.enemyPlayerB.username}
           </h1>
         )}
-        {players.thisPlayer.turnOrder === 4 && (
+        {status !== "" && players.thisPlayer.turnOrder === 4 && (
           <h1>
             {players.enemyPlayerA.username} - {players.teamPlayer.username}-
             {players.enemyPlayerB.username} - {players.thisPlayer.username}

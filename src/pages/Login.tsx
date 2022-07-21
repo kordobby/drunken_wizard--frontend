@@ -23,21 +23,11 @@ import {
   Input,
   InputBoxId,
   InputBoxPw,
-  Button,
   SpeechBubble,
-  SpeechSpan,
-  Wrap,
-  ResizeBtn,
-  Button1,
-  Button2,
+  LoginBtnBox,
 } from "../Components/UserComponents/UserStyled";
-// svgs
-import logBack from "../images/background/loginBackground.svg";
-import logBtn from "../images/buttons/BTN_login.svg";
-import regBtn from "../images/buttons/BTN_register.svg";
-import kakaoBtn from "../images/buttons/BTN_kakao.svg";
-import logo from "../images/logo/logo.svg";
-import speechBubble from "../images/imgs/SpeechBubble.svg";
+import { DefaultBtn } from "../Components/Common/CommonStyle";
+
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
 
@@ -47,12 +37,11 @@ const Login = ({ setLoginState }: loginStateProps) => {
   const [password, setPassword] = useInput<string>("");
   const [idFocus, setIdFocus] = useFocus<boolean>(false);
   const [pwFocus, setPwFocus] = useFocus<boolean>(false);
-  const [play, { stop }] = useSound(btnSound);
+  const [play] = useSound(btnSound);
 
   // mutate
   const { mutate } = useMutation(apis.loginMT, {
     onSuccess: (res) => {
-      // console.log(res);
       setCookie("token", res.headers.authorization, {
         path: "/",
         expire: "after60m",
@@ -89,95 +78,107 @@ const Login = ({ setLoginState }: loginStateProps) => {
   );
 
   return (
-    <BackWrap style={{ backgroundImage: `url(${logBack})` }}>
-      <Wrap>
-        <LogLogo src={logo} />
-        <form>
-          <label id="user-id-label">
-            <InputBoxId>
-              <Input
-                type="text"
-                id="user-id"
-                name="user-id"
-                value={username}
-                onChange={setUsername}
-                placeholder="ID"
-                onFocus={setIdFocus}
-                onBlur={setIdFocus}
-              />
-              {username === "" && idFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>ID를 입력 해주세요.</SpeechSpan>
-                </SpeechBubble>
-              )}
-              {username !== "" && idFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>올바른 형식의 ID입니다.</SpeechSpan>
-                </SpeechBubble>
-              )}
-            </InputBoxId>
-          </label>
-          <label id="password-label">
-            <InputBoxPw>
-              <Input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                placeholder="Password"
-                onChange={setPassword}
-                onFocus={setPwFocus}
-                onBlur={setPwFocus}
-              />
-              {passwordCheckF(password) && pwFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>올바른 형식의 비밀번호 입니다.</SpeechSpan>
-                </SpeechBubble>
-              )}
-              {!passwordCheckF(password) && pwFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>영문, 숫자, 특수 문자 포함 6~15자</SpeechSpan>
-                </SpeechBubble>
-              )}
-            </InputBoxPw>
-          </label>
-        </form>
-        <div>
-          <Button
-            onClick={(e) => {
-              play();
-              handleLogin(e);
-            }}
-            type="submit"
-            disabled={username === "" || password === "" ? true : false}
-            style={{ backgroundImage: `url(${logBtn})` }}
-          ></Button>
-          <Link to="/signup">
-            <Button1
-              onClick={() => {
-                play();
-              }}
-              style={{ backgroundImage: `url(${regBtn})` }}
+    <BackWrap>
+      <LogLogo top={5.729} bottom={4.6875} />
+      {/* <LogLogo src={logo} /> */}
+      <form>
+        <label id="user-id-label">
+          <InputBoxId>
+            <Input
+              type="text"
+              id="user-id"
+              name="user-id"
+              value={username}
+              onChange={setUsername}
+              placeholder="ID"
+              onFocus={setIdFocus}
+              onBlur={setIdFocus}
             />
-          </Link>
-        </div>
-        <a href={KAKAO_AUTH_URL}>
-          <Button2
+            {username === "" && idFocus && (
+              <SpeechBubble>
+                <span className="bubble__notice">
+                  아이디를 <br />
+                  입력해주세요.
+                </span>
+              </SpeechBubble>
+            )}
+            {username !== "" && idFocus && (
+              <SpeechBubble>
+                <span className="bubble__notice">
+                  올바른 형식의 <br />
+                  ID 입니다.
+                </span>
+              </SpeechBubble>
+            )}
+          </InputBoxId>
+        </label>
+        <label id="password-label">
+          <InputBoxPw>
+            <Input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              placeholder="Password"
+              onChange={setPassword}
+              onFocus={setPwFocus}
+              onBlur={setPwFocus}
+            />
+            {passwordCheckF(password) && pwFocus && (
+              <SpeechBubble>
+                <span className="bubble__notice">
+                  올바른 형식의 <br />
+                  비밀번호 입니다.
+                </span>
+              </SpeechBubble>
+            )}
+            {!passwordCheckF(password) && pwFocus && (
+              <SpeechBubble>
+                <span className="bubble__notice">
+                  영문, 숫자, <br /> 특수문자 포함 <br />
+                  6~15자
+                </span>
+              </SpeechBubble>
+            )}
+          </InputBoxPw>
+        </label>
+      </form>
+      <LoginBtnBox>
+        <DefaultBtn
+          btnType="activeM"
+          size={10.9895}
+          onClick={(e) => {
+            play();
+            handleLogin(e);
+          }}
+          type="submit"
+          disabled={username === "" || password === "" ? true : false}
+        >
+          {" "}
+          <span>Login</span>
+        </DefaultBtn>
+        <Link to="/signup">
+          <DefaultBtn
+            btnType="inactiveM"
+            size={10.9895}
             onClick={() => {
               play();
             }}
-            style={{ backgroundImage: `url(${kakaoBtn})` }}
-          />
-        </a>
-      </Wrap>
+          >
+            <span>Register</span>
+          </DefaultBtn>
+        </Link>
+      </LoginBtnBox>
+      <a href={KAKAO_AUTH_URL}>
+        <DefaultBtn
+          btnType="kakao"
+          size={22.8125}
+          onClick={() => {
+            play();
+          }}
+          // style={{ backgroundImage: `url(${kakaoBtn})` }}
+        ></DefaultBtn>
+      </a>
     </BackWrap>
   );
 };

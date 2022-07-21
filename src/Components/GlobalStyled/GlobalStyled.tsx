@@ -24,11 +24,17 @@ body {
     
 }
 :root {
+    --purple-1 : #3f0984;
+    --purple-2 : #c59aef;
+    --purple-3 : #e4c7f9;
+    --purple-4 : #ede4f2;
+    --yellow : #ffc900;
     --orange : #FD6F33;
-    --wine : #5D180A;
-    --brown : #89504E;
-    --beige : #DDC1A5;
-    --white : #FFF;
+    --brown-1 : #5d180a;
+    --brown-2 : #b68961;
+    --brown-3 : #d6b27f;
+    --grey : #9e9e9e;
+    --white : #fff;
 }
 `;
 
