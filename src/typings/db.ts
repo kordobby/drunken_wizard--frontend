@@ -20,7 +20,7 @@ export interface loginStateProps {
 
 // modal
 export interface ModalType {
-  modalClose: () => void;
+  modalClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 // chatList
@@ -37,7 +37,7 @@ export interface AddRoomType {
 
 // joinroom
 export interface JoinRoomType {
-  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 // waitngroom
@@ -57,3 +57,9 @@ export interface PageProps {
 export type PageNum = {
   queryKey: [string, { page: number }];
 };
+
+// useModal
+
+export interface ModalDivProps {
+  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+}

@@ -24,7 +24,6 @@ import pageflip from "../../sounds/pageflip.mp3";
 
 import {
   Backdrop,
-  BackWrap,
   CloseButton,
   ModalContainer,
   Page,
@@ -37,7 +36,6 @@ const Rule = ({ modalClose }: ModalType) => {
   const [play, { stop }] = useSound(pageflip);
 
   return (
-    // <BackWrap style={{ backgroundImage: `url(${ruleBack})` }}>
     <ModalContainer>
       <RuleWrap style={{ backgroundImage: `url(${bookCase})` }}>
         <RuleBox>
@@ -68,9 +66,12 @@ const Rule = ({ modalClose }: ModalType) => {
           <img src={bookMark} />
         </CloseButton>
       </RuleWrap>
-      <Backdrop onClick={modalClose} />
+      <Backdrop
+        onClick={(e: any) => {
+          modalClose(e);
+        }}
+      />
     </ModalContainer>
-    // </BackWrap>
   );
 };
 

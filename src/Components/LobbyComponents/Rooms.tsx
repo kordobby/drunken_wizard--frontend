@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 // stomp
 import stompJS from "stompjs";
@@ -42,7 +42,9 @@ const Rooms = () => {
   const stompClient = stompJS.over(socket);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  const accessId = getCookie("id");
 
+  // query
   const { data: roomList_query } = useQuery(
     ["room_list", { page }],
     () => apis.getRoomListQR(page),
@@ -58,6 +60,18 @@ const Rooms = () => {
       // refetchInterval: 2000,
     }
   );
+
+  // mutate
+  const { data, mutate: joinRoom } = useMutation(apis.joinRoomMT, {
+    onSuccess: (res) => {
+      console.log(res);
+      queryClient.invalidateQueries(["room_list"]);
+    },
+    onError: (error) => {
+      console.log(error);
+      navigate("/lobby");
+    },
+  });
 
   const pleaseMessage = () => {
     const accessName = getCookie("nickname");
@@ -81,11 +95,18 @@ const Rooms = () => {
   };
 
   const joinRoomClick = (e: React.MouseEvent<HTMLDivElement>, room: string) => {
-    queryClient.invalidateQueries(["room_list"]);
-    socketUnsubscribe();
-    navigate(`/waiting/${room}`);
+    if (data) {
+      if (data.data.joinSuccess) {
+        // queryClient.invalidateQueries(["room_list"]);
+        socketUnsubscribe();
+        navigate(`/waiting/${room}`);
+        console.log("입장성공");
+      } else {
+        navigate(`/lobby`);
+        console.log("입장실패");
+      }
+    }
   };
-
   return (
     <RoomWrap>
       {roomList_query && roomList_query.content.length === 0 && (
@@ -101,6 +122,7 @@ const Rooms = () => {
               onClick={(e: any) => {
                 if (room?.player4 !== "") {
                   joinRoomClick(e, room.roomId);
+                  joinRoom({ id: accessId, roomId: room.roomId });
                 }
               }}
             >
