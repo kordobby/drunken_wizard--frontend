@@ -102,6 +102,20 @@ const Ingame = () => {
   const { roomid } = useParams<{ roomid?: string }>();
   const myId = Number(getCookie("id"));
 
+  // const doNotReload = (event: any) => {
+  //   if (
+  //     (event.ctrlKey === true &&
+  //       (event.keyCode === 78 || event.keyCode === 82)) ||
+  //     event.keyCode === 116
+  //   ) {
+  //     return window.confirm("새로고침하면 게임이 정상작동하지 않아요:(");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   document.onkeydown = doNotReload;
+  // });
+
   useEffect(() => {
     socketSubscribe();
     return () => {
@@ -111,6 +125,7 @@ const Ingame = () => {
 
   const socketUnsubscribe = React.useCallback(() => {
     try {
+      alert("구독해제한디");
       stompClient.unsubscribe("sub-0");
     } catch (error) {
       console.log(error);
