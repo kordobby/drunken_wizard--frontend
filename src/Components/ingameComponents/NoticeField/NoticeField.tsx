@@ -14,7 +14,7 @@ const NoticeField = ({ status }: HeaderProps) => {
   return (
     <>
       <HeaderWrap>
-        <LogoutBtn />
+        {/* <LogoutBtn /> */}
         {status === "" && <span>waiting for players...</span>}
         {status !== "" && players.thisPlayer.turnOrder === 1 && (
           <h1>

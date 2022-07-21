@@ -13,7 +13,7 @@ import LogoutBtn from "../elem/Button";
 // svgs
 import header from "../images/lobby/header.svg";
 import roomout from "../images/lobby/roomout.svg";
-import Back from "../images/background/lobbyBackground.png";
+import Back from "../images/background/lobbybackground.png";
 import flex from "../Components/GlobalStyled/flex";
 import { useModal } from "../hooks/useModal";
 import { ModalDivProps } from "../typings/db";
