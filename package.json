@@ -18,6 +18,7 @@
     "@types/styled-components": "^5.1.25",
     "axios": "^0.27.2",
     "install": "^0.13.0",
+    "netlify-cli": "^10.10.2",
     "npm": "^8.13.2",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
@@ -31,7 +32,6 @@
     "react-socket": "^1.0.0-beta.0",
     "react-stomp": "^5.1.0",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.4.1",
     "redux-toolkit": "^1.1.2",
     "sass": "^1.53.0",
     "scss": "^0.2.4",
@@ -49,7 +49,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI= react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

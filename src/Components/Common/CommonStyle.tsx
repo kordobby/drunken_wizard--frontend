@@ -6,6 +6,7 @@ import activeMBtn from "../../images/buttons/BTN_activeM.png";
 import inactiveMBtn from "../../images/buttons/BTN_inactiveM.png";
 import BtnActive from "../../images/buttons/BTN_active.png";
 import BtnInActive from "../../images/buttons/BTN_inActive.png";
+
 export const StWrap = styled.div`
   width: 100%;
   height: 100vh;
