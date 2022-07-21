@@ -5,19 +5,14 @@ import { useEffect } from "react";
 import { getCookie, setCookie } from "../shared/Cookies";
 // interface
 import { loginStateProps } from "../typings/db";
-// api
-import api from "../shared/api/core/api";
+// apis
+import apis from "../shared/api/apis";
 
 const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
   const accessToken = getCookie("token");
-  let code = new URL(window.location.href).searchParams.get("code");
 
-  const kakaoQR = () => {
-    return api.get(`/user/kakao/callback?code=${code}`);
-  };
-
-  const kakao_query = useQuery("kakao_login", kakaoQR, {
+  const kakao_query = useQuery("kakao_login", apis.kakaoQR, {
     onSuccess: (res) => {
       setCookie("token", res.headers.authorization, {
         path: "/",
