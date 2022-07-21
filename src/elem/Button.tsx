@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import flex from "../Components/GlobalStyled/flex";
 import { deleteCookie } from "../shared/Cookies";
 import { useNavigate } from "react-router-dom";
 const LogoutBtn = () => {

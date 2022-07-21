@@ -110,3 +110,17 @@ export interface StatProps {
   stat: boolean;
   point: number;
 }
+
+export interface BtnProps {
+  btnType: string;
+  size: number;
+}
+
+export interface LogoProps {
+  top: number;
+  bottom: number;
+}
+
+export interface DupCheckProps {
+  dup: boolean;
+}

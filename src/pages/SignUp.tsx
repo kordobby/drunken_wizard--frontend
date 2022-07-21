@@ -7,31 +7,25 @@ import useSound from "use-sound";
 import useInput from "../hooks/useInput";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
 import { useFocus } from "../hooks/useFocus";
+
 // apis
 import apis from "../shared/api/apis";
+
 // css
 import {
   BackWrap,
-  SignLogo,
+  LogLogo,
   Input,
   InputBoxId,
   InputBoxPw,
-  Button,
   SpeechBubble,
-  SpeechSpan,
   ButtonBox,
-  IdCheckButton1,
-  IdCheckButton2,
+  IdCheckButton,
   Wrap,
-  Button1,
 } from "../Components/UserComponents/UserStyled";
-// svgs
-import logBack from "../images/background/loginBackground.svg";
-import cancelBtn from "../images/buttons/BTN_cancel.svg";
-import regBtn from "../images/buttons/BTN_register.svg";
-import regBtn2 from "../images/buttons/BTN_register2.svg";
-import logo from "../images/logo/logo.svg";
-import speechBubble from "../images/imgs/SpeechBubble.svg";
+
+import { DefaultBtn, BtnText } from "../Components/Common/CommonStyle";
+
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
 
@@ -160,9 +154,9 @@ const SignUp = () => {
   );
 
   return (
-    <BackWrap style={{ backgroundImage: `url(${logBack})` }}>
+    <BackWrap>
       <Wrap>
-        <SignLogo src={logo} />
+        <LogLogo top={5.208} bottom={2.604} />
         <form>
           <label id="user-id-label">
             <InputBoxId>
@@ -178,58 +172,64 @@ const SignUp = () => {
                   onFocus={setIdFocus}
                   onBlur={setIdFocus}
                 />
-              </div>
-              <div>
                 {signUpCheckId ? (
-                  <IdCheckButton1
+                  <IdCheckButton
+                    dup={true}
                     onClick={onIdCheck}
                     disabled={idCheckDisabled()}
                   >
                     사용가능
-                  </IdCheckButton1>
+                  </IdCheckButton>
                 ) : (
-                  <IdCheckButton2
+                  <IdCheckButton
+                    dup={false}
                     onClick={onIdCheck}
                     disabled={idCheckDisabled()}
                   >
                     중복확인
-                  </IdCheckButton2>
+                  </IdCheckButton>
+                )}
+                {idCheck(username) &&
+                  username !== "" &&
+                  signUpCheckId === false &&
+                  idFocus && (
+                    <SpeechBubble>
+                      <span className="bubble__notice">
+                        ID중복 확인을
+                        <br />
+                        해주세요.
+                      </span>
+                    </SpeechBubble>
+                  )}
+                {idCheck(username) &&
+                  username !== "" &&
+                  signUpCheckId === true &&
+                  idFocus && (
+                    <SpeechBubble>
+                      <span className="bubble__notice">
+                        사용가능한
+                        <br />
+                        ID 입니다.
+                      </span>
+                    </SpeechBubble>
+                  )}
+                {!idCheck(username) && username !== "" && idFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      올바른 아이디 <br />
+                      형식이 아닙니다.
+                    </span>
+                  </SpeechBubble>
+                )}
+                {username === "" && idFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      아이디를 <br />
+                      입력해주세요.
+                    </span>
+                  </SpeechBubble>
                 )}
               </div>
-              {idCheck(username) &&
-                username !== "" &&
-                signUpCheckId === false &&
-                idFocus && (
-                  <SpeechBubble
-                    style={{ backgroundImage: `url(${speechBubble})` }}
-                  >
-                    <SpeechSpan>ID중복 확인을 해주세요.</SpeechSpan>
-                  </SpeechBubble>
-                )}
-              {idCheck(username) &&
-                username !== "" &&
-                signUpCheckId === true &&
-                idFocus && (
-                  <SpeechBubble
-                    style={{ backgroundImage: `url(${speechBubble})` }}
-                  >
-                    <SpeechSpan>사용가능한 ID입니다.</SpeechSpan>
-                  </SpeechBubble>
-                )}
-              {!idCheck(username) && username !== "" && idFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>올바른 아이디 형식이 아닙니다.</SpeechSpan>
-                </SpeechBubble>
-              )}
-              {username === "" && idFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>아이디를 입력해주세요.</SpeechSpan>
-                </SpeechBubble>
-              )}
             </InputBoxId>
           </label>
           <label id="nickname-label">
@@ -246,17 +246,20 @@ const SignUp = () => {
                 onBlur={setNickFocus}
               />
               {!nickname && nickFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>닉네임을 입력해주세요! 1~13자</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    닉네임을 <br />
+                    입력해주세요! <br />
+                    1~13자
+                  </span>
                 </SpeechBubble>
               )}
               {nickname && nickFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>사용가능한 닉네임입니다.</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    사용가능한 <br />
+                    닉네임입니다.
+                  </span>
                 </SpeechBubble>
               )}
             </InputBoxId>
@@ -274,17 +277,21 @@ const SignUp = () => {
                 onBlur={setEmailFocus}
               />
               {emailCheck(email) && emailFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>사용 가능한 이메일입니다.</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    사용 가능한 <br />
+                    이메일입니다.
+                  </span>
                 </SpeechBubble>
               )}
               {!emailCheck(email) && emailFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>올바른 이메일 형식이 아닙니다.</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    올바른 <br />
+                    이메일 형식이
+                    <br />
+                    아닙니다.
+                  </span>
                 </SpeechBubble>
               )}
             </InputBoxId>
@@ -303,17 +310,20 @@ const SignUp = () => {
                 onBlur={setPwFocus}
               />
               {passwordCheckF(password) && pwFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>사용 가능한 비밀번호 입니다.</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    사용 가능한 <br />
+                    비밀번호입니다.
+                  </span>
                 </SpeechBubble>
               )}
               {!passwordCheckF(password) && pwFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>영문, 숫자, 특수 문자 포함 6~15자</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    영문, 숫자, <br />
+                    특수 문자 포함 <br />
+                    6~15자
+                  </span>
                 </SpeechBubble>
               )}
             </InputBoxId>
@@ -332,17 +342,20 @@ const SignUp = () => {
                 onBlur={setPwCheckFocus}
               />
               {mismatchError && pwCheckFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>비밀번호가 일치하지 않습니다.</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    비밀번호가 <br />
+                    일치하지 <br />
+                    않습니다.
+                  </span>
                 </SpeechBubble>
               )}
               {!mismatchError && pwCheckFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>비밀번호가 일치합니다.</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    비밀번호가 <br />
+                    일치합니다.
+                  </span>
                 </SpeechBubble>
               )}
             </InputBoxPw>
@@ -351,26 +364,34 @@ const SignUp = () => {
         </form>
         <ButtonBox>
           {disabledHandler() ? (
-            <Button style={{ backgroundImage: `url(${regBtn})` }}></Button>
+            <DefaultBtn btnType="inactiveM" size={10.9895}>
+              <BtnText>Sign up</BtnText>
+            </DefaultBtn>
           ) : (
-            <Button
+            <DefaultBtn
+              btnType="activeM"
+              size={10.9895}
               onClick={(e) => {
                 onSubmit(e);
                 play();
               }}
               type="submit"
               disabled={disabledHandler()}
-              style={{ backgroundImage: `url(${regBtn2})` }}
-            ></Button>
+            >
+              <BtnText>Sign up</BtnText>
+            </DefaultBtn>
           )}
 
           <Link to="/login">
-            <Button1
+            <DefaultBtn
+              btnType="inactiveM"
+              size={10.9895}
               onClick={() => {
                 play();
               }}
-              style={{ backgroundImage: `url(${cancelBtn})` }}
-            />
+            >
+              <BtnText>Cancel</BtnText>
+            </DefaultBtn>
           </Link>
         </ButtonBox>
       </Wrap>

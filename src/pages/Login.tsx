@@ -23,21 +23,12 @@ import {
   Input,
   InputBoxId,
   InputBoxPw,
-  Button,
   SpeechBubble,
-  SpeechSpan,
   Wrap,
-  ResizeBtn,
-  Button1,
-  Button2,
+  LoginBtnBox,
 } from "../Components/UserComponents/UserStyled";
-// svgs
-import logBack from "../images/background/loginBackground.svg";
-import logBtn from "../images/buttons/BTN_login.svg";
-import regBtn from "../images/buttons/BTN_register.svg";
-import kakaoBtn from "../images/buttons/BTN_kakao.svg";
-import logo from "../images/logo/logo.svg";
-import speechBubble from "../images/imgs/SpeechBubble.svg";
+import { DefaultBtn, BtnText } from "../Components/Common/CommonStyle";
+
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
 
@@ -89,9 +80,10 @@ const Login = ({ setLoginState }: loginStateProps) => {
   );
 
   return (
-    <BackWrap style={{ backgroundImage: `url(${logBack})` }}>
+    <BackWrap>
       <Wrap>
-        <LogLogo src={logo} />
+        <LogLogo top={5.729} bottom={4.6875} />
+        {/* <LogLogo src={logo} /> */}
         <form>
           <label id="user-id-label">
             <InputBoxId>
@@ -106,17 +98,19 @@ const Login = ({ setLoginState }: loginStateProps) => {
                 onBlur={setIdFocus}
               />
               {username === "" && idFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>ID를 입력 해주세요.</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    아이디를 <br />
+                    입력해주세요.
+                  </span>
                 </SpeechBubble>
               )}
               {username !== "" && idFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>올바른 형식의 ID입니다.</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    올바른 형식의 <br />
+                    ID 입니다.
+                  </span>
                 </SpeechBubble>
               )}
             </InputBoxId>
@@ -134,48 +128,59 @@ const Login = ({ setLoginState }: loginStateProps) => {
                 onBlur={setPwFocus}
               />
               {passwordCheckF(password) && pwFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>올바른 형식의 비밀번호 입니다.</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    올바른 형식의 <br />
+                    비밀번호 입니다.
+                  </span>
                 </SpeechBubble>
               )}
               {!passwordCheckF(password) && pwFocus && (
-                <SpeechBubble
-                  style={{ backgroundImage: `url(${speechBubble})` }}
-                >
-                  <SpeechSpan>영문, 숫자, 특수 문자 포함 6~15자</SpeechSpan>
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    영문, 숫자, <br /> 특수문자 포함 <br />
+                    6~15자
+                  </span>
                 </SpeechBubble>
               )}
             </InputBoxPw>
           </label>
         </form>
-        <div>
-          <Button
+        <LoginBtnBox>
+          <DefaultBtn
+            btnType="activeM"
+            size={10.9895}
             onClick={(e) => {
               play();
               handleLogin(e);
             }}
             type="submit"
             disabled={username === "" || password === "" ? true : false}
-            style={{ backgroundImage: `url(${logBtn})` }}
-          ></Button>
+          >
+            {" "}
+            <BtnText>Login</BtnText>
+          </DefaultBtn>
           <Link to="/signup">
-            <Button1
+            <DefaultBtn
+              btnType="inactiveM"
+              size={10.9895}
               onClick={() => {
                 play();
               }}
-              style={{ backgroundImage: `url(${regBtn})` }}
-            />
+            >
+              <BtnText>Register</BtnText>
+            </DefaultBtn>
           </Link>
-        </div>
+        </LoginBtnBox>
         <a href={KAKAO_AUTH_URL}>
-          <Button2
+          <DefaultBtn
+            btnType="kakao"
+            size={22.8125}
             onClick={() => {
               play();
             }}
-            style={{ backgroundImage: `url(${kakaoBtn})` }}
-          />
+            // style={{ backgroundImage: `url(${kakaoBtn})` }}
+          ></DefaultBtn>
         </a>
       </Wrap>
     </BackWrap>

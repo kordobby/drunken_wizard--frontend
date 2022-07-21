@@ -181,6 +181,37 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     </TargetBtn>
   ));
 
+  const CardsSets = [
+    {
+      cardId: 1,
+      cardName: "hello",
+      description: "hello",
+      manaCost: 3,
+      target: "SELECT",
+    },
+    {
+      cardId: 2,
+      cardName: "hello",
+      description: "hello",
+      manaCost: 3,
+      target: "ME",
+    },
+    {
+      cardId: 3,
+      cardName: "hello",
+      description: "hello",
+      manaCost: 3,
+      target: "ALLY",
+    },
+    {
+      cardId: 4,
+      cardName: "hello",
+      description: "hello",
+      manaCost: 3,
+      target: "ENEMY",
+    },
+  ];
+
   // TARGETING BTN(COMPONENT) :: ME / ALLY / ENEMY
   const TargetNullBtns = ["Me", "Ally", "Enemy"].map((value, index: number) => (
     <TargetNullBtn key={index} onClick={useCardHandler} disabled={clicked}>
@@ -194,7 +225,8 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
         <MyProfile></MyProfile>
       </div>
       <CardsArea>
-        {thisPlayer.cardsOnHand.map((value: Card, index: number) => (
+        {/* thisPlayer.cardsOnHand */}
+        {CardsSets.map((value: Card, index: number) => (
           <PlayerCards
             key={value.cardId}
             className={generateClassName(target, value.cardId, mouseIn)}

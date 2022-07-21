@@ -9,11 +9,11 @@ import CreateRoom from "../Components/LobbyComponents/CreateRoom";
 import LobbyChat from "../Components/LobbyComponents/LobbyChat";
 import Rooms from "../Components/LobbyComponents/Rooms";
 // css
-import { LogoutBtn } from "../Components/LobbyComponents/LobbyStyled";
 import { Header } from "../Components/LobbyComponents/LobbyStyled";
+import LogoutBtn from "../elem/Button";
 // svgs
 import header from "../images/lobby/header.svg";
-import logout from "../images/buttons/BTN_logout.svg";
+// import logout from "../images/buttons/BTN_logout.svg";
 import roomout from "../images/lobby/roomout.svg";
 import Back from "../images/background/lobbybackground.png";
 import flex from "../Components/GlobalStyled/flex";
@@ -58,9 +58,7 @@ const Lobby = () => {
       {/* <Main> */}
       {createRoomModal && <CreateRoom modalClose={modalClose} />}
       <Header style={{ backgroundImage: `url(${header})` }}>
-        <LogoutBtn onClick={logoutHandler}>
-          <img src={logout} />
-        </LogoutBtn>
+        <LogoutBtn></LogoutBtn>
       </Header>
       <button
         onClick={() => {

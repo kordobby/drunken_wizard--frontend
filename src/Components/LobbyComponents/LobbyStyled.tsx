@@ -3,7 +3,7 @@ import { JoinRoomType } from "../../typings/db";
 // css
 import flex from "../GlobalStyled/flex";
 // img
-import chatIcon from "../../images/lobby/chat.svg";
+import chatIcon from "../../images/lobby/chat.png";
 
 export const StWrap = styled.div`
   width: 100%;
