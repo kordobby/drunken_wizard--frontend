@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 import { StartModalProps } from "../../../typings/typedb";
 
 /* Components */
-import { IngameBtn, BeerIcons, StartDiv } from "../InGameStyled";
+import { BeerIcons, StartDiv } from "../InGameStyled";
+import { DefaultBtnL } from "../../Common/CommonStyle";
 
 const StartModal = ({ setStatus }: StartModalProps) => {
   const [BtnActive, setBtnActive] = useState<boolean>(true);
@@ -25,14 +26,14 @@ const StartModal = ({ setStatus }: StartModalProps) => {
         <span className="start__notice start__notice--btm">
           제일 먼저 게임 스타트를 눌러보세요!
         </span>
-        <IngameBtn
+        <DefaultBtnL
           disabled={BtnActive}
           onClick={() => {
             setStatus("READY");
           }}
         >
-          Start!
-        </IngameBtn>
+          <span>Start!</span>
+        </DefaultBtnL>
       </StartDiv>
     </>
   );

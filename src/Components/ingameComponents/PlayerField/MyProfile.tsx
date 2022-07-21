@@ -24,6 +24,7 @@ const MyProfile = () => {
             <ProfileIcon
               job={thisPlayer.charactorClass}
               dead={thisPlayer.dead}
+              team={thisPlayer.team}
             ></ProfileIcon>
             {timerCtrl !== "draw" && <DrawTimer />}
             {timerCtrl === "action" && <ActionTimer />}
@@ -31,7 +32,7 @@ const MyProfile = () => {
           <MyStatBox>
             <div className="profile__stats">
               <span className="profile__title">HP</span>
-              <MyStatBar stat={true} point={thisPlayer.health}>
+              <MyStatBar stat={true} point={(thisPlayer.health / 20) * 21.35}>
                 <div className="stat__full">
                   <div className="stat__now"></div>
                 </div>

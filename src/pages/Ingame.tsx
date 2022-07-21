@@ -523,7 +523,7 @@ const Ingame = () => {
     <>
       <NoticeField status={status}></NoticeField>
       <StGameWrap>
-        {status === "" ? (
+        {status !== "" ? (
           <StartModal setStatus={setStatus}></StartModal>
         ) : (
           <>

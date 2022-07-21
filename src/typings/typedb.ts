@@ -60,8 +60,12 @@ export interface DrawProps {
 export interface IconsImgProps {
   job: string;
   dead: boolean;
+  team: boolean;
 }
 
+export interface NameTagProps {
+  team: boolean;
+}
 export interface StatBarProps {
   manaCostModifierDuration: number;
   mutedDuration: number;

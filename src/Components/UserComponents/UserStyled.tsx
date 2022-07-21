@@ -5,52 +5,28 @@ import bubble from "../../images/imgs/bubble.png";
 import introBg from "../../images/background/introBackground.png";
 import { LogoProps, DupCheckProps } from "../../typings/typedb";
 
-export const StWrap = styled.div`
-  width: 100%;
-  height: 100vh;
-  background-color: ${(props) => props.theme.bgColor};
-  z-index: -5;
-`;
-
 export const BackWrap = styled.div`
+  ${flex({ direction: "column", align: "center" })};
   width: 100vw;
   height: 100vh;
   background-image: url(${introBg});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  z-index: -1000;
-`;
-
-export const Wrap = styled.div`
-  ${flex({ direction: "column" })};
-`;
-
-export const LoginBtnBox = styled.div`
-  width: 22.8125vw;
-  position: relative;
-  margin-bottom: 1.5625vw;
-  ${flex({ justify: "space-between" })};
+  z-index: -5;
 `;
 
 export const LogLogo = styled.img.attrs({
   src: `${logoImg}`,
 })<LogoProps>`
+  width: 36.51vw;
   margin-top: ${(props) => props.top && `${props.top}vw`};
   margin-bottom: ${(props) => props.bottom && `${props.bottom}vw`};
-  /* margin: 5.729vw 0 4.6875vw 0; // 4.6875vw 5.729vw */
-  width: 36.51vw;
-  /* height: 33.148vw; */
-`;
-
-export const SignLogo = styled.img`
-  display: flex;
-  margin: 5.729vw 0 3.703vw 0;
 `;
 
 export const InputBoxId = styled.div`
-  margin-bottom: 1.0415vw;
   position: relative;
+  margin-bottom: 1.0415vw;
 `;
 
 export const InputBoxPw = styled.div`
@@ -59,124 +35,71 @@ export const InputBoxPw = styled.div`
 `;
 
 export const Input = styled.input`
+  position: relative;
   width: 23.958vw;
   height: 3.125vw;
-  box-sizing: border-box;
   padding: 0px 1.041vw;
+  box-sizing: border-box;
   border-radius: 0.625vw;
   border-color: transparent;
-  outline: 1px solid #fd6f33;
+  outline: 1px solid var(--orange);
   outline-offset: -1px;
+  font-family: "국립박물관문화재단클래식M";
   font-size: 2.22vh;
-  position: relative;
+  &::placeholder {
+    font-size: 1.25vw;
+    color: var(--grey);
+  }
   &:focus {
-    color: #fd6f33;
-    outline: 1px solid #fd6f33;
-    outline-offset: -1px;
-    box-shadow: 0px 0px 10px 2px #fd6f33;
+    color: var(--orange);
+    box-shadow: 0px 0px 10px 2px var(--orange);
     text-shadow: 0px 0px 4px #ffffff, 0 0 0em blue, 0 0 0.1em #ffffff;
   }
   &:hover {
     filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
+    box-shadow: 0px 0px 10px 2px var(--orange);
   }
 `;
 
 // signUp
 export const IdCheckButton = styled.button<DupCheckProps>`
-  box-sizing: border-box;
+  position: absolute;
   width: 4.6875vw;
   height: 3.125vw;
-  border: none;
+  box-sizing: border-box;
+  top: 0;
+  right: 0;
+  border-radius: 0 0.625vw 0.625vw 0;
+  outline: 1px solid var(--orange);
+  outline-offset: -1px;
   background-color: ${(props) => (props.dup ? "var(--orange)" : "var(--grey)")};
   color: white;
   font-size: 1.666vh;
-  border-radius: 0 0.625vw 0.625vw 0;
-  top: 0;
-  right: 0;
   z-index: 5;
-  position: absolute;
-  outline: 1px solid var(--orange);
-  outline-offset: -1px;
   &:hover {
-    outline: 1px solid var(--orange);
-    outline-offset: -1px;
     cursor: pointer;
     filter: brightness(110%);
     box-shadow: 0px 0px 10px 2px var(--orange);
   }
 `;
 
-export const IdCheckButton2 = styled.button`
-  /* box-sizing: border-box; */
-  /* width: 4.6875vw;
-  height: 3.125vw;
-  border: none;
-  background-color: #9e9e9e;
-  color: white;
-  font-size: 1.666vh;
-  border-radius: 0 0.625vw 0.625vw 0;
-  top: 0;
-  right: 0;
-  z-index: 5;
-  position: absolute;
-  outline: 1px solid #fd6f33;
-  outline-offset: -1px;
-
-  &:hover {
-    outline: 1px solid #fd6f33;
-    outline-offset: -1px;
-    cursor: pointer;
-    filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
-  } */
-`;
-
-export const Button = styled.button`
-  width: 211px;
-  height: 83px;
-  border: none;
-  margin-right: 0.833vw;
-
-  &:hover {
-    cursor: pointer;
-    filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
-  }
-`;
-export const Button1 = styled.button`
-  width: 211px;
-  height: 83px;
-  border: none;
-
-  &:hover {
-    cursor: pointer;
-    filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
-  }
-`;
-export const Button2 = styled.button`
-  width: 438px;
-  height: 83px;
-  border: none;
-  margin-top: 28px;
-  &:hover {
-    cursor: pointer;
-    filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
-  }
+export const LoginBtnBox = styled.div`
+  position: relative;
+  width: 22.8125vw;
+  margin-bottom: 1.5625vw;
+  ${flex({ justify: "space-between" })};
 `;
 
 export const SpeechBubble = styled.div`
+  position: absolute;
   width: 12.291vw;
   height: 6.7708vw;
+  padding: 1.0416vw 1.5625vw 0 2.8645vw;
   background-image: url(${bubble});
   background-size: cover;
-  position: absolute;
   top: -0.5208vw;
   right: -13.02vw;
   box-sizing: border-box;
-  padding: 1.0416vw 1.5625vw 0 2.8645vw;
   .bubble__notice {
     font-size: 0.9375vw;
     font-family: "국립박물관문화재단클래식B";
@@ -184,17 +107,16 @@ export const SpeechBubble = styled.div`
 `;
 
 export const ButtonBox = styled.div`
-  width: 23.958vw;
   ${flex({ justify: "space-between" })};
+  width: 23.958vw;
 `;
 
 // 전체화면 전환
 export const ResizeBtn = styled.button`
-  border: none;
-  background-color: transparent;
   position: fixed;
   top: 1.5625vw;
   right: 2.083vw;
+  background-color: transparent;
   img {
     width: 4.166vw;
     height: 4.166vw;
@@ -202,18 +124,16 @@ export const ResizeBtn = styled.button`
   &:hover {
     cursor: pointer;
     filter: brightness(120%);
-    /* box-shadow: 0px 0px 10px 2px #fd6f33; */
   }
 `;
 
 // 룰북 모달
 export const RuleBtn = styled.button`
-  border: none;
   background-color: transparent;
   position: absolute;
   top: 1.3025vw;
   right: 6.77vw;
-  color: #fd6f33;
+  color: var(--orange);
   font-size: 20px;
   img {
     width: 3.645vw;
@@ -223,6 +143,5 @@ export const RuleBtn = styled.button`
   &:hover {
     cursor: pointer;
     filter: brightness(120%);
-    /* box-shadow: 0px 0px 10px 2px #fd6f33; */
   }
 `;
