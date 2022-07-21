@@ -12,7 +12,6 @@ import { Header } from "../Components/LobbyComponents/LobbyStyled";
 import LogoutBtn from "../elem/Button";
 // svgs
 import header from "../images/lobby/header.svg";
-import logout from "../images/buttons/BTN_logout.svg";
 import roomout from "../images/lobby/roomout.svg";
 import Back from "../images/background/lobbyBackground.png";
 import flex from "../Components/GlobalStyled/flex";
