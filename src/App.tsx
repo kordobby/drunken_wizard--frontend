@@ -40,12 +40,16 @@ function App() {
   }, [ruleModal]);
 
   const logoutHandler = () => {
-    deleteCookie("token");
-    deleteCookie("id");
-    deleteCookie("username");
-    deleteCookie("nickname");
-    alert("로그아웃 되었습니다!");
-    navigate("/login");
+    if (loginState) {
+      deleteCookie("token");
+      deleteCookie("id");
+      deleteCookie("username");
+      deleteCookie("nickname");
+    }
+
+    if (!loginState) {
+      navigate("/login");
+    }
   };
 
   return (
@@ -65,7 +69,7 @@ function App() {
         />
         <Route path="/waiting/:roomId" element={<WaitingRoom />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
-        <Route path="/ingame" element={<Ingame></Ingame>}></Route>
+        <Route path="/ingame/:roomId" element={<Ingame></Ingame>}></Route>
       </Routes>
       <ResizeBtn
         onClick={() => {
@@ -78,7 +82,7 @@ function App() {
       <RuleBtn onClick={modalOpen}>
         <img src={ruleBook} />
       </RuleBtn>
-      {/* <button onClick={logoutHandler}>로그아웃</button> */}
+      <button onClick={logoutHandler}>로그아웃</button>
     </>
   );
 }

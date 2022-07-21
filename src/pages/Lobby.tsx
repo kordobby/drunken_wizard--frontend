@@ -15,7 +15,7 @@ import { Header } from "../Components/LobbyComponents/LobbyStyled";
 import header from "../images/lobby/header.svg";
 import logout from "../images/buttons/BTN_logout.svg";
 import roomout from "../images/lobby/roomout.svg";
-import Back from "../images/background/lobbybackground.png";
+import Back from "../images/background/lobbyBackground.png";
 import flex from "../Components/GlobalStyled/flex";
 
 const Lobby = () => {
@@ -108,7 +108,7 @@ const SideBar = styled.div`
   justify-content: stretch;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(45, 5, 90, 0.1);
+  background-color: #e6e2eb;
 `;
 const Button = styled.div`
   width: 330px;

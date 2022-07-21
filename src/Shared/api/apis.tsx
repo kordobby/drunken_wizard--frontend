@@ -1,18 +1,9 @@
-import { QueryFunctionContext } from "react-query";
-import {
-  IUser,
-  LogUser,
-  AddRoomType,
-  WaitingRoom,
-  RoomPage,
-  PageNum,
-} from "../../typings/db";
+import { IUser, LogUser, AddRoomType, WaitingRoom } from "../../typings/db";
 import api from "./core/api";
 
 const code = new URL(window.location.href).searchParams.get("code");
 
 const apis = {
-  // example
   signUpMT: async (data: IUser) => await api.post("/user/signup", data),
   signUpIdCheckMT: async (data: object) =>
     await api.post("/user/dubcheck", data),
