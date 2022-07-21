@@ -221,9 +221,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
 
   return (
     <PlayerFieldWrap>
-      <div>
-        <MyProfile></MyProfile>
-      </div>
+      <MyProfile></MyProfile>
       <CardsArea>
         {/* thisPlayer.cardsOnHand */}
         {CardsSets.map((value: Card, index: number) => (

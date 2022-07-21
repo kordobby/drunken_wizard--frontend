@@ -11,6 +11,8 @@ import {
   ProfileIcon,
   MyStatBar,
   MyStatBox,
+  ProfileStatBox,
+  StatusSizing,
 } from "../InGameStyled";
 
 const MyProfile = () => {
@@ -20,33 +22,36 @@ const MyProfile = () => {
     <>
       {thisPlayer.playerId !== 0 && (
         <ProfileSizing>
-          <div className="profile__img">
-            <ProfileIcon
-              job={thisPlayer.charactorClass}
-              dead={thisPlayer.dead}
-              team={thisPlayer.team}
-            ></ProfileIcon>
-            {timerCtrl !== "draw" && <DrawTimer />}
-            {timerCtrl === "action" && <ActionTimer />}
-          </div>
-          <MyStatBox>
-            <div className="profile__stats">
-              <span className="profile__title">HP</span>
-              <MyStatBar stat={true} point={(thisPlayer.health / 20) * 21.35}>
-                <div className="stat__full">
-                  <div className="stat__now"></div>
-                </div>
-              </MyStatBar>
+          <ProfileStatBox>
+            <div className="profile__img">
+              <ProfileIcon
+                job={thisPlayer.charactorClass}
+                dead={thisPlayer.dead}
+                team={thisPlayer.team}
+              ></ProfileIcon>
+              {timerCtrl !== "draw" && <DrawTimer />}
+              {timerCtrl === "action" && <ActionTimer />}
             </div>
-            <div className="profile__stats">
-              <span className="profile__title">MP</span>
-              <MyStatBar stat={false} point={(thisPlayer.mana / 20) * 21.35}>
-                <div className="stat__full">
-                  <div className="stat__now"></div>
-                </div>
-              </MyStatBar>
-            </div>
-          </MyStatBox>
+            <MyStatBox>
+              <div className="profile__stats">
+                <span className="profile__title">HP {thisPlayer.health}</span>
+                <MyStatBar stat={true} point={(thisPlayer.health / 20) * 21.35}>
+                  <div className="stat__full">
+                    <div className="stat__now"></div>
+                  </div>
+                </MyStatBar>
+              </div>
+              <div className="profile__stats">
+                <span className="profile__title">MP {thisPlayer.mana}</span>
+                <MyStatBar stat={false} point={(thisPlayer.mana / 20) * 21.35}>
+                  <div className="stat__full">
+                    <div className="stat__now"></div>
+                  </div>
+                </MyStatBar>
+              </div>
+            </MyStatBox>
+          </ProfileStatBox>
+          <StatusSizing></StatusSizing>
         </ProfileSizing>
       )}
     </>

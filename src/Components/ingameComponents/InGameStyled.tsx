@@ -241,25 +241,36 @@ export const PlayerFieldWrap = styled.div`
   height: 30.5vh;
   width: 100vw;
   box-sizing: border-box;
-  padding-left: 1.04vw;
   background-color: var(--brown-3);
-  ${flex({ justify: "space-between", align: "center" })};
+  ${flex({ align: "flex-start" })};
   z-index: 0;
 `;
 
 // PlayerField => [LEFT] PlayerIcon
 export const ProfileSizing = styled.div`
-  width: 41.4vw;
-  height: 24.074vh;
-  ${flex({ direction: "column", justify: "center", align: "flex-start" })};
+  width: 40.885vw;
+  height: 17.1875vw;
+  box-sizing: border-box;
+  margin-left: 1.5625vw;
+  ${flex({ direction: "column", justify: "flex-start", align: "flex-start" })};
   position: relative;
   .profile__img {
-    width: 14.06vw;
-    height: 25vh;
     position: relative;
+    margin-top: 0.5208vw;
   }
 `;
 
+export const StatusSizing = styled.div`
+  width: 40.885vw;
+  height: 6.51vw;
+  box-sizing: border-box;
+  margin-top: 0.5208vw;
+  ${flex({ justify: "flex-start", align: "center" })};
+`;
+
+export const ProfileStatBox = styled.div`
+  ${flex({ align: "flex-start" })};
+`;
 // PlayerField => [LEFT] PlayerIcon : images
 export const ProfileIcon = styled.div<IconsImgProps>`
   height: 9.895vw;
@@ -271,20 +282,20 @@ export const ProfileIcon = styled.div<IconsImgProps>`
 `;
 
 export const MyStatBox = styled.div`
+  position: absolute;
+  top: 1.822vw;
+  right: 0;
   z-index: -2;
   width: 32.8125vw;
-  height: 12.96vh;
+  height: 7.2916vw;
   box-sizing: border-box;
-  padding-left: 5.729vw;
-  font-size: 3.33vh;
+  padding-left: 2.604vw;
+  font-size: 1.875vw;
   font-family: "국립박물관문화재단클래식M";
   background-color: var(--white);
-  position: absolute;
   border-top-right-radius: 1.48vw;
   border-bottom-right-radius: 1.48vw;
   ${flex({ direction: "column", justify: "center", align: "flex-start" })};
-  left: 15.035vh;
-  top: 0.462vh;
 
   .profile__stats {
     height: 5.277vh;
@@ -324,8 +335,6 @@ export const TimerWrap = styled.div`
 
 // PlayerField => [CENTER] Cards
 export const CardsArea = styled.div`
-  height: calc(100vh - 70vh);
-  width: calc(100vw - 20vw);
   ${flex({ justify: "space-around", align: "center" })};
   .active {
   }
