@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { JoinRoomType } from "../../typings/db";
+import { JoinRoomType, ModalDivProps } from "../../typings/db";
 // css
 import flex from "../GlobalStyled/flex";
 // img
@@ -98,7 +98,7 @@ export const CreateButton = styled.button`
   }
 `;
 
-export const Backdrop = styled.div`
+export const Backdrop = styled.div<ModalDivProps>`
   width: 100vw;
   height: 100vh;
   position: fixed;

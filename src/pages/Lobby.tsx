@@ -1,4 +1,3 @@
-import React, { useCallback, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -17,48 +16,46 @@ import logout from "../images/buttons/BTN_logout.svg";
 import roomout from "../images/lobby/roomout.svg";
 import Back from "../images/background/lobbyBackground.png";
 import flex from "../Components/GlobalStyled/flex";
+import { useModal } from "../hooks/useModal";
+import { ModalDivProps } from "../typings/db";
 
 const Lobby = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [createRoomModal, setCreateRoomMoadl] = useState<boolean>(false);
-  const [logoutModal, setlogoutMoadl] = useState<boolean>(false);
-
-  const modalOpen = useCallback(() => {
-    setCreateRoomMoadl(!createRoomModal);
-    document.body.style.overflow = "hidden";
-  }, [createRoomModal]);
-
-  const modalClose = useCallback(() => {
-    setCreateRoomMoadl(!createRoomModal);
-    document.body.style.overflow = "unset";
-  }, [createRoomModal]);
-
-  const logModalOpen = useCallback(() => {
-    setlogoutMoadl(!logoutModal);
-    document.body.style.overflow = "hidden";
-  }, [logoutModal]);
-
-  const logModalClose = useCallback(() => {
-    setlogoutMoadl(!logoutModal);
-    document.body.style.overflow = "unset";
-  }, [logoutModal]);
+  const [createRoomModal, setCreateRoomMoadl] = useModal<boolean>(false);
+  const [logoutModal, setlogoutMoadl] = useModal<boolean>(false);
 
   const logoutHandler = () => {
     deleteCookie("token");
     deleteCookie("id");
     deleteCookie("username");
     deleteCookie("nickname");
-    alert("로그아웃 되었습니다!");
     navigate("/login");
   };
 
   return (
     <Main style={{ backgroundImage: `url(${Back})` }}>
-      {/* <Main> */}
-      {createRoomModal && <CreateRoom modalClose={modalClose} />}
+      {logoutModal && (
+        <ModalContainer>
+          <LogoutWrap
+            onClick={(e: any) => {
+              setlogoutMoadl(e);
+            }}
+          >
+            <LogoutBox>
+              <LogoutQ>정말 로그아웃 하시겠습니까?</LogoutQ>
+              <span>로그인 화면으로 돌아갑니다.</span>
+              <ButtonBox>
+                <LogoutButton onClick={logoutHandler}>확인</LogoutButton>
+                <CancelButton onClick={setlogoutMoadl}>취소</CancelButton>
+              </ButtonBox>
+            </LogoutBox>
+          </LogoutWrap>
+        </ModalContainer>
+      )}
+      {createRoomModal && <CreateRoom modalClose={setCreateRoomMoadl} />}
       <Header style={{ backgroundImage: `url(${header})` }}>
-        <LogoutBtn onClick={logoutHandler}>
+        <LogoutBtn onClick={setlogoutMoadl}>
           <img src={logout} />
         </LogoutBtn>
       </Header>
@@ -69,15 +66,14 @@ const Lobby = () => {
       >
         리패치
       </button>
-      {/* <LogoutWrap>
-        <LogoutBox></LogoutBox>
-      </LogoutWrap> */}
       <LobbyWrap>
         <Rooms />
         <SideBar>
           <LobbyChat />
           <Button
-            onClick={modalOpen}
+            onClick={(e: any) => {
+              setCreateRoomMoadl(e);
+            }}
             style={{ backgroundImage: `url(${roomout})` }}
           ></Button>
         </SideBar>
@@ -122,20 +118,15 @@ const Button = styled.div`
     box-shadow: 0px 0px 10px 2px #fd6f33;
   }
 `;
-// const LogoutWrap = styled.div`
-//   width: 100%;
-//   height: 100%;
-//   display: flex;
-//   justify-content: stretch;
-// `;
-export const ModalContainer = styled.div`
+
+const ModalContainer = styled.div`
   width: 100%;
   height: 100vh;
   ${flex({ align: "center", justify: "center" })}
   position: absolute;
 `;
 
-const LogoutWrap = styled.div`
+const LogoutWrap = styled.div<ModalDivProps>`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -143,13 +134,19 @@ const LogoutWrap = styled.div`
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(1px);
+  ${flex({ align: "center", justify: "center" })}
   z-index: 9999;
 `;
+
 const LogoutBox = styled.div`
   width: 540px;
   height: 300px;
-  ${flex({ direction: "column", align: "center", justify: "center" })};
-  border: 2px solid #3f0984;
+  span {
+    font-size: 24px;
+  }
+  ${flex({ direction: "column", align: "center", justify: "space-between" })};
+  outline: 2px solid #3f0984;
+  outline-offset: -2px;
   border-radius: 16px;
   box-shadow: 0 0 30px rgba(30, 30, 30, 0.185);
   box-sizing: border-box;
@@ -157,10 +154,41 @@ const LogoutBox = styled.div`
   z-index: 10000;
 `;
 
+const LogoutQ = styled.span`
+  font-size: 36px !important;
+  margin-top: 60px;
+`;
+
+const ButtonBox = styled.div`
+  display: flex;
+`;
+
 const LogoutButton = styled.button`
-  width: 570px;
+  width: 270px;
   height: 100px;
   font-size: 36px;
+  border-radius: 0 0 0 16px;
   color: white;
   background-color: #3f0984;
+  border-top: 2px solid #3f0984;
+  border-right: 1px solid #3f0984;
+
+  &:hover {
+    filter: brightness(90%);
+    cursor: pointer;
+  }
+`;
+const CancelButton = styled.button`
+  width: 270px;
+  height: 100px;
+  font-size: 36px;
+  border-radius: 0 0 16px 0;
+  color: #3f0984;
+  background-color: white;
+  border-top: 2px solid #3f0984;
+  border-left: 1px solid #3f0984;
+  &:hover {
+    filter: brightness(90%);
+    cursor: pointer;
+  }
 `;

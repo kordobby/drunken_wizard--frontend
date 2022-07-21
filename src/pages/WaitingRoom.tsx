@@ -30,17 +30,6 @@ const WaitingRoom = () => {
   const accessId = getCookie("id");
   const queryClient = useQueryClient();
 
-  // mutate
-  const { mutate: joinRoom } = useMutation(apis.joinRoomMT, {
-    onSuccess: (res) => {
-      console.log(res);
-      queryClient.invalidateQueries(["room_list"]);
-    },
-    onError: (error) => {
-      console.log(error);
-      navigate("/lobby");
-    },
-  });
   const { mutate: leaveRoom } = useMutation(apis.leaveRoomMT, {
     onSuccess: (res) => {
       console.log(res);
@@ -51,16 +40,24 @@ const WaitingRoom = () => {
       console.log(error);
     },
   });
+  // // 새로고침 막기
+  // const doNotReload = (event) => {
+  //   if (
+  //     (event.ctrlKey === true &&
+  //       (event.keyCode === 78 || event.keyCode === 82)) ||
+  //     event.keyCode === 116
+  //   ) {
+  //     return window.confirm('새로고침하면 게임이 정상작동하지 않아요:(');
+  //   }
+  // };
+  // useEffect(() => {
+  //   document.onkeydown = doNotReload;
+  // });
 
   // leaveHandler
   const leaveHandler = useCallback(() => {
     leaveRoom({ roomId: roomId, id: accessId });
   }, [leaveRoom, roomId, accessId]);
-
-  // 방 접속 포스트 요청
-  useEffect(() => {
-    joinRoom({ roomId: roomId, id: accessId });
-  }, [joinRoom, roomId, accessId]);
 
   // 구독
   useEffect(() => {
@@ -131,12 +128,14 @@ const WaitingRoom = () => {
   };
 
   useEffect(() => {
-    waitingUsers &&
-      waitingUsers.player1.ready === true &&
-      waitingUsers.player2.ready === true &&
-      waitingUsers.player3.ready === true &&
-      waitingUsers.player4.ready === true &&
+    if (
+      waitingUsers?.player1?.ready === true &&
+      waitingUsers?.player2?.ready === true &&
+      waitingUsers?.player3?.ready === true &&
+      waitingUsers?.player4?.ready === true
+    ) {
       navigate(`/ingame/${roomId}`);
+    }
   }, [
     waitingUsers?.player1?.ready,
     waitingUsers?.player2?.ready,

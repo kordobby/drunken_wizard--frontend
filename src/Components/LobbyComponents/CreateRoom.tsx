@@ -84,14 +84,18 @@ const CreateRoom = ({ modalClose }: ModalType) => {
           ></CreateInput>
           <CreateButton
             style={{ backgroundImage: `url(${createButton})` }}
-            onClick={(e) => {
+            onClick={(e: any) => {
               onCreateRoom(e);
-              modalClose();
+              modalClose(e);
               navigate("/waiting");
             }}
           ></CreateButton>
         </CreateRoomBox>
-        <Backdrop onClick={modalClose} />
+        <Backdrop
+          onClick={(e: any) => {
+            modalClose(e);
+          }}
+        ></Backdrop>
       </ModalContainer>
     </>
   );
