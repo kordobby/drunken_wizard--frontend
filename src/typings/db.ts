@@ -20,7 +20,7 @@ export interface loginStateProps {
 
 // modal
 export interface ModalType {
-  modalClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  modalHandler: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 // chatList

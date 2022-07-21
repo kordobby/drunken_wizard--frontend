@@ -31,7 +31,7 @@ import {
   RuleWrap,
 } from "./RuleStyled";
 
-const Rule = ({ modalClose }: ModalType) => {
+const Rule = ({ modalHandler }: ModalType) => {
   const book = useRef<any>();
   const [play, { stop }] = useSound(pageflip);
 
@@ -62,13 +62,13 @@ const Rule = ({ modalClose }: ModalType) => {
             <Page src={rule12} />
           </HTMLFlipBook>
         </RuleBox>
-        <CloseButton onClick={modalClose}>
+        <CloseButton onClick={modalHandler}>
           <img src={bookMark} />
         </CloseButton>
       </RuleWrap>
       <Backdrop
         onClick={(e: any) => {
-          modalClose(e);
+          modalHandler(e);
         }}
       />
     </ModalContainer>

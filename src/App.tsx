@@ -79,7 +79,7 @@ function App() {
       >
         <img src={resize} />
       </ResizeBtn>
-      {ruleModal && <Rule modalClose={setRuleMoadl} />}
+      {ruleModal && <Rule modalHandler={setRuleMoadl} />}
       <RuleBtn
         onClick={(e: any) => {
           setRuleMoadl(e);

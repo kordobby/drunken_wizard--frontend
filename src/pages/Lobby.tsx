@@ -8,8 +8,8 @@ import CreateRoom from "../Components/LobbyComponents/CreateRoom";
 import LobbyChat from "../Components/LobbyComponents/LobbyChat";
 import Rooms from "../Components/LobbyComponents/Rooms";
 // css
-import { LogoutBtn } from "../Components/LobbyComponents/LobbyStyled";
 import { Header } from "../Components/LobbyComponents/LobbyStyled";
+import LogoutBtn from "../elem/Button";
 // svgs
 import header from "../images/lobby/header.svg";
 import logout from "../images/buttons/BTN_logout.svg";
@@ -53,11 +53,9 @@ const Lobby = () => {
           </LogoutWrap>
         </ModalContainer>
       )}
-      {createRoomModal && <CreateRoom modalClose={setCreateRoomMoadl} />}
+      {createRoomModal && <CreateRoom modalHandler={setCreateRoomMoadl} />}
       <Header style={{ backgroundImage: `url(${header})` }}>
-        <LogoutBtn onClick={setlogoutMoadl}>
-          <img src={logout} />
-        </LogoutBtn>
+        <LogoutBtn modalHandler={setlogoutMoadl}></LogoutBtn>
       </Header>
       <button
         onClick={() => {

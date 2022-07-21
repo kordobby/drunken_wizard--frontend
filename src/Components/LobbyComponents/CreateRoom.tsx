@@ -23,7 +23,7 @@ import {
 // svg
 import createButton from "../../images/buttons/BTN_createRoom.svg";
 
-const CreateRoom = ({ modalClose }: ModalType) => {
+const CreateRoom = ({ modalHandler }: ModalType) => {
   const [roomName, setRoomName] = useInput<string>("");
   const accessToken = getCookie("token");
   const queryClient = useQueryClient();
@@ -86,14 +86,14 @@ const CreateRoom = ({ modalClose }: ModalType) => {
             style={{ backgroundImage: `url(${createButton})` }}
             onClick={(e: any) => {
               onCreateRoom(e);
-              modalClose(e);
+              modalHandler(e);
               navigate("/waiting");
             }}
           ></CreateButton>
         </CreateRoomBox>
         <Backdrop
           onClick={(e: any) => {
-            modalClose(e);
+            modalHandler(e);
           }}
         ></Backdrop>
       </ModalContainer>
