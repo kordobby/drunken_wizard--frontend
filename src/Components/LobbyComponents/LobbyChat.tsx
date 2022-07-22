@@ -42,6 +42,7 @@ const LobbyChat = () => {
   const queryClient = useQueryClient();
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
+  const accessNickname = getCookie("nickname");
 
   useEffect(() => {
     socketSubscribe();
@@ -73,13 +74,20 @@ const LobbyChat = () => {
             "/sub/public",
             (data: any) => {
               const response = JSON.parse(data.body);
-              // console.log(data);
+              console.log(data);
               setSemiMsgList(response);
               queryClient.invalidateQueries(["room_list"]);
               if (response.type === "JOIN") {
                 setUserList(response.connectedUsers);
                 // console.log(response.connectedUsers);
               }
+              // if (response.type === "LEAVE") {
+              //   const newUserList = userList.filter((v: any) => {
+              //     return v.id === Number(accessId) ? false : true;
+              //   });
+              //   console.log(newUserList);
+              //   setUserList(newUserList);
+              // }
             },
             { token: accessToken }
           );
@@ -91,7 +99,7 @@ const LobbyChat = () => {
       console.log(error);
     }
   }, []);
-
+  console.log(userList);
   const socketUnsubscribe = () => {
     try {
       stompClient.unsubscribe(`/sub/public`);
@@ -106,7 +114,6 @@ const LobbyChat = () => {
     const accessName = getCookie("nickname");
     const data = {
       type: "JOIN",
-      roomId: 1,
       sender: accessName,
       message: `${accessName}님이 채팅방에 참여하였습니다!`,
     };
@@ -119,9 +126,10 @@ const LobbyChat = () => {
       const accessName = getCookie("nickname");
       const data = {
         type: "CHAT",
-        roomId: 1,
         sender: accessName,
+        userId: accessId,
         message: iptRef.current.value,
+        connectedUsers: [],
       };
       stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
       iptRef.current.value = "";
@@ -134,7 +142,9 @@ const LobbyChat = () => {
       <ProfileBox>
         <ProfileImg style={{ backgroundImage: `url(${user})` }}></ProfileImg>
         <Profile>
-          <ProfileSpan style={{ fontSize: "24px" }}>MagicKim00000</ProfileSpan>
+          <ProfileSpan style={{ fontSize: "24px" }}>
+            {accessNickname}_[{accessId}]
+          </ProfileSpan>
           <ProfileSpan style={{ fontSize: "24px" }}>10승 11패</ProfileSpan>
         </Profile>
       </ProfileBox>
@@ -164,29 +174,32 @@ const LobbyChat = () => {
                 </JoinUser>
               );
             }
+            if (msg.id !== accessId) {
+              return (
+                <div key={idx}>
+                  <ChatUser>
+                    <ChatImg
+                      style={{ backgroundImage: `url(${user})` }}
+                    ></ChatImg>
+                    <span>{msg?.sender}</span>
+                  </ChatUser>
+                  <ChatMsg>{msg?.message}</ChatMsg>
+                </div>
+              );
+            }
             return (
-              <div key={idx}>
-                <ChatUser>
+              <MyUserBox>
+                <MyChat>
                   <ChatImg
                     style={{ backgroundImage: `url(${user})` }}
                   ></ChatImg>
-                  <span>{msg?.sender}</span>
-                </ChatUser>
-                <ChatMsg>{msg?.message}</ChatMsg>
-              </div>
-              // 내 채팅일 경우
-              //   <MyUserBox>
-              //   <MyChat>
-              //     <ChatImg style={{ backgroundImage: `url(${user})` }}></ChatImg>
-              //     <span style={{ fontWeight: "500" }}>{msg?.sender}</span>
-              //   </MyChat>
-              //   <MyMsg>
-              //   {msg?.message}
-              //   </MyMsg>
-              // </MyUserBox>
+                  <span style={{ fontWeight: "500" }}>{msg?.sender}</span>
+                </MyChat>
+                <MyMsg>{msg?.message}</MyMsg>
+              </MyUserBox>
             );
           })}
-        </ChatWrap>{" "}
+        </ChatWrap>
         <Input
           type="text"
           ref={iptRef}

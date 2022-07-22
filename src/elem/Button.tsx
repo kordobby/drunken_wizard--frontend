@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ModalType } from "../typings/db";
 const LogoutBtn = ({ modalHandler }: ModalType) => {
   const navigate = useNavigate();
+
   const logoutHandler = () => {
     deleteCookie("token");
     deleteCookie("id");
@@ -13,7 +14,7 @@ const LogoutBtn = ({ modalHandler }: ModalType) => {
     navigate("/login");
   };
   return (
-    <LogoutBtnSt onClick={logoutHandler}>
+    <LogoutBtnSt onClick={modalHandler}>
       <span className="logout__text">Logout</span>
     </LogoutBtnSt>
   );

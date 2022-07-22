@@ -30,16 +30,6 @@ function App() {
   }, [token]);
   console.log(loginState);
 
-  // const modalOpen = useCallback(() => {
-  //   setRuleMoadl(!ruleModal);
-  //   document.body.style.overflow = "hidden";
-  // }, [ruleModal]);
-
-  // const modalClose = useCallback(() => {
-  //   setRuleMoadl(!ruleModal);
-  //   document.body.style.overflow = "unset";
-  // }, [ruleModal]);
-
   const logoutHandler = () => {
     if (loginState) {
       deleteCookie("token");

@@ -28,6 +28,7 @@ export interface ChatType {
   type: string;
   message: string;
   sender: string;
+  id: string;
 }
 
 // createroom
