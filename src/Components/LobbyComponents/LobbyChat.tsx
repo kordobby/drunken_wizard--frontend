@@ -111,10 +111,12 @@ const LobbyChat = () => {
 
   //입장 메세지
   const joinMessage = () => {
+    const accessId = getCookie("id");
     const accessName = getCookie("nickname");
     const data = {
       type: "JOIN",
-      sender: accessName,
+      sender: accessId,
+      nickname: accessName,
       message: `${accessName}님이 채팅방에 참여하였습니다!`,
     };
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
@@ -126,8 +128,8 @@ const LobbyChat = () => {
       const accessName = getCookie("nickname");
       const data = {
         type: "CHAT",
-        sender: accessName,
-        userId: accessId,
+        sender: accessId,
+        nickname: accessName,
         message: iptRef.current.value,
         connectedUsers: [],
       };
@@ -174,14 +176,16 @@ const LobbyChat = () => {
                 </JoinUser>
               );
             }
-            if (msg.id !== accessId) {
+            if (msg.sender !== accessId) {
               return (
                 <div key={idx}>
                   <ChatUser>
                     <ChatImg
                       style={{ backgroundImage: `url(${user})` }}
                     ></ChatImg>
-                    <span>{msg?.sender}</span>
+                    <span>
+                      {msg?.nickname}_[{msg?.sender}]
+                    </span>
                   </ChatUser>
                   <ChatMsg>{msg?.message}</ChatMsg>
                 </div>
@@ -193,7 +197,9 @@ const LobbyChat = () => {
                   <ChatImg
                     style={{ backgroundImage: `url(${user})` }}
                   ></ChatImg>
-                  <span style={{ fontWeight: "500" }}>{msg?.sender}</span>
+                  <span style={{ fontWeight: "500" }}>
+                    {msg?.nickname}_[{msg?.sender}]
+                  </span>
                 </MyChat>
                 <MyMsg>{msg?.message}</MyMsg>
               </MyUserBox>

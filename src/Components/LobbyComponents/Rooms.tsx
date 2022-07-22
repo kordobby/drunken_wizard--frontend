@@ -77,10 +77,12 @@ const Rooms = () => {
   });
 
   const leaveMessage = () => {
+    const accessId = getCookie("id");
     const accessName = getCookie("nickname");
     const data = {
       type: "LEAVE",
-      sender: accessName,
+      sender: accessId,
+      nickname: accessName,
       message: `${accessName}님이 채팅방에서 나갔습니다.`,
     };
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
