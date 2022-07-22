@@ -22,8 +22,6 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
   const selectableCards = useAppSelector(
     (state) => state.game.game.selectableCards
   );
-  console.log(selectableCards);
-  console.log(selectableCards);
   const selectedCardsArr = useAppSelector(
     (state) => state.game.game.drawSelectCards
   );

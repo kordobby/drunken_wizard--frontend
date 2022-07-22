@@ -1,4 +1,6 @@
 /* Hooks */
+import { useState } from "react";
+import { useEffect } from "react";
 import { useAppSelector } from "../../../hooks/tsHooks";
 import { PlayerFieldProps } from "../../../typings/typedb";
 import { useParams } from "react-router-dom";
@@ -12,20 +14,32 @@ const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
   );
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayerId);
   const { roomId } = useParams();
+
+  const [clicked, setClicked] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setClicked(false);
+    }, 3000);
+  }, [clicked]);
+
   return (
     <>
       <CraveWrap>
         <Crave></Crave>
         <CraveCards></CraveCards>
         <CraveCards></CraveCards>
-        <DefaultBtnL
-          disabled={nowPlayer === thisPlayer}
-          onClick={() => {
-            sendStompMsgFunc(roomId, thisPlayer, "ENDTURN", null);
-          }}
-        >
-          <span>턴 넘기기</span>
-        </DefaultBtnL>
+        {nowPlayer === thisPlayer && (
+          <DefaultBtnL
+            disabled={clicked}
+            onClick={() => {
+              setClicked(true);
+              sendStompMsgFunc(roomId, thisPlayer, "ENDTURN", null);
+            }}
+          >
+            <span>턴 넘기기</span>
+          </DefaultBtnL>
+        )}
       </CraveWrap>
     </>
   );

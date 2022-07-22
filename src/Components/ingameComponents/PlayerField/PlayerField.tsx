@@ -201,6 +201,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
           >
             <span>{value.cardName}</span>
             <span>{value.manaCost}</span>
+            <span>{value.description}</span>
             {/* <span>{value.description}</span> */}
             {nowPlayer === thisPlayer.playerId &&
               value.target === "SELECT" &&
