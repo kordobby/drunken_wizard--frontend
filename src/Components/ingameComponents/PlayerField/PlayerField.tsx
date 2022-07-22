@@ -27,7 +27,6 @@ import {
   PlayerFieldWrap,
   CardsArea,
   PlayerCtrlWrap,
-  TurnOverBtn,
   TargetBtn,
   TargetNullBtn,
   PlayerCards,
@@ -190,11 +189,9 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
 
   return (
     <PlayerFieldWrap>
-      <div>
-        <MyProfile></MyProfile>
-      </div>
+      <MyProfile></MyProfile>
       <CardsArea>
-        {thisPlayer.cardsOnHand.map((value: Card, index: number) => (
+        {thisPlayer.cardsOnHand.map((value: Card) => (
           <PlayerCards
             key={value.cardId}
             className={generateClassName(target, value.cardId, mouseIn)}
@@ -204,6 +201,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
           >
             <span>{value.cardName}</span>
             <span>{value.manaCost}</span>
+            {/* <span>{value.description}</span> */}
             {nowPlayer === thisPlayer.playerId &&
               value.target === "SELECT" &&
               mouseIn &&
@@ -261,15 +259,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
               {HealTargetBtns[2]}
               {HealTargetBtns[3]}
             </div>
-          )}
-          {nowPlayer === thisPlayer.playerId && (
-            <TurnOverBtn
-              onClick={() =>
-                sendStompMsgFunc(roomid, thisPlayer.playerId, "ENDTURN", null)
-              }
-            >
-              완료
-            </TurnOverBtn>
           )}
         </PlayerCtrlWrap>
       </div>

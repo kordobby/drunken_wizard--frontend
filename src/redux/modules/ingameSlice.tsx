@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { FALSE } from "sass";
 import { playersSetting, Card, DrawCard } from "../../typings/typedb";
 
 interface ingameState {
@@ -33,7 +34,7 @@ const initialState: ingameState = {
       charactorClass: "",
       playerId: 0,
       health: 0,
-      username: "",
+      username: "hello",
       dead: false,
       mana: 0,
       manaCostModifierDuration: 0,

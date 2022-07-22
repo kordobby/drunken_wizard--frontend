@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { JoinRoomType } from "../../typings/db";
+import { JoinRoomType, ModalDivProps } from "../../typings/db";
 // css
 import flex from "../GlobalStyled/flex";
 // img
-import chatIcon from "../../images/lobby/chat.svg";
+import chatIcon from "../../images/lobby/chat.png";
 
 export const StWrap = styled.div`
   width: 100%;
@@ -98,7 +98,7 @@ export const CreateButton = styled.button`
   }
 `;
 
-export const Backdrop = styled.div`
+export const Backdrop = styled.div<ModalDivProps>`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -274,7 +274,8 @@ export const ProfileBox = styled.div`
   margin-bottom: 10px;
   box-sizing: border-box;
   border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: #f3f1f5;
+  box-shadow: 1px 1px 5px 0.1px black;
   ${flex({ align: "center" })};
 `;
 export const Profile = styled.div`
@@ -304,7 +305,8 @@ export const UserBox = styled.div`
   box-sizing: border-box;
   border-radius: 12px;
   overflow: auto;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: #f3f1f5;
+  box-shadow: 1px 1px 5px 0.1px black;
   ${flex({ direction: "column", align: "left" })};
 `;
 export const Users = styled.div`
@@ -313,7 +315,6 @@ export const Users = styled.div`
     font-size: 24px;
     color: #5d180a;
     margin: auto auto auto 10px;
-    background-color: rgba(149, 149, 149, 0.5);
   }
   /* background-color: rgba(190, 97, 97, 0.5); */
   ${flex({ direction: "row", align: "left", justify: "center" })}
@@ -345,7 +346,8 @@ export const ChatBox = styled.div`
   border-radius: 12px;
   display: flex;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: #f3f1f5;
+  box-shadow: 1px 1px 5px 0.1px black;
   ${flex({ direction: "column", align: "left" })};
 `;
 

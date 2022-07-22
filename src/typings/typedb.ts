@@ -60,8 +60,12 @@ export interface DrawProps {
 export interface IconsImgProps {
   job: string;
   dead: boolean;
+  team: boolean;
 }
 
+export interface NameTagProps {
+  team: boolean;
+}
 export interface StatBarProps {
   manaCostModifierDuration: number;
   mutedDuration: number;
@@ -75,6 +79,7 @@ export interface StatBarProps {
 }
 export interface StatIconsImgProps {
   stat: string;
+  size: number;
 }
 
 export interface CardBg {
@@ -109,4 +114,21 @@ export interface BtnSettings {
 export interface StatProps {
   stat: boolean;
   point: number;
+}
+
+export interface BtnProps {
+  btnType: string;
+  size: number;
+}
+
+export interface StatNumberProps {
+  size: number;
+}
+export interface LogoProps {
+  top: number;
+  bottom: number;
+}
+
+export interface DupCheckProps {
+  dup: boolean;
 }

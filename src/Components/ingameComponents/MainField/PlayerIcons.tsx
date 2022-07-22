@@ -12,40 +12,55 @@ import {
   ProfilesImage,
   StatBarTop,
   PlayerNameTag,
+  PlayerProfilesIcon,
+  PlayerPointBox,
+  PlayerProfileBox,
+  PlayerPointBar,
 } from "../InGameStyled";
 
 const PlayerIcons = () => {
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
+  const data = playersList.shift();
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayerId);
 
   return (
     <>
       <PlayerIconsFields>
         {/* 여기 줄일방ㅇ법... */}
-        {playersList.map((value: playersSetting) => (
+        {playersList.map((value: playersSetting, index: number) => (
           <Profiles team={value.team} playing={value.playerId === nowPlayer}>
-            <div className="profiles__header">
-              {value.playerId === playersData.thisPlayer.playerId &&
-                nowPlayer !== 0 && <span>나의 팀 (나)</span>}
-              {value.team !== playersData.thisPlayer.team &&
-                nowPlayer !== 0 && <span>남의 팀</span>}
-              {value.playerId === playersData.teamPlayer.playerId &&
-                nowPlayer !== 0 && <span>나의 팀</span>}
-            </div>
-            <ProfilesImage job={value.charactorClass} dead={value.dead}>
-              <PlayerNameTag>
-                <span>{value.username}</span>
-              </PlayerNameTag>
-            </ProfilesImage>
+            <PlayerProfileBox>
+              <PlayerProfilesIcon>
+                <ProfilesImage
+                  team={value.team}
+                  job={value.charactorClass}
+                  dead={value.dead}
+                >
+                  <PlayerNameTag team={value.team}>
+                    <span>{value.username}</span>
+                  </PlayerNameTag>
+                </ProfilesImage>
+              </PlayerProfilesIcon>
+              <PlayerPointBox>
+                <PlayerPointBar
+                  stat={true}
+                  point={(value.health / 20) * 10.416}
+                >
+                  <span>HP {value.health}</span>
+                  <div className="stat__full">
+                    <div className="stat__now"></div>
+                  </div>
+                </PlayerPointBar>
+                <PlayerPointBar stat={false} point={(value.mana / 20) * 10.416}>
+                  <span>MP {value.mana}</span>
+                  <div className="stat__full">
+                    <div className="stat__now"></div>
+                  </div>
+                </PlayerPointBar>
+              </PlayerPointBox>
+            </PlayerProfileBox>
             <div>
-              {nowPlayer !== 0 && (
-                <StatBarTop>
-                  <p>Class: {value.charactorClass}</p>
-                  <span>HP :{value.health}</span>
-                  <span style={{ marginLeft: "40px" }}>MP :{value.mana}</span>
-                </StatBarTop>
-              )}
               <PlayerStatBar
                 manaCostModifierDuration={value.manaCostModifierDuration}
                 mutedDuration={value.mutedDuration}

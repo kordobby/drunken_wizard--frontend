@@ -1,6 +1,4 @@
-import IngameTest from "./pages/IngameTest";
-
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 // pages
 import Main from "./pages/Main";
@@ -18,40 +16,37 @@ import { toggleFullScreen } from "./hooks/fullScreen";
 import { ResizeBtn, RuleBtn } from "./Components/UserComponents/UserStyled";
 import resize from "./images/imgs/Resize.svg";
 import ruleBook from "./images/rules/rulebook.svg";
+import { useModal } from "./hooks/useModal";
+
+import Splash from "./pages/Splash";
 
 function App() {
   const navigate = useNavigate();
   const [loginState, setLoginState] = useState(false);
-  const [ruleModal, setRuleMoadl] = useState<boolean>(false);
+  const [ruleModal, setRuleMoadl] = useModal<boolean>(false);
   const token = getCookie("token");
   useEffect(() => {
     token ? setLoginState(true) : setLoginState(false);
   }, [token]);
   console.log(loginState);
 
-  const modalOpen = useCallback(() => {
-    setRuleMoadl(!ruleModal);
-    document.body.style.overflow = "hidden";
-  }, [ruleModal]);
-
-  const modalClose = useCallback(() => {
-    setRuleMoadl(!ruleModal);
-    document.body.style.overflow = "unset";
-  }, [ruleModal]);
-
   const logoutHandler = () => {
-    deleteCookie("token");
-    deleteCookie("id");
-    deleteCookie("username");
-    deleteCookie("nickname");
-    alert("로그아웃 되었습니다!");
-    navigate("/login");
+    if (loginState) {
+      deleteCookie("token");
+      deleteCookie("id");
+      deleteCookie("username");
+      deleteCookie("nickname");
+    }
+
+    if (!loginState) {
+      navigate("/login");
+    }
   };
 
   return (
     <>
       <Routes>
-        <Route path="/testing" element={<IngameTest></IngameTest>}></Route>
+        <Route path="/" element={<Splash />}></Route>
         <Route path="/lobby" element={<Lobby />}></Route>
         <Route
           path="/login"
@@ -65,7 +60,7 @@ function App() {
         />
         <Route path="/waiting/:roomId" element={<WaitingRoom />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
-        <Route path="/ingame" element={<Ingame></Ingame>}></Route>
+        <Route path="/ingame/:roomId" element={<Ingame></Ingame>}></Route>
       </Routes>
       <ResizeBtn
         onClick={() => {
@@ -74,11 +69,15 @@ function App() {
       >
         <img src={resize} />
       </ResizeBtn>
-      {ruleModal && <Rule modalClose={modalClose} />}
-      <RuleBtn onClick={modalOpen}>
+      {ruleModal && <Rule modalHandler={setRuleMoadl} />}
+      <RuleBtn
+        onClick={(e: any) => {
+          setRuleMoadl(e);
+        }}
+      >
         <img src={ruleBook} />
       </RuleBtn>
-      {/* <button onClick={logoutHandler}>로그아웃</button> */}
+      <button onClick={logoutHandler}>로그아웃</button>
     </>
   );
 }

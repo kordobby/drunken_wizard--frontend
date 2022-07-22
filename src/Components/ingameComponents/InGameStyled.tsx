@@ -3,8 +3,6 @@ import flex from "../GlobalStyled/flex";
 
 import BeerIcon from "../../images/icons/BeerIcon.png";
 import InGameBackground from "../../images/background/IngameBackground.png";
-import BtnActive from "../../images/buttons/BTN_active.png";
-import BtnInActive from "../../images/buttons/BTN_inActive.png";
 import healer from "../../Public/Images/healer.png";
 import dealer from "../../Public/Images/dealer.png";
 import ghost from "../../Public/Images/ghost.png";
@@ -18,8 +16,9 @@ import {
   DrawableCardSC,
   TargetBtnProps,
   UseCardProps,
-  BtnSettings,
   StatProps,
+  NameTagProps,
+  StatNumberProps,
 } from "../../typings/typedb";
 import matchStatusImg from "./StatusIcon";
 import matchCardImg from "./CardFactory";
@@ -62,51 +61,90 @@ export const PlayerIconsFields = styled.div`
 `;
 
 export const Profiles = styled.div<CardBg>`
-  width: 16.66vw; // 320px;
-  height: 23.9583vw; // 460px;
-  border-radius: 2.96vw; // 32px;
+  width: 20.833vw; // 320px;
+  height: 29.166vw; // 460px;
+  border-radius: 0.833vw; // 32px;
   box-sizing: border-box;
   margin-right: 1.56vw;
   font-family: "국립박물관문화재단클래식M";
   /* border: ${(props) => (props.playing ? `5px solid yellow` : "none")}; */
-  background-color: ${(props) =>
-    props.team ? "var(--purple-3)" : "var(--brown-3)"};
-  ${flex({ direction: "column", align: "center", justify: "flex-start" })};
-  .profiles__header {
-    font-size: 1.875vw;
-    box-sizing: border-box;
-    width: 16.66vw;
-    height: 4.166vw;
-    border-top-left-radius: 2.96vw;
-    border-top-right-radius: 2.96vw;
-    color: white;
-    ${flex({ align: "center", justify: "center" })};
-    background-color: ${(props) =>
-      props.team ? "var(--purple-1)" : "var(--brown-1)"};
-  }
+  background-color: var(--white);
+  ${flex({ direction: "column", align: "center" })};
+`;
+
+export const PlayerProfileBox = styled.div`
+  width: 20.833vw;
+  height: 10.126vw;
+  ${flex({ align: "flex-start" })};
+  margin-bottom: 1.5625vw;
 `;
 
 // Main => PlayerIcons : 캐릭터 직업 이미지
+export const PlayerProfilesIcon = styled.div`
+  margin-top: 0.7812vw;
+  width: 9.791vw;
+  ${flex({ direction: "column", align: "center", justify: "flex-start" })};
+`;
+
 export const ProfilesImage = styled.div<IconsImgProps>`
-  width: 150px;
-  height: 150px;
-  border-radius: 75px;
+  position: relative;
+  width: 7.291vw;
+  height: 7.291vw;
+  border-radius: 7.291vw;
   background-size: cover;
+  border: ${({ team }) =>
+    team ? `1px solid var(--white)` : `1px  solid var(--purple-1)`};
+  background-color: ${({ team }) =>
+    team ? `var(--purple-3)` : `var(--white)`};
   filter: ${(props) => props.dead && `grayscale(100%);`};
   -webkit-filter: ${(props) => props.dead && `grayscale(100%) blur(5px)`};
-  background-image: url(${(props) => matchClassImg(props.job)});
+  background-image: url(${({ job }) => (job ? matchClassImg(job) : null)});
   ${flex({ justify: "center", align: "center" })}
   position: relative;
 `;
 
-export const PlayerNameTag = styled.div`
-  height: 30px;
-  width: 160px;
-  background-color: #ffffff;
-  ${flex({ justify: "center", align: "center" })};
-  bottom: -10px;
+export const PlayerNameTag = styled.div<NameTagProps>`
   position: absolute;
+  height: 3.125vw;
+  width: 8.854vw;
+  border-radius: 8.854vw;
+  border: ${({ team }) =>
+    team ? `1px solid var(--white)` : `1px  solid var(--purple-1)`};
+  background-color: ${({ team }) =>
+    team ? `var(--purple-3)` : `var(--white)`};
+  ${flex({ justify: "center", align: "center" })};
+  bottom: -1.822vw;
 `;
+
+export const PlayerPointBox = styled.div`
+  box-sizing: border-box;
+  padding-top: 2.083vw;
+  /* width: 10.833vw; */
+  height: 10.416vw;
+  ${flex({ direction: "column" })};
+`;
+
+export const PlayerPointBar = styled.div<StatProps>`
+  font-size: 1.25vw;
+  margin-bottom: 1.5625vw;
+  .stat__full {
+    width: 10.416vw;
+    height: 0.833vw;
+    border-radius: 0.833vw;
+    border: ${(props) =>
+      props.stat ? `1px solid var(--orange)` : `1px solid var(--purple-1)`};
+    position: relative;
+  }
+  .stat__now {
+    width: ${({ point }) => point && `${point}vw`};
+    height: 0.833vw;
+    border-radius: 2.77vh;
+    background-color: ${(props) =>
+      props.stat ? "var(--orange)" : "var(--purple-1)"};
+    position: absolute;
+  }
+`;
+
 // Main => PlayerIcons : 캐릭터 스탯창(직업/체력/마나)
 export const StatBarTop = styled.div`
   width: 100%;
@@ -116,113 +154,139 @@ export const StatBarTop = styled.div`
 `;
 
 // Main => PlayerIcons => PlayerStatBar
-export const StatBarWrap = styled.div`
-  width: 100%;
-  display: ${flex({ direction: "column", justify: "center", align: "center" })};
-`;
-
 export const StatBarRow = styled.div`
-  width: 100%;
-  box-sizing: border-box;
-  padding-left: 14px;
-  display: flex;
+  width: 20.833vw;
+  ${flex({})}
   flex-wrap: wrap;
+  font-size: 6px;
 `;
 // Main => PlayerIcons => PlayerStatBar : Icons
 export const StatIconBox = styled.div`
-  width: 30px;
-  height: 30px;
-  ${flex({
-    justify: "center",
-    align: "center",
-  })}
-  margin-right: 5px;
-  margin-bottom: 5px;
+  width: 4.166vw;
+  height: 4.166vw;
   position: relative;
+  margin-right: 0.78125vw;
+  margin-bottom: 0.52083vw;
+  &:first-child {
+    margin-left: 3.125vw;
+  }
+  &:nth-child(4) {
+    margin-left: 0.78125vw;
+  }
+  &:nth-child(8) {
+    margin-left: 3.125vw;
+  }
+`;
+
+export const MyStatIcon = styled.div`
+  width: 5.5208vw;
+  height: 5.5208vw;
+  position: relative;
+  margin-right: 0.5208vw;
+  &:first-child {
+    margin-left: 0.78125vw;
+  }
 `;
 
 export const StatIcon = styled.div<StatIconsImgProps>`
-  width: 28px;
-  height: 28px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: ${({ size }) => size && `${size}vw`};
+  height: ${({ size }) => size && `${size}vw`};
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   background-image: url(${(props) => matchStatusImg(props.stat)});
   background-size: cover;
-  border-radius: 24px;
+  border-radius: 1.0416vw;
 `;
 
-export const StatCnt = styled.div`
+export const StatCnt = styled.div<StatNumberProps>`
   position: absolute;
   right: 0;
-  bottom: 0;
-  width: 12px;
-  height: 12px;
-  border-radius: 0.52vh;
-  background-color: white;
+  top: 0;
+  width: 1.666vw;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  height: 1.666vw;
+  border-radius: 1.666vw;
+  background-color: var(--purple-3);
   ${flex({ justify: "center", align: "center" })}
   font-size : 6px;
 `;
 
 // Main => Crave Field
 export const CraveWrap = styled.div`
-  height: 29.6875vw; //570px;
-  width: 22.91vw; // 440px;
-  background-color: var(--white);
-  opacity: 100%;
-  border-radius: 10px;
+  ${flex({ direction: "column" })};
+  height: 29.166vw;
+  box-sizing: border-box;
   position: relative;
-  .crave__under {
-    width: 14.11vw;
-    height: 20.26vw;
-    border-radius: 1.66vw;
-    opacity: 100%;
-    top: 4.53125vw;
-    left: 3.28vw;
-    position: absolute;
-    background-color: var(--brown-1);
-    border: 1px solid var(--white);
-  }
-  .crave__top {
-    width: 14.11vw;
-    height: 20.26vw;
-    border-radius: 1.66vw;
-    background-color: var(--purple-2);
-    position: absolute;
-    opacity: 100%;
-    top: 5.833vw;
-    left: 6.14vw;
-    transform: rotate(10deg);
-    z-index: 1;
-    border: 1px solid var(--white);
-  }
 `;
 
+export const Crave = styled.div`
+  margin-bottom: 1.5625vw;
+  height: 22.708vw;
+  width: 22.916vw;
+  background-color: var(--white);
+  opacity: 80%;
+  border-radius: 10px;
+`;
+
+export const CraveCards = styled.div`
+  width: 11.458vw;
+  height: 16.666vw;
+  border-radius: 1.66vw;
+  top: 1.8229vw;
+  left: 3.645vw;
+  position: absolute;
+  background-color: var(--brown-2);
+  border: 1px solid var(--white);
+  box-shadow: 0.208vw 0.208vw 1.041vw rgba(0, 0, 0, 0.25);
+  &:nth-child(2) {
+    top: 2.604vw;
+    left: 7.031vw;
+    transform: rotate(10deg);
+    z-index: 1;
+  }
+`;
 /* PlayerField */
 export const PlayerFieldWrap = styled.div`
   height: 30.5vh;
   width: 100vw;
   box-sizing: border-box;
-  padding-left: 1.04vw;
   background-color: var(--brown-3);
-  ${flex({ justify: "space-between", align: "center" })};
+  ${flex({ align: "flex-start" })};
   z-index: 0;
 `;
 
 // PlayerField => [LEFT] PlayerIcon
 export const ProfileSizing = styled.div`
-  width: 41.4vw;
-  height: 24.074vh;
-  ${flex({ direction: "column", justify: "center", align: "flex-start" })};
+  width: 40.885vw;
+  height: 17.1875vw;
+  box-sizing: border-box;
+  margin-left: 1.5625vw;
+  ${flex({ direction: "column", justify: "flex-start", align: "flex-start" })};
   position: relative;
   .profile__img {
-    width: 14.06vw;
-    height: 25vh;
     position: relative;
+    margin-top: 0.5208vw;
   }
 `;
 
+export const StatusSizing = styled.div`
+  width: 40.885vw;
+  height: 6.51vw;
+  box-sizing: border-box;
+  margin-top: 0.5208vw;
+  padding-top: 0.26041vw;
+  ${flex({ justify: "flex-start", align: "flex-start" })};
+`;
+
+export const ProfileStatBox = styled.div`
+  ${flex({ align: "flex-start" })};
+`;
 // PlayerField => [LEFT] PlayerIcon : images
 export const ProfileIcon = styled.div<IconsImgProps>`
-  height: 13.54vw;
-  width: 13.54vw;
+  height: 9.895vw;
+  width: 9.895vw;
   border-radius: 24.07vh;
   background-image: url(${(props) => matchClassImg(props.job)});
   background-size: cover;
@@ -230,20 +294,20 @@ export const ProfileIcon = styled.div<IconsImgProps>`
 `;
 
 export const MyStatBox = styled.div`
+  position: absolute;
+  top: 1.822vw;
+  right: 0;
   z-index: -2;
   width: 32.8125vw;
-  height: 12.96vh;
+  height: 7.2916vw;
   box-sizing: border-box;
-  padding-left: 5.729vw;
-  font-size: 3.33vh;
+  padding-left: 2.604vw;
+  font-size: 1.875vw;
   font-family: "국립박물관문화재단클래식M";
   background-color: var(--white);
-  position: absolute;
   border-top-right-radius: 1.48vw;
   border-bottom-right-radius: 1.48vw;
   ${flex({ direction: "column", justify: "center", align: "flex-start" })};
-  left: 15.035vh;
-  top: 0.462vh;
 
   .profile__stats {
     height: 5.277vh;
@@ -276,19 +340,16 @@ export const MyStatBar = styled.div<StatProps>`
 // PlayerField => [LEFT] Timer(back)
 export const TimerWrap = styled.div`
   position: absolute;
-  top: -1.2vh;
-  left: -0.7vw;
+  top: -0.62vw;
+  left: -0.62vw;
   z-index: -1;
 `;
 
 // PlayerField => [CENTER] Cards
 export const CardsArea = styled.div`
-  height: calc(100vh - 70vh);
-  width: calc(100vw - 20vw);
-  ${flex({ justify: "space-around", align: "center" })};
+  ${flex({ justify: "space-around", align: "flex-end" })};
   .active {
   }
-
   .normal {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
@@ -298,18 +359,36 @@ export const CardsArea = styled.div`
     /* background: yellow; */
   }
   transition: all 100ms ease-in-out;
+  height: 30.5vh;
+  box-sizing: border-box;
+  padding-bottom: 1.0416vw;
 `;
 
 export const PlayerCards = styled.div<UseCardProps>`
-  height: 220px;
-  width: 160px;
-  margin: 0 10px;
+  height: 13.02vw;
+  width: 8.33vw;
+  margin: 0 0.781vw;
   background-size: cover;
   font-size: 15px;
+  border-radius: 0.833vw;
   box-sizing: border-box;
-  padding-bottom: 30px;
-  background-image: url(${(props) => matchCardImg(props.value.cardId)});
+  background-color: white;
+  /* background-image: url(${(props) => matchCardImg(props.value.cardId)}); */
   ${flex({ direction: "column", justify: "flex-end", align: "center" })}
+  .active {
+    background: yellow;
+  }
+
+  .normal {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    transform: scale(0.8);
+    background: var(--grey);
+  }
+  .default {
+    background: white;
+  }
+  transition: all 100ms ease-in-out;
 `;
 
 export const PlayerCtrlWrap = styled.div`
@@ -401,17 +480,6 @@ export default function matchClassImg(data: string) {
   }
 }
 
-export const IngameBtn = styled.div<BtnSettings>`
-  width: 17.18vw; // 330px;
-  height: 5.2083vw; // 100px;
-  background-size: cover;
-  font-size: 1.875vw;
-  color: var(--white);
-  ${flex({ justify: "center", align: "center" })};
-  background-image: url(${(props) =>
-    props.disabled ? BtnInActive : BtnActive});
-`;
-
 export const BeerIcons = styled.div`
   width: 11.271vw;
   height: 15.59vw;
@@ -426,6 +494,7 @@ export const StartDiv = styled.div`
   height: 16.09375vw;
   background-color: var(--brown-3);
   border-radius: 32px;
+  font-family: "국립박물관문화재단클래식M";
   ${flex({ direction: "column", justify: "center", align: "center" })};
   .start__notice {
     color: var(--brown-1);
