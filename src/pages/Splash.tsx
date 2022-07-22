@@ -7,13 +7,16 @@ import {
   Shadow,
 } from "../Components/UserComponents/UserStyled";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Splash = () => {
   const navigate = useNavigate();
 
-  setTimeout(() => {
-    navigate("/login");
-  }, 5000);
+  useEffect(() => {
+    setTimeout(() => {
+      navigate("/login");
+    }, 5000);
+  }, []);
 
   return (
     <BackWrap>

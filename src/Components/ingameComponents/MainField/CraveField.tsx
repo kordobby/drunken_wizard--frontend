@@ -11,7 +11,7 @@ const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
     (state) => state.game.players.thisPlayer.playerId
   );
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayerId);
-  const { roomid } = useParams<{ roomid?: string }>();
+  const { roomId } = useParams();
   return (
     <>
       <CraveWrap>
@@ -21,7 +21,7 @@ const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
         <DefaultBtnL
           disabled={nowPlayer === thisPlayer}
           onClick={() => {
-            sendStompMsgFunc(roomid, thisPlayer, "ENDTURN", null);
+            sendStompMsgFunc(roomId, thisPlayer, "ENDTURN", null);
           }}
         >
           <span>턴 넘기기</span>

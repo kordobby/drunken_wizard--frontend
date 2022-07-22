@@ -1,6 +1,4 @@
-import IngameTest from "./pages/IngameTest";
-
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 // pages
 import Main from "./pages/Main";
@@ -32,16 +30,6 @@ function App() {
   }, [token]);
   console.log(loginState);
 
-  // const modalOpen = useCallback(() => {
-  //   setRuleMoadl(!ruleModal);
-  //   document.body.style.overflow = "hidden";
-  // }, [ruleModal]);
-
-  // const modalClose = useCallback(() => {
-  //   setRuleMoadl(!ruleModal);
-  //   document.body.style.overflow = "unset";
-  // }, [ruleModal]);
-
   const logoutHandler = () => {
     if (loginState) {
       deleteCookie("token");
@@ -59,7 +47,6 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Splash />}></Route>
-        <Route path="/testing" element={<IngameTest></IngameTest>}></Route>
         <Route path="/lobby" element={<Lobby />}></Route>
         <Route
           path="/login"

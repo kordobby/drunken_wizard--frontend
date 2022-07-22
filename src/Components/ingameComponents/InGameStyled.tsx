@@ -98,7 +98,7 @@ export const ProfilesImage = styled.div<IconsImgProps>`
     team ? `var(--purple-3)` : `var(--white)`};
   filter: ${(props) => props.dead && `grayscale(100%);`};
   -webkit-filter: ${(props) => props.dead && `grayscale(100%) blur(5px)`};
-  background-image: url(${({ job }) => (!job ? matchClassImg(job) : null)});
+  background-image: url(${({ job }) => (job ? matchClassImg(job) : null)});
   ${flex({ justify: "center", align: "center" })}
   position: relative;
 `;
