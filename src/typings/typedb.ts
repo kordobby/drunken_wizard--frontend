@@ -79,6 +79,7 @@ export interface StatBarProps {
 }
 export interface StatIconsImgProps {
   stat: string;
+  size: number;
 }
 
 export interface CardBg {
@@ -120,6 +121,9 @@ export interface BtnProps {
   size: number;
 }
 
+export interface StatNumberProps {
+  size: number;
+}
 export interface LogoProps {
   top: number;
   bottom: number;

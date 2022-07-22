@@ -9,18 +9,18 @@ import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
 
 /* Modules */
 import {
-  setNowPlayerIdTK, // use
-  setThisPlayerTK, // use
-  setTeamPlayerTK, // use
-  setEnemyPlayerATK, // use
-  setEnemyPlayerBTK, // use
-  updateMyCardsTK, // use
-  setSelectableCardCnt, // use
-  setNowPlayerNameTK, // use
-  setTimerTK, // use
-  setSelectableCardTK, // use
-  setMyCardsUpdateTK, // use
-  clearDrawCardsTK, // use
+  setNowPlayerIdTK,
+  setThisPlayerTK,
+  setTeamPlayerTK,
+  setEnemyPlayerATK,
+  setEnemyPlayerBTK,
+  updateMyCardsTK,
+  setSelectableCardCnt,
+  setNowPlayerNameTK,
+  setTimerTK,
+  setSelectableCardTK,
+  setMyCardsUpdateTK,
+  clearDrawCardsTK,
 } from "../redux/modules/ingameSlice";
 
 /* Cookies */
@@ -99,22 +99,22 @@ const Ingame = () => {
   const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
-  const { roomid } = useParams<{ roomid?: string }>();
+  const { roomId } = useParams();
   const myId = Number(getCookie("id"));
 
-  // const doNotReload = (event: any) => {
-  //   if (
-  //     (event.ctrlKey === true &&
-  //       (event.keyCode === 78 || event.keyCode === 82)) ||
-  //     event.keyCode === 116
-  //   ) {
-  //     return window.confirm("새로고침하면 게임이 정상작동하지 않아요:(");
-  //   }
-  // };
+  const doNotReload = (event: any) => {
+    if (
+      (event.ctrlKey === true &&
+        (event.keyCode === 78 || event.keyCode === 82)) ||
+      event.keyCode === 116
+    ) {
+      return window.confirm("새로고침하면 게임이 정상작동하지 않아요:(");
+    }
+  };
 
-  // useEffect(() => {
-  //   document.onkeydown = doNotReload;
-  // });
+  useEffect(() => {
+    document.onkeydown = doNotReload;
+  });
 
   useEffect(() => {
     socketSubscribe();
@@ -125,7 +125,6 @@ const Ingame = () => {
 
   const socketUnsubscribe = React.useCallback(() => {
     try {
-      alert("구독해제한디");
       stompClient.unsubscribe("sub-0");
     } catch (error) {
       console.log(error);
@@ -138,7 +137,7 @@ const Ingame = () => {
         token: accessToken,
       },
       () => {
-        stompClient.subscribe("/sub/game/1", (data: any) => {
+        stompClient.subscribe(`/sub/game/${roomId}`, (data: any) => {
           const response = JSON.parse(data.body);
           const msgType = response?.type;
           const msgData = JSON.parse(response?.content);
@@ -146,6 +145,7 @@ const Ingame = () => {
           const playersInfo = msgData.players;
           switch (msgType) {
             case "START":
+              stompClient.unsubscribe(`/sub/wroom/${roomId}`);
               const findNowPlayer = playersInfo.filter(
                 (value: playersSetting) => value.turnOrder === 1
               );
@@ -254,7 +254,7 @@ const Ingame = () => {
                   break;
               }
               if (findNowPlayer[0].playerId === myId) {
-                sendStompMsgFunc(roomid, myId, "PRECHECK", null);
+                sendStompMsgFunc(roomId, myId, "PRECHECK", null);
               } else {
                 setStatus("WAITING");
               }
@@ -262,7 +262,7 @@ const Ingame = () => {
             case "PRECHECK":
               // 게임이 만약 끝났다면, ENDGAME 처리
               if (msgData.gameOver === true) {
-                sendStompMsgFunc(roomid, myId, "ENDGAME", null);
+                sendStompMsgFunc(roomId, myId, "ENDGAME", null);
                 // 만약 현재 플레이어가 나이고 죽은게 아니라면?
               } else if (msgSender === myId && msgData.player.dead === false) {
                 dispatch(setThisPlayerTK(msgData.player));
@@ -286,33 +286,33 @@ const Ingame = () => {
               break;
             case "ENDDRAW":
               /* CLEAR */
-              clearDrawCardsFuc();
+              clearDrawCardsFunc();
               /* NEXT MOVE */
               if (msgSender === myId) {
                 dispatch(updateMyCardsTK(msgData.cardsOnHand));
-                sendStompMsgFunc(roomid, myId, "TURNCHECK", null);
+                sendStompMsgFunc(roomId, myId, "TURNCHECK", null);
               } else {
                 setStatus("ACTION");
               }
               break;
             case "SELECT":
               /* Clear */
-              clearDrawCardsFuc();
+              clearDrawCardsFunc();
               if (msgSender === myId && msgData.isSuccess === true) {
                 // setStatus => card draw success!
                 dispatch(updateMyCardsTK(msgData.cardsOnHand));
-                sendStompMsgFunc(roomid, myId, "TURNCHECK", null);
+                sendStompMsgFunc(roomId, myId, "TURNCHECK", null);
                 // open drawsuccess modal for 3sec
               } else if (msgSender === myId && msgData.isSuccess === false) {
                 // setStatus => card draw Failed!
                 dispatch(updateMyCardsTK(msgData.cardsOnHand));
-                sendStompMsgFunc(roomid, myId, "TURNCHECK", null);
+                sendStompMsgFunc(roomId, myId, "TURNCHECK", null);
               } else if (msgSender !== myId) {
                 setStatus("ACTION");
               }
               break;
             case "TURNCHECK":
-              clearDrawCardsFuc();
+              clearDrawCardsFunc();
               if (msgSender === myId && msgData.action === true) {
                 dispatch(setTimerTK("action"));
                 timerFunc(30000, "ENDTURN");
@@ -325,7 +325,7 @@ const Ingame = () => {
               break;
             case "USECARD":
               if (msgData.gameOver === true) {
-                sendStompMsgFunc(roomid, myId, "ENDGAME", null);
+                sendStompMsgFunc(roomId, myId, "ENDGAME", null);
                 // 만약 현재 플레이어가 나이고 죽은게 아니라면?
               } else {
                 setUpdate(msgData.players);
@@ -370,7 +370,7 @@ const Ingame = () => {
     switch (status) {
       case "READY":
         setTimeout(() => {
-          sendStompMsgFunc(roomid, myId, "START", null);
+          sendStompMsgFunc(roomId, myId, "START", null);
         }, 3000);
         break;
       case "WAITING":
@@ -379,7 +379,7 @@ const Ingame = () => {
       case "PRECHECK":
         // 만약 그게 나라면 이제 드로우를 하러 갑니다.
         if (nowPlayerId === playersData.thisPlayer.playerId) {
-          sendStompMsgFunc(roomid, myId, "DRAW", null);
+          sendStompMsgFunc(roomId, myId, "DRAW", null);
         } else {
           // 만약 내가 아니라면 지금 플레이하는 사람의 상태를 최신화할 것이다.
           updatePlayersFunc();
@@ -392,7 +392,7 @@ const Ingame = () => {
       case "ACTIONFAILED":
         if (nowPlayerId === playersData.thisPlayer.playerId) {
           setTimeout(() => {
-            sendStompMsgFunc(roomid, Number(myId), "ENDTURN", null);
+            sendStompMsgFunc(roomId, Number(myId), "ENDTURN", null);
           }, 3000);
         }
         break;
@@ -444,7 +444,7 @@ const Ingame = () => {
         updatePlayersFunc();
         if (nowPlayerId === Number(playersData.thisPlayer.playerId)) {
           setTimeout(function () {
-            sendStompMsgFunc(roomid, myId, "PRECHECK", null);
+            sendStompMsgFunc(roomId, myId, "PRECHECK", null);
           }, 3000);
         } else {
           setTimeout(function () {
@@ -474,6 +474,7 @@ const Ingame = () => {
     msgType: string,
     data: object | null
   ) => {
+    console.log(roomId);
     waitForConnection(stompClient, function () {
       stompClient.send(
         "/pub/game/1",
@@ -494,7 +495,7 @@ const Ingame = () => {
   const timerFunc = (sec: number, turn: string) => {
     timer.current = setTimeout(() => {
       setDrawModalOpen(false);
-      sendStompMsgFunc(roomid, myId, turn, null);
+      sendStompMsgFunc(roomId, myId, turn, null);
       dispatch(setTimerTK(""));
       alert("시간초과!");
     }, sec);
@@ -504,7 +505,7 @@ const Ingame = () => {
     window.clearTimeout(timer.current || 0);
   };
 
-  const clearDrawCardsFuc = () => {
+  const clearDrawCardsFunc = () => {
     ClearTimer();
     setDrawModalOpen(false);
     dispatch(setTimerTK(""));
@@ -538,13 +539,13 @@ const Ingame = () => {
     <>
       <NoticeField status={status}></NoticeField>
       <StGameWrap>
-        {status !== "" ? (
+        {status === "" ? (
           <StartModal setStatus={setStatus}></StartModal>
         ) : (
           <>
             <MainWrap>
               <PlayerIcons></PlayerIcons>
-              <CraveField></CraveField>
+              <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
             </MainWrap>
             <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
             {drawModalOpen && (
@@ -555,7 +556,7 @@ const Ingame = () => {
       </StGameWrap>
       <button
         onClick={() => {
-          sendStompMsgFunc(roomid, myId, "ENDGAME", null);
+          sendStompMsgFunc(roomId, myId, "ENDGAME", null);
         }}
       >
         게임 종료

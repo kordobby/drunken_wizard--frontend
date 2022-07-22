@@ -18,6 +18,7 @@ import {
   UseCardProps,
   StatProps,
   NameTagProps,
+  StatNumberProps,
 } from "../../typings/typedb";
 import matchStatusImg from "./StatusIcon";
 import matchCardImg from "./CardFactory";
@@ -97,7 +98,7 @@ export const ProfilesImage = styled.div<IconsImgProps>`
     team ? `var(--purple-3)` : `var(--white)`};
   filter: ${(props) => props.dead && `grayscale(100%);`};
   -webkit-filter: ${(props) => props.dead && `grayscale(100%) blur(5px)`};
-  background-image: url(${({ job }) => (!job ? matchClassImg(job) : null)});
+  background-image: url(${({ job }) => (job ? matchClassImg(job) : null)});
   ${flex({ justify: "center", align: "center" })}
   position: relative;
 `;
@@ -177,19 +178,29 @@ export const StatIconBox = styled.div`
   }
 `;
 
+export const MyStatIcon = styled.div`
+  width: 5.5208vw;
+  height: 5.5208vw;
+  position: relative;
+  margin-right: 0.5208vw;
+  &:first-child {
+    margin-left: 0.78125vw;
+  }
+`;
+
 export const StatIcon = styled.div<StatIconsImgProps>`
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 3.75vw;
-  height: 3.75vw;
+  width: ${({ size }) => size && `${size}vw`};
+  height: ${({ size }) => size && `${size}vw`};
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   background-image: url(${(props) => matchStatusImg(props.stat)});
   background-size: cover;
   border-radius: 1.0416vw;
 `;
 
-export const StatCnt = styled.div`
+export const StatCnt = styled.div<StatNumberProps>`
   position: absolute;
   right: 0;
   top: 0;
@@ -204,38 +215,38 @@ export const StatCnt = styled.div`
 
 // Main => Crave Field
 export const CraveWrap = styled.div`
-  height: 29.6875vw; //570px;
-  width: 22.91vw; // 440px;
-  background-color: var(--white);
-  opacity: 100%;
-  border-radius: 10px;
+  ${flex({ direction: "column" })};
+  height: 29.166vw;
+  box-sizing: border-box;
   position: relative;
-  .crave__under {
-    width: 14.11vw;
-    height: 20.26vw;
-    border-radius: 1.66vw;
-    opacity: 100%;
-    top: 4.53125vw;
-    left: 3.28vw;
-    position: absolute;
-    background-color: var(--brown-1);
-    border: 1px solid var(--white);
-  }
-  .crave__top {
-    width: 14.11vw;
-    height: 20.26vw;
-    border-radius: 1.66vw;
-    background-color: var(--purple-2);
-    position: absolute;
-    opacity: 100%;
-    top: 5.833vw;
-    left: 6.14vw;
-    transform: rotate(10deg);
-    z-index: 1;
-    border: 1px solid var(--white);
-  }
 `;
 
+export const Crave = styled.div`
+  margin-bottom: 1.5625vw;
+  height: 22.708vw;
+  width: 22.916vw;
+  background-color: var(--white);
+  opacity: 80%;
+  border-radius: 10px;
+`;
+
+export const CraveCards = styled.div`
+  width: 11.458vw;
+  height: 16.666vw;
+  border-radius: 1.66vw;
+  top: 1.8229vw;
+  left: 3.645vw;
+  position: absolute;
+  background-color: var(--brown-2);
+  border: 1px solid var(--white);
+  box-shadow: 0.208vw 0.208vw 1.041vw rgba(0, 0, 0, 0.25);
+  &:nth-child(2) {
+    top: 2.604vw;
+    left: 7.031vw;
+    transform: rotate(10deg);
+    z-index: 1;
+  }
+`;
 /* PlayerField */
 export const PlayerFieldWrap = styled.div`
   height: 30.5vh;
@@ -265,7 +276,8 @@ export const StatusSizing = styled.div`
   height: 6.51vw;
   box-sizing: border-box;
   margin-top: 0.5208vw;
-  ${flex({ justify: "flex-start", align: "center" })};
+  padding-top: 0.26041vw;
+  ${flex({ justify: "flex-start", align: "flex-start" })};
 `;
 
 export const ProfileStatBox = styled.div`
@@ -335,10 +347,9 @@ export const TimerWrap = styled.div`
 
 // PlayerField => [CENTER] Cards
 export const CardsArea = styled.div`
-  ${flex({ justify: "space-around", align: "center" })};
+  ${flex({ justify: "space-around", align: "flex-end" })};
   .active {
   }
-
   .normal {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
@@ -348,18 +359,36 @@ export const CardsArea = styled.div`
     /* background: yellow; */
   }
   transition: all 100ms ease-in-out;
+  height: 30.5vh;
+  box-sizing: border-box;
+  padding-bottom: 1.0416vw;
 `;
 
 export const PlayerCards = styled.div<UseCardProps>`
-  height: 220px;
-  width: 160px;
-  margin: 0 10px;
+  height: 13.02vw;
+  width: 8.33vw;
+  margin: 0 0.781vw;
   background-size: cover;
   font-size: 15px;
+  border-radius: 0.833vw;
   box-sizing: border-box;
-  padding-bottom: 30px;
-  background-image: url(${(props) => matchCardImg(props.value.cardId)});
+  background-color: white;
+  /* background-image: url(${(props) => matchCardImg(props.value.cardId)}); */
   ${flex({ direction: "column", justify: "flex-end", align: "center" })}
+  .active {
+    background: yellow;
+  }
+
+  .normal {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    transform: scale(0.8);
+    background: var(--grey);
+  }
+  .default {
+    background: white;
+  }
+  transition: all 100ms ease-in-out;
 `;
 
 export const PlayerCtrlWrap = styled.div`
@@ -450,17 +479,6 @@ export default function matchClassImg(data: string) {
       return;
   }
 }
-
-// export const IngameBtn = styled.div<BtnSettings>`
-//   width: 17.18vw; // 330px;
-//   height: 5.2083vw; // 100px;
-//   background-size: cover;
-//   font-size: 1.875vw;
-//   color: var(--white);
-//   ${flex({ justify: "center", align: "center" })};
-//   background-image: url(${(props) =>
-//     props.disabled ? BtnInActive : BtnActive});
-// `;
 
 export const BeerIcons = styled.div`
   width: 11.271vw;

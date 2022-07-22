@@ -6,7 +6,7 @@ import { HeaderProps } from "../../../typings/typedb";
 
 /* CSS & SC */
 import { HeaderWrap } from "../InGameStyled";
-import LogoutBtn from "../../../elem/Button";
+// import LogoutBtn from "../../../elem/Button";
 const NoticeField = ({ status }: HeaderProps) => {
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayer);
   const players = useAppSelector((state) => state.game.players);

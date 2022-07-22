@@ -25,7 +25,6 @@ import LogoutBtn from "../elem/Button";
 import header from "../images/lobby/header.svg";
 import roomout from "../images/lobby/roomout.svg";
 import Back from "../images/background/lobbybackground.png";
-
 import { useModal } from "../hooks/useModal";
 
 import { ButtonBox } from "../Components/UserComponents/UserStyled";
