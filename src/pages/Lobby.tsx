@@ -9,14 +9,13 @@ import LobbyChat from "../Components/LobbyComponents/LobbyChat";
 import Rooms from "../Components/LobbyComponents/Rooms";
 // css
 import {
-  Button,
   CancelButton,
   Header,
   LobbyWrap,
   LogoutBox,
   LogoutButton,
   LogoutQ,
-  LogoutWrap,
+  ModalBack,
   ModalContainer,
   SideBar,
   WrapBack,
@@ -50,7 +49,7 @@ const Lobby = () => {
     <WrapBack style={{ backgroundImage: `url(${Back})` }}>
       {logoutModal && (
         <ModalContainer>
-          <LogoutWrap
+          <ModalBack
             onClick={(e: any) => {
               setlogoutMoadl(e);
             }}
@@ -63,11 +62,11 @@ const Lobby = () => {
                 <CancelButton onClick={setlogoutMoadl}>취소</CancelButton>
               </ButtonBox>
             </LogoutBox>
-          </LogoutWrap>
+          </ModalBack>
         </ModalContainer>
       )}
       {createRoomModal && <CreateRoom modalHandler={setCreateRoomMoadl} />}
-      <Header style={{ backgroundImage: `url(${header})` }}>
+      <Header>
         <LogoutBtn modalHandler={setlogoutMoadl}></LogoutBtn>
       </Header>
       <LobbyWrap>

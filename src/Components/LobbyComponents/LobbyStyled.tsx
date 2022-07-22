@@ -4,13 +4,8 @@ import { JoinRoomType, ModalDivProps } from "../../typings/db";
 import flex from "../GlobalStyled/flex";
 // img
 import chatIcon from "../../images/lobby/chat.png";
+import header from "../../images/imgs/header.png";
 
-export const StWrap = styled.div`
-  width: 100%;
-  height: 100vh;
-  background-color: ${(props) => props.theme.bgColor};
-  z-index: -5;
-`;
 // lobby
 export const WrapBack = styled.div`
   width: 100vw;
@@ -24,6 +19,7 @@ export const LobbyWrap = styled.div`
   height: 100%;
   display: flex;
   justify-content: stretch;
+  /* align-items: center; */
 `;
 export const SideBar = styled.div`
   width: 350px;
@@ -34,18 +30,6 @@ export const SideBar = styled.div`
   align-items: center;
   background-color: #e6e2eb;
 `;
-export const Button = styled.div`
-  width: 330px;
-  height: 100px;
-  margin: 15px auto;
-  display: flex;
-
-  &:hover {
-    cursor: pointer;
-    filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
-  }
-`;
 
 export const ModalContainer = styled.div`
   width: 100%;
@@ -54,7 +38,7 @@ export const ModalContainer = styled.div`
   position: absolute;
 `;
 
-export const LogoutWrap = styled.div<ModalDivProps>`
+export const ModalBack = styled.div<ModalDivProps>`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -127,6 +111,7 @@ export const Header = styled.header`
   min-width: 70vw;
   height: 150px;
   display: flex;
+  background-image: url(${header});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -152,8 +137,8 @@ export const XBox = styled.div`
 export const XImg = styled.img`
   margin: auto;
 `;
-// creatRoom
 
+// creatRoom
 export const CreateRoomTitle = styled.div`
   width: 1120px;
   height: 120px;
@@ -171,7 +156,7 @@ export const CreateRoomTitle = styled.div`
 export const CreateRoomBox = styled.div`
   width: 1120px;
   height: 540px;
-  ${flex({ direction: "column", align: "center", justify: "center" })};
+  ${flex({ direction: "column", align: "center" })};
   border: none;
   border-radius: 16px;
   box-shadow: 0 0 30px rgba(30, 30, 30, 0.185);
@@ -201,24 +186,15 @@ export const CreateButton = styled.button`
   }
 `;
 
-export const Backdrop = styled.div<ModalDivProps>`
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(1px);
-  z-index: 9999;
-`;
 // room
 export const PageButtonBox = styled.div`
-  width: 442px;
-  height: 83px;
-  position: relative;
+  height: 100%;
+  width: 100%;
+  ${flex({ align: "center", justify: "center" })};
+  /* position: relative;
   left: 10%;
   bottom: -80%;
-  transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%); */
 `;
 
 export const PrevButton = styled.button`
@@ -245,8 +221,10 @@ export const NextButton = styled.button`
 `;
 
 export const RoomWrap = styled.div`
-  width: 70vw;
+  width: 100%;
+  height: 100%;
   margin: 10px 100px;
+  box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;

@@ -5,15 +5,6 @@ export const Page = styled.img`
   box-shadow: 5px 5px 5px 5px #151515;
 `;
 
-export const BackWrap = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  z-index: -1000;
-`;
 export const ModalContainer = styled.div`
   width: 100%;
   height: 100vh;

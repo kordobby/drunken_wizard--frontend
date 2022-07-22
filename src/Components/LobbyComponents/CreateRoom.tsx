@@ -13,15 +13,16 @@ import { ModalType } from "../../typings/db";
 import apis from "../../shared/api/apis";
 // css
 import {
-  Backdrop,
   CreateInput,
   CreateButton,
   CreateRoomTitle,
   CreateRoomBox,
   ModalContainer,
+  ModalBack,
 } from "./LobbyStyled";
 // svg
 import createButton from "../../images/buttons/BTN_createRoom.svg";
+import { DefaultBtnL } from "../Common/CommonStyle";
 
 const CreateRoom = ({ modalHandler }: ModalType) => {
   const [roomName, setRoomName] = useInput<string>("");
@@ -82,20 +83,22 @@ const CreateRoom = ({ modalHandler }: ModalType) => {
             value={roomName}
             onChange={setRoomName}
           ></CreateInput>
-          <CreateButton
-            style={{ backgroundImage: `url(${createButton})` }}
+          <DefaultBtnL
+            disabled={false}
             onClick={(e: any) => {
               onCreateRoom(e);
               modalHandler(e);
               navigate("/waiting");
             }}
-          ></CreateButton>
+          >
+            방만들기
+          </DefaultBtnL>
         </CreateRoomBox>
-        <Backdrop
+        <ModalBack
           onClick={(e: any) => {
             modalHandler(e);
           }}
-        ></Backdrop>
+        ></ModalBack>
       </ModalContainer>
     </>
   );

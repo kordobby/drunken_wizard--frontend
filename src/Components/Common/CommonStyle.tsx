@@ -6,6 +6,8 @@ import activeMBtn from "../../images/buttons/BTN_activeM.png";
 import inactiveMBtn from "../../images/buttons/BTN_inactiveM.png";
 import BtnActive from "../../images/buttons/BTN_active.png";
 import BtnInActive from "../../images/buttons/BTN_inActive.png";
+import BtnActiveS from "../../images/buttons/BTN_activeS.png";
+import BtnInActiveS from "../../images/buttons/BTN_inActiveS.png";
 
 export const StWrap = styled.div`
   width: 100%;
@@ -67,3 +69,20 @@ export const DefaultBtn = styled.button<BtnProps>`
     ${BtnTextSt};
   }
 `;
+
+// export const DefaultBtn2 = styled.button<BtnSettings>`
+//   &:hover {
+//     cursor: pointer;
+//     filter: brightness(110%);
+//     box-shadow: 0px 0px 10px 2px #fd6f33;
+//   }
+//   background-size: cover;
+//   width: ${({ size }) => size && `${size}vw`};
+//   height: 4.3229vw;
+//   font-size: 1.25vw;
+//   background-image: url(${(props) =>
+//     props.disabled ? BtnInActiveS : BtnActiveS});
+//   span {
+//     ${BtnTextSt};
+//   }
+// `;
