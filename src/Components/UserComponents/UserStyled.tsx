@@ -238,10 +238,13 @@ const logoFlash = keyframes`
 
 const beerFlows = keyframes`
   0% {
+    opacity: 1;
     transform: translateY(0px);
   } 70% {
+    opacity: 1;
     transform: translateY(110.916vw);
   }100%{
+    opacity: 0;
     transform: translateY(110.916vw);
   }
 `;

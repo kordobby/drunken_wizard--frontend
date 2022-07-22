@@ -1,4 +1,3 @@
-import styled, { Keyframes } from "styled-components";
 import {
   LogLogo,
   BackWrap,
@@ -6,9 +5,16 @@ import {
   RightBeerImg,
   BeerBgImg,
   Shadow,
-} from "./UserStyled";
+} from "../Components/UserComponents/UserStyled";
+import { useNavigate } from "react-router-dom";
 
 const Splash = () => {
+  const navigate = useNavigate();
+
+  setTimeout(() => {
+    navigate("/login");
+  }, 5000);
+
   return (
     <BackWrap>
       <LogLogo top={5.729} bottom={4.6875}></LogLogo>
