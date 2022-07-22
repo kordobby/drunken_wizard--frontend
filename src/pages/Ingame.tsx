@@ -141,6 +141,7 @@ const Ingame = () => {
           const response = JSON.parse(data.body);
           const msgType = response?.type;
           const msgData = JSON.parse(response?.content);
+          console.log(msgData);
           const msgSender = response?.sender;
           const playersInfo = msgData.players;
           switch (msgType) {
