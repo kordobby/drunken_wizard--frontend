@@ -40,7 +40,7 @@ const initialState: ingameState = {
       mutedDuration: 1,
       petrifiedDuration: 2,
       poisonedDuration: 3,
-      shield: true,
+      shield: false,
       sleepDuration: 2,
       stunnedDuration: 3,
       team: true,

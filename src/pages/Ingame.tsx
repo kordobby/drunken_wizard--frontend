@@ -125,7 +125,6 @@ const Ingame = () => {
 
   const socketUnsubscribe = React.useCallback(() => {
     try {
-      alert("구독해제한디");
       stompClient.unsubscribe("sub-0");
     } catch (error) {
       console.log(error);
@@ -544,7 +543,7 @@ const Ingame = () => {
           <>
             <MainWrap>
               <PlayerIcons></PlayerIcons>
-              <CraveField></CraveField>
+              <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
             </MainWrap>
             <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
             {drawModalOpen && (
