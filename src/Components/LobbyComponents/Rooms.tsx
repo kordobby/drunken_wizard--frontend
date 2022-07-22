@@ -36,6 +36,7 @@ import right from "../../images/buttons/BTN_right.svg";
 import rightend from "../../images/buttons/BTN_rightend.svg";
 import left from "../../images/buttons/BTN_left.svg";
 import leftend from "../../images/buttons/BTN_leftend.svg";
+import { DefaultBtn } from "../Common/CommonStyle";
 
 const Rooms = () => {
   const queryClient = useQueryClient();

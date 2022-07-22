@@ -64,9 +64,9 @@ const WaitingRoom = () => {
   // 구독
   useEffect(() => {
     socketSubscribe();
-    return () => {
-      socketUnsubscribe();
-    };
+    // return () => {
+    //   socketUnsubscribe();
+    // };
   }, []);
 
   // /* function Subscribe */
@@ -79,7 +79,7 @@ const WaitingRoom = () => {
         },
         () => {
           stompClient.subscribe(
-            `/sub/game/${roomId}`,
+            `/sub/wroom/${roomId}`,
             (data: any) => {
               const response = JSON.parse(data?.body);
               const res = JSON.parse(response?.content);
@@ -112,7 +112,8 @@ const WaitingRoom = () => {
       sender: accessId,
       content: null,
     };
-    stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
+    queryClient.invalidateQueries(["room_list"]);
+    stompClient.send(`/pub/wroom/${roomId}`, {}, JSON.stringify(data));
   };
 
   const gameReady = () => {
@@ -122,7 +123,7 @@ const WaitingRoom = () => {
       sender: accessId,
       content: null,
     };
-    stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
+    stompClient.send(`/pub/wroom/${roomId}`, {}, JSON.stringify(data));
   };
 
   const readyHandler = () => {
