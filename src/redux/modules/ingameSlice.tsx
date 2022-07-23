@@ -1,17 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { FALSE } from "sass";
 import { playersSetting, Card, DrawCard } from "../../typings/typedb";
 
 interface ingameState {
   players: {
     thisPlayer: playersSetting;
-    teamPlayer: playersSetting;
-    enemyPlayerA: playersSetting;
-    enemyPlayerB: playersSetting;
+    PlayerA: playersSetting;
+    PlayerB: playersSetting;
+    PlayerC: playersSetting;
   };
   myCards: Card[];
   game: {
     status: string;
     gamOver: boolean;
+    order: number[];
     nowPlayer: string;
     nowPlayerId: number;
     cardCrave: string;
@@ -30,52 +32,52 @@ const initialState: ingameState = {
   players: {
     thisPlayer: {
       cardsOnHand: [],
-      charactorClass: "HEALER",
-      playerId: 1,
-      health: 10,
+      charactorClass: "",
+      playerId: 0,
+      health: 0,
       username: "hello",
       dead: false,
-      mana: 13,
+      mana: 0,
       manaCostModifierDuration: 0,
-      mutedDuration: 1,
-      petrifiedDuration: 2,
-      poisonedDuration: 3,
-      shield: true,
-      sleepDuration: 2,
-      stunnedDuration: 3,
+      mutedDuration: 0,
+      petrifiedDuration: 0,
+      poisonedDuration: 0,
+      shield: false,
+      sleepDuration: 0,
+      stunnedDuration: 0,
       team: true,
       turnOrder: 0,
-      weakDuration: 2,
-      damageModifierDuration: 2,
+      weakDuration: 0,
+      damageModifierDuration: 0,
     },
-    teamPlayer: {
+    PlayerA: {
       cardsOnHand: [],
-      charactorClass: "HEALER",
+      charactorClass: "",
       playerId: 0,
-      health: 3,
-      username: "bye",
+      health: 0,
+      username: "",
       dead: false,
-      mana: 4,
-      manaCostModifierDuration: 2,
-      mutedDuration: 2,
-      petrifiedDuration: 3,
-      poisonedDuration: 2,
-      shield: true,
-      sleepDuration: 2,
-      stunnedDuration: 1,
+      mana: 0,
+      manaCostModifierDuration: 0,
+      mutedDuration: 0,
+      petrifiedDuration: 0,
+      poisonedDuration: 0,
+      shield: false,
+      sleepDuration: 0,
+      stunnedDuration: 0,
       team: true,
-      turnOrder: 2,
-      weakDuration: 3,
-      damageModifierDuration: 2,
+      turnOrder: 0,
+      weakDuration: 0,
+      damageModifierDuration: 0,
     },
-    enemyPlayerA: {
+    PlayerB: {
       cardsOnHand: [],
-      charactorClass: "HEALER",
+      charactorClass: "",
       playerId: 0,
-      health: 15,
-      username: "yes",
+      health: 0,
+      username: "",
       dead: false,
-      mana: 12,
+      mana: 0,
       manaCostModifierDuration: 0,
       mutedDuration: 0,
       petrifiedDuration: 0,
@@ -88,23 +90,23 @@ const initialState: ingameState = {
       weakDuration: 0,
       damageModifierDuration: 0,
     },
-    enemyPlayerB: {
+    PlayerC: {
       cardsOnHand: [],
-      charactorClass: "HEALER",
+      charactorClass: "",
       playerId: 0,
-      health: 15,
-      username: "no",
+      health: 0,
+      username: "",
       dead: false,
-      mana: 13,
+      mana: 0,
       manaCostModifierDuration: 0,
       mutedDuration: 0,
-      petrifiedDuration: 2,
+      petrifiedDuration: 0,
       poisonedDuration: 0,
       shield: false,
-      sleepDuration: 3,
+      sleepDuration: 0,
       stunnedDuration: 0,
       team: false,
-      turnOrder: 1,
+      turnOrder: 0,
       weakDuration: 0,
       damageModifierDuration: 0,
     },
@@ -112,9 +114,10 @@ const initialState: ingameState = {
   myCards: [],
   game: {
     status: "",
+    order: [],
     gamOver: false, // 필요없을지도!
     nowPlayer: "",
-    nowPlayerId: 1,
+    nowPlayerId: 0,
     cardCrave: "",
     targetPlayer: 0,
     selectForUseCardId: 0,
@@ -133,6 +136,9 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     // 초기 셋팅, 매 턴마다 상태 변화시
+    setPlayOrderTK: (state, action) => {
+      state.game.order = action.payload;
+    },
     setNowPlayerNameTK: (state, action) => {
       state.game.nowPlayer = action.payload;
     }, // use
@@ -142,14 +148,14 @@ const gameSlice = createSlice({
     setThisPlayerTK: (state, action) => {
       state.players.thisPlayer = action.payload;
     }, // use
-    setTeamPlayerTK: (state, action) => {
-      state.players.teamPlayer = action.payload;
+    setPlayerATK: (state, action) => {
+      state.players.PlayerA = action.payload;
     }, // use
-    setEnemyPlayerATK: (state, action) => {
-      state.players.enemyPlayerA = action.payload;
+    setPlayerBTK: (state, action) => {
+      state.players.PlayerB = action.payload;
     }, // use
-    setEnemyPlayerBTK: (state, action) => {
-      state.players.enemyPlayerB = action.payload;
+    setPlayerCTK: (state, action) => {
+      state.players.PlayerC = action.payload;
     }, // use
     // 서버에서 받아온 카드를 그리자
     setMyCardsUpdateTK: (state, action) => {
@@ -199,12 +205,13 @@ const gameSlice = createSlice({
 });
 
 export const {
+  setPlayOrderTK,
   setNowPlayerIdTK,
   setNowPlayerNameTK,
   setThisPlayerTK, // use
-  setTeamPlayerTK, // use
-  setEnemyPlayerATK, // use
-  setEnemyPlayerBTK, // use
+  setPlayerATK, // use
+  setPlayerBTK, // use
+  setPlayerCTK, // use
   setCraveTK,
   setTargetTK, // use
   setTimerTK, // use

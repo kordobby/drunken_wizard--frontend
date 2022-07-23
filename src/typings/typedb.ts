@@ -12,6 +12,9 @@ export interface DrawCard {
   cardId: number;
 }
 
+// export interface playerUpdate {
+//   object<playersSetting>;
+// };
 export interface playersSetting {
   cardsOnHand: Card[];
   charactorClass: string;
@@ -79,6 +82,7 @@ export interface StatBarProps {
 }
 export interface StatIconsImgProps {
   stat: string;
+  size: number;
 }
 
 export interface CardBg {
@@ -120,6 +124,9 @@ export interface BtnProps {
   size: number;
 }
 
+export interface StatNumberProps {
+  size: number;
+}
 export interface LogoProps {
   top: number;
   bottom: number;

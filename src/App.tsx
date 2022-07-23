@@ -1,6 +1,4 @@
-import IngameTest from "./pages/IngameTest";
-
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 // pages
 import Main from "./pages/Main";
@@ -20,6 +18,8 @@ import resize from "./images/imgs/Resize.svg";
 import ruleBook from "./images/rules/rulebook.svg";
 import { useModal } from "./hooks/useModal";
 
+import Splash from "./pages/Splash";
+
 function App() {
   const navigate = useNavigate();
   const [loginState, setLoginState] = useState(false);
@@ -28,7 +28,6 @@ function App() {
   useEffect(() => {
     token ? setLoginState(true) : setLoginState(false);
   }, [token]);
-  console.log(loginState);
 
   const logoutHandler = () => {
     if (loginState) {
@@ -46,7 +45,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/testing" element={<IngameTest></IngameTest>}></Route>
+        <Route path="/" element={<Splash />}></Route>
         <Route path="/lobby" element={<Lobby />}></Route>
         <Route
           path="/login"

@@ -27,7 +27,6 @@ import {
   PlayerFieldWrap,
   CardsArea,
   PlayerCtrlWrap,
-  TurnOverBtn,
   TargetBtn,
   TargetNullBtn,
   PlayerCards,
@@ -70,7 +69,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
 
-  const { roomid } = useParams<{ roomid?: string }>();
+  const { roomId } = useParams<{ roomId?: string }>();
 
   /* UseCard Functions */
   // 카드 위로 마우스가 올라가면, 카드 아이디를 스토어에 저장
@@ -110,7 +109,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       targetPlayerId: selectedTarget,
     };
     setClicked(true); // 중복클릭 방지
-    sendStompMsgFunc(roomid, thisPlayer.playerId, "USECARD", data);
+    sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
   };
 
   // DISCARD FUNC
@@ -119,7 +118,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       cardId: selectedUseCardId,
     };
     setClicked(true); // 중복클릭 방지
-    sendStompMsgFunc(roomid, thisPlayer.playerId, "DISCARD", data);
+    sendStompMsgFunc(roomId, thisPlayer.playerId, "DISCARD", data);
   };
 
   // about CSS function
@@ -148,7 +147,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       targetPlayerId: Number(targetId),
       cardId: 0,
     };
-    sendStompMsgFunc(roomid, thisPlayer.playerId, "USECARD", data);
+    sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
     setHealCnt(false);
     setDisableHeal(true);
   };
@@ -181,37 +180,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     </TargetBtn>
   ));
 
-  const CardsSets = [
-    {
-      cardId: 1,
-      cardName: "hello",
-      description: "hello",
-      manaCost: 3,
-      target: "SELECT",
-    },
-    {
-      cardId: 2,
-      cardName: "hello",
-      description: "hello",
-      manaCost: 3,
-      target: "ME",
-    },
-    {
-      cardId: 3,
-      cardName: "hello",
-      description: "hello",
-      manaCost: 3,
-      target: "ALLY",
-    },
-    {
-      cardId: 4,
-      cardName: "hello",
-      description: "hello",
-      manaCost: 3,
-      target: "ENEMY",
-    },
-  ];
-
   // TARGETING BTN(COMPONENT) :: ME / ALLY / ENEMY
   const TargetNullBtns = ["Me", "Ally", "Enemy"].map((value, index: number) => (
     <TargetNullBtn key={index} onClick={useCardHandler} disabled={clicked}>
@@ -223,8 +191,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     <PlayerFieldWrap>
       <MyProfile></MyProfile>
       <CardsArea>
-        {/* thisPlayer.cardsOnHand */}
-        {CardsSets.map((value: Card, index: number) => (
+        {thisPlayer.cardsOnHand.map((value: Card) => (
           <PlayerCards
             key={value.cardId}
             className={generateClassName(target, value.cardId, mouseIn)}
@@ -234,6 +201,8 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
           >
             <span>{value.cardName}</span>
             <span>{value.manaCost}</span>
+            <span>{value.description}</span>
+            {/* <span>{value.description}</span> */}
             {nowPlayer === thisPlayer.playerId &&
               value.target === "SELECT" &&
               mouseIn &&
@@ -291,15 +260,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
               {HealTargetBtns[2]}
               {HealTargetBtns[3]}
             </div>
-          )}
-          {nowPlayer === thisPlayer.playerId && (
-            <TurnOverBtn
-              onClick={() =>
-                sendStompMsgFunc(roomid, thisPlayer.playerId, "ENDTURN", null)
-              }
-            >
-              완료
-            </TurnOverBtn>
           )}
         </PlayerCtrlWrap>
       </div>

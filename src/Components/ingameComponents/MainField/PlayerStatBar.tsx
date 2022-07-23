@@ -14,71 +14,60 @@ const PlayerStatBar = ({
   weakDuration,
   damageModifierDuration,
 }: StatBarProps) => {
-  const arr = [
-    { sleepDuration: sleepDuration },
-    { mutedDuration: mutedDuration },
-    { petrifiedDuration: petrifiedDuration },
-    { petrifiedDuration: petrifiedDuration },
-    { poisonedDuration: poisonedDuration },
-    { stunnedDuration: stunnedDuration },
-    { weakDuration: weakDuration },
-    { damageModifierDuration: damageModifierDuration },
-    { shield: shield },
-  ];
   return (
     <StatBarRow>
       {sleepDuration !== 0 && (
         <StatIconBox>
-          <StatIcon stat="sleepDuration"></StatIcon>
-          <StatCnt>{sleepDuration}</StatCnt>
+          <StatIcon stat="sleepDuration" size={3.75}></StatIcon>
+          <StatCnt size={1.666}>{sleepDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {mutedDuration !== 0 && (
         <StatIconBox>
-          <StatIcon stat="mutedDuration"></StatIcon>
-          <StatCnt>{mutedDuration}</StatCnt>
+          <StatIcon stat="mutedDuration" size={3.75}></StatIcon>
+          <StatCnt size={1.666}>{mutedDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {petrifiedDuration !== 0 && (
         <StatIconBox>
-          <StatIcon stat="petrifiedDuration"></StatIcon>
-          <StatCnt>{petrifiedDuration}</StatCnt>
+          <StatIcon stat="petrifiedDuration" size={3.75}></StatIcon>
+          <StatCnt size={1.666}>{petrifiedDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {poisonedDuration !== 0 && (
         <StatIconBox>
-          <StatIcon stat="poisonedDuration"></StatIcon>
-          <StatCnt>{poisonedDuration}</StatCnt>
+          <StatIcon stat="poisonedDuration" size={3.75}></StatIcon>
+          <StatCnt size={1.666}>{poisonedDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {stunnedDuration !== 0 && (
         <StatIconBox>
-          <StatIcon stat="stunnedDuration"></StatIcon>
-          <StatCnt>{stunnedDuration}</StatCnt>
+          <StatIcon stat="stunnedDuration" size={3.75}></StatIcon>
+          <StatCnt size={1.666}>{stunnedDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {weakDuration !== 0 && (
         <StatIconBox>
-          <StatIcon stat="weakDuration"></StatIcon>
-          <StatCnt>{weakDuration}</StatCnt>
+          <StatIcon stat="weakDuration" size={3.75}></StatIcon>
+          <StatCnt size={1.666}>{weakDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {damageModifierDuration !== 0 && (
         <StatIconBox>
-          <StatIcon stat="damageModifierDuration"></StatIcon>
-          <StatCnt>{weakDuration}</StatCnt>
+          <StatIcon stat="damageModifierDuration" size={3.75}></StatIcon>
+          <StatCnt size={1.666}>{weakDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {shield && (
         <StatIconBox>
-          <StatIcon stat="shield"></StatIcon>
+          <StatIcon stat="shield" size={3.75}></StatIcon>
         </StatIconBox>
       )}
     </StatBarRow>

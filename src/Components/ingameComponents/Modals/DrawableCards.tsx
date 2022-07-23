@@ -31,15 +31,12 @@ const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
     const cardMaker = {
       cardId: value.cardId,
     };
-    console.log(cardMaker);
     if (selected === false && drawDisabled === false) {
-      console.log("추가");
       dispatch(setDrawCardSelectTK(cardMaker));
       setSelected(true);
     } else if (selected === false && drawDisabled === true) {
       alert("선택가능한 카드수를 초과했습니다!");
     } else if (selected === true) {
-      console.log("제거");
       dispatch(cancelSelectDrawCardsTK(cardMaker));
       setSelected(false);
     }
@@ -55,7 +52,10 @@ const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
           selected={selected}
           cardId={0}
         >
-          <p>나와라 얍</p>
+          <p>파시어</p>
+          <p>{value.cardName}</p>
+          <p>{value.description}</p>
+          <p>{value.manaCost}</p>
         </DrawableCard>
       ) : (
         <DrawableCard
