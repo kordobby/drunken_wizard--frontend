@@ -154,7 +154,6 @@ const Login = ({ setLoginState }: loginStateProps) => {
           type="submit"
           disabled={username === "" || password === "" ? true : false}
         >
-          {" "}
           <span>Login</span>
         </DefaultBtn>
         <Link to="/signup">

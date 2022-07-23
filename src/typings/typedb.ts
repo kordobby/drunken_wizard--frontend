@@ -12,6 +12,9 @@ export interface DrawCard {
   cardId: number;
 }
 
+// export interface playerUpdate {
+//   object<playersSetting>;
+// };
 export interface playersSetting {
   cardsOnHand: Card[];
   charactorClass: string;

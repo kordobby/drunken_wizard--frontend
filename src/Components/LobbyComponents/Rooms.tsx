@@ -36,6 +36,7 @@ import right from "../../images/buttons/BTN_right.svg";
 import rightend from "../../images/buttons/BTN_rightend.svg";
 import left from "../../images/buttons/BTN_left.svg";
 import leftend from "../../images/buttons/BTN_leftend.svg";
+import { DefaultBtn } from "../Common/CommonStyle";
 
 const Rooms = () => {
   const queryClient = useQueryClient();
@@ -62,10 +63,13 @@ const Rooms = () => {
   );
 
   // mutate
-  const { data, mutate: joinRoom } = useMutation(apis.joinRoomMT, {
+  const { mutate: joinRoom } = useMutation(apis.joinRoomMT, {
     onSuccess: (res) => {
-      console.log(res);
-      queryClient.invalidateQueries(["room_list"]);
+      if (res.data.joinSuccess) {
+        navigate(`/waiting/${res.data.roomId}`);
+        socketUnsubscribe();
+        queryClient.invalidateQueries(["room_list"]);
+      }
     },
     onError: (error) => {
       console.log(error);
@@ -73,12 +77,13 @@ const Rooms = () => {
     },
   });
 
-  const pleaseMessage = () => {
+  const leaveMessage = () => {
+    const accessId = getCookie("id");
     const accessName = getCookie("nickname");
     const data = {
       type: "LEAVE",
-      roomId: 1,
-      sender: accessName,
+      sender: accessId,
+      nickname: accessName,
       message: `${accessName}님이 채팅방에서 나갔습니다.`,
     };
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
@@ -88,25 +93,12 @@ const Rooms = () => {
     try {
       stompClient.unsubscribe(`/sub/public`);
       console.log("success to unsubscribe");
-      pleaseMessage();
+      leaveMessage();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const joinRoomClick = (e: React.MouseEvent<HTMLDivElement>, room: string) => {
-    if (data) {
-      if (data.data.joinSuccess) {
-        // queryClient.invalidateQueries(["room_list"]);
-        socketUnsubscribe();
-        navigate(`/waiting/${room}`);
-        console.log("입장성공");
-      } else {
-        navigate(`/lobby`);
-        console.log("입장실패");
-      }
-    }
-  };
   return (
     <RoomWrap>
       {roomList_query && roomList_query.content.length === 0 && (
@@ -119,9 +111,8 @@ const Rooms = () => {
           return (
             <RoomBox
               key={i}
-              onClick={(e: any) => {
+              onClick={() => {
                 if (room?.player4 !== "") {
-                  joinRoomClick(e, room.roomId);
                   joinRoom({ id: accessId, roomId: room.roomId });
                 }
               }}
@@ -182,6 +173,7 @@ const Rooms = () => {
             </RoomBox>
           );
         })}
+      <button onClick={leaveMessage}>리브리브</button>
       <PageButtonBox>
         {roomList_query?.content?.pageable?.totalPages < page ? (
           <PrevButton

@@ -13,7 +13,7 @@ import DrawableCards from "./DrawableCards";
 const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
   const [drawDisabled, setDrawDisabled] = useState<boolean>(false);
 
-  const { roomid } = useParams<{ roomid?: string }>();
+  const { roomId } = useParams();
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
   const selectableCnt = useAppSelector(
     (state) => state.game.game.selectableCnt
@@ -22,8 +22,6 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
   const selectableCards = useAppSelector(
     (state) => state.game.game.selectableCards
   );
-  console.log(selectableCards);
-  console.log(selectableCards);
   const selectedCardsArr = useAppSelector(
     (state) => state.game.game.drawSelectCards
   );
@@ -41,7 +39,7 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
 
   const sendDrawCardsHandler = () => {
     const data = { selectedCards: removeDupSelectedCard };
-    sendStompMsgFunc(roomid, thisPlayer.playerId, "SELECT", data);
+    sendStompMsgFunc(roomId, thisPlayer.playerId, "SELECT", data);
   };
   return (
     <DrawModalWrap>

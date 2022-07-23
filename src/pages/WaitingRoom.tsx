@@ -18,10 +18,12 @@ import team1 from "../images/lobby/team1.jpg";
 import team2 from "../images/lobby/team2.jpg";
 import noteam from "../images/lobby/noteam.jpg";
 import roomoutBtn from "../images/buttons/BTN_roomout.png";
+import { DefaultBtnL } from "../Components/Common/CommonStyle";
 
 const WaitingRoom = () => {
   const API_URL = process.env.REACT_APP_API_URL;
   const [waitingUsers, setWaitingUsers] = useState<any>();
+  const [readyUser, setReadyUser] = useState<boolean>(false);
   const navigate = useNavigate();
   const { roomId } = useParams();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
@@ -62,9 +64,9 @@ const WaitingRoom = () => {
   // 구독
   useEffect(() => {
     socketSubscribe();
-    return () => {
-      socketUnsubscribe();
-    };
+    // return () => {
+    //   socketUnsubscribe();
+    // };
   }, []);
 
   // /* function Subscribe */
@@ -77,7 +79,7 @@ const WaitingRoom = () => {
         },
         () => {
           stompClient.subscribe(
-            `/sub/game/${roomId}`,
+            `/sub/wroom/${roomId}`,
             (data: any) => {
               const response = JSON.parse(data?.body);
               const res = JSON.parse(response?.content);
@@ -110,7 +112,8 @@ const WaitingRoom = () => {
       sender: accessId,
       content: null,
     };
-    stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
+    queryClient.invalidateQueries(["room_list"]);
+    stompClient.send(`/pub/wroom/${roomId}`, {}, JSON.stringify(data));
   };
 
   const gameReady = () => {
@@ -120,12 +123,26 @@ const WaitingRoom = () => {
       sender: accessId,
       content: null,
     };
-    stompClient.send(`/pub/game/${roomId}`, {}, JSON.stringify(data));
+    stompClient.send(`/pub/wroom/${roomId}`, {}, JSON.stringify(data));
   };
 
   const readyHandler = () => {
     gameReady();
   };
+  useEffect(() => {
+    if (
+      (waitingUsers?.player1?.ready === true &&
+        waitingUsers?.player1?.id === Number(accessId)) ||
+      (waitingUsers?.player2?.ready === true &&
+        waitingUsers?.player2?.id === Number(accessId)) ||
+      (waitingUsers?.player3?.ready === true &&
+        waitingUsers?.player3?.id === Number(accessId)) ||
+      (waitingUsers?.player4?.ready === true &&
+        waitingUsers?.player4?.id === Number(accessId))
+    ) {
+      setReadyUser(true);
+    } else setReadyUser(false);
+  }, [readyUser]);
 
   useEffect(() => {
     if (
@@ -142,6 +159,7 @@ const WaitingRoom = () => {
     waitingUsers?.player3?.ready,
     waitingUsers?.player4?.ready,
   ]);
+  console.log(readyUser);
   return (
     <>
       <Header>
@@ -233,7 +251,9 @@ const WaitingRoom = () => {
             </MyTeamBox>
           </TeamWrap>
         )}
-        <ReadyBtn onClick={readyHandler}>준비완료</ReadyBtn>
+        <DefaultBtnL disabled={readyUser} onClick={readyHandler}>
+          {readyUser ? <span>준비 완료</span> : <span>게임 준비</span>}
+        </DefaultBtnL>
       </WaitingWrap>
     </>
   );

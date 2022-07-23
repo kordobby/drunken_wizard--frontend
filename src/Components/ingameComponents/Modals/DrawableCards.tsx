@@ -52,7 +52,10 @@ const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
           selected={selected}
           cardId={0}
         >
-          <p>나와라 얍</p>
+          <p>파시어</p>
+          <p>{value.cardName}</p>
+          <p>{value.description}</p>
+          <p>{value.manaCost}</p>
         </DrawableCard>
       ) : (
         <DrawableCard

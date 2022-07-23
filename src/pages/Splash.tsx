@@ -8,10 +8,10 @@ import {
 } from "../Components/UserComponents/UserStyled";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { toggleFullScreen } from "../hooks/fullScreen";
 
 const Splash = () => {
   const navigate = useNavigate();
-
   useEffect(() => {
     setTimeout(() => {
       navigate("/login");

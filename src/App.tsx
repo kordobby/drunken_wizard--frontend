@@ -28,7 +28,6 @@ function App() {
   useEffect(() => {
     token ? setLoginState(true) : setLoginState(false);
   }, [token]);
-  console.log(loginState);
 
   const logoutHandler = () => {
     if (loginState) {

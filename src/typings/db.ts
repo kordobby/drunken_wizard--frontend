@@ -26,8 +26,9 @@ export interface ModalType {
 // chatList
 export interface ChatType {
   type: string;
-  message: string;
   sender: string;
+  nickname: string;
+  message: string;
 }
 
 // createroom

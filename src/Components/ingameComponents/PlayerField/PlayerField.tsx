@@ -69,7 +69,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
 
-  const { roomid } = useParams<{ roomid?: string }>();
+  const { roomId } = useParams<{ roomId?: string }>();
 
   /* UseCard Functions */
   // 카드 위로 마우스가 올라가면, 카드 아이디를 스토어에 저장
@@ -109,7 +109,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       targetPlayerId: selectedTarget,
     };
     setClicked(true); // 중복클릭 방지
-    sendStompMsgFunc(roomid, thisPlayer.playerId, "USECARD", data);
+    sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
   };
 
   // DISCARD FUNC
@@ -118,7 +118,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       cardId: selectedUseCardId,
     };
     setClicked(true); // 중복클릭 방지
-    sendStompMsgFunc(roomid, thisPlayer.playerId, "DISCARD", data);
+    sendStompMsgFunc(roomId, thisPlayer.playerId, "DISCARD", data);
   };
 
   // about CSS function
@@ -147,7 +147,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       targetPlayerId: Number(targetId),
       cardId: 0,
     };
-    sendStompMsgFunc(roomid, thisPlayer.playerId, "USECARD", data);
+    sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
     setHealCnt(false);
     setDisableHeal(true);
   };
@@ -201,6 +201,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
           >
             <span>{value.cardName}</span>
             <span>{value.manaCost}</span>
+            <span>{value.description}</span>
             {/* <span>{value.description}</span> */}
             {nowPlayer === thisPlayer.playerId &&
               value.target === "SELECT" &&
