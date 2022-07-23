@@ -11,9 +11,10 @@ import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
 import {
   setNowPlayerIdTK,
   setThisPlayerTK,
-  setTeamPlayerTK,
-  setEnemyPlayerATK,
-  setEnemyPlayerBTK,
+  setPlayOrderTK,
+  setPlayerATK,
+  setPlayerBTK,
+  setPlayerCTK,
   updateMyCardsTK,
   setSelectableCardCnt,
   setNowPlayerNameTK,
@@ -49,26 +50,7 @@ const Ingame = () => {
   // #DRAW-TURN :: Modal Ctrl
   const [drawModalOpen, setDrawModalOpen] = useState<boolean>(false);
   const [update, setUpdate] = useState<playersSetting[]>([]);
-  const [updateOne, setUpdateOne] = useState<{
-    cardsOnHand: Card[];
-    charactorClass: string;
-    playerId: number;
-    health: number;
-    username: string;
-    dead: boolean;
-    mana: number;
-    manaCostModifierDuration: number;
-    mutedDuration: number;
-    petrifiedDuration: number;
-    poisonedDuration: number;
-    shield: boolean;
-    sleepDuration: number;
-    stunnedDuration: number;
-    team: boolean;
-    turnOrder: number;
-    weakDuration: number;
-    damageModifierDuration: number;
-  }>({
+  const [updateOne, setUpdateOne] = useState<playersSetting>({
     cardsOnHand: [],
     charactorClass: "",
     playerId: 0,
@@ -147,113 +129,33 @@ const Ingame = () => {
           switch (msgType) {
             case "START":
               stompClient.unsubscribe(`/sub/wroom/${roomId}`);
+              // 게임 방식 변경으로 인한 로직 변경 작업
+              // playersInfo ( 플레이어 배열 )
+              // 플레이어 순서 정렬 - type 나중에 넣어주기
+              const setPlayerOrder = playersInfo
+                .sort((a: any, b: any) => a.turnOrder - b.turnOrder)
+                .map((value: any) => value.username);
+              dispatch(setPlayOrderTK(setPlayerOrder));
+
+              // 유지
               const findNowPlayer = playersInfo.filter(
                 (value: playersSetting) => value.turnOrder === 1
               );
               dispatch(setNowPlayerIdTK(findNowPlayer[0].playerId));
               dispatch(setNowPlayerNameTK(findNowPlayer[0].username));
+
+              // 유지
               const myPlayerInfo = playersInfo.filter(
                 (value: playersSetting) => value.playerId === myId
               );
               dispatch(setThisPlayerTK(myPlayerInfo[0]));
-              switch (myPlayerInfo[0].turnOrder) {
-                case 1:
-                  // 만약 필요하면 여기서 순서 저장하면 됨!
-                  // 나 => enemyA => 팀 => enemyB
-                  dispatch(
-                    setTeamPlayerTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 3
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerATK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 2
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerBTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 4
-                      )[0]
-                    )
-                  );
-                  break;
-                case 2:
-                  dispatch(
-                    setTeamPlayerTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 4
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerATK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 1
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerBTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 3
-                      )[0]
-                    )
-                  );
-                  break;
-                case 3:
-                  dispatch(
-                    setTeamPlayerTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 1
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerATK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 2
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerBTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 4
-                      )[0]
-                    )
-                  );
-                  break;
-                case 4:
-                  dispatch(
-                    setTeamPlayerTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 2
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerATK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 1
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerBTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 3
-                      )[0]
-                    )
-                  );
-                  break;
-                default:
-                  break;
-              }
+              const restPlayersInfo = playersInfo.filter(
+                (value: playersSetting) => value.playerId !== myId
+              );
+              dispatch(setPlayerATK(restPlayersInfo[0]));
+              dispatch(setPlayerBTK(restPlayersInfo[1]));
+              dispatch(setPlayerCTK(restPlayersInfo[2]));
+
               if (findNowPlayer[0].playerId === myId) {
                 sendStompMsgFunc(roomId, myId, "PRECHECK", null);
               } else {
@@ -409,26 +311,26 @@ const Ingame = () => {
           dispatch(setThisPlayerTK(thisPlayer[0]));
           dispatch(setMyCardsUpdateTK(thisPlayer[0].cardsOnHand));
         }
-        const teamPlayer = update.filter(
+        const PlayerA = update.filter(
           (value: playersSetting) =>
-            value.playerId === playersData.teamPlayer.playerId
+            value.playerId === playersData.PlayerA.playerId
         );
-        const enemyA = update.filter(
+        const PlayerB = update.filter(
           (value: playersSetting) =>
-            value.playerId === playersData.enemyPlayerA.playerId
+            value.playerId === playersData.PlayerB.playerId
         );
-        const enemyB = update.filter(
+        const PlayerC = update.filter(
           (value: playersSetting) =>
-            value.playerId === playersData.enemyPlayerB.playerId
+            value.playerId === playersData.PlayerC.playerId
         );
-        if (teamPlayer[0] !== undefined) {
-          dispatch(setTeamPlayerTK(teamPlayer[0]));
+        if (PlayerA[0] !== undefined) {
+          dispatch(setPlayerATK(PlayerA[0]));
         }
-        if (enemyA[0] !== undefined) {
-          dispatch(setEnemyPlayerATK(enemyA[0]));
+        if (PlayerB[0] !== undefined) {
+          dispatch(setPlayerBTK(PlayerB[0]));
         }
-        if (enemyB[0] !== undefined) {
-          dispatch(setEnemyPlayerBTK(enemyB[0]));
+        if (PlayerC[0] !== undefined) {
+          dispatch(setPlayerCTK(PlayerC[0]));
         }
         break;
       case "DISCARD":
@@ -524,14 +426,14 @@ const Ingame = () => {
       case playersData.thisPlayer.playerId:
         dispatch(setThisPlayerTK(updateOne));
         break;
-      case playersData.teamPlayer.playerId:
-        dispatch(setTeamPlayerTK(updateOne));
+      case playersData.PlayerA.playerId:
+        dispatch(setPlayerATK(updateOne));
         break;
-      case playersData.enemyPlayerA.playerId:
-        dispatch(setEnemyPlayerATK(updateOne));
+      case playersData.PlayerB.playerId:
+        dispatch(setPlayerBTK(updateOne));
         break;
-      case playersData.enemyPlayerB.playerId:
-        dispatch(setEnemyPlayerBTK(updateOne));
+      case playersData.PlayerC.playerId:
+        dispatch(setPlayerCTK(updateOne));
         break;
     }
   };

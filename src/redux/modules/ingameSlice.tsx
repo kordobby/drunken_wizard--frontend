@@ -5,14 +5,15 @@ import { playersSetting, Card, DrawCard } from "../../typings/typedb";
 interface ingameState {
   players: {
     thisPlayer: playersSetting;
-    teamPlayer: playersSetting;
-    enemyPlayerA: playersSetting;
-    enemyPlayerB: playersSetting;
+    PlayerA: playersSetting;
+    PlayerB: playersSetting;
+    PlayerC: playersSetting;
   };
   myCards: Card[];
   game: {
     status: string;
     gamOver: boolean;
+    order: number[];
     nowPlayer: string;
     nowPlayerId: number;
     cardCrave: string;
@@ -49,7 +50,7 @@ const initialState: ingameState = {
       weakDuration: 0,
       damageModifierDuration: 0,
     },
-    teamPlayer: {
+    PlayerA: {
       cardsOnHand: [],
       charactorClass: "",
       playerId: 0,
@@ -69,7 +70,7 @@ const initialState: ingameState = {
       weakDuration: 0,
       damageModifierDuration: 0,
     },
-    enemyPlayerA: {
+    PlayerB: {
       cardsOnHand: [],
       charactorClass: "",
       playerId: 0,
@@ -89,7 +90,7 @@ const initialState: ingameState = {
       weakDuration: 0,
       damageModifierDuration: 0,
     },
-    enemyPlayerB: {
+    PlayerC: {
       cardsOnHand: [],
       charactorClass: "",
       playerId: 0,
@@ -113,6 +114,7 @@ const initialState: ingameState = {
   myCards: [],
   game: {
     status: "",
+    order: [],
     gamOver: false, // 필요없을지도!
     nowPlayer: "",
     nowPlayerId: 0,
@@ -134,6 +136,9 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     // 초기 셋팅, 매 턴마다 상태 변화시
+    setPlayOrderTK: (state, action) => {
+      state.game.order = action.payload;
+    },
     setNowPlayerNameTK: (state, action) => {
       state.game.nowPlayer = action.payload;
     }, // use
@@ -143,14 +148,14 @@ const gameSlice = createSlice({
     setThisPlayerTK: (state, action) => {
       state.players.thisPlayer = action.payload;
     }, // use
-    setTeamPlayerTK: (state, action) => {
-      state.players.teamPlayer = action.payload;
+    setPlayerATK: (state, action) => {
+      state.players.PlayerA = action.payload;
     }, // use
-    setEnemyPlayerATK: (state, action) => {
-      state.players.enemyPlayerA = action.payload;
+    setPlayerBTK: (state, action) => {
+      state.players.PlayerB = action.payload;
     }, // use
-    setEnemyPlayerBTK: (state, action) => {
-      state.players.enemyPlayerB = action.payload;
+    setPlayerCTK: (state, action) => {
+      state.players.PlayerC = action.payload;
     }, // use
     // 서버에서 받아온 카드를 그리자
     setMyCardsUpdateTK: (state, action) => {
@@ -200,12 +205,13 @@ const gameSlice = createSlice({
 });
 
 export const {
+  setPlayOrderTK,
   setNowPlayerIdTK,
   setNowPlayerNameTK,
   setThisPlayerTK, // use
-  setTeamPlayerTK, // use
-  setEnemyPlayerATK, // use
-  setEnemyPlayerBTK, // use
+  setPlayerATK, // use
+  setPlayerBTK, // use
+  setPlayerCTK, // use
   setCraveTK,
   setTargetTK, // use
   setTimerTK, // use
