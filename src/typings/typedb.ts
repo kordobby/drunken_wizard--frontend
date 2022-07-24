@@ -63,9 +63,21 @@ export interface DrawProps {
 export interface IconsImgProps {
   job: string;
   dead: boolean;
-  team: boolean;
+  reverse: boolean;
+  size: number;
 }
 
+export interface positionProps {
+  layer: number;
+  top: number;
+  left: number;
+}
+
+export interface NameTagsProps {
+  dead: boolean;
+  top: number;
+  left: number;
+}
 export interface NameTagProps {
   team: boolean;
 }

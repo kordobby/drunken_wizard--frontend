@@ -91,7 +91,6 @@ const LobbyChat = () => {
             },
             { token: accessToken }
           );
-
           joinMessage();
         }
       );

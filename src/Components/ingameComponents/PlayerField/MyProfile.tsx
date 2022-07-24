@@ -23,14 +23,15 @@ const MyProfile = () => {
   const timerCtrl = useAppSelector((state) => state?.game.game.timer);
   return (
     <>
-      {thisPlayer.playerId !== 0 && (
+      {thisPlayer.playerId === 0 && (
         <ProfileSizing>
           <ProfileStatBox>
             <div className="profile__img">
               <ProfileIcon
                 job={thisPlayer.charactorClass}
                 dead={thisPlayer.dead}
-                team={thisPlayer.team}
+                size={360}
+                reverse={false}
               ></ProfileIcon>
               {timerCtrl !== "draw" && <DrawTimer />}
               {timerCtrl === "action" && <ActionTimer />}

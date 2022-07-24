@@ -1,15 +1,16 @@
 import styled from "styled-components";
 import flex from "../GlobalStyled/flex";
 
+import bloodmage from "../../images/class/BLOODMAGE.png";
+import farseer from "../../images/class/FARSEER.png";
+import warock from "../../images/class/WAROCK.png";
+import table from "../../images/playerfield/table.png";
 import BeerIcon from "../../images/icons/BeerIcon.png";
 import InGameBackground from "../../images/background/IngameBackground.png";
-import healer from "../../Public/Images/healer.png";
-import dealer from "../../Public/Images/dealer.png";
-import ghost from "../../Public/Images/ghost.png";
-import wizard from "../../Public/Images/wizard.png";
-import what from "../../Public/Images/what.png";
-import blood from "../../Public/Images/blood.png";
+import flag from "../../images/playerfield/beerFlag.png";
+
 import {
+  positionProps,
   StatIconsImgProps,
   IconsImgProps,
   CardBg,
@@ -19,6 +20,7 @@ import {
   StatProps,
   NameTagProps,
   StatNumberProps,
+  NameTagsProps,
 } from "../../typings/typedb";
 import matchStatusImg from "./StatusIcon";
 import matchCardImg from "./CardFactory";
@@ -28,7 +30,7 @@ export const StGameWrap = styled.div`
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
-  padding-top: 6.25vw;
+  /* padding-top: 6.25vw; */
   background-image: url(${InGameBackground});
   z-index: -10;
   ${flex({ direction: "column", align: "center" })};
@@ -39,8 +41,8 @@ export const HeaderWrap = styled.div`
   height: 6.25vw;
   background-color: var(--grey);
   font-family: "국립박물관문화재단클래식M";
-  position: fixed;
-  top: 0;
+  /* position: fixed;
+  top: 0; */
   width: 100vw;
   font-size: 3.33vh;
   color: white;
@@ -50,14 +52,19 @@ export const HeaderWrap = styled.div`
 /* Main Section */
 export const MainWrap = styled.div`
   width: 100vw;
-  height: calc(100vw - 6.25vw);
+  height: 630px;
   box-sizing: border-box;
-  ${flex({ justify: "center", align: "center" })}
+  ${flex({ align: "center" })}
 `;
 
 // Main => PlayerIcons
 export const PlayerIconsFields = styled.div`
-  ${flex({ justify: "space-around", align: "center" })}
+  width: 1045px;
+  height: 630px;
+  box-sizing: border-box;
+  padding-bottom: 10px;
+  ${flex({ justify: "center", align: "flex-end" })}
+  position: relative;
 `;
 
 export const Profiles = styled.div<CardBg>`
@@ -80,27 +87,68 @@ export const PlayerProfileBox = styled.div`
 `;
 
 // Main => PlayerIcons : 캐릭터 직업 이미지
-export const PlayerProfilesIcon = styled.div`
+export const PlayerProfiles = styled.div`
+  position: relative;
   margin-top: 0.7812vw;
   width: 9.791vw;
   ${flex({ direction: "column", align: "center", justify: "flex-start" })};
 `;
 
-export const ProfilesImage = styled.div<IconsImgProps>`
+export const TeamPosition = styled.div<positionProps>`
+  z-index: ${({ layer }) => layer && `${layer}`};
+  position: absolute;
+  bottom: ${({ top }) => top && `${top}px`};
+  left: ${({ left }) => left && `${left}px`};
+`;
+
+export const EnemyPosition = styled.div`
+  z-index: 1;
+  position: absolute;
+  background-color: blue;
+  bottom: 150px;
+  right: 100px;
+`;
+//ProfileIcons IconsImgProps
+export const PlayerIcon = styled.div<IconsImgProps>`
+  height: ${({ size }) => size && `${size}px`};
+  width: ${({ size }) => size && `${size}px`};
   position: relative;
-  width: 7.291vw;
-  height: 7.291vw;
-  border-radius: 7.291vw;
-  background-size: cover;
-  border: ${({ team }) =>
-    team ? `1px solid var(--white)` : `1px  solid var(--purple-1)`};
-  background-color: ${({ team }) =>
-    team ? `var(--purple-3)` : `var(--white)`};
-  filter: ${(props) => props.dead && `grayscale(100%);`};
-  -webkit-filter: ${(props) => props.dead && `grayscale(100%) blur(5px)`};
-  background-image: url(${({ job }) => (job ? matchClassImg(job) : null)});
-  ${flex({ justify: "center", align: "center" })}
-  position: relative;
+  .wizard__img {
+    height: ${({ size }) => size && `${size}px`};
+    width: ${({ size }) => size && `${size}px`};
+    filter: ${(props) => props.dead && `grayscale(100%);`};
+    -webkit-filter: ${(props) => props.dead && `grayscale(100%)`};
+    background-size: cover;
+    background-position: center;
+    transform: ${({ reverse }) => (reverse ? "scaleX(-1)" : null)};
+    background-image: url(${({ job }) => (!job ? matchClassImg(job) : null)});
+  }
+`;
+
+export const PlayingFlag = styled.div<NameTagsProps>`
+  background-image: url(${flag});
+  width: 61px;
+  height: 97px;
+  position: absolute;
+  top: ${({ top }) => top && `${top}px`};
+  left: ${({ left }) => left && `${left}px`};
+  /* top: -80px;
+  right: 220px; */
+  &:nth-child(2) {
+    right: 150px;
+  }
+`;
+
+export const NameTag = styled.div<NameTagsProps>`
+  height: 50px;
+  width: 154px;
+  border-radius: 50px;
+  font-size: 24px;
+  ${flex({ align: "center", justify: "center" })};
+  background-color: ${({ dead }) => (dead ? `var(--grey)` : `var(--white)`)};
+  position: absolute;
+  bottom: ${({ top }) => top && `${top}px`};
+  left: ${({ left }) => left && `${left}px`};
 `;
 
 export const PlayerNameTag = styled.div<NameTagProps>`
@@ -155,26 +203,27 @@ export const StatBarTop = styled.div`
 
 // Main => PlayerIcons => PlayerStatBar
 export const StatBarRow = styled.div`
-  width: 20.833vw;
-  ${flex({})}
+  width: 396px;
+  height: 140px;
+  ${flex({ align: "flex-start" })}
   flex-wrap: wrap;
-  font-size: 6px;
+  /* font-size: 6px; */
 `;
+
 // Main => PlayerIcons => PlayerStatBar : Icons
-export const StatIconBox = styled.div`
-  width: 4.166vw;
-  height: 4.166vw;
+export const StatIconBox = styled.div<StatNumberProps>`
+  width: ${({ size }) => size && `${size}px`};
+  height: ${({ size }) => size && `${size}px`};
   position: relative;
-  margin-right: 0.78125vw;
-  margin-bottom: 0.52083vw;
+  margin-right: 10px;
   &:first-child {
-    margin-left: 3.125vw;
+    margin-left: 20px;
   }
   &:nth-child(4) {
-    margin-left: 0.78125vw;
+    margin-right: 100px;
   }
-  &:nth-child(8) {
-    margin-left: 3.125vw;
+  &:nth-child(5) {
+    margin-left: 20px;
   }
 `;
 
@@ -192,8 +241,8 @@ export const StatIcon = styled.div<StatIconsImgProps>`
   position: absolute;
   bottom: 0;
   left: 0;
-  width: ${({ size }) => size && `${size}vw`};
-  height: ${({ size }) => size && `${size}vw`};
+  width: ${({ size }) => size && `${size}px`};
+  height: ${({ size }) => size && `${size}px`};
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   background-image: url(${(props) => matchStatusImg(props.stat)});
   background-size: cover;
@@ -204,9 +253,9 @@ export const StatCnt = styled.div<StatNumberProps>`
   position: absolute;
   right: 0;
   top: 0;
-  width: 1.666vw;
+  width: ${({ size }) => size && `${size}px`};
+  height: ${({ size }) => size && `${size}px`};
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-  height: 1.666vw;
   border-radius: 1.666vw;
   background-color: var(--purple-3);
   ${flex({ justify: "center", align: "center" })}
@@ -464,19 +513,19 @@ export const DrawableCard = styled.div<DrawableCardSC>`
 export default function matchClassImg(data: string) {
   switch (data) {
     case "HEALER":
-      return healer;
+      return farseer;
     case "FARSEER":
-      return dealer;
+      return farseer;
     case "ENCHANTER":
-      return ghost;
+      return warock;
     case "WAROCK":
-      return wizard;
+      return warock;
     case "INVOKER":
-      return what;
+      return bloodmage;
     case "BLOODMAGE":
-      return blood;
+      return bloodmage;
     default:
-      return;
+      return bloodmage;
   }
 }
 
@@ -504,4 +553,12 @@ export const StartDiv = styled.div`
   .start__notice--btm {
     margin-bottom: 1.5625vw;
   }
+`;
+
+export const TableImg = styled.img.attrs({
+  src: `${table}`,
+})`
+  width: 597px;
+  height: 293px;
+  z-index: 3;
 `;

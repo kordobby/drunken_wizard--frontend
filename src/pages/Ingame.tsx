@@ -34,13 +34,13 @@ import NoticeField from "../Components/IngameComponents/NoticeField/NoticeField"
 import StartModal from "../Components/IngameComponents/Modals/StartModal";
 import PlayerIcons from "../Components/IngameComponents/MainField/PlayerIcons";
 import CraveField from "../Components/IngameComponents/MainField/CraveField";
-
+import PlayerStatus from "../Components/IngameComponents/MainField/PlayerStatus";
 /* CSS & SC */
 import {
   StGameWrap,
   MainWrap,
 } from "../Components/IngameComponents/InGameStyled";
-import { playersSetting, Card } from "../typings/typedb";
+import { playersSetting } from "../typings/typedb";
 
 const Ingame = () => {
   /* useState */
@@ -120,29 +120,25 @@ const Ingame = () => {
       },
       () => {
         stompClient.subscribe(`/sub/game/${roomId}`, (data: any) => {
+          console.log(data);
           const response = JSON.parse(data.body);
-          const msgType = response?.type;
           const msgData = JSON.parse(response?.content);
-          console.log(msgData);
           const msgSender = response?.sender;
           const playersInfo = msgData.players;
-          switch (msgType) {
+          switch (response?.type) {
             case "START":
               stompClient.unsubscribe(`/sub/wroom/${roomId}`);
-              // 게임 방식 변경으로 인한 로직 변경 작업
-              // playersInfo ( 플레이어 배열 )
-              // 플레이어 순서 정렬 - type 나중에 넣어주기
-              const setPlayerOrder = playersInfo
-                .sort((a: any, b: any) => a.turnOrder - b.turnOrder)
-                .map((value: any) => value.username);
-              dispatch(setPlayOrderTK(setPlayerOrder));
 
-              // 유지
-              const findNowPlayer = playersInfo.filter(
-                (value: playersSetting) => value.turnOrder === 1
+              const setPlayerOrder = playersInfo.sort(
+                (a: playersSetting, b: playersSetting) =>
+                  a.turnOrder - b.turnOrder
               );
-              dispatch(setNowPlayerIdTK(findNowPlayer[0].playerId));
-              dispatch(setNowPlayerNameTK(findNowPlayer[0].username));
+              const playerOrder = setPlayerOrder.map(
+                (value: playersSetting) => value.username
+              );
+              dispatch(setPlayOrderTK(playerOrder));
+              dispatch(setNowPlayerIdTK(setPlayerOrder[0].playerId));
+              dispatch(setNowPlayerNameTK(setPlayerOrder[0].username));
 
               // 유지
               const myPlayerInfo = playersInfo.filter(
@@ -152,11 +148,20 @@ const Ingame = () => {
               const restPlayersInfo = playersInfo.filter(
                 (value: playersSetting) => value.playerId !== myId
               );
+
+              restPlayersInfo.sort((a: playersSetting, b: playersSetting) => {
+                if (
+                  (myPlayerInfo[0].team === a.team > myPlayerInfo[0].team) ===
+                  b.team
+                )
+                  return -1;
+              });
+
               dispatch(setPlayerATK(restPlayersInfo[0]));
               dispatch(setPlayerBTK(restPlayersInfo[1]));
               dispatch(setPlayerCTK(restPlayersInfo[2]));
 
-              if (findNowPlayer[0].playerId === myId) {
+              if (setPlayerOrder[0].playerId === myId) {
                 sendStompMsgFunc(roomId, myId, "PRECHECK", null);
               } else {
                 setStatus("WAITING");
@@ -379,6 +384,7 @@ const Ingame = () => {
   ) => {
     console.log(roomId);
     waitForConnection(stompClient, function () {
+      // connect - subscribe - send
       stompClient.send(
         "/pub/game/1",
         { token: accessToken },
@@ -442,11 +448,12 @@ const Ingame = () => {
     <>
       <NoticeField status={status}></NoticeField>
       <StGameWrap>
-        {status === "" ? (
+        {status !== "" ? (
           <StartModal setStatus={setStatus}></StartModal>
         ) : (
           <>
             <MainWrap>
+              <PlayerStatus></PlayerStatus>
               <PlayerIcons></PlayerIcons>
               <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
             </MainWrap>

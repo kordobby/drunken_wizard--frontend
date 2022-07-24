@@ -2,79 +2,96 @@
 import { useAppSelector } from "../../../hooks/tsHooks";
 
 /* Modules */
-import { playersSetting } from "../../../typings/typedb";
+import { NameTagProps } from "../../../typings/typedb";
 
 /* CSS & SC */
-import PlayerStatBar from "./PlayerStatBar";
+import { TableImg, PlayerIcon } from "../InGameStyled";
 import {
   PlayerIconsFields,
-  Profiles,
-  ProfilesImage,
-  StatBarTop,
-  PlayerNameTag,
-  PlayerProfilesIcon,
-  PlayerPointBox,
-  PlayerProfileBox,
-  PlayerPointBar,
+  NameTag,
+  TeamPosition,
+  PlayingFlag,
 } from "../InGameStyled";
 
 const PlayerIcons = () => {
   const playersData = useAppSelector((state) => state.game.players);
-  const playersList = Object.values(playersData);
-  const data = playersList.shift();
-  const nowPlayer = useAppSelector((state) => state.game.game.nowPlayerId);
 
   return (
     <>
       <PlayerIconsFields>
-        {/* 여기 줄일방ㅇ법... */}
-        {playersList.map((value: playersSetting, index: number) => (
-          <Profiles team={value.team} playing={value.playerId === nowPlayer}>
-            <PlayerProfileBox>
-              <PlayerProfilesIcon>
-                <ProfilesImage
-                  team={value.team}
-                  job={value.charactorClass}
-                  dead={value.dead}
-                >
-                  <PlayerNameTag team={value.team}>
-                    <span>{value.username}</span>
-                  </PlayerNameTag>
-                </ProfilesImage>
-              </PlayerProfilesIcon>
-              <PlayerPointBox>
-                <PlayerPointBar
-                  stat={true}
-                  point={(value.health / 20) * 10.416}
-                >
-                  <span>HP {value.health}</span>
-                  <div className="stat__full">
-                    <div className="stat__now"></div>
-                  </div>
-                </PlayerPointBar>
-                <PlayerPointBar stat={false} point={(value.mana / 20) * 10.416}>
-                  <span>MP {value.mana}</span>
-                  <div className="stat__full">
-                    <div className="stat__now"></div>
-                  </div>
-                </PlayerPointBar>
-              </PlayerPointBox>
-            </PlayerProfileBox>
-            <div>
-              <PlayerStatBar
-                manaCostModifierDuration={value.manaCostModifierDuration}
-                mutedDuration={value.mutedDuration}
-                petrifiedDuration={value.petrifiedDuration}
-                poisonedDuration={value.poisonedDuration}
-                shield={value.shield}
-                sleepDuration={value.sleepDuration}
-                stunnedDuration={value.stunnedDuration}
-                weakDuration={value.weakDuration}
-                damageModifierDuration={value.damageModifierDuration}
-              ></PlayerStatBar>
-            </div>
-          </Profiles>
-        ))}
+        <TeamPosition layer={5} top={10} left={50}>
+          <PlayerIcon
+            size={360}
+            job={playersData.PlayerA.charactorClass}
+            dead={playersData.PlayerA.dead}
+            reverse={true}
+          >
+            <div className="wizard__img"></div>
+            <PlayingFlag
+              dead={playersData.PlayerA.dead}
+              top={-80}
+              left={140}
+            ></PlayingFlag>
+            <NameTag dead={playersData.PlayerA.dead} top={10} left={108}>
+              {playersData.PlayerA.username}
+            </NameTag>
+          </PlayerIcon>
+        </TeamPosition>
+        <TeamPosition layer={5} top={10} left={640}>
+          <PlayerIcon
+            size={360}
+            job={playersData.PlayerA.charactorClass}
+            dead={playersData.PlayerA.dead}
+            reverse={false}
+          >
+            <div className="wizard__img"></div>
+            <PlayingFlag
+              dead={playersData.PlayerA.dead}
+              top={-80}
+              left={170}
+            ></PlayingFlag>
+            <NameTag dead={playersData.PlayerA.dead} top={10} left={85}>
+              {playersData.PlayerA.username}
+            </NameTag>
+          </PlayerIcon>
+        </TeamPosition>
+        <TableImg />
+        <TeamPosition layer={1} top={260} left={550}>
+          <PlayerIcon
+            size={290}
+            job={playersData.PlayerA.charactorClass}
+            dead={playersData.PlayerA.dead}
+            reverse={false}
+          >
+            <div className="wizard__img"></div>
+            <PlayingFlag
+              dead={playersData.PlayerA.dead}
+              top={-60}
+              left={80}
+            ></PlayingFlag>
+            <NameTag dead={playersData.PlayerA.dead} top={40} left={0}>
+              {playersData.PlayerA.username}
+            </NameTag>
+          </PlayerIcon>
+        </TeamPosition>
+        <TeamPosition layer={1} top={260} left={250}>
+          <PlayerIcon
+            size={290}
+            job={playersData.PlayerA.charactorClass}
+            dead={playersData.PlayerA.dead}
+            reverse={true}
+          >
+            <div className="wizard__img"></div>
+            <PlayingFlag
+              dead={playersData.PlayerA.dead}
+              top={-60}
+              left={140}
+            ></PlayingFlag>
+            <NameTag dead={playersData.PlayerA.dead} top={40} left={120}>
+              {playersData.PlayerA.username}
+            </NameTag>
+          </PlayerIcon>
+        </TeamPosition>
       </PlayerIconsFields>
     </>
   );
