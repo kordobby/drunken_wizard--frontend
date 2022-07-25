@@ -1,8 +1,12 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import flex from "../GlobalStyled/flex";
 import logoImg from "../../images/logo/logo.png";
 import bubble from "../../images/imgs/bubble.png";
 import introBg from "../../images/background/introBackground.png";
+import LeftBeer from "../../images/splash/leftBeer.png";
+import RightBeer from "../../images/splash/rightBeer.png";
+import beerBg from "../../images/splash/beer_bg.png";
+import shadow from "../../images/splash/shadow.png";
 import { LogoProps, DupCheckProps } from "../../typings/typedb";
 
 export const BackWrap = styled.div`
@@ -151,4 +155,142 @@ export const RuleBtn = styled.button`
     cursor: pointer;
     filter: brightness(120%);
   }
+`;
+
+const leftBeerCheers = keyframes`
+0% {
+  left: -4.427vw;
+  transform: rotate(0);
+  opacity : 1;
+} 20% {
+  left: -4.427vw;
+    transform: rotate(-4.46deg);
+    opacity : 1;
+}
+  100%{
+    left: -4.427vw;
+    transform: rotate(-4.46deg);
+    opacity : 0;
+  }
+`;
+
+const leftBeerUp = keyframes`
+0% {
+  transform: rotateX(0);
+  transform: translate(0);
+  opacity: 0;
+} 100% {
+  opacity : 1;
+  transform: translate(48.573vw,0);
+}
+`;
+
+export const LeftBeerImg = styled.img.attrs({
+  src: `${LeftBeer}`,
+})`
+  animation-name: ${leftBeerUp}, ${leftBeerCheers};
+  animation-delay: 0s, 0.3s;
+  animation-duration: 0.3s, 2s;
+  animation-timing-function: ease-in, ease-in;
+  width: 52.656vw;
+  position: absolute;
+  bottom: -1.5625vw;
+  left: -53vw;
+  z-index: 3;
+  /* left: -4.427vw; */
+`;
+
+const RightBeerCheers = keyframes`
+0% {
+  right: -3.6458vw;
+  transform: rotate(0);
+  opacity : 1;
+} 20%{
+    right: -3.6458vw;
+    transform: rotate(5.92deg);
+    opacity : 1;
+  }
+  100%{
+    right: -3.6458vw;
+    transform: rotate(5.92deg);
+    opacity : 0;
+  }
+`;
+
+const RightBeerUp = keyframes`
+0% {
+  transform: translate(0);
+  opacity: 0;
+} 
+  100%{
+    /* left: -4.427vw; */
+    transform: translate(-50.3542vw,3.6458vw);
+    opacity : 1;
+  }
+`;
+
+export const RightBeerImg = styled.img.attrs({
+  src: `${RightBeer}`,
+})`
+  animation-name: ${RightBeerUp}, ${RightBeerCheers};
+  animation-delay: 0s, 0.3s;
+  animation-duration: 0.3s, 2s;
+  animation-timing-function: ease-in, ease-in;
+  position: absolute;
+  bottom: -1.0416vw;
+  width: 53.609vw;
+  right: -54vw;
+  z-index: 3;
+`;
+
+const logoFlash = keyframes`
+  0% {
+    opacity: 0;
+  } 100%{
+    opacity: 1;
+  }
+`;
+
+const beerFlows = keyframes`
+  0% {
+    opacity: 1;
+    transform: translateY(0px);
+  } 70% {
+    opacity: 1;
+    transform: translateY(110.916vw);
+  }100%{
+    opacity: 0;
+    transform: translateY(110.916vw);
+  }
+`;
+
+export const BeerBgImg = styled.img.attrs({
+  src: `${beerBg}`,
+})`
+  position: absolute;
+  top: -118.125vw;
+  width: 110.434vw;
+  animation: ${beerFlows} 3s 1s ease;
+  z-index: 0;
+`;
+
+const shadowFlash = keyframes`
+  0% {
+    opacity: 0;
+  } 20%{
+    opacity: 1;
+  } 100%{
+    opacity: 0;
+  }
+`;
+
+export const Shadow = styled.img.attrs({
+  src: `${shadow}`,
+})`
+  position: absolute;
+  bottom: -5vw;
+  right: -3.8vw;
+  width: 74.419vw;
+  opacity: 0;
+  animation: ${shadowFlash} 1.5s 0.5s ease;
 `;

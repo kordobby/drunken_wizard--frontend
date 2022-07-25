@@ -13,6 +13,9 @@ import {
   MyStatBox,
   ProfileStatBox,
   StatusSizing,
+  MyStatIcon,
+  StatIcon,
+  StatCnt,
 } from "../InGameStyled";
 
 const MyProfile = () => {
@@ -51,7 +54,65 @@ const MyProfile = () => {
               </div>
             </MyStatBox>
           </ProfileStatBox>
-          <StatusSizing></StatusSizing>
+          <StatusSizing>
+            {thisPlayer.sleepDuration !== 0 && (
+              <MyStatIcon>
+                <StatIcon stat="sleepDuration" size={4.6875}></StatIcon>
+                <StatCnt size={2.083}>{thisPlayer.sleepDuration}</StatCnt>
+              </MyStatIcon>
+            )}
+
+            {thisPlayer.mutedDuration !== 0 && (
+              <MyStatIcon>
+                <StatIcon stat="mutedDuration" size={4.6875}></StatIcon>
+                <StatCnt size={2.083}>{thisPlayer.mutedDuration}</StatCnt>
+              </MyStatIcon>
+            )}
+
+            {thisPlayer.petrifiedDuration !== 0 && (
+              <MyStatIcon>
+                <StatIcon stat="petrifiedDuration" size={4.6875}></StatIcon>
+                <StatCnt size={2.083}>{thisPlayer.petrifiedDuration}</StatCnt>
+              </MyStatIcon>
+            )}
+
+            {thisPlayer.poisonedDuration !== 0 && (
+              <MyStatIcon>
+                <StatIcon stat="poisonedDuration" size={4.6875}></StatIcon>
+                <StatCnt size={2.083}>{thisPlayer.poisonedDuration}</StatCnt>
+              </MyStatIcon>
+            )}
+
+            {thisPlayer.stunnedDuration !== 0 && (
+              <MyStatIcon>
+                <StatIcon stat="stunnedDuration" size={4.6875}></StatIcon>
+                <StatCnt size={2.083}>{thisPlayer.stunnedDuration}</StatCnt>
+              </MyStatIcon>
+            )}
+
+            {thisPlayer.weakDuration !== 0 && (
+              <MyStatIcon>
+                <StatIcon stat="weakDuration" size={4.6875}></StatIcon>
+                <StatCnt size={2.083}>{thisPlayer.weakDuration}</StatCnt>
+              </MyStatIcon>
+            )}
+
+            {thisPlayer.damageModifierDuration !== 0 && (
+              <MyStatIcon>
+                <StatIcon
+                  stat="damageModifierDuration"
+                  size={4.6875}
+                ></StatIcon>
+                <StatCnt size={2.083}>{thisPlayer.weakDuration}</StatCnt>
+              </MyStatIcon>
+            )}
+
+            {thisPlayer.shield && (
+              <MyStatIcon>
+                <StatIcon stat="shield" size={4.6875}></StatIcon>
+              </MyStatIcon>
+            )}
+          </StatusSizing>
         </ProfileSizing>
       )}
     </>

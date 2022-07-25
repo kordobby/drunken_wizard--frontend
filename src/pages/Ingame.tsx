@@ -9,18 +9,19 @@ import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
 
 /* Modules */
 import {
-  setNowPlayerIdTK, // use
-  setThisPlayerTK, // use
-  setTeamPlayerTK, // use
-  setEnemyPlayerATK, // use
-  setEnemyPlayerBTK, // use
-  updateMyCardsTK, // use
-  setSelectableCardCnt, // use
-  setNowPlayerNameTK, // use
-  setTimerTK, // use
-  setSelectableCardTK, // use
-  setMyCardsUpdateTK, // use
-  clearDrawCardsTK, // use
+  setNowPlayerIdTK,
+  setThisPlayerTK,
+  setPlayOrderTK,
+  setPlayerATK,
+  setPlayerBTK,
+  setPlayerCTK,
+  updateMyCardsTK,
+  setSelectableCardCnt,
+  setNowPlayerNameTK,
+  setTimerTK,
+  setSelectableCardTK,
+  setMyCardsUpdateTK,
+  clearDrawCardsTK,
 } from "../redux/modules/ingameSlice";
 
 /* Cookies */
@@ -49,26 +50,7 @@ const Ingame = () => {
   // #DRAW-TURN :: Modal Ctrl
   const [drawModalOpen, setDrawModalOpen] = useState<boolean>(false);
   const [update, setUpdate] = useState<playersSetting[]>([]);
-  const [updateOne, setUpdateOne] = useState<{
-    cardsOnHand: Card[];
-    charactorClass: string;
-    playerId: number;
-    health: number;
-    username: string;
-    dead: boolean;
-    mana: number;
-    manaCostModifierDuration: number;
-    mutedDuration: number;
-    petrifiedDuration: number;
-    poisonedDuration: number;
-    shield: boolean;
-    sleepDuration: number;
-    stunnedDuration: number;
-    team: boolean;
-    turnOrder: number;
-    weakDuration: number;
-    damageModifierDuration: number;
-  }>({
+  const [updateOne, setUpdateOne] = useState<playersSetting>({
     cardsOnHand: [],
     charactorClass: "",
     playerId: 0,
@@ -99,22 +81,22 @@ const Ingame = () => {
   const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
-  const { roomid } = useParams<{ roomid?: string }>();
+  const { roomId } = useParams();
   const myId = Number(getCookie("id"));
 
-  // const doNotReload = (event: any) => {
-  //   if (
-  //     (event.ctrlKey === true &&
-  //       (event.keyCode === 78 || event.keyCode === 82)) ||
-  //     event.keyCode === 116
-  //   ) {
-  //     return window.confirm("새로고침하면 게임이 정상작동하지 않아요:(");
-  //   }
-  // };
+  const doNotReload = (event: any) => {
+    if (
+      (event.ctrlKey === true &&
+        (event.keyCode === 78 || event.keyCode === 82)) ||
+      event.keyCode === 116
+    ) {
+      return window.confirm("새로고침하면 게임이 정상작동하지 않아요:(");
+    }
+  };
 
-  // useEffect(() => {
-  //   document.onkeydown = doNotReload;
-  // });
+  useEffect(() => {
+    document.onkeydown = doNotReload;
+  });
 
   useEffect(() => {
     socketSubscribe();
@@ -125,7 +107,6 @@ const Ingame = () => {
 
   const socketUnsubscribe = React.useCallback(() => {
     try {
-      alert("구독해제한디");
       stompClient.unsubscribe("sub-0");
     } catch (error) {
       console.log(error);
@@ -138,123 +119,45 @@ const Ingame = () => {
         token: accessToken,
       },
       () => {
-        stompClient.subscribe("/sub/game/1", (data: any) => {
+        stompClient.subscribe(`/sub/game/${roomId}`, (data: any) => {
           const response = JSON.parse(data.body);
           const msgType = response?.type;
           const msgData = JSON.parse(response?.content);
+          console.log(msgData);
           const msgSender = response?.sender;
           const playersInfo = msgData.players;
           switch (msgType) {
             case "START":
+              stompClient.unsubscribe(`/sub/wroom/${roomId}`);
+              // 게임 방식 변경으로 인한 로직 변경 작업
+              // playersInfo ( 플레이어 배열 )
+              // 플레이어 순서 정렬 - type 나중에 넣어주기
+              const setPlayerOrder = playersInfo
+                .sort((a: any, b: any) => a.turnOrder - b.turnOrder)
+                .map((value: any) => value.username);
+              dispatch(setPlayOrderTK(setPlayerOrder));
+
+              // 유지
               const findNowPlayer = playersInfo.filter(
                 (value: playersSetting) => value.turnOrder === 1
               );
               dispatch(setNowPlayerIdTK(findNowPlayer[0].playerId));
               dispatch(setNowPlayerNameTK(findNowPlayer[0].username));
+
+              // 유지
               const myPlayerInfo = playersInfo.filter(
                 (value: playersSetting) => value.playerId === myId
               );
               dispatch(setThisPlayerTK(myPlayerInfo[0]));
-              switch (myPlayerInfo[0].turnOrder) {
-                case 1:
-                  // 만약 필요하면 여기서 순서 저장하면 됨!
-                  // 나 => enemyA => 팀 => enemyB
-                  dispatch(
-                    setTeamPlayerTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 3
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerATK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 2
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerBTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 4
-                      )[0]
-                    )
-                  );
-                  break;
-                case 2:
-                  dispatch(
-                    setTeamPlayerTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 4
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerATK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 1
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerBTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 3
-                      )[0]
-                    )
-                  );
-                  break;
-                case 3:
-                  dispatch(
-                    setTeamPlayerTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 1
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerATK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 2
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerBTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 4
-                      )[0]
-                    )
-                  );
-                  break;
-                case 4:
-                  dispatch(
-                    setTeamPlayerTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 2
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerATK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 1
-                      )[0]
-                    )
-                  );
-                  dispatch(
-                    setEnemyPlayerBTK(
-                      playersInfo.filter(
-                        (value: playersSetting) => value.turnOrder === 3
-                      )[0]
-                    )
-                  );
-                  break;
-                default:
-                  break;
-              }
+              const restPlayersInfo = playersInfo.filter(
+                (value: playersSetting) => value.playerId !== myId
+              );
+              dispatch(setPlayerATK(restPlayersInfo[0]));
+              dispatch(setPlayerBTK(restPlayersInfo[1]));
+              dispatch(setPlayerCTK(restPlayersInfo[2]));
+
               if (findNowPlayer[0].playerId === myId) {
-                sendStompMsgFunc(roomid, myId, "PRECHECK", null);
+                sendStompMsgFunc(roomId, myId, "PRECHECK", null);
               } else {
                 setStatus("WAITING");
               }
@@ -262,7 +165,7 @@ const Ingame = () => {
             case "PRECHECK":
               // 게임이 만약 끝났다면, ENDGAME 처리
               if (msgData.gameOver === true) {
-                sendStompMsgFunc(roomid, myId, "ENDGAME", null);
+                sendStompMsgFunc(roomId, myId, "ENDGAME", null);
                 // 만약 현재 플레이어가 나이고 죽은게 아니라면?
               } else if (msgSender === myId && msgData.player.dead === false) {
                 dispatch(setThisPlayerTK(msgData.player));
@@ -286,33 +189,33 @@ const Ingame = () => {
               break;
             case "ENDDRAW":
               /* CLEAR */
-              clearDrawCardsFuc();
+              clearDrawCardsFunc();
               /* NEXT MOVE */
               if (msgSender === myId) {
                 dispatch(updateMyCardsTK(msgData.cardsOnHand));
-                sendStompMsgFunc(roomid, myId, "TURNCHECK", null);
+                sendStompMsgFunc(roomId, myId, "TURNCHECK", null);
               } else {
                 setStatus("ACTION");
               }
               break;
             case "SELECT":
               /* Clear */
-              clearDrawCardsFuc();
+              clearDrawCardsFunc();
               if (msgSender === myId && msgData.isSuccess === true) {
                 // setStatus => card draw success!
                 dispatch(updateMyCardsTK(msgData.cardsOnHand));
-                sendStompMsgFunc(roomid, myId, "TURNCHECK", null);
+                sendStompMsgFunc(roomId, myId, "TURNCHECK", null);
                 // open drawsuccess modal for 3sec
               } else if (msgSender === myId && msgData.isSuccess === false) {
                 // setStatus => card draw Failed!
                 dispatch(updateMyCardsTK(msgData.cardsOnHand));
-                sendStompMsgFunc(roomid, myId, "TURNCHECK", null);
+                sendStompMsgFunc(roomId, myId, "TURNCHECK", null);
               } else if (msgSender !== myId) {
                 setStatus("ACTION");
               }
               break;
             case "TURNCHECK":
-              clearDrawCardsFuc();
+              clearDrawCardsFunc();
               if (msgSender === myId && msgData.action === true) {
                 dispatch(setTimerTK("action"));
                 timerFunc(30000, "ENDTURN");
@@ -325,7 +228,7 @@ const Ingame = () => {
               break;
             case "USECARD":
               if (msgData.gameOver === true) {
-                sendStompMsgFunc(roomid, myId, "ENDGAME", null);
+                sendStompMsgFunc(roomId, myId, "ENDGAME", null);
                 // 만약 현재 플레이어가 나이고 죽은게 아니라면?
               } else {
                 setUpdate(msgData.players);
@@ -370,7 +273,7 @@ const Ingame = () => {
     switch (status) {
       case "READY":
         setTimeout(() => {
-          sendStompMsgFunc(roomid, myId, "START", null);
+          sendStompMsgFunc(roomId, myId, "START", null);
         }, 3000);
         break;
       case "WAITING":
@@ -379,7 +282,7 @@ const Ingame = () => {
       case "PRECHECK":
         // 만약 그게 나라면 이제 드로우를 하러 갑니다.
         if (nowPlayerId === playersData.thisPlayer.playerId) {
-          sendStompMsgFunc(roomid, myId, "DRAW", null);
+          sendStompMsgFunc(roomId, myId, "DRAW", null);
         } else {
           // 만약 내가 아니라면 지금 플레이하는 사람의 상태를 최신화할 것이다.
           updatePlayersFunc();
@@ -392,7 +295,7 @@ const Ingame = () => {
       case "ACTIONFAILED":
         if (nowPlayerId === playersData.thisPlayer.playerId) {
           setTimeout(() => {
-            sendStompMsgFunc(roomid, Number(myId), "ENDTURN", null);
+            sendStompMsgFunc(roomId, Number(myId), "ENDTURN", null);
           }, 3000);
         }
         break;
@@ -408,26 +311,26 @@ const Ingame = () => {
           dispatch(setThisPlayerTK(thisPlayer[0]));
           dispatch(setMyCardsUpdateTK(thisPlayer[0].cardsOnHand));
         }
-        const teamPlayer = update.filter(
+        const PlayerA = update.filter(
           (value: playersSetting) =>
-            value.playerId === playersData.teamPlayer.playerId
+            value.playerId === playersData.PlayerA.playerId
         );
-        const enemyA = update.filter(
+        const PlayerB = update.filter(
           (value: playersSetting) =>
-            value.playerId === playersData.enemyPlayerA.playerId
+            value.playerId === playersData.PlayerB.playerId
         );
-        const enemyB = update.filter(
+        const PlayerC = update.filter(
           (value: playersSetting) =>
-            value.playerId === playersData.enemyPlayerB.playerId
+            value.playerId === playersData.PlayerC.playerId
         );
-        if (teamPlayer[0] !== undefined) {
-          dispatch(setTeamPlayerTK(teamPlayer[0]));
+        if (PlayerA[0] !== undefined) {
+          dispatch(setPlayerATK(PlayerA[0]));
         }
-        if (enemyA[0] !== undefined) {
-          dispatch(setEnemyPlayerATK(enemyA[0]));
+        if (PlayerB[0] !== undefined) {
+          dispatch(setPlayerBTK(PlayerB[0]));
         }
-        if (enemyB[0] !== undefined) {
-          dispatch(setEnemyPlayerBTK(enemyB[0]));
+        if (PlayerC[0] !== undefined) {
+          dispatch(setPlayerCTK(PlayerC[0]));
         }
         break;
       case "DISCARD":
@@ -444,7 +347,7 @@ const Ingame = () => {
         updatePlayersFunc();
         if (nowPlayerId === Number(playersData.thisPlayer.playerId)) {
           setTimeout(function () {
-            sendStompMsgFunc(roomid, myId, "PRECHECK", null);
+            sendStompMsgFunc(roomId, myId, "PRECHECK", null);
           }, 3000);
         } else {
           setTimeout(function () {
@@ -474,6 +377,7 @@ const Ingame = () => {
     msgType: string,
     data: object | null
   ) => {
+    console.log(roomId);
     waitForConnection(stompClient, function () {
       stompClient.send(
         "/pub/game/1",
@@ -494,7 +398,7 @@ const Ingame = () => {
   const timerFunc = (sec: number, turn: string) => {
     timer.current = setTimeout(() => {
       setDrawModalOpen(false);
-      sendStompMsgFunc(roomid, myId, turn, null);
+      sendStompMsgFunc(roomId, myId, turn, null);
       dispatch(setTimerTK(""));
       alert("시간초과!");
     }, sec);
@@ -504,7 +408,7 @@ const Ingame = () => {
     window.clearTimeout(timer.current || 0);
   };
 
-  const clearDrawCardsFuc = () => {
+  const clearDrawCardsFunc = () => {
     ClearTimer();
     setDrawModalOpen(false);
     dispatch(setTimerTK(""));
@@ -522,14 +426,14 @@ const Ingame = () => {
       case playersData.thisPlayer.playerId:
         dispatch(setThisPlayerTK(updateOne));
         break;
-      case playersData.teamPlayer.playerId:
-        dispatch(setTeamPlayerTK(updateOne));
+      case playersData.PlayerA.playerId:
+        dispatch(setPlayerATK(updateOne));
         break;
-      case playersData.enemyPlayerA.playerId:
-        dispatch(setEnemyPlayerATK(updateOne));
+      case playersData.PlayerB.playerId:
+        dispatch(setPlayerBTK(updateOne));
         break;
-      case playersData.enemyPlayerB.playerId:
-        dispatch(setEnemyPlayerBTK(updateOne));
+      case playersData.PlayerC.playerId:
+        dispatch(setPlayerCTK(updateOne));
         break;
     }
   };
@@ -538,13 +442,13 @@ const Ingame = () => {
     <>
       <NoticeField status={status}></NoticeField>
       <StGameWrap>
-        {status !== "" ? (
+        {status === "" ? (
           <StartModal setStatus={setStatus}></StartModal>
         ) : (
           <>
             <MainWrap>
               <PlayerIcons></PlayerIcons>
-              <CraveField></CraveField>
+              <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
             </MainWrap>
             <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
             {drawModalOpen && (
@@ -555,7 +459,7 @@ const Ingame = () => {
       </StGameWrap>
       <button
         onClick={() => {
-          sendStompMsgFunc(roomid, myId, "ENDGAME", null);
+          sendStompMsgFunc(roomId, myId, "ENDGAME", null);
         }}
       >
         게임 종료
