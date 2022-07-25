@@ -5,21 +5,39 @@ import StatusLower from "./StatusLower";
 import { Targeting } from "../../../typings/typedb";
 import { useEffect, useState } from "react";
 import { TeamColorProps } from "../../../typings/typedb";
+import { Card } from "../../../typings/typedb";
 const PlayerStatus = () => {
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
   const targeted = useAppSelector((state) => state.game.game.targetPlayer);
   const data = playersList.pop();
-  const [targetTypes, setTargetTypes] = useState<boolean>(false);
-  useEffect(() => {}, [targeted]);
-
-  const types = useAppSelector((state) => state.game.game.cardType);
+  console.log(targeted);
+  const selectedCard = useAppSelector(
+    (state) => state.game.game.selectForUseCard
+  );
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
-  console.log(types);
+  console.log(selectedCard);
+  const targetingFunc = (playerId: number) => {
+    if (selectedCard.target === "SELECT" && targeted === playerId) return true;
+    else if (
+      selectedCard.target === "ALLY" &&
+      playerId === playersData.PlayerA.playerId
+    )
+      return true;
+    else if (
+      selectedCard.target === "ENEMY" &&
+      playerId !== playersData.PlayerA.playerId
+    )
+      return true;
+    else if (selectedCard.target === "" && playerId === targeted) return true;
+    else {
+      return false;
+    }
+  };
   return (
     <StatusBoxWrap>
       {playersList.map((value) => (
-        <StatusCard targeting={targeted === value.playerId}>
+        <StatusCard targeting={targetingFunc(value.playerId)}>
           <StatusUpper>
             <StatusNameTag team={value.team === thisPlayer.team}>
               <span>{value.username}</span>

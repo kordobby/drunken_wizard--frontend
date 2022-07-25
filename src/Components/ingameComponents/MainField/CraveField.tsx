@@ -8,7 +8,9 @@ import { useParams } from "react-router-dom";
 import { CraveWrap, CraveCards, Crave } from "../InGameStyled/InGameStyled";
 import { DefaultBtnL } from "../../Common/CommonStyle";
 const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
-  // const Crave = useAppSelector((state) => state.game.game.cardCrave);
+  const actionTimer = useAppSelector((state) => state.game.game.status);
+  const craveCards = useAppSelector((state) => state.game.game.cardCrave);
+  const CardsSet = craveCards.slice(undefined, 3);
   const thisPlayer = useAppSelector(
     (state) => state.game.players.thisPlayer.playerId
   );
@@ -27,9 +29,10 @@ const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
     <>
       <CraveWrap>
         <Crave></Crave>
-        <CraveCards></CraveCards>
-        <CraveCards></CraveCards>
-        {nowPlayer === thisPlayer && (
+        {CardsSet.map((value) => (
+          <CraveCards />
+        ))}
+        {actionTimer === "action" && nowPlayer === thisPlayer && (
           <DefaultBtnL
             disabled={clicked}
             onClick={() => {

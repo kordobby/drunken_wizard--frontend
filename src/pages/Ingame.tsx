@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
 
 /* Modules */
 import {
+  setCraveTK,
   setNowPlayerIdTK,
   setThisPlayerTK,
   setPlayOrderTK,
@@ -39,9 +40,10 @@ import PlayerStatus from "../Components/IngameComponents/MainField/PlayerStatus"
 import {
   StGameWrap,
   MainWrap,
+  StGameWrapFilter,
 } from "../Components/IngameComponents/InGameStyled/InGameStyled";
 import { playersSetting } from "../typings/typedb";
-import TwoBtnModal from "../elem/TwoBtnModal";
+import AlertPopUp from "../Components/IngameComponents/InGameCommon/AlertPopUp";
 
 const Ingame = () => {
   /* useState */
@@ -71,6 +73,11 @@ const Ingame = () => {
     weakDuration: 0,
     damageModifierDuration: 0,
   });
+
+  /* modal control  */
+  const [startModal, setStartModal] = useState<boolean>(false);
+  const [drawFailModal, setDrawFailModal] = useState<boolean>(false);
+  const [timeOutModal, setTimeOutModal] = useState<boolean>(false);
 
   /* tookit things */
   const dispatch = useAppDispatch();
@@ -237,20 +244,23 @@ const Ingame = () => {
                 sendStompMsgFunc(roomId, myId, "ENDGAME", null);
                 // 만약 현재 플레이어가 나이고 죽은게 아니라면?
               } else {
+                // 배열로 내려오는지 확인
+                dispatch(setCraveTK(msgData.usedCard));
                 setUpdate(msgData.players);
                 setStatus("USECARD");
               }
               break;
             case "USEFAIL":
               if (msgSender === myId) {
+                // 모달창..
                 alert("마나가 부족하거나 니가 침묵에 걸렸겠지!");
               }
               break;
             case "DISCARD":
+              dispatch(setCraveTK(msgData.discard));
               if (msgSender === myId) {
                 dispatch(setThisPlayerTK(msgData));
                 setStatus("ACTION");
-                // dispatch(setThisPlayerTK(msgData));
               } else {
                 setUpdateOne(msgData);
                 setStatus("DISCARD");
@@ -278,8 +288,10 @@ const Ingame = () => {
   useEffect(() => {
     switch (status) {
       case "READY":
+        setStartModal(true);
         setTimeout(() => {
           sendStompMsgFunc(roomId, myId, "START", null);
+          setStartModal(false);
         }, 3000);
         break;
       case "WAITING":
@@ -407,7 +419,17 @@ const Ingame = () => {
       setDrawModalOpen(false);
       sendStompMsgFunc(roomId, myId, turn, null);
       dispatch(setTimerTK(""));
-      alert("시간초과!");
+      if (turn === "SELECT") {
+        setDrawFailModal(true);
+        setTimeout(() => {
+          setDrawFailModal(false);
+        }, 2000);
+      } else if (turn === "ENDTURN") {
+        setTimeOutModal(true);
+        setTimeout(() => {
+          setTimeOutModal(false);
+        }, 2000);
+      }
     }, sec);
   };
 
@@ -447,32 +469,53 @@ const Ingame = () => {
 
   return (
     <>
-      {/* <TwoBtnModal
-        confirmText="확인"
-        cancelText="취소"
-        titleText="제목"
-        upperText="안녕"
-        lowerText="안녕안녕"
-        confirmFunc={clearActionTurnFunc}
-        cancelFunc={clearActionTurnFunc}
-      ></TwoBtnModal> */}
+      {startModal && (
+        <AlertPopUp
+          upperText="게임 시작!"
+          middleText="내 직업을 확인하세요!"
+          bottomText=""
+        />
+      )}
+      {drawFailModal && (
+        <AlertPopUp
+          upperText="시간 초과!"
+          middleText="10초가 경과하여"
+          bottomText="카드 드로우에 실패했습니다."
+        />
+      )}
+      {timeOutModal && (
+        <AlertPopUp
+          upperText="시간 초과!"
+          middleText="30초가 경과하여"
+          bottomText="다음 턴으로 넘어갑니다."
+        />
+      )}
+      {status === "CARDUSESUCCESS" && (
+        <AlertPopUp
+          upperText="nowPlayer님이"
+          middleText="targetUserName 님에게"
+          bottomText="useCard 카드를 사용했습니다!"
+        />
+      )}
       <NoticeField></NoticeField>
       <StGameWrap>
-        {status !== "" ? (
-          <StartModal setStatus={setStatus}></StartModal>
-        ) : (
-          <>
-            <MainWrap>
-              <PlayerStatus></PlayerStatus>
-              <PlayerIcons status={status}></PlayerIcons>
-              <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
-            </MainWrap>
-            <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
-            {drawModalOpen && (
-              <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
-            )}
-          </>
-        )}
+        <StGameWrapFilter>
+          {status !== "" ? (
+            <StartModal setStatus={setStatus}></StartModal>
+          ) : (
+            <>
+              <MainWrap>
+                <PlayerStatus></PlayerStatus>
+                <PlayerIcons status={status}></PlayerIcons>
+                <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
+              </MainWrap>
+              <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
+              {drawModalOpen && (
+                <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
+              )}
+            </>
+          )}
+        </StGameWrapFilter>
       </StGameWrap>
       <button
         onClick={() => {

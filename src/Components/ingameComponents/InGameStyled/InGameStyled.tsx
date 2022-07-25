@@ -3,7 +3,7 @@ import flex from "../../GlobalStyled/flex";
 
 import table from "../../../images/playerfield/table.png";
 import BeerIcon from "../../../images/icons/BeerIcon.png";
-import InGameBackground from "../../../images/background/IngameBackground.png";
+import InGameBackground from "../../../images/background/BG_lobby.png";
 import matchFlagImg from "./TurnFlag";
 import matchClassImg from "./MatchClass";
 import matchProfileImg from "./MatchProfile";
@@ -15,6 +15,7 @@ import {
   TargetBtnProps,
   UseCardProps,
   StatProps,
+  TurnOrderProps,
   NameTagProps,
   StatNumberProps,
   NameTagsProps,
@@ -31,7 +32,17 @@ export const StGameWrap = styled.div`
   box-sizing: border-box;
   /* padding-top: 6.25vw; */
   background-image: url(${InGameBackground});
-  z-index: -10;
+  z-index: 0;
+  ${flex({ direction: "column", align: "center" })};
+`;
+
+export const StGameWrapFilter = styled.div`
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  /* padding-top: 6.25vw; */
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
   ${flex({ direction: "column", align: "center" })};
 `;
 
@@ -257,11 +268,11 @@ export const Crave = styled.div`
 `;
 
 export const CraveCards = styled.div`
-  width: 11.458vw;
-  height: 16.666vw;
-  border-radius: 1.66vw;
+  width: 202px;
+  height: 359px;
+  border-radius: 10px;
   top: 1.8229vw;
-  left: 3.645vw;
+  left: 9.031vw;
   position: absolute;
   background-color: var(--brown-2);
   border: 1px solid var(--white);
@@ -269,7 +280,13 @@ export const CraveCards = styled.div`
   &:nth-child(2) {
     top: 2.604vw;
     left: 7.031vw;
-    transform: rotate(10deg);
+    transform: rotate(12deg);
+    z-index: 1;
+  }
+  &:nth-child(3) {
+    top: 1.804vw;
+    left: 3.645vw;
+    transform: rotate(-12deg);
     z-index: 1;
   }
 `;
@@ -515,12 +532,21 @@ export const SendHealBtn = styled.button`
   font-size: 24px;
 `;
 
-export const TurnHealBtn = styled.button<NameTagProps>`
+export const TurnHealBtn = styled.button<TargetBtnProps>`
   width: 42px;
   height: 42px;
   border-radius: 42px;
-  background-color: ${({ dead }) =>
-    dead ? `var(--purple-1)` : `var(--brown-1)`};
+  background-color: ${({ team }) =>
+    team ? `var(--purple-1)` : `var(--brown-1)`};
+  color: white;
+`;
+
+export const TurnOrderBtn = styled.button<TurnOrderProps>`
+  width: 42px;
+  height: 42px;
+  border-radius: 42px;
+  background-color: ${({ team }) =>
+    team ? `var(--purple-1)` : `var(--brown-1)`};
   color: white;
 `;
 

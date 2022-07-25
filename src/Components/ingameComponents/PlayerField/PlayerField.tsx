@@ -7,9 +7,8 @@ import { useParams } from "react-router-dom";
 
 /* Modules */
 import {
-  setSelectUseCardIdTK,
+  setSelectUseCardTK,
   setTargetTK,
-  setCardTypeTK,
 } from "../../../redux/modules/ingameSlice";
 
 /* Interface */
@@ -25,6 +24,7 @@ import MyProfile from "./MyProfile";
 
 /* CSS & SC */
 import {
+  TurnOrderBtn,
   PlayerFieldWrap,
   CardsArea,
   PlayerCtrlWrap,
@@ -50,7 +50,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   const [target, setTarget] = useState(0);
   const [mouseIn, setMouseIn] = useState(false);
   const [clicked, setClicked] = useState(false);
-  // const [error, setError] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -61,8 +60,8 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   /* tookit things */
   const dispatch = useAppDispatch();
   // card Use & Targeting settings
-  const selectedUseCardId = useAppSelector(
-    (state) => state.game.game.selectForUseCardId
+  const selectedUseCard = useAppSelector(
+    (state) => state.game.game.selectForUseCard
   );
   const selectedTarget = useAppSelector(
     (state) => state.game.game.targetPlayer
@@ -82,19 +81,26 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // 카드 위로 마우스가 올라가면, 카드 아이디를 스토어에 저장
   const onMouseOverCards = (
     event: React.MouseEvent<HTMLDivElement>,
-    cardId: number
+    cardValue: Card
   ) => {
-    setTarget(cardId); // 마우스를 오버했을 때 해당 item의 값으로 target 변경
+    setTarget(cardValue.cardId); // 마우스를 오버했을 때 해당 item의 값으로 target 변경
     setMouseIn(Boolean(event)); // 마우스 오버 확인
-    dispatch(setSelectUseCardIdTK(cardId));
-    dispatch(setCardTypeTK("ENEMY"));
+    dispatch(setSelectUseCardTK(cardValue));
   };
 
   // 카드를 떠나면 선택된 카드 초기화
   const onMouseLeaveCards = (event: React.MouseEvent<HTMLDivElement>) => {
     setTarget(0);
     setMouseIn(!event);
-    dispatch(setSelectUseCardIdTK(0));
+    dispatch(
+      setSelectUseCardTK({
+        cardName: "",
+        target: "",
+        cardId: 0,
+        description: "",
+        manaCost: 0,
+      })
+    );
   };
 
   // 타겟팅 버튼 함수들
@@ -110,10 +116,11 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     dispatch(setTargetTK(0));
   };
 
+  console.log(selectedUseCard);
   // USECARD FUNC
   const useCardHandler = () => {
     const data = {
-      cardId: selectedUseCardId,
+      cardId: selectedUseCard.cardId,
       targetPlayerId: selectedTarget,
     };
     setClicked(true); // 중복클릭 방지
@@ -123,7 +130,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // DISCARD FUNC
   const discardHanlder = () => {
     const data = {
-      cardId: selectedUseCardId,
+      cardId: selectedUseCard.cardId,
     };
     setClicked(true); // 중복클릭 방지
     sendStompMsgFunc(roomId, thisPlayer.playerId, "DISCARD", data);
@@ -166,12 +173,12 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // HEALER BTN(COMPONENT)
   const HealTargetBtns = playersList.map((value, index) => (
     <TurnHealBtn
-      id={String(value.playerId)}
       onClick={sendHealMsgHandler}
-      className={String(value.playerId)}
-      name={value.username}
+      value={value.playerId}
       disabled={clicked}
-      dead={value.team === thisPlayer.team}
+      team={value.team === thisPlayer.team}
+      onMouseOver={(event: any) => onMouseOverTargeting(event, value)}
+      onMouseLeave={onMouseLeaveTargeting}
     >
       {value.username}
     </TurnHealBtn>
@@ -187,6 +194,8 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       onMouseLeave={onMouseLeaveTargeting}
       onClick={useCardHandler}
       disabled={clicked}
+      value={value.playerId}
+      team={value.team === thisPlayer.team}
     >
       {value.username}
     </TargetBtn>
@@ -221,14 +230,14 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     },
     {
       cardId: 4,
-      target: "SELECT",
+      target: "ALLY",
       description: "hello",
       manaCost: 2,
       cardName: "mute",
     },
     {
       cardId: 2,
-      target: "SELECT",
+      target: "ENEMY",
       description: "hello",
       manaCost: 2,
       cardName: "beerMug",
@@ -258,7 +267,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
           <PlayerCards
             key={value.cardId}
             className={generateClassName(target, value.cardId, mouseIn)}
-            onMouseOver={(event: any) => onMouseOverCards(event, value.cardId)}
+            onMouseOver={(event: any) => onMouseOverCards(event, value)}
             onMouseLeave={onMouseLeaveCards}
             value={value}
           >
@@ -316,7 +325,15 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
                     <span>순서 확인</span>
                     <div className="turn__button--box">
                       {playersList.map((value) => (
-                        <TurnHealBtn dead={value.team === thisPlayer.team}>
+                        <TurnHealBtn
+                          key={value.playerId}
+                          value={value.playerId}
+                          team={value.team === thisPlayer.team}
+                          onMouseOver={(event: any) =>
+                            onMouseOverTargeting(event, value)
+                          }
+                          onMouseLeave={onMouseLeaveTargeting}
+                        >
                           {value.turnOrder}
                         </TurnHealBtn>
                       ))}
@@ -336,9 +353,12 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
               <span>순서확인</span>
               <div className="turn__button--box">
                 {playersList.map((value) => (
-                  <TurnHealBtn dead={value.team === thisPlayer.team}>
+                  <TurnOrderBtn
+                    value={value.playerId}
+                    team={value.team === thisPlayer.team}
+                  >
                     {value.turnOrder}
-                  </TurnHealBtn>
+                  </TurnOrderBtn>
                 ))}
               </div>
             </TurnTap>
