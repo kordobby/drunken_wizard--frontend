@@ -1,8 +1,8 @@
 import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 // hooks
 import { deleteCookie } from "../shared/Cookies";
+import { useModal } from "../hooks/useModal";
 // components
 import CreateRoom from "../Components/LobbyComponents/CreateRoom";
 import LobbyChat from "../Components/LobbyComponents/LobbyChat";
@@ -15,20 +15,18 @@ import {
   LogoutBox,
   LogoutButton,
   LogoutQ,
+  LogoutQ2,
+  LogoutQBox,
   ModalBack,
   ModalContainer,
   SideBar,
   WrapBack,
 } from "../Components/LobbyComponents/LobbyStyled";
-import LogoutBtn from "../elem/Button";
-// svgs
-import header from "../images/lobby/header.svg";
-import roomout from "../images/lobby/roomout.svg";
-import Back from "../images/background/lobbybackground.png";
-import { useModal } from "../hooks/useModal";
-
 import { ButtonBox } from "../Components/UserComponents/UserStyled";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
+import LogoutBtn from "../elem/Button";
+// images
+import Back from "../images/background/lobbybackground.png";
 
 const Lobby = () => {
   const navigate = useNavigate();
@@ -52,16 +50,17 @@ const Lobby = () => {
             onClick={(e: any) => {
               setlogoutMoadl(e);
             }}
-          >
-            <LogoutBox>
-              <LogoutQ>정말 로그아웃 하시겠습니까?</LogoutQ>
-              <span>로그인 화면으로 돌아갑니다.</span>
-              <ButtonBox>
-                <LogoutButton onClick={logoutHandler}>확인</LogoutButton>
-                <CancelButton onClick={setlogoutMoadl}>취소</CancelButton>
-              </ButtonBox>
-            </LogoutBox>
-          </ModalBack>
+          ></ModalBack>
+          <LogoutBox>
+            <LogoutQBox>
+              <LogoutQ>로그아웃 하시겠습니까?</LogoutQ>
+              <LogoutQ2>처음 로그인 화면으로 돌아갑니다.</LogoutQ2>
+            </LogoutQBox>
+            <ButtonBox>
+              <LogoutButton onClick={logoutHandler}>확인</LogoutButton>
+              <CancelButton onClick={setlogoutMoadl}>취소</CancelButton>
+            </ButtonBox>
+          </LogoutBox>
         </ModalContainer>
       )}
       {createRoomModal && <CreateRoom modalHandler={setCreateRoomMoadl} />}

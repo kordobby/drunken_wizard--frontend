@@ -42,15 +42,21 @@ const BtnTextSt = css`
 
 export const DefaultBtnL = styled.div<BtnSettings>`
   width: 17.18vw; // 330px;
-  height: 5.2083vw; // 100px;
+  height: 9.25vh; // 100px;
   background-size: cover;
   font-size: 1.875vw;
   color: var(--white);
+
   ${flex({ justify: "center", align: "center" })};
   background-image: url(${(props) =>
     props.disabled ? BtnInActive : BtnActive});
   span {
     ${BtnTextSt};
+  }
+  &:hover {
+    cursor: pointer;
+    filter: brightness(110%);
+    box-shadow: 0px 0px 10px 2px #fd6f33;
   }
 `;
 

@@ -19,6 +19,20 @@ import team2 from "../images/lobby/team2.jpg";
 import noteam from "../images/lobby/noteam.jpg";
 import roomoutBtn from "../images/buttons/BTN_roomout.png";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
+// css
+import {
+  Header,
+  MyTeamBox,
+  MyTeamHeader,
+  RoomoutBtn,
+  TeamWrap,
+  User1,
+  User2,
+  UserImg,
+  UserName,
+  VSImg,
+  WaitingWrap,
+} from "../Components/waitingRoomCP/WaitingRoomStyled";
 
 const WaitingRoom = () => {
   const API_URL = process.env.REACT_APP_API_URL;
@@ -36,6 +50,7 @@ const WaitingRoom = () => {
     onSuccess: (res) => {
       console.log(res);
       queryClient.invalidateQueries(["room_list"]);
+      socketUnsubscribe();
       navigate("/lobby");
     },
     onError: (error) => {
@@ -83,8 +98,22 @@ const WaitingRoom = () => {
             (data: any) => {
               const response = JSON.parse(data?.body);
               const res = JSON.parse(response?.content);
-              console.log(res);
+              console.log(res.player1.ready);
               setWaitingUsers(res);
+              if (
+                (res?.player1?.ready === true &&
+                  res?.player1?.id === Number(accessId)) ||
+                (res?.player2?.ready === true &&
+                  res?.player2?.id === Number(accessId)) ||
+                (res?.player3?.ready === true &&
+                  res?.player3?.id === Number(accessId)) ||
+                (res?.player4?.ready === true &&
+                  res?.player4?.id === Number(accessId))
+              ) {
+                setReadyUser(true);
+              } else {
+                setReadyUser(false);
+              }
             },
             { token: accessToken }
           );
@@ -129,20 +158,6 @@ const WaitingRoom = () => {
   const readyHandler = () => {
     gameReady();
   };
-  useEffect(() => {
-    if (
-      (waitingUsers?.player1?.ready === true &&
-        waitingUsers?.player1?.id === Number(accessId)) ||
-      (waitingUsers?.player2?.ready === true &&
-        waitingUsers?.player2?.id === Number(accessId)) ||
-      (waitingUsers?.player3?.ready === true &&
-        waitingUsers?.player3?.id === Number(accessId)) ||
-      (waitingUsers?.player4?.ready === true &&
-        waitingUsers?.player4?.id === Number(accessId))
-    ) {
-      setReadyUser(true);
-    } else setReadyUser(false);
-  }, [readyUser]);
 
   useEffect(() => {
     if (
@@ -159,7 +174,7 @@ const WaitingRoom = () => {
     waitingUsers?.player3?.ready,
     waitingUsers?.player4?.ready,
   ]);
-  console.log(readyUser);
+
   return (
     <>
       <Header>
@@ -209,7 +224,7 @@ const WaitingRoom = () => {
                 </User2>
               )}
             </MyTeamBox>
-            <img src={vs}></img>
+            <VSImg src={vs}></VSImg>
             <MyTeamBox>
               <MyTeamHeader>
                 <span>상대 팀</span>
@@ -260,102 +275,3 @@ const WaitingRoom = () => {
 };
 
 export default WaitingRoom;
-const Header = styled.header`
-  width: 100vw;
-  min-width: 70vw;
-  height: 150px;
-  display: flex;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image: url(${header});
-  ${flex({ align: "center", justify: "space-between" })}
-`;
-const RoomoutBtn = styled.button`
-  border: none;
-  background-color: transparent;
-  margin-left: 50px;
-  background-image: url(${roomoutBtn});
-  &:hover {
-    cursor: pointer;
-    filter: brightness(120%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
-  }
-`;
-const ReadyBtn = styled.button`
-  border: none;
-  background-color: transparent;
-  background-image: url(${roomoutBtn});
-  &:hover {
-    cursor: pointer;
-    filter: brightness(120%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
-  }
-`;
-const WaitingWrap = styled.div`
-  width: 100%;
-  height: 100vh;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image: url(${waitingBack});
-  ${flex({ align: "center", justify: "center", direction: "column" })}
-  z-index: -5;
-`;
-const TeamWrap = styled.div`
-  width: 70%;
-  height: 70%;
-
-  ${flex({ align: "center", justify: "space-between" })}
-`;
-const MyTeamBox = styled.div`
-  width: 460px;
-  height: 680px;
-  border-radius: 12px;
-  border: 2px solid #3f0984;
-  background-color: #ede4f2;
-  ${flex({ align: "center", direction: "column" })}
-`;
-const MyTeamHeader = styled.div`
-  width: 460px;
-  height: 100px;
-  border-radius: 10px 10px 0 0;
-  background-color: #3f0984;
-  span {
-    font-size: 36px;
-    color: white;
-  }
-
-  ${flex({ align: "center", justify: "center" })}
-`;
-const User1 = styled.div`
-  width: 280px;
-  height: 38%;
-  padding: 50px 150px 0 0;
-  /* background-color: red; */
-  ${flex({ align: "center", direction: "column" })}
-`;
-const User2 = styled.div`
-  width: 280px;
-  height: 38%;
-  padding: 0 0 0 150px;
-  /* background-color: blue; */
-  ${flex({ align: "center", direction: "column" })}
-`;
-const UserImg = styled.div`
-  width: 200px;
-  height: 200px;
-  border-radius: 100px;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-`;
-
-const UserName = styled.span`
-  width: 220px;
-  height: 50px;
-  font-size: 24px;
-  margin: -20px;
-  background-color: white;
-  ${flex({ align: "center", justify: "center" })}
-`;

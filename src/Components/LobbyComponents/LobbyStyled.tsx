@@ -15,15 +15,15 @@ export const WrapBack = styled.div`
   background-repeat: no-repeat;
 `;
 export const LobbyWrap = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 87.03vh;
   display: flex;
-  justify-content: stretch;
-  /* align-items: center; */
+  justify-content: center;
+  align-items: center;
 `;
 export const SideBar = styled.div`
-  width: 350px;
-  height: 940px;
+  width: 18.2vw;
+  height: 87.03vh;
   display: flex;
   justify-content: stretch;
   flex-direction: column;
@@ -32,8 +32,8 @@ export const SideBar = styled.div`
 `;
 
 export const ModalContainer = styled.div`
-  width: 100%;
-  height: 100vh;
+  width: 100vw;
+  height: 100%;
   ${flex({ align: "center", justify: "center" })}
   position: absolute;
 `;
@@ -43,7 +43,7 @@ export const ModalBack = styled.div<ModalDivProps>`
   height: 100vh;
   position: fixed;
   background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  box-shadow: 0 0.8vw 1.6vw 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(1px);
   ${flex({ align: "center", justify: "center" })}
@@ -51,50 +51,57 @@ export const ModalBack = styled.div<ModalDivProps>`
 `;
 
 export const LogoutBox = styled.div`
-  width: 540px;
-  height: 300px;
-  span {
-    font-size: 24px;
-  }
-  ${flex({ direction: "column", align: "center", justify: "space-between" })};
+  width: 28.125vw;
+  height: 27.77vh;
   outline: 2px solid #3f0984;
   outline-offset: -2px;
-  border-radius: 16px;
-  box-shadow: 0 0 30px rgba(30, 30, 30, 0.185);
-  box-sizing: border-box;
+  border-radius: 0.8vw;
+  box-shadow: 0 0 1.56vw rgba(30, 30, 30, 0.185);
   background-color: #fff;
   z-index: 10000;
 `;
 
+export const LogoutQBox = styled.div`
+  width: 28vw;
+  height: 18.51vh;
+  ${flex({ direction: "column" })};
+`;
+
 export const LogoutQ = styled.span`
-  font-size: 36px !important;
-  margin-top: 60px;
+  font-size: 1.875vw;
+  margin-top: 4.125vw;
+`;
+export const LogoutQ2 = styled.span`
+  font-size: 1.25vw;
+  margin-top: 1.125vw;
 `;
 
 export const ButtonBox = styled.div`
-  display: flex;
+  width: 28vw;
+  height: 9.25vh;
+  ${flex({ direction: "row" })}
 `;
 
 export const LogoutButton = styled.button`
-  width: 270px;
-  height: 100px;
-  font-size: 36px;
-  border-radius: 0 0 0 16px;
+  width: 14vw;
+  height: 9.25vh;
+  font-size: 1.875vw;
+  border-radius: 0 0 0 0.8vw;
   color: white;
   background-color: #3f0984;
   border-top: 2px solid #3f0984;
   border-right: 1px solid #3f0984;
-
   &:hover {
     filter: brightness(90%);
     cursor: pointer;
   }
 `;
+
 export const CancelButton = styled.button`
-  width: 270px;
-  height: 100px;
-  font-size: 36px;
-  border-radius: 0 0 16px 0;
+  width: 14vw;
+  height: 9.25vh;
+  font-size: 1.875vw;
+  border-radius: 0 0 0.8vw 0;
   color: #3f0984;
   background-color: white;
   border-top: 2px solid #3f0984;
@@ -108,19 +115,19 @@ export const CancelButton = styled.button`
 // Header
 export const Header = styled.header`
   width: 100vw;
-  min-width: 70vw;
-  height: 150px;
+  height: 12.96vh;
   display: flex;
   background-image: url(${header});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  position: relative;
   ${flex({ align: "center", justify: "space-between" })}
 `;
 export const LogoutBtn = styled.button`
   border: none;
   background-color: transparent;
-  margin-left: 50px;
+  margin-left: 2.6vw;
   &:hover {
     cursor: pointer;
     filter: brightness(120%);
@@ -130,114 +137,118 @@ export const LogoutBtn = styled.button`
 
 // lobby
 export const XBox = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 81.77vw;
+  height: 87.03vh;
   ${flex({ align: "center", justify: "center" })}
 `;
 export const XImg = styled.img`
+  width: 29.68vw;
+  height: 22.91vw;
   margin: auto;
 `;
 
 // creatRoom
 export const CreateRoomTitle = styled.div`
-  width: 1120px;
-  height: 120px;
+  width: 58.33vw;
+  height: 6.25vw;
   ${flex({ align: "center", justify: "center" })};
   border: none;
-  border-radius: 16px 16px 0 0;
+  border-radius: 0.83vw 0.83vw 0 0;
   box-shadow: 0 0 30px rgba(30, 30, 30, 0.185);
   background-color: #b68961;
   z-index: 10000;
 
   span {
-    font-size: 48px;
+    font-size: 2.5vw;
   }
 `;
 export const CreateRoomBox = styled.div`
-  width: 1120px;
-  height: 540px;
+  width: 58.33vw;
+  height: 28.125vw;
   ${flex({ direction: "column", align: "center" })};
   border: none;
-  border-radius: 16px;
-  box-shadow: 0 0 30px rgba(30, 30, 30, 0.185);
+  border-radius: 0.83vw;
+  box-shadow: 0 0 1.5625vw rgba(30, 30, 30, 0.185);
   box-sizing: border-box;
   background-color: #d6b27f;
   z-index: 10000;
 `;
 export const CreateInput = styled.input`
-  width: 940px;
-  height: 80px;
+  width: 48.95vw;
+  height: 4.16vw;
   border: none;
   z-index: 10000;
-  margin-top: 90px;
-  padding: 0 30px;
-  font-size: 36px;
-`;
-export const CreateButton = styled.button`
-  width: 330px;
-  height: 100px;
-  margin: 80px auto 70px auto;
-  border: none;
-  z-index: 10000;
-  &:hover {
-    cursor: pointer;
-    filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
-  }
+  margin: 4.68vw auto 2.68vw auto;
+  padding: 0 1.5625vw;
+  font-size: 1.87vw;
 `;
 
 // room
 export const PageButtonBox = styled.div`
-  height: 100%;
-  width: 100%;
+  width: 81.77vw;
+  height: 12.96vh;
   ${flex({ align: "center", justify: "center" })};
-  /* position: relative;
-  left: 10%;
-  bottom: -80%;
-  transform: translate(-50%, 0%); */
 `;
 
 export const PrevButton = styled.button`
-  width: 211px;
-  height: 83px;
-  margin-right: 10px;
+  width: 10.98vw;
+  height: 4.32vw;
+  margin-right: 0.52vw;
   border: none;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   &:hover {
     cursor: pointer;
     filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
+    box-shadow: 0px 0px 0.52vw 0.1vw #fd6f33;
   }
 `;
+
 export const NextButton = styled.button`
-  width: 211px;
-  height: 83px;
+  width: 10.98vw;
+  height: 4.32vw;
   border: none;
-  margin-left: 10px;
+  margin-left: 0.52vw;
+  margin-right: 0.8vw;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   &:hover {
     cursor: pointer;
     filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
+    box-shadow: 0px 0px 0.52vw 0.1vw #fd6f33;
   }
 `;
 
 export const RoomWrap = styled.div`
-  width: 100%;
-  height: 100%;
-  margin: 10px 100px;
+  width: 81.77vw;
+  height: 87.03vh;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+`;
+
+export const RoomBoxWrap = styled.div`
+  width: 79vw;
+  height: 71.5vh;
+  margin-top: 1.85vh;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
 `;
+
 export const RoomBox = styled.div<JoinRoomType>`
-  width: 720px;
-  height: 220px;
+  width: 37.5vw;
+  height: 21vh;
   background-color: #b68961;
-  border-radius: 24px;
-  margin: 15px;
+  border-radius: 1.25vw;
+  margin: 0.78vw;
   box-sizing: border-box;
   ${flex({ direction: "column" })};
-
   &:hover {
     filter: brightness(110%);
     box-shadow: 0px 0px 10px 2px #fd6f33;
@@ -245,32 +256,32 @@ export const RoomBox = styled.div<JoinRoomType>`
 `;
 
 export const RoomTitle = styled.div`
-  width: 720px;
-  height: 90px;
+  width: 37.5vw;
+  height: 8.33vh;
   box-sizing: border-box;
-  border-radius: 24px 24px 0 0;
+  border-radius: 1.25vw 1.25vw 0 0;
   background-color: #5d180a;
   ${flex}
   float: left;
 `;
-export const RoomNumber = styled.div`
-  width: 56px;
-  height: 56px;
-  margin: 0 20px;
-  border-radius: 28px;
-  background-color: rgba(217, 217, 217, 1);
-  box-shadow: 5px 5px 5px 0.1px gray inset;
-  ${flex({ justify: "center" })};
 
+export const RoomNumber = styled.div`
+  width: 2.91vw;
+  height: 2.91vw;
+  margin: 0 1vw;
+  border-radius: 1.458vw;
+  background-color: rgba(217, 217, 217, 1);
+  box-shadow: 0.26vw 0.26vw 0.26vw 0.1px gray inset;
+  ${flex({ justify: "center" })};
   span {
-    font-size: 36px;
+    font-size: 1.875vw;
     color: #5d180a;
   }
 `;
 export const RoomName = styled.span`
-  font-size: 36px;
+  font-size: 1.875vw;
   color: white;
-  text-shadow: 1px 1px 5px black;
+  text-shadow: 1px 1px 0.26vw black;
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
@@ -278,66 +289,63 @@ export const RoomName = styled.span`
 
 export const UsersWrap = styled.div`
   width: 100%;
-  height: 130px;
+  height: 12.03vh;
   ${flex};
 `;
 export const RoomUsers = styled.div`
-  width: 90px;
-  height: 90px;
-  margin: 0 5px;
+  width: 4.68vw;
+  height: 4.68vw;
+  margin: 0 0.26vw;
   ${flex({ align: "center" })};
-  border-radius: 45px;
-  box-shadow: 5px 5px 5px 0.1px black;
+  border-radius: 2.34vw;
+  box-shadow: 0.26vw 0.26vw 0.26vw 0.1px black;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
 export const ComeIn = styled.div`
-  width: 148px;
-  height: 70px;
-  margin: 0;
+  width: 7.7vw;
+  height: 6.48vh;
   span {
     color: white;
-    font-size: 24px;
+    font-size: 1.25vw;
     font-weight: 1000;
     margin: auto;
   }
 
   ${flex({ align: "center" })};
-  border-radius: 20px;
+  border-radius: 1.041vw;
   background-color: #d6b27f;
   /* box-shadow: 5px 5px 5px 0.1px black inset; */
 `;
 export const Impossible = styled.div`
-  width: 148px;
-  height: 70px;
-  margin: 0;
+  width: 7.7vw;
+  height: 6.48vh;
   span {
     color: white;
-    font-size: 24px;
+    font-size: 1.25vw;
     font-weight: 1000;
     margin: auto;
   }
-
   ${flex({ align: "center" })};
-  border-radius: 20px;
-  outline: 2px solid #d6b27f;
-  outline-offset: -2px;
+  border-radius: 1.041vw;
+  outline: 0.1vw solid #d6b27f;
+  outline-offset: -0.1vw;
   background-color: #b68961;
-  box-shadow: 5px 5px 5px 0.1px black inset;
+  box-shadow: 0.26vw 0.26vw 0.26vw 0.1px black inset;
 `;
 
 export const Team1 = styled.div`
   width: 30%;
   height: 100%;
-  margin: 0 0 0 15px;
+  margin: 0 0 0 0.78vw;
   display: flex;
   align-items: center;
 `;
 export const Team2 = styled.div`
   width: 30%;
   height: 100%;
-  margin: 0 10px 0 10px;
+  margin: 0 0.52vw 0 0.52vw;
   display: flex;
   align-items: center;
 `;
@@ -345,16 +353,16 @@ export const Team2 = styled.div`
 // chat
 
 export const Wrap = styled.div`
-  width: 330px;
-  margin-top: 10px;
+  width: 17.18vw;
+  margin-top: 0.92vh;
   ${flex({ direction: "column", align: "center" })}
 `;
 export const ProfileBox = styled.div`
-  width: 330px;
-  height: 145px;
-  margin-bottom: 10px;
+  width: 17.18vw;
+  height: 13.42vh;
+  margin-bottom: 0.92vh;
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: 0.625vw;
   background-color: #f3f1f5;
   box-shadow: 1px 1px 5px 0.1px black;
   ${flex({ align: "center" })};
@@ -364,55 +372,53 @@ export const Profile = styled.div`
 `;
 
 export const ProfileImg = styled.div`
-  width: 100px;
-  height: 100px;
-  margin-left: 15px;
-  border-radius: 50px;
+  width: 5.2vw;
+  height: 5.2vw;
+  margin-left: 0.78vw;
+  border-radius: 2.6vw;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
 
 export const ProfileSpan = styled.span`
-  margin: 10px 0px 10px 20px;
-  font-size: 24px;
+  margin: 0.52vw 0px 0.52vw 1vw;
+  font-size: 1.25vw;
   color: #5d180a;
-  /* background-color: rgba(183, 39, 39, 0.5); */
 `;
 
 export const UserBox = styled.div`
-  width: 330px;
-  height: 220px;
+  width: 17.18vw;
+  height: 20.37vh;
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: 0.625vw;
   overflow: auto;
   background-color: #f3f1f5;
   box-shadow: 1px 1px 5px 0.1px black;
   ${flex({ direction: "column", align: "left" })};
 `;
 export const Users = styled.div`
-  margin: 15px;
+  margin: 0.78vw;
   span {
-    font-size: 24px;
+    font-size: 1.25vw;
     color: #5d180a;
-    margin: auto auto auto 10px;
+    margin: auto auto auto 0.52vw;
   }
-  /* background-color: rgba(190, 97, 97, 0.5); */
   ${flex({ direction: "row", align: "left", justify: "center" })}
 `;
 
 export const UsersImg = styled.div`
-  width: 42px;
-  height: 42px;
-  border-radius: 21px;
+  width: 2.18vw;
+  height: 2.18vw;
+  border-radius: 1.09vw;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
 
 export const ChatWrap = styled.div`
-  width: 300px;
-  height: 340px;
+  width: 15.625vw;
+  height: 30.55vh;
   overflow-y: auto;
   /* background-color: rgba(202, 37, 37, 0.5); */
   ${flex({ direction: "column", align: "left" })}
@@ -420,26 +426,26 @@ export const ChatWrap = styled.div`
 `;
 
 export const ChatBox = styled.div`
-  width: 330px;
-  height: 420px;
-  margin: 10px 0 10px 0;
-  padding-top: 10px;
-  border-radius: 12px;
+  width: 17.18vw;
+  height: 38.88vh;
+  margin: 0.92vh 0 0.92vh 0;
+  padding-top: 0.92vh;
+  border-radius: 0.625vw;
   display: flex;
   align-items: center;
   background-color: #f3f1f5;
-  box-shadow: 1px 1px 5px 0.1px black;
+  box-shadow: 1px 1px 0.26vw 0.1px black;
   ${flex({ direction: "column", align: "left" })};
 `;
 
 export const MyUserBox = styled.div`
-  margin: 5px 0 0 80px;
+  margin: 0.46vh 0 0 0.46vh;
   ${flex({ direction: "column", align: "right" })};
 `;
 
 export const ChatUser = styled.div`
-  width: 205px;
-  margin: 5px 0;
+  width: 10.67vw;
+  margin: 0.46vh 0;
   span {
     margin: auto 0;
     color: rgba(0, 0, 0, 1);
@@ -448,8 +454,8 @@ export const ChatUser = styled.div`
   border-bottom: 2px solid black;
 `;
 export const MyChat = styled.div`
-  width: 220px;
-  margin: 5px 0;
+  width: 11.45vw;
+  margin: 0.46vh 0;
   span {
     margin: auto 0;
     color: #3f0984;
@@ -459,35 +465,35 @@ export const MyChat = styled.div`
 `;
 
 export const ChatImg = styled.div`
-  margin: 5px;
-  width: 36px;
-  height: 36px;
-  border-radius: 18px;
+  margin: 0.26vw;
+  width: 1.875vw;
+  height: 1.875vw;
+  border-radius: 0.937vw;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
 
 export const ChatMsg = styled.p`
-  margin: 10px 0;
-  width: 205px;
-  font-size: 18px;
+  margin: 0.92vh 0;
+  width: 10.67vw;
+  font-size: 0.937vw;
   color: rgba(0, 0, 0, 1);
 `;
 export const MyMsg = styled.p`
-  margin: 10px 0;
-  width: 205px;
-  font-size: 18px;
+  margin: 0.92vh 0;
+  width: 10.67vw;
+  font-size: 0.937vw;
   color: #3f0984;
 `;
 export const JoinUser = styled.div`
-  margin: 5px 0;
-  width: 300px;
-  height: 41px;
+  margin: 0.26vw 0;
+  width: 15.625vw;
+  height: 3.7vh;
   box-sizing: border-box;
-  border-radius: 10px;
+  border-radius: 0.52vw;
   span {
-    font-size: 14px;
+    font-size: 0.72vw;
   }
   background-color: #ede4f2;
   ${flex({ align: "center", justify: "center" })}
@@ -495,13 +501,13 @@ export const JoinUser = styled.div`
 `;
 
 export const Input = styled.input`
-  width: 290px;
-  height: 56px;
+  width: 15.1vw;
+  height: 5.18vh;
   margin: auto;
-  padding: 0 10px;
-  border-radius: 12px;
+  padding: 0 0.52vw;
+  border-radius: 0.625vw;
   color: #3f0984;
-  font-size: 18px;
+  font-size: 0.9375vw;
   background-color: #ede4f2;
 
   border: none;
@@ -511,9 +517,10 @@ export const Input = styled.input`
   }
   ::placeholder {
     background-image: url(${chatIcon});
+    background-size: contain;
     background-repeat: no-repeat;
-    background-position: 3px center;
+    background-position: 0.15vw center;
     text-align: left;
-    text-indent: 38px;
+    text-indent: 1.979vw;
   }
 `;

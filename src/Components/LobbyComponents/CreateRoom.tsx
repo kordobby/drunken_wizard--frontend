@@ -14,14 +14,12 @@ import apis from "../../shared/api/apis";
 // css
 import {
   CreateInput,
-  CreateButton,
   CreateRoomTitle,
   CreateRoomBox,
   ModalContainer,
   ModalBack,
 } from "./LobbyStyled";
 // svg
-import createButton from "../../images/buttons/BTN_createRoom.svg";
 import { DefaultBtnL } from "../Common/CommonStyle";
 
 const CreateRoom = ({ modalHandler }: ModalType) => {
@@ -91,7 +89,7 @@ const CreateRoom = ({ modalHandler }: ModalType) => {
               navigate("/waiting");
             }}
           >
-            방만들기
+            <span>방만들기</span>
           </DefaultBtnL>
         </CreateRoomBox>
         <ModalBack

@@ -34,6 +34,7 @@ import user from "../../images/lobby/noteam.jpg";
 const LobbyChat = () => {
   const API_URL = process.env.REACT_APP_API_URL;
   const iptRef = useRef<any>("");
+  const scrollRef = useRef<any>();
   const [semiMsgList, setSemiMsgList] = useState<any>();
   const [msgList, setMsgList] = useState<any[]>([]);
   const [userList, setUserList] = useState<any>();
@@ -43,6 +44,17 @@ const LobbyChat = () => {
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
   const accessNickname = getCookie("nickname");
+
+  // scroll
+  const scrollToMyRef = () => {
+    const scroll =
+      scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
+    scrollRef.current.scrollTo(0, scroll);
+  };
+
+  useEffect(() => {
+    scrollToMyRef();
+  }, [scrollToMyRef]);
 
   useEffect(() => {
     socketSubscribe();
@@ -74,20 +86,20 @@ const LobbyChat = () => {
             "/sub/public",
             (data: any) => {
               const response = JSON.parse(data.body);
-              console.log(data);
+              // console.log(data);
               setSemiMsgList(response);
               queryClient.invalidateQueries(["room_list"]);
               if (response.type === "JOIN") {
                 setUserList(response.connectedUsers);
                 // console.log(response.connectedUsers);
               }
-              // if (response.type === "LEAVE") {
-              //   const newUserList = userList.filter((v: any) => {
-              //     return v.id === Number(accessId) ? false : true;
-              //   });
-              //   console.log(newUserList);
-              //   setUserList(newUserList);
-              // }
+              if (response.type === "LEAVE") {
+                const newUserList = userList.filter((v: any) => {
+                  return v.id === Number(accessId) ? false : true;
+                });
+                console.log(newUserList);
+                setUserList(newUserList);
+              }
             },
             { token: accessToken }
           );
@@ -99,7 +111,7 @@ const LobbyChat = () => {
       console.log(error);
     }
   }, []);
-  console.log(userList);
+
   const socketUnsubscribe = () => {
     try {
       stompClient.unsubscribe(`/sub/public`);
@@ -144,10 +156,10 @@ const LobbyChat = () => {
       <ProfileBox>
         <ProfileImg style={{ backgroundImage: `url(${user})` }}></ProfileImg>
         <Profile>
-          <ProfileSpan style={{ fontSize: "24px" }}>
+          <ProfileSpan>
             {accessNickname}_[{accessId}]
           </ProfileSpan>
-          <ProfileSpan style={{ fontSize: "24px" }}>10승 11패</ProfileSpan>
+          <ProfileSpan>10승 11패</ProfileSpan>
         </Profile>
       </ProfileBox>
       <UserBox>
@@ -164,7 +176,7 @@ const LobbyChat = () => {
           })}
       </UserBox>
       <ChatBox>
-        <ChatWrap>
+        <ChatWrap ref={scrollRef}>
           {msgList?.map((msg: ChatType, idx: number) => {
             if (msg === undefined) {
               return null;
@@ -197,7 +209,7 @@ const LobbyChat = () => {
                   <ChatImg
                     style={{ backgroundImage: `url(${user})` }}
                   ></ChatImg>
-                  <span style={{ fontWeight: "500" }}>
+                  <span>
                     {msg?.nickname}_[{msg?.sender}]
                   </span>
                 </MyChat>
