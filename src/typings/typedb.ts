@@ -134,8 +134,13 @@ export interface UseCardProps {
 export interface TargetBtnProps {
   onMouseOver: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  team: boolean;
+  value: number;
 }
 
+export interface TurnOrderProps {
+  team: boolean;
+}
 export interface BtnSettings {
   disabled: boolean;
 }
@@ -170,6 +175,12 @@ export interface TwoBtnProps {
   lowerText: string;
   confirmFunc: () => void;
   cancelFunc: () => void;
+}
+
+export interface IngameAlertProps {
+  upperText: string;
+  middleText: string;
+  bottomText: string;
 }
 export interface Targeting {
   targeting: boolean;

@@ -15,15 +15,13 @@ interface ingameState {
     order: number[];
     nowPlayer: string;
     nowPlayerId: number;
-    cardCrave: string;
+    cardCrave: Card[];
     targetPlayer: number;
-    selectForUseCardId: number;
-    selectForUseCardName: string;
+    selectForUseCard: Card;
     selectableCnt: number;
     selectableCards: Card[];
     selectedDrawCard: number[];
     timer: string;
-    cardType: string;
     drawSelectCards: DrawCard[];
   };
 }
@@ -118,11 +116,15 @@ const initialState: ingameState = {
     gamOver: false, // 필요없을지도!
     nowPlayer: "",
     nowPlayerId: 4,
-    cardCrave: "",
+    cardCrave: [],
     targetPlayer: 0,
-    cardType: "",
-    selectForUseCardId: 0,
-    selectForUseCardName: "",
+    selectForUseCard: {
+      cardId: 0,
+      cardName: "",
+      description: "",
+      manaCost: 0,
+      target: "",
+    },
     drawSelectCards: [],
     selectableCards: [],
     selectableCnt: 2,
@@ -170,14 +172,11 @@ const gameSlice = createSlice({
     }, // use
     // 사용한 카드, 버려진 카드, 드로우 실패한 카드
     setCraveTK: (state, action) => {
-      state.game.cardCrave = action.payload;
+      state.game.cardCrave.unshift(action.payload);
     },
     // 마지막 타켓팅된 유저
     setTargetTK: (state, action) => {
       state.game.targetPlayer = action.payload;
-    },
-    setCardTypeTK: (state, action) => {
-      state.game.cardType = action.payload;
     },
     setTimerTK: (state, action) => {
       state.game.timer = action.payload;
@@ -185,11 +184,8 @@ const gameSlice = createSlice({
     setSelectableCardCnt: (state, action) => {
       state.game.selectableCnt = action.payload;
     },
-    setSelectUseCardIdTK: (state, action) => {
-      state.game.selectForUseCardId = action.payload;
-    },
-    setSelectUseCardNameTK: (state, action) => {
-      state.game.selectForUseCardName = action.payload;
+    setSelectUseCardTK: (state, action) => {
+      state.game.selectForUseCard = action.payload;
     },
     setDrawCardSelectTK: (state, action) => {
       state.game.drawSelectCards.push(action.payload);
@@ -209,7 +205,6 @@ const gameSlice = createSlice({
 });
 
 export const {
-  setCardTypeTK,
   setPlayOrderTK,
   setNowPlayerIdTK,
   setNowPlayerNameTK,
@@ -217,15 +212,14 @@ export const {
   setPlayerATK, // use
   setPlayerBTK, // use
   setPlayerCTK, // use
-  setCraveTK,
+  setCraveTK, // use
   setTargetTK, // use
   setTimerTK, // use
   cancelSelectDrawCardsTK, // use
   setSelectableCardCnt, //use
   setSelectableCardTK, // use
   setMyCardsUpdateTK, // use
-  setSelectUseCardIdTK, // use
-  setSelectUseCardNameTK,
+  setSelectUseCardTK, // use
   setDrawCardSelectTK, // use
   clearDrawCardsTK, // use
   updateMyCardsTK, // use
