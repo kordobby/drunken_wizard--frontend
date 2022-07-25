@@ -39,7 +39,7 @@ import PlayerStatus from "../Components/IngameComponents/MainField/PlayerStatus"
 import {
   StGameWrap,
   MainWrap,
-} from "../Components/IngameComponents/InGameStyled";
+} from "../Components/IngameComponents/InGameStyled/InGameStyled";
 import { playersSetting } from "../typings/typedb";
 
 const Ingame = () => {
@@ -446,7 +446,7 @@ const Ingame = () => {
 
   return (
     <>
-      <NoticeField status={status}></NoticeField>
+      <NoticeField></NoticeField>
       <StGameWrap>
         {status !== "" ? (
           <StartModal setStatus={setStatus}></StartModal>
@@ -454,7 +454,7 @@ const Ingame = () => {
           <>
             <MainWrap>
               <PlayerStatus></PlayerStatus>
-              <PlayerIcons></PlayerIcons>
+              <PlayerIcons status={status}></PlayerIcons>
               <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
             </MainWrap>
             <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>

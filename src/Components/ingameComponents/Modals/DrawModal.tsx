@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { DrawProps } from "../../../typings/typedb";
 
 /* CSS & SC */
-import { DrawModalWrap, DrawableCardsWrap } from "../InGameStyled";
+import { DrawModalWrap, DrawableCardsWrap } from "../InGameStyled/InGameStyled";
 import DrawableCards from "./DrawableCards";
 
 const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {

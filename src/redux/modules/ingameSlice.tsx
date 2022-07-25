@@ -1,13 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { FALSE } from "sass";
 import { playersSetting, Card, DrawCard } from "../../typings/typedb";
 
 interface ingameState {
   players: {
-    thisPlayer: playersSetting;
-    PlayerA: playersSetting;
     PlayerB: playersSetting;
     PlayerC: playersSetting;
+    PlayerA: playersSetting;
+    thisPlayer: playersSetting;
   };
   myCards: Card[];
   game: {
@@ -24,58 +23,19 @@ interface ingameState {
     selectableCards: Card[];
     selectedDrawCard: number[];
     timer: string;
+    cardType: string;
     drawSelectCards: DrawCard[];
   };
 }
 
 const initialState: ingameState = {
   players: {
-    thisPlayer: {
-      cardsOnHand: [],
-      charactorClass: "",
-      playerId: 0,
-      health: 5,
-      username: "hello",
-      dead: false,
-      mana: 5,
-      manaCostModifierDuration: 1,
-      mutedDuration: 2,
-      petrifiedDuration: 1,
-      poisonedDuration: 2,
-      shield: true,
-      sleepDuration: 2,
-      stunnedDuration: 2,
-      team: true,
-      turnOrder: 2,
-      weakDuration: 3,
-      damageModifierDuration: 2,
-    },
-    PlayerA: {
-      cardsOnHand: [],
-      charactorClass: "",
-      playerId: 0,
-      health: 5,
-      username: "hello",
-      dead: false,
-      mana: 5,
-      manaCostModifierDuration: 1,
-      mutedDuration: 2,
-      petrifiedDuration: 1,
-      poisonedDuration: 2,
-      shield: true,
-      sleepDuration: 2,
-      stunnedDuration: 2,
-      team: true,
-      turnOrder: 2,
-      weakDuration: 3,
-      damageModifierDuration: 2,
-    },
     PlayerB: {
       cardsOnHand: [],
-      charactorClass: "",
-      playerId: 0,
+      charactorClass: "WAROCK",
+      playerId: 3,
       health: 0,
-      username: "",
+      username: "enemyL",
       dead: false,
       mana: 0,
       manaCostModifierDuration: 0,
@@ -86,16 +46,16 @@ const initialState: ingameState = {
       sleepDuration: 0,
       stunnedDuration: 0,
       team: false,
-      turnOrder: 0,
+      turnOrder: 2,
       weakDuration: 0,
       damageModifierDuration: 0,
     },
     PlayerC: {
       cardsOnHand: [],
-      charactorClass: "",
-      playerId: 0,
+      charactorClass: "BLOODMAGE",
+      playerId: 1,
       health: 0,
-      username: "",
+      username: "enemyR",
       dead: false,
       mana: 0,
       manaCostModifierDuration: 0,
@@ -106,9 +66,49 @@ const initialState: ingameState = {
       sleepDuration: 0,
       stunnedDuration: 0,
       team: false,
-      turnOrder: 0,
+      turnOrder: 4,
       weakDuration: 0,
       damageModifierDuration: 0,
+    },
+    PlayerA: {
+      cardsOnHand: [],
+      charactorClass: "FARSEER",
+      playerId: 2,
+      health: 5,
+      username: "team",
+      dead: false,
+      mana: 5,
+      manaCostModifierDuration: 1,
+      mutedDuration: 2,
+      petrifiedDuration: 1,
+      poisonedDuration: 2,
+      shield: true,
+      sleepDuration: 2,
+      stunnedDuration: 2,
+      team: true,
+      turnOrder: 3,
+      weakDuration: 3,
+      damageModifierDuration: 2,
+    },
+    thisPlayer: {
+      cardsOnHand: [],
+      charactorClass: "HEALER",
+      playerId: 4,
+      health: 25,
+      username: "me",
+      dead: false,
+      mana: 5,
+      manaCostModifierDuration: 1,
+      mutedDuration: 2,
+      petrifiedDuration: 1,
+      poisonedDuration: 2,
+      shield: false,
+      sleepDuration: 2,
+      stunnedDuration: 2,
+      team: true,
+      turnOrder: 1,
+      weakDuration: 3,
+      damageModifierDuration: 2,
     },
   },
   myCards: [],
@@ -117,9 +117,10 @@ const initialState: ingameState = {
     order: [],
     gamOver: false, // 필요없을지도!
     nowPlayer: "",
-    nowPlayerId: 0,
+    nowPlayerId: 4,
     cardCrave: "",
     targetPlayer: 0,
+    cardType: "",
     selectForUseCardId: 0,
     selectForUseCardName: "",
     drawSelectCards: [],
@@ -175,6 +176,9 @@ const gameSlice = createSlice({
     setTargetTK: (state, action) => {
       state.game.targetPlayer = action.payload;
     },
+    setCardTypeTK: (state, action) => {
+      state.game.cardType = action.payload;
+    },
     setTimerTK: (state, action) => {
       state.game.timer = action.payload;
     },
@@ -205,6 +209,7 @@ const gameSlice = createSlice({
 });
 
 export const {
+  setCardTypeTK,
   setPlayOrderTK,
   setNowPlayerIdTK,
   setNowPlayerNameTK,

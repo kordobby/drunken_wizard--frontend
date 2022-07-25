@@ -1,5 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 
+export interface HeaderBtnProps {
+  text: string;
+  clickFunc: () => void;
+}
+
 export interface Card {
   cardId: number;
   cardName: string;
@@ -79,6 +84,15 @@ export interface NameTagsProps {
   left: number;
 }
 export interface NameTagProps {
+  dead: boolean;
+}
+
+export interface FlagProps {
+  status: string;
+  top: number;
+  left: number;
+}
+export interface TeamColorProps {
   team: boolean;
 }
 export interface StatBarProps {
@@ -146,4 +160,21 @@ export interface LogoProps {
 
 export interface DupCheckProps {
   dup: boolean;
+}
+
+export interface TwoBtnProps {
+  confirmText: string;
+  cancelText: string;
+  titleText: string;
+  upperText: string;
+  lowerText: string;
+  confirmFunc: () => void;
+  cancelFunc: () => void;
+}
+export interface Targeting {
+  targeting: boolean;
+}
+
+export interface BtnColorType {
+  color: string;
 }

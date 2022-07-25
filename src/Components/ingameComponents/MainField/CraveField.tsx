@@ -5,7 +5,7 @@ import { useAppSelector } from "../../../hooks/tsHooks";
 import { PlayerFieldProps } from "../../../typings/typedb";
 import { useParams } from "react-router-dom";
 /* CSS & SC */
-import { CraveWrap, CraveCards, Crave } from "../InGameStyled";
+import { CraveWrap, CraveCards, Crave } from "../InGameStyled/InGameStyled";
 import { DefaultBtnL } from "../../Common/CommonStyle";
 const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
   // const Crave = useAppSelector((state) => state.game.game.cardCrave);

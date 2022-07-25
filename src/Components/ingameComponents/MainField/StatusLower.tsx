@@ -2,7 +2,12 @@
 import { StatBarProps } from "../../../typings/typedb";
 
 /* CSS & SC */
-import { StatBarRow, StatIconBox, StatIcon, StatCnt } from "../InGameStyled";
+import {
+  StatBarRow,
+  StatIconBox,
+  StatIcon,
+  StatCnt,
+} from "../InGameStyled/InGameStyled";
 const StatusLower = ({
   manaCostModifierDuration, // 나중에 추가될 상태이상
   mutedDuration,

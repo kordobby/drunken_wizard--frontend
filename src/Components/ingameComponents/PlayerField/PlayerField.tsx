@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import {
   setSelectUseCardIdTK,
   setTargetTK,
+  setCardTypeTK,
 } from "../../../redux/modules/ingameSlice";
 
 /* Interface */
@@ -30,7 +31,13 @@ import {
   TargetBtn,
   TargetNullBtn,
   PlayerCards,
-} from "../InGameStyled";
+  DisCardBrn,
+  TargetBtnBox,
+  Divider,
+  TurnTap,
+  TurnHealBtn,
+  SendHealBtn,
+} from "../InGameStyled/InGameStyled";
 
 const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   sendStompMsgFunc,
@@ -80,6 +87,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     setTarget(cardId); // 마우스를 오버했을 때 해당 item의 값으로 target 변경
     setMouseIn(Boolean(event)); // 마우스 오버 확인
     dispatch(setSelectUseCardIdTK(cardId));
+    dispatch(setCardTypeTK("ENEMY"));
   };
 
   // 카드를 떠나면 선택된 카드 초기화
@@ -153,16 +161,17 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   };
 
   // HEALER BTN(COMPONENT)
-  const HealTargetBtns = playersList.map((value) => (
-    <button
+  const HealTargetBtns = playersList.map((value, index) => (
+    <TurnHealBtn
       id={String(value.playerId)}
       onClick={sendHealMsgHandler}
       className={String(value.playerId)}
       name={value.username}
       disabled={clicked}
+      dead={value.team === thisPlayer.team}
     >
       {value.username}
-    </button>
+    </TurnHealBtn>
   ));
 
   /* 카드사용 관련 함수들 */
@@ -181,17 +190,40 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   ));
 
   // TARGETING BTN(COMPONENT) :: ME / ALLY / ENEMY
-  const TargetNullBtns = ["Me", "Ally", "Enemy"].map((value, index: number) => (
-    <TargetNullBtn key={index} onClick={useCardHandler} disabled={clicked}>
+  const TargetNullBtns = ["ME", "ALLY", "ENEMY"].map((value, index: number) => (
+    <TargetNullBtn
+      key={index}
+      color={value}
+      onClick={useCardHandler}
+      disabled={clicked}
+    >
       {value}
     </TargetNullBtn>
   ));
 
+  const Cardss = [
+    {
+      cardId: 1,
+      target: "SELECT",
+      description: "hello",
+      manaCost: 2,
+      cardName: "hello",
+    },
+    {
+      cardId: 2,
+      target: "SELECT",
+      description: "hello",
+      manaCost: 2,
+      cardName: "hello",
+    },
+  ];
   return (
     <PlayerFieldWrap>
       <MyProfile></MyProfile>
       <CardsArea>
-        {thisPlayer.cardsOnHand.map((value: Card) => (
+        <Divider></Divider>
+        {/*thisPlayer.cardsOnHand */}
+        {Cardss.map((value: Card) => (
           <PlayerCards
             key={value.cardId}
             className={generateClassName(target, value.cardId, mouseIn)}
@@ -199,17 +231,17 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
             onMouseLeave={onMouseLeaveCards}
             value={value}
           >
-            <span>{value.cardName}</span>
+            {/* <span>{value.cardName}</span>
             <span>{value.manaCost}</span>
-            <span>{value.description}</span>
+            <span>{value.description}</span> */}
             {/* <span>{value.description}</span> */}
             {nowPlayer === thisPlayer.playerId &&
               value.target === "SELECT" &&
               mouseIn &&
               target === value.cardId && (
                 <>
-                  {TargetBtns}
-                  <button onClick={discardHanlder}>버리기</button>
+                  <TargetBtnBox>{TargetBtns}</TargetBtnBox>
+                  <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
                 </>
               )}
             {nowPlayer === thisPlayer.playerId &&
@@ -218,7 +250,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
               target === value.cardId && (
                 <>
                   {TargetNullBtns[0]}
-                  <button onClick={discardHanlder}>버리기</button>
+                  <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
                 </>
               )}
             {nowPlayer === thisPlayer.playerId &&
@@ -227,7 +259,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
               target === value.cardId && (
                 <>
                   {TargetNullBtns[1]}
-                  <button onClick={discardHanlder}>버리기</button>
+                  <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
                 </>
               )}
             {nowPlayer === thisPlayer.playerId &&
@@ -236,7 +268,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
               target === value.cardId && (
                 <>
                   {TargetNullBtns[2]}
-                  <button onClick={discardHanlder}>버리기</button>
+                  <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
                 </>
               )}
           </PlayerCards>
@@ -244,22 +276,45 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       </CardsArea>
       <div>
         <PlayerCtrlWrap>
-          {/* 힐러일 때 나오는 모달 창 */}
-          {nowPlayer === thisPlayer.playerId &&
-          thisPlayer.charactorClass === "HEALER" ? (
-            <button onClick={openHealModalHandler} disabled={disableHeal}>
-              heal
-            </button>
+          {thisPlayer.charactorClass === "HEALER" ? (
+            <>
+              <TurnTap>
+                {thisPlayer.playerId === nowPlayer && healCnt === true ? (
+                  <>
+                    <span>힐 대상 선택</span>
+                    <div className="turn__button--box">{HealTargetBtns}</div>
+                  </>
+                ) : (
+                  <>
+                    <span>순서 확인</span>
+                    <div className="turn__button--box">
+                      {playersList.map((value) => (
+                        <TurnHealBtn dead={value.team === thisPlayer.team}>
+                          {value.turnOrder}
+                        </TurnHealBtn>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </TurnTap>
+              <SendHealBtn
+                disabled={disableHeal}
+                onClick={openHealModalHandler}
+              >
+                Heal
+              </SendHealBtn>
+            </>
           ) : (
-            <></>
-          )}
-          {healCnt === true && (
-            <div>
-              {HealTargetBtns[0]}
-              {HealTargetBtns[1]}
-              {HealTargetBtns[2]}
-              {HealTargetBtns[3]}
-            </div>
+            <TurnTap>
+              <span>순서확인</span>
+              <div className="turn__button--box">
+                {playersList.map((value) => (
+                  <TurnHealBtn dead={value.team === thisPlayer.team}>
+                    {value.turnOrder}
+                  </TurnHealBtn>
+                ))}
+              </div>
+            </TurnTap>
           )}
         </PlayerCtrlWrap>
       </div>

@@ -12,7 +12,7 @@ import {
 } from "../../../redux/modules/ingameSlice";
 
 /* CSS & SC */
-import { DrawableCard } from "../InGameStyled";
+import { DrawableCard } from "../InGameStyled/InGameStyled";
 
 const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
   const [selected, setSelected] = useState(false);
