@@ -412,7 +412,6 @@ export const PlayerCards = styled.div<UseCardProps>`
   border-radius: 16px;
   box-sizing: border-box;
   background-color: white;
-  /* background-image: url(${(props) => matchCardImg(props.value.cardId)}); */
   ${flex({ direction: "column", justify: "center", align: "center" })}
   .active {
     background: yellow;
@@ -539,39 +538,70 @@ export const StModalWrap = styled.div`
   height: 100vh;
   background-color: var(--beige);
   ${flex({ direction: "column", justify: "center", align: "center" })}
-  z-index: 5;
-  position: fixed;
 `;
 
 /* Footer - PlayerField :: left to right*/
 
+export const DrawModalHeader = styled.div`
+  margin-top: 45px;
+  margin-bottom: 35px;
+  ${flex({ justify: "center", align: "center" })};
+  span {
+    margin-left: 20px;
+    color: var(--purple-1);
+    font-size: 36px;
+  }
+`;
+export const NoticeIcon = styled.div`
+  width: 60px;
+  height: 60px;
+  background-color: var(--purple-1);
+  border-radius: 60px;
+  font-size: 36px;
+  ${flex({ justify: "center", align: "center" })};
+  color: white;
+`;
+
 export const DrawModalWrap = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: 1;
-  background: rgba(255, 255, 255, 0.7);
-  ${flex({ align: "center", justify: "center" })};
+  width: 1300px;
+  height: 600px;
+  background: var(--white);
+  border: 1ps solid var(--purple-1);
+  border-radius: 32px;
+  box-sizing: border-box;
+  ${flex({ direction: "column", align: "center" })};
 `;
 
 export const DrawableCardsWrap = styled.div`
-  width: 100%;
-  height: 100%;
   ${flex({ align: "center", justify: "center" })};
+  width: 1300px;
+  height: 330px;
 `;
 
 export const DrawableCard = styled.div<DrawableCardSC>`
-  width: 100px;
-  height: 150px;
-  border: ${(props) => props.selected && "red"};
-  background-image: url(${(props) => matchCardImg(props.cardId)});
-  background-color: ${(props) => (props.selected ? "blue" : "yellow")};
+  width: 180px;
+  height: 320px;
+  border-radius: 10px;
+  border: ${(props) => props.selected && `6px solid var(--yellow)`};
+  background-image: url(${(props) => matchCardImg(props.cardName)});
+  background-size: cover;
   ${flex({ direction: "column", justify: "center" })};
   margin-right: 20px;
+  &:last-child {
+    margin-right: 0;
+  }
 `;
 
+export const PurpleConfirmBtn = styled.div`
+  width: 180px;
+  height: 60px;
+  border-radius: 60px;
+  margin-top: 30px;
+  ${flex({ direction: "column", justify: "center" })};
+  color: white;
+  font-size: 36px;
+  background-color: var(--purple-1);
+`;
 export const BeerIcons = styled.div`
   width: 11.271vw;
   height: 15.59vw;

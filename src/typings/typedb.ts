@@ -122,7 +122,7 @@ export interface DrawableCardsProps {
 }
 
 export interface DrawableCardSC {
-  cardId: number;
+  cardName: string;
   selected: boolean;
 }
 export interface UseCardProps {

@@ -42,12 +42,13 @@ const TwoBtnModal = ({
     />
 */
 
-const StModalWrap = styled.div`
+export const StModalWrap = styled.div`
   ${flex({ justify: "center", align: "center" })};
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: white;
-  /* opacity: 0.2; */
+  background: rgba(255, 255, 255, 0.3);
   position: fixed;
   z-index: 10;
 `;

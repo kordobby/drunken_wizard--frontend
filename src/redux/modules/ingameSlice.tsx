@@ -125,7 +125,7 @@ const initialState: ingameState = {
     selectForUseCardName: "",
     drawSelectCards: [],
     selectableCards: [],
-    selectableCnt: 0,
+    selectableCnt: 2,
     selectedDrawCard: [],
     timer: "",
   },
