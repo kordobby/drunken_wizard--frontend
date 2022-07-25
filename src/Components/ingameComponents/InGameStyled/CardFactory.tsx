@@ -4,55 +4,55 @@ import item from "../../../images/cardsBack/itemBack.png";
 import enchant from "../../../images/cardsBack/enchantBack.png";
 export default function matchCardImg(data: string) {
   switch (data) {
-    case "boulderStrike":
+    case "Boulder Strike":
       return attack;
-    case "deathRay":
+    case "Death Ray":
       return attack;
-    case "fireBall":
+    case "Fire Ball":
       return attack;
-    case "magicMissile":
+    case "Magic Missile":
       return attack;
-    case "manaSiphon":
+    case "Mana Siphon":
       return attack;
-    case "poisonArrow":
+    case "Poison Arrow":
       return attack;
-    case "mute":
+    case "Mute":
       return curse;
-    case "petrification":
+    case "Petrification":
       return curse;
-    case "weaknessExposure":
+    case "WeaknessExposure":
       return curse;
-    case "venom":
+    case "Venom":
       return curse;
-    case "yfeputs":
+    case "Yfeputs":
       return curse;
-    case "sleep":
+    case "Sleep":
       return curse;
-    case "magicAttenuation":
+    case "Magic Attenuation":
       return curse;
-    case "beerMug":
+    case "Beer Mug":
       return item;
-    case "leftOverOctopus":
+    case "Leftover Octopus":
       return item;
-    case "manaPotion":
+    case "Mana Potion":
       return item;
-    case "panacea":
+    case "Panacea":
       return item;
-    case "channelingMana":
+    case "Channeling Mana":
       return enchant;
-    case "heal":
+    case "Heal":
       return enchant;
-    case "partyHeal":
+    case "Party Heal":
       return enchant;
-    case "resistance":
+    case "Resistance":
       return enchant;
-    case "shield":
+    case "Shield":
       return enchant;
-    case "dispel":
+    case "Dispel":
       return enchant;
-    case "magicAmplification":
+    case "Magic Amplification":
       return enchant;
-    case "magicArmor":
+    case "Magic Armor":
       return enchant;
     default:
       return enchant;

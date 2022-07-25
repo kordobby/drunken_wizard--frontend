@@ -41,6 +41,7 @@ import {
   MainWrap,
 } from "../Components/IngameComponents/InGameStyled/InGameStyled";
 import { playersSetting } from "../typings/typedb";
+import TwoBtnModal from "../elem/TwoBtnModal";
 
 const Ingame = () => {
   /* useState */
@@ -446,6 +447,15 @@ const Ingame = () => {
 
   return (
     <>
+      {/* <TwoBtnModal
+        confirmText="확인"
+        cancelText="취소"
+        titleText="제목"
+        upperText="안녕"
+        lowerText="안녕안녕"
+        confirmFunc={clearActionTurnFunc}
+        cancelFunc={clearActionTurnFunc}
+      ></TwoBtnModal> */}
       <NoticeField></NoticeField>
       <StGameWrap>
         {status !== "" ? (

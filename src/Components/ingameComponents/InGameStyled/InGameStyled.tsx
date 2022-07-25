@@ -285,11 +285,10 @@ export const PlayerFieldWrap = styled.div`
 
 // PlayerField => [LEFT] PlayerIcon
 export const ProfileSizing = styled.div`
-  background-color: green;
   width: 800px;
   height: 330px;
   box-sizing: border-box;
-  margin-left: 1.5625vw;
+  margin-left: 15px;
   ${flex({ direction: "column", justify: "flex-start", align: "flex-start" })};
   position: relative;
   .profile__img {
@@ -374,7 +373,7 @@ export const TimerWrap = styled.div`
 
 // PlayerField => [CENTER] Cards
 export const CardsArea = styled.div`
-  ${flex({ align: "center" })};
+  ${flex({ justify: "flex-start", align: "center" })};
   .active {
   }
   .normal {
@@ -386,15 +385,9 @@ export const CardsArea = styled.div`
     /* background: yellow; */
   }
   transition: all 100ms ease-in-out;
-  height: 330px;
-  width: 910px;
   box-sizing: border-box;
-  background-color: blue;
-  /* .divider {
-    width: 5px;
-    height: 224px;
-    background-color: black;
-  } */
+  height: 330px;
+  width: 920px;
 `;
 
 export const Divider = styled.div`
@@ -402,7 +395,9 @@ export const Divider = styled.div`
   height: 280px;
   border-radius: 3px;
   background-color: var(--brown-1);
+  margin-left: 10px;
 `;
+
 export const PlayerCards = styled.div<UseCardProps>`
   height: 224px;
   width: 140px;
@@ -411,12 +406,11 @@ export const PlayerCards = styled.div<UseCardProps>`
   font-size: 15px;
   border-radius: 16px;
   box-sizing: border-box;
-  background-color: white;
-  ${flex({ direction: "column", justify: "center", align: "center" })}
+  background-image: url(${(props) => matchCardImg(props.value.cardName)});
+  ${flex({ direction: "column", justify: "center", align: "center" })};
   .active {
     background: yellow;
   }
-
   .normal {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
@@ -440,7 +434,6 @@ export const TurnOverBtn = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50px;
-  background-color: green;
   right: 10px;
   bottom: 10px;
   position: absolute;
@@ -451,7 +444,6 @@ export const TargetBtnBox = styled.div`
   height: 120px;
   ${flex({ justify: "space-between", align: "space-between" })};
   flex-wrap: wrap;
-  background-color: green;
   margin-bottom: 10px;
 `;
 

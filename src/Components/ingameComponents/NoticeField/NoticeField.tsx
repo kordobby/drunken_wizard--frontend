@@ -11,6 +11,7 @@ const NoticeField = () => {
   const navigate = useNavigate();
   const leaveRoomHandler = () => {
     navigate("/lobby");
+    // 해당 방에 대한 구독취소 걸어주기
   };
 
   return (

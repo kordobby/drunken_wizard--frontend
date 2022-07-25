@@ -136,9 +136,12 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     isMouseIn: boolean
   ) => {
     if (itemValue === target && isMouseIn) {
+      console.log(target);
+      console.log(isMouseIn);
       return "active";
     }
     if (itemValue === target || mouseIn) {
+      console.log("workin");
       return "normal";
     }
     return "default";
@@ -207,14 +210,42 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       target: "SELECT",
       description: "hello",
       manaCost: 2,
-      cardName: "hello",
+      cardName: "resistance",
+    },
+    {
+      cardId: 9,
+      target: "SELECT",
+      description: "hello",
+      manaCost: 2,
+      cardName: "shield",
+    },
+    {
+      cardId: 4,
+      target: "SELECT",
+      description: "hello",
+      manaCost: 2,
+      cardName: "mute",
     },
     {
       cardId: 2,
       target: "SELECT",
       description: "hello",
       manaCost: 2,
-      cardName: "hello",
+      cardName: "beerMug",
+    },
+    {
+      cardId: 14,
+      target: "SELECT",
+      description: "hello",
+      manaCost: 2,
+      cardName: "panacea",
+    },
+    {
+      cardId: 7,
+      target: "SELECT",
+      description: "hello",
+      manaCost: 2,
+      cardName: "fireBall",
     },
   ];
   return (
@@ -231,10 +262,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
             onMouseLeave={onMouseLeaveCards}
             value={value}
           >
-            {/* <span>{value.cardName}</span>
-            <span>{value.manaCost}</span>
-            <span>{value.description}</span> */}
-            {/* <span>{value.description}</span> */}
             {nowPlayer === thisPlayer.playerId &&
               value.target === "SELECT" &&
               mouseIn &&

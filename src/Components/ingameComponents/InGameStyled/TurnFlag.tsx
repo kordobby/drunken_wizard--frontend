@@ -21,6 +21,6 @@ export default function matchFlagImg(data: string) {
     case "CHANGETURN":
       return flagIcon;
     default:
-      return;
+      return flagIcon;
   }
 }
