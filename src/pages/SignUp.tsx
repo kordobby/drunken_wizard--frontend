@@ -21,6 +21,7 @@ import {
   SpeechBubble,
   ButtonBox,
   IdCheckButton,
+  Check,
 } from "../Components/UserComponents/UserStyled";
 
 import { DefaultBtn } from "../Components/Common/CommonStyle";
@@ -104,9 +105,13 @@ const SignUp = () => {
   const { mutate: signUpidCheck } = useMutation(apis.signUpIdCheckMT, {
     onMutate: () => {},
     onSuccess: (res) => {
-      setSignUpCheckId(true);
+      setSignUpCheckId(res.data);
       console.log(res);
-      alert("사용할 수 있는 ID입니다.");
+      if (res.data) {
+        alert("사용할 수 있는 ID입니다.");
+      } else {
+        alert("이미 존재하는 ID입니다.");
+      }
     },
     onError: (error: string) => {
       setSignUpCheckId(false);
@@ -260,6 +265,7 @@ const SignUp = () => {
                 </span>
               </SpeechBubble>
             )}
+            {nickname && <Check>✔</Check>}
           </InputBoxId>
         </label>
         <label id="email-label">
@@ -292,6 +298,7 @@ const SignUp = () => {
                 </span>
               </SpeechBubble>
             )}
+            {emailCheck(email) && <Check>✔</Check>}
           </InputBoxId>
         </label>
         <label id="password-label">
@@ -324,6 +331,7 @@ const SignUp = () => {
                 </span>
               </SpeechBubble>
             )}
+            {passwordCheckF(password) && <Check>✔</Check>}
           </InputBoxId>
         </label>
         <label id="password-check-label">
@@ -356,6 +364,7 @@ const SignUp = () => {
                 </span>
               </SpeechBubble>
             )}
+            {!mismatchError && <Check>✔</Check>}
           </InputBoxPw>
           {/* {signUpSuccess && <span>회원가입되었습니다! 로그인해주세요.</span>} */}
         </label>

@@ -43,7 +43,7 @@ const LogoutBtnSt = styled.button`
   &:hover {
     cursor: pointer;
     filter: brightness(120%);
-    /* box-shadow: 0px 0px 10px 2px #fd6f33; */
+    box-shadow: 0px 0px 10px 2px #fd6f33;
   }
 `;
 

@@ -20,8 +20,8 @@ export const LogLogo = styled.img.attrs({
   src: `${logoImg}`,
 })<LogoProps>`
   width: 36.51vw;
-  margin-top: ${(props) => props.top && `${props.top}vw`};
-  margin-bottom: ${(props) => props.bottom && `${props.bottom}vw`};
+  margin-top: ${(props) => props.top && `${props.top}vh`};
+  margin-bottom: ${(props) => props.bottom && `${props.bottom}vh`};
 `;
 
 export const InputBoxId = styled.div`
@@ -31,13 +31,13 @@ export const InputBoxId = styled.div`
 
 export const InputBoxPw = styled.div`
   position: relative;
-  margin-bottom: 3.645vw;
+  margin-bottom: 6.48vh;
 `;
 
 export const Input = styled.input`
   position: relative;
   width: 23.958vw;
-  height: 3.125vw;
+  height: 5.55vh;
   padding: 0px 1.041vw;
   box-sizing: border-box;
   border-radius: 0.625vw;
@@ -61,11 +61,18 @@ export const Input = styled.input`
   }
 `;
 
+export const Check = styled.span`
+  top: 0.8vw;
+  right: 1vw;
+  font-size: 0.93vw;
+  position: absolute;
+`;
+
 // signUp
 export const IdCheckButton = styled.button<DupCheckProps>`
   position: absolute;
   width: 4.6875vw;
-  height: 3.125vw;
+  height: 5.55vh;
   box-sizing: border-box;
   top: 0;
   right: 0;

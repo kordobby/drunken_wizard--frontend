@@ -15,6 +15,7 @@ import {
   PageButtonBox,
   PrevButton,
   RoomBox,
+  RoomBoxWrap,
   RoomName,
   RoomNumber,
   RoomTitle,
@@ -101,103 +102,108 @@ const Rooms = () => {
 
   return (
     <RoomWrap>
-      {roomList_query && roomList_query.content.length === 0 && (
+      {roomList_query && roomList_query.content.length === 0 ? (
         <XBox>
           <XImg src={x} />
         </XBox>
-      )}
-      {roomList_query &&
-        roomList_query.content?.map((room: any, i: any) => {
-          return (
-            <RoomBox
-              key={i}
-              onClick={() => {
-                if (room?.player4 !== "") {
-                  joinRoom({ id: accessId, roomId: room.roomId });
+      ) : (
+        <>
+          <RoomBoxWrap>
+            {roomList_query?.content?.map((room: any, i: any) => {
+              return (
+                <RoomBox
+                  key={i}
+                  onClick={() => {
+                    if (room?.player4 !== "") {
+                      joinRoom({ id: accessId, roomId: room.roomId });
+                    }
+                  }}
+                >
+                  <RoomTitle>
+                    <RoomNumber>
+                      <span>{i + 1}</span>
+                    </RoomNumber>
+                    <RoomName>{room?.roomName}</RoomName>
+                  </RoomTitle>
+                  <UsersWrap>
+                    <Team1>
+                      {room?.player1 ? (
+                        <RoomUsers
+                          style={{ backgroundImage: `url(${team1})` }}
+                        ></RoomUsers>
+                      ) : (
+                        <RoomUsers
+                          style={{ backgroundImage: `url(${noteam})` }}
+                        ></RoomUsers>
+                      )}
+
+                      {room?.player3 ? (
+                        <RoomUsers
+                          style={{ backgroundImage: `url(${team1})` }}
+                        ></RoomUsers>
+                      ) : (
+                        <RoomUsers
+                          style={{ backgroundImage: `url(${noteam})` }}
+                        ></RoomUsers>
+                      )}
+                    </Team1>
+                    <img src={vs} />
+                    <Team2>
+                      {room?.player2 ? (
+                        <RoomUsers
+                          style={{ backgroundImage: `url(${team2})` }}
+                        ></RoomUsers>
+                      ) : (
+                        <RoomUsers
+                          style={{ backgroundImage: `url(${noteam})` }}
+                        ></RoomUsers>
+                      )}
+                      {room?.player4 ? (
+                        <RoomUsers
+                          style={{ backgroundImage: `url(${team2})` }}
+                        ></RoomUsers>
+                      ) : (
+                        <RoomUsers
+                          style={{ backgroundImage: `url(${noteam})` }}
+                        ></RoomUsers>
+                      )}
+                    </Team2>
+                    <ComeIn>
+                      <span>입장하기</span>
+                    </ComeIn>
+                  </UsersWrap>
+                </RoomBox>
+              );
+            })}
+          </RoomBoxWrap>
+          <PageButtonBox>
+            {roomList_query?.content?.pageable?.totalPages < page ? (
+              <PrevButton
+                style={{ backgroundImage: `url(${left})` }}
+                onClick={() =>
+                  setPage((prevState) => Math.max(prevState - 1, 0))
                 }
-              }}
-            >
-              <RoomTitle>
-                <RoomNumber>
-                  <span>{i + 1}</span>
-                </RoomNumber>
-                <RoomName>{room?.roomName}</RoomName>
-              </RoomTitle>
-              <UsersWrap>
-                <Team1>
-                  {room?.player1 ? (
-                    <RoomUsers
-                      style={{ backgroundImage: `url(${team1})` }}
-                    ></RoomUsers>
-                  ) : (
-                    <RoomUsers
-                      style={{ backgroundImage: `url(${noteam})` }}
-                    ></RoomUsers>
-                  )}
+                disabled={page === 1}
+              ></PrevButton>
+            ) : (
+              <PrevButton
+                style={{ backgroundImage: `url(${leftend})` }}
+              ></PrevButton>
+            )}
 
-                  {room?.player3 ? (
-                    <RoomUsers
-                      style={{ backgroundImage: `url(${team1})` }}
-                    ></RoomUsers>
-                  ) : (
-                    <RoomUsers
-                      style={{ backgroundImage: `url(${noteam})` }}
-                    ></RoomUsers>
-                  )}
-                </Team1>
-                <img src={vs} />
-                <Team2>
-                  {room?.player2 ? (
-                    <RoomUsers
-                      style={{ backgroundImage: `url(${team2})` }}
-                    ></RoomUsers>
-                  ) : (
-                    <RoomUsers
-                      style={{ backgroundImage: `url(${noteam})` }}
-                    ></RoomUsers>
-                  )}
-                  {room?.player4 ? (
-                    <RoomUsers
-                      style={{ backgroundImage: `url(${team2})` }}
-                    ></RoomUsers>
-                  ) : (
-                    <RoomUsers
-                      style={{ backgroundImage: `url(${noteam})` }}
-                    ></RoomUsers>
-                  )}
-                </Team2>
-                <ComeIn>
-                  <span>입장하기</span>
-                </ComeIn>
-              </UsersWrap>
-            </RoomBox>
-          );
-        })}
-      <button onClick={leaveMessage}>리브리브</button>
-      <PageButtonBox>
-        {roomList_query?.content?.pageable?.totalPages < page ? (
-          <PrevButton
-            style={{ backgroundImage: `url(${left})` }}
-            onClick={() => setPage((prevState) => Math.max(prevState - 1, 0))}
-            disabled={page === 1}
-          ></PrevButton>
-        ) : (
-          <PrevButton
-            style={{ backgroundImage: `url(${leftend})` }}
-          ></PrevButton>
-        )}
-
-        {roomList_query?.content?.pageable?.totalPages > page ? (
-          <NextButton
-            style={{ backgroundImage: `url(${right})` }}
-            onClick={() => setPage((nextState) => nextState + 1)}
-          ></NextButton>
-        ) : (
-          <NextButton
-            style={{ backgroundImage: `url(${rightend})` }}
-          ></NextButton>
-        )}
-      </PageButtonBox>
+            {roomList_query?.content?.pageable?.totalPages > page ? (
+              <NextButton
+                style={{ backgroundImage: `url(${right})` }}
+                onClick={() => setPage((nextState) => nextState + 1)}
+              ></NextButton>
+            ) : (
+              <NextButton
+                style={{ backgroundImage: `url(${rightend})` }}
+              ></NextButton>
+            )}
+          </PageButtonBox>
+        </>
+      )}
     </RoomWrap>
   );
 };

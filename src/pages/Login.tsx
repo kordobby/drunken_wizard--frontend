@@ -1,5 +1,5 @@
 // package
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
@@ -25,6 +25,7 @@ import {
   InputBoxPw,
   SpeechBubble,
   LoginBtnBox,
+  Check,
 } from "../Components/UserComponents/UserStyled";
 import { DefaultBtn } from "../Components/Common/CommonStyle";
 
@@ -79,7 +80,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
 
   return (
     <BackWrap>
-      <LogLogo top={5.729} bottom={4.6875} />
+      <LogLogo top={10.18} bottom={8.33} />
       {/* <LogLogo src={logo} /> */}
       <form>
         <label id="user-id-label">
@@ -110,6 +111,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
                 </span>
               </SpeechBubble>
             )}
+            {username !== "" && <Check>✔</Check>}
           </InputBoxId>
         </label>
         <label id="password-label">
@@ -140,6 +142,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
                 </span>
               </SpeechBubble>
             )}
+            {passwordCheckF(password) && <Check>✔</Check>}
           </InputBoxPw>
         </label>
       </form>
