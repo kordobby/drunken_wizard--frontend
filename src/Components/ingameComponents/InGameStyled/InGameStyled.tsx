@@ -1,25 +1,26 @@
-import styled from "styled-components";
-import flex from "../GlobalStyled/flex";
+import styled, { keyframes } from "styled-components";
+import flex from "../../GlobalStyled/flex";
 
-import BeerIcon from "../../images/icons/BeerIcon.png";
-import InGameBackground from "../../images/background/IngameBackground.png";
-import healer from "../../Public/Images/healer.png";
-import dealer from "../../Public/Images/dealer.png";
-import ghost from "../../Public/Images/ghost.png";
-import wizard from "../../Public/Images/wizard.png";
-import what from "../../Public/Images/what.png";
-import blood from "../../Public/Images/blood.png";
+import table from "../../../images/playerfield/table.png";
+import BeerIcon from "../../../images/icons/BeerIcon.png";
+import InGameBackground from "../../../images/background/IngameBackground.png";
+import matchFlagImg from "./TurnFlag";
+import matchClassImg from "./MatchClass";
+import matchProfileImg from "./MatchProfile";
 import {
+  positionProps,
   StatIconsImgProps,
   IconsImgProps,
-  CardBg,
   DrawableCardSC,
   TargetBtnProps,
   UseCardProps,
   StatProps,
   NameTagProps,
   StatNumberProps,
-} from "../../typings/typedb";
+  NameTagsProps,
+  BtnColorType,
+  FlagProps,
+} from "../../../typings/typedb";
 import matchStatusImg from "./StatusIcon";
 import matchCardImg from "./CardFactory";
 
@@ -28,7 +29,7 @@ export const StGameWrap = styled.div`
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
-  padding-top: 6.25vw;
+  /* padding-top: 6.25vw; */
   background-image: url(${InGameBackground});
   z-index: -10;
   ${flex({ direction: "column", align: "center" })};
@@ -36,84 +37,108 @@ export const StGameWrap = styled.div`
 
 /* Notice Section */
 export const HeaderWrap = styled.div`
-  height: 6.25vw;
+  height: 120px;
   background-color: var(--grey);
   font-family: "국립박물관문화재단클래식M";
-  position: fixed;
-  top: 0;
   width: 100vw;
-  font-size: 3.33vh;
+  /* font-size: 3.33vh; */
   color: white;
-  ${flex({ justify: "center", align: "center" })};
+  box-sizing: border-box;
+  padding-left: 40px;
+  ${flex({ justify: "flex-start", align: "center" })};
 `;
 
 /* Main Section */
 export const MainWrap = styled.div`
   width: 100vw;
-  height: calc(100vw - 6.25vw);
+  height: 630px;
   box-sizing: border-box;
-  ${flex({ justify: "center", align: "center" })}
+  ${flex({ align: "center" })}
 `;
 
 // Main => PlayerIcons
 export const PlayerIconsFields = styled.div`
-  ${flex({ justify: "space-around", align: "center" })}
-`;
-
-export const Profiles = styled.div<CardBg>`
-  width: 20.833vw; // 320px;
-  height: 29.166vw; // 460px;
-  border-radius: 0.833vw; // 32px;
+  width: 1045px;
+  height: 630px;
   box-sizing: border-box;
-  margin-right: 1.56vw;
-  font-family: "국립박물관문화재단클래식M";
-  /* border: ${(props) => (props.playing ? `5px solid yellow` : "none")}; */
-  background-color: var(--white);
-  ${flex({ direction: "column", align: "center" })};
-`;
-
-export const PlayerProfileBox = styled.div`
-  width: 20.833vw;
-  height: 10.126vw;
-  ${flex({ align: "flex-start" })};
-  margin-bottom: 1.5625vw;
-`;
-
-// Main => PlayerIcons : 캐릭터 직업 이미지
-export const PlayerProfilesIcon = styled.div`
-  margin-top: 0.7812vw;
-  width: 9.791vw;
-  ${flex({ direction: "column", align: "center", justify: "flex-start" })};
-`;
-
-export const ProfilesImage = styled.div<IconsImgProps>`
-  position: relative;
-  width: 7.291vw;
-  height: 7.291vw;
-  border-radius: 7.291vw;
-  background-size: cover;
-  border: ${({ team }) =>
-    team ? `1px solid var(--white)` : `1px  solid var(--purple-1)`};
-  background-color: ${({ team }) =>
-    team ? `var(--purple-3)` : `var(--white)`};
-  filter: ${(props) => props.dead && `grayscale(100%);`};
-  -webkit-filter: ${(props) => props.dead && `grayscale(100%) blur(5px)`};
-  background-image: url(${({ job }) => (job ? matchClassImg(job) : null)});
-  ${flex({ justify: "center", align: "center" })}
+  padding-bottom: 10px;
+  ${flex({ justify: "center", align: "flex-end" })}
   position: relative;
 `;
 
-export const PlayerNameTag = styled.div<NameTagProps>`
+export const TeamPosition = styled.div<positionProps>`
+  z-index: ${({ layer }) => layer && `${layer}`};
   position: absolute;
-  height: 3.125vw;
-  width: 8.854vw;
-  border-radius: 8.854vw;
-  border: ${({ team }) =>
-    team ? `1px solid var(--white)` : `1px  solid var(--purple-1)`};
-  background-color: ${({ team }) =>
-    team ? `var(--purple-3)` : `var(--white)`};
-  ${flex({ justify: "center", align: "center" })};
-  bottom: -1.822vw;
+  bottom: ${({ top }) => top && `${top}px`};
+  left: ${({ left }) => left && `${left}px`};
+`;
+
+export const EnemyPosition = styled.div`
+  z-index: 1;
+  position: absolute;
+  background-color: blue;
+  bottom: 150px;
+  right: 100px;
+`;
+//ProfileIcons IconsImgProps
+export const PlayerIcon = styled.div<IconsImgProps>`
+  height: ${({ size }) => size && `${size}px`};
+  width: ${({ size }) => size && `${size}px`};
+  position: relative;
+  .wizard__img {
+    height: ${({ size }) => size && `${size}px`};
+    width: ${({ size }) => size && `${size}px`};
+    filter: ${(props) => props.dead && `grayscale(100%);`};
+    -webkit-filter: ${(props) => props.dead && `grayscale(100%)`};
+    background-size: cover;
+    background-position: center;
+    transform: ${({ reverse }) => (reverse ? "scaleX(-1)" : null)};
+    background-image: url(${({ job }) => (job ? matchClassImg(job) : null)});
+  }
+`;
+
+const nowPlaying = keyframes`
+  0% {
+    transform: translateY(0px);
+  } 25% {
+    transform: translateY(-8px);
+  }
+  50%{
+    transform: translateY(-12px);
+  } 75%{
+    transform: translateY(-8px);
+  }100%{
+    transform: translateY(0px);
+  }
+`;
+
+export const PlayingFlag = styled.div<FlagProps>`
+  animation: ${nowPlaying} 1s ease infinite;
+  background-image: url(${(props) => matchFlagImg(props.status)});
+  width: 61px;
+  height: 97px;
+  position: absolute;
+  top: ${({ top }) => top && `${top}px`};
+  left: ${({ left }) => left && `${left}px`};
+  &:nth-child(2) {
+    right: 150px;
+  }
+`;
+
+export const NameTag = styled.div<NameTagsProps>`
+  height: 50px;
+  width: 154px;
+  border-radius: 50px;
+  font-size: 24px;
+  border: 1px solid var(--white);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  ${flex({ align: "center", justify: "center" })};
+  background-color: ${({ dead }) =>
+    dead ? `var(--purple-1)` : `var(--brown-1)`};
+  position: absolute;
+  bottom: ${({ top }) => top && `${top}px`};
+  left: ${({ left }) => left && `${left}px`};
+  color: white;
 `;
 
 export const PlayerPointBox = styled.div`
@@ -155,26 +180,27 @@ export const StatBarTop = styled.div`
 
 // Main => PlayerIcons => PlayerStatBar
 export const StatBarRow = styled.div`
-  width: 20.833vw;
-  ${flex({})}
+  width: 396px;
+  height: 140px;
+  ${flex({ align: "flex-start" })}
   flex-wrap: wrap;
-  font-size: 6px;
+  /* font-size: 6px; */
 `;
+
 // Main => PlayerIcons => PlayerStatBar : Icons
-export const StatIconBox = styled.div`
-  width: 4.166vw;
-  height: 4.166vw;
+export const StatIconBox = styled.div<StatNumberProps>`
+  width: ${({ size }) => size && `${size}px`};
+  height: ${({ size }) => size && `${size}px`};
   position: relative;
-  margin-right: 0.78125vw;
-  margin-bottom: 0.52083vw;
+  margin-right: 10px;
   &:first-child {
-    margin-left: 3.125vw;
+    margin-left: 20px;
   }
   &:nth-child(4) {
-    margin-left: 0.78125vw;
+    margin-right: 100px;
   }
-  &:nth-child(8) {
-    margin-left: 3.125vw;
+  &:nth-child(5) {
+    margin-left: 20px;
   }
 `;
 
@@ -192,8 +218,8 @@ export const StatIcon = styled.div<StatIconsImgProps>`
   position: absolute;
   bottom: 0;
   left: 0;
-  width: ${({ size }) => size && `${size}vw`};
-  height: ${({ size }) => size && `${size}vw`};
+  width: ${({ size }) => size && `${size}px`};
+  height: ${({ size }) => size && `${size}px`};
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   background-image: url(${(props) => matchStatusImg(props.stat)});
   background-size: cover;
@@ -204,9 +230,9 @@ export const StatCnt = styled.div<StatNumberProps>`
   position: absolute;
   right: 0;
   top: 0;
-  width: 1.666vw;
+  width: ${({ size }) => size && `${size}px`};
+  height: ${({ size }) => size && `${size}px`};
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-  height: 1.666vw;
   border-radius: 1.666vw;
   background-color: var(--purple-3);
   ${flex({ justify: "center", align: "center" })}
@@ -249,7 +275,7 @@ export const CraveCards = styled.div`
 `;
 /* PlayerField */
 export const PlayerFieldWrap = styled.div`
-  height: 30.5vh;
+  height: 330px;
   width: 100vw;
   box-sizing: border-box;
   background-color: var(--brown-3);
@@ -259,10 +285,10 @@ export const PlayerFieldWrap = styled.div`
 
 // PlayerField => [LEFT] PlayerIcon
 export const ProfileSizing = styled.div`
-  width: 40.885vw;
-  height: 17.1875vw;
+  width: 800px;
+  height: 330px;
   box-sizing: border-box;
-  margin-left: 1.5625vw;
+  margin-left: 15px;
   ${flex({ direction: "column", justify: "flex-start", align: "flex-start" })};
   position: relative;
   .profile__img {
@@ -288,7 +314,7 @@ export const ProfileIcon = styled.div<IconsImgProps>`
   height: 9.895vw;
   width: 9.895vw;
   border-radius: 24.07vh;
-  background-image: url(${(props) => matchClassImg(props.job)});
+  background-image: url(${(props) => matchProfileImg(props.job)});
   background-size: cover;
   z-index: 5;
 `;
@@ -347,7 +373,7 @@ export const TimerWrap = styled.div`
 
 // PlayerField => [CENTER] Cards
 export const CardsArea = styled.div`
-  ${flex({ justify: "space-around", align: "flex-end" })};
+  ${flex({ justify: "flex-start", align: "center" })};
   .active {
   }
   .normal {
@@ -359,26 +385,32 @@ export const CardsArea = styled.div`
     /* background: yellow; */
   }
   transition: all 100ms ease-in-out;
-  height: 30.5vh;
   box-sizing: border-box;
-  padding-bottom: 1.0416vw;
+  height: 330px;
+  width: 920px;
+`;
+
+export const Divider = styled.div`
+  width: 3px;
+  height: 280px;
+  border-radius: 3px;
+  background-color: var(--brown-1);
+  margin-left: 10px;
 `;
 
 export const PlayerCards = styled.div<UseCardProps>`
-  height: 13.02vw;
-  width: 8.33vw;
-  margin: 0 0.781vw;
+  height: 224px;
+  width: 140px;
+  margin: 0 10px;
   background-size: cover;
   font-size: 15px;
-  border-radius: 0.833vw;
+  border-radius: 16px;
   box-sizing: border-box;
-  background-color: white;
-  /* background-image: url(${(props) => matchCardImg(props.value.cardId)}); */
-  ${flex({ direction: "column", justify: "flex-end", align: "center" })}
+  background-image: url(${(props) => matchCardImg(props.value.cardName)});
+  ${flex({ direction: "column", justify: "center", align: "center" })};
   .active {
     background: yellow;
   }
-
   .normal {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
@@ -392,10 +424,9 @@ export const PlayerCards = styled.div<UseCardProps>`
 `;
 
 export const PlayerCtrlWrap = styled.div`
-  position: relative;
   background-color: #8aa2a2;
-  height: calc(100vh - 70vh);
-  width: 50px;
+  height: 330px;
+  width: 185px;
   ${flex({ direction: "column", justify: "center", align: "center" })}
 `;
 
@@ -403,23 +434,94 @@ export const TurnOverBtn = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50px;
-  background-color: green;
   right: 10px;
   bottom: 10px;
   position: absolute;
 `;
 
-export const TargetBtn = styled.button<TargetBtnProps>`
-  width: 100px;
-  height: 50px;
-  border-radius: 50px;
-  background-color: var(--orange);
+export const TargetBtnBox = styled.div`
+  width: 120px;
+  height: 120px;
+  ${flex({ justify: "space-between", align: "space-between" })};
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 `;
-export const TargetNullBtn = styled.button`
-  width: 100px;
+
+export const TargetBtn = styled.button<TargetBtnProps>`
+  width: 55.71px;
+  height: 55.71px;
+  border-radius: 50px;
+  border: 1px solid black;
+  background-color: var(--white);
+  &:hover {
+    background-color: var(--orange);
+    border: 1px solid white;
+  }
+`;
+export const TargetNullBtn = styled.button<BtnColorType>`
+  width: 130px;
+  height: 50px;
+  border: ${(props) =>
+    props.color === "ENEMY"
+      ? `1px solid var(--brown-1)`
+      : `1px solid var(--purple-1)`};
+  /* border: 1px solid red; */
+  border-radius: 50px;
+  background-color: var(--white);
+  color: ${(props) =>
+    props.color === "ENEMY" ? `var(--brown-1)` : `var(--purple-1)`};
+  margin-bottom: 10px;
+  &:hover {
+    color: white;
+    background-color: ${(props) =>
+      props.color === "ENEMY" ? `var(--brown-1)` : `var(--purple-1)`};
+  }
+`;
+
+export const DisCardBrn = styled.button`
+  width: 130px;
+  height: 50px;
+  border: 1px solid red;
+  border-radius: 50px;
+  background-color: var(--white);
+`;
+
+export const TurnTap = styled.div`
+  width: 140px;
+  height: 158px;
+  ${flex({ direction: "column", align: "center", justify: "center" })};
+  color: white;
+  font-size: 18px;
+  background-color: var(--brown-2);
+  border-radius: 10px;
+  .turn__button--box {
+    margin-top: 10px;
+    width: 94px;
+    height: 94px;
+    ${flex({ justify: "space-between", align: "center" })};
+    flex-wrap: wrap;
+  }
+`;
+
+export const SendHealBtn = styled.button`
+  width: 136px;
   height: 50px;
   border-radius: 50px;
-  background-color: var(--orange);
+  color: ${(props) => (props.disabled ? "var(--white)" : "var(--purple-1)")};
+  background-color: ${(props) =>
+    props.disabled ? "var(--grey)" : "var(--white)"};
+  border: ${(props) => !props.disabled && `1px solid var(--purple-1)`};
+  margin-top: 13px;
+  font-size: 24px;
+`;
+
+export const TurnHealBtn = styled.button<NameTagProps>`
+  width: 42px;
+  height: 42px;
+  border-radius: 42px;
+  background-color: ${({ dead }) =>
+    dead ? `var(--purple-1)` : `var(--brown-1)`};
+  color: white;
 `;
 
 // 시작페이지 modal-bg
@@ -428,58 +530,70 @@ export const StModalWrap = styled.div`
   height: 100vh;
   background-color: var(--beige);
   ${flex({ direction: "column", justify: "center", align: "center" })}
-  z-index: 5;
-  position: fixed;
 `;
 
 /* Footer - PlayerField :: left to right*/
 
+export const DrawModalHeader = styled.div`
+  margin-top: 45px;
+  margin-bottom: 35px;
+  ${flex({ justify: "center", align: "center" })};
+  span {
+    margin-left: 20px;
+    color: var(--purple-1);
+    font-size: 36px;
+  }
+`;
+export const NoticeIcon = styled.div`
+  width: 60px;
+  height: 60px;
+  background-color: var(--purple-1);
+  border-radius: 60px;
+  font-size: 36px;
+  ${flex({ justify: "center", align: "center" })};
+  color: white;
+`;
+
 export const DrawModalWrap = styled.div`
-  width: 100vw;
-  height: 400px;
-  position: fixed;
-  border-radius: 30px;
-  top: 30%;
-  ${flex({ direction: "column", align: "center", justify: "center" })};
-  background-color: #ffffff;
+  width: 1300px;
+  height: 600px;
+  background: var(--white);
+  border: 1ps solid var(--purple-1);
+  border-radius: 32px;
+  box-sizing: border-box;
+  ${flex({ direction: "column", align: "center" })};
 `;
 
 export const DrawableCardsWrap = styled.div`
-  width: 100%;
-  height: 100%;
   ${flex({ align: "center", justify: "center" })};
+  width: 1300px;
+  height: 330px;
 `;
 
 export const DrawableCard = styled.div<DrawableCardSC>`
-  width: 100px;
-  height: 150px;
-  border: ${(props) => props.selected && "red"};
-  background-image: url(${(props) => matchCardImg(props.cardId)});
-  background-color: ${(props) => (props.selected ? "blue" : "yellow")};
+  width: 180px;
+  height: 320px;
+  border-radius: 10px;
+  border: ${(props) => props.selected && `6px solid var(--yellow)`};
+  background-image: url(${(props) => matchCardImg(props.cardName)});
+  background-size: cover;
   ${flex({ direction: "column", justify: "center" })};
   margin-right: 20px;
+  &:last-child {
+    margin-right: 0;
+  }
 `;
 
-/* character class images-matching func*/
-export default function matchClassImg(data: string) {
-  switch (data) {
-    case "HEALER":
-      return healer;
-    case "FARSEER":
-      return dealer;
-    case "ENCHANTER":
-      return ghost;
-    case "WAROCK":
-      return wizard;
-    case "INVOKER":
-      return what;
-    case "BLOODMAGE":
-      return blood;
-    default:
-      return;
-  }
-}
-
+export const PurpleConfirmBtn = styled.div`
+  width: 180px;
+  height: 60px;
+  border-radius: 60px;
+  margin-top: 30px;
+  ${flex({ direction: "column", justify: "center" })};
+  color: white;
+  font-size: 36px;
+  background-color: var(--purple-1);
+`;
 export const BeerIcons = styled.div`
   width: 11.271vw;
   height: 15.59vw;
@@ -504,4 +618,12 @@ export const StartDiv = styled.div`
   .start__notice--btm {
     margin-bottom: 1.5625vw;
   }
+`;
+
+export const TableImg = styled.img.attrs({
+  src: `${table}`,
+})`
+  width: 597px;
+  height: 293px;
+  z-index: 3;
 `;

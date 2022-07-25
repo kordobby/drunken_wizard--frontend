@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { StartModalProps } from "../../../typings/typedb";
 
 /* Components */
-import { BeerIcons, StartDiv } from "../InGameStyled";
+import { BeerIcons, StartDiv } from "../InGameStyled/InGameStyled";
 import { DefaultBtnL } from "../../Common/CommonStyle";
 
 const StartModal = ({ setStatus }: StartModalProps) => {

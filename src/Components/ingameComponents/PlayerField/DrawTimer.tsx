@@ -1,5 +1,5 @@
 /* CSS & SC */
-import { TimerWrap } from "../InGameStyled";
+import { TimerWrap } from "../InGameStyled/InGameStyled";
 
 const DrawTimer = () => {
   return (
