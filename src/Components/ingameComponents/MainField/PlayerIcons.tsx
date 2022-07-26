@@ -37,7 +37,12 @@ const PlayerIcons = ({ status }: HeaderProps) => {
             {nowPlayerId === teamPlayer.playerId && (
               <PlayingFlag status={status} top={-80} left={140}></PlayingFlag>
             )}
-            <NameTag dead={teamPlayer.team} top={0.5208} left={5.625}>
+            <NameTag
+              dead={teamPlayer.dead}
+              team={thisPlayer.team === teamPlayer.team}
+              top={0.5208}
+              left={5.625}
+            >
               {teamPlayer.username}
             </NameTag>
           </PlayerIcon>
@@ -53,7 +58,12 @@ const PlayerIcons = ({ status }: HeaderProps) => {
             {nowPlayerId === thisPlayer.playerId && (
               <PlayingFlag status={status} top={-80} left={170}></PlayingFlag>
             )}
-            <NameTag dead={thisPlayer.team} top={0.5208} left={4.427}>
+            <NameTag
+              dead={thisPlayer.dead}
+              team={thisPlayer.team}
+              top={0.5208}
+              left={4.427}
+            >
               {thisPlayer.username}
             </NameTag>
           </PlayerIcon>
@@ -74,7 +84,12 @@ const PlayerIcons = ({ status }: HeaderProps) => {
                 left={4.166}
               ></PlayingFlag>
             )}
-            <NameTag dead={enemyB.team} top={2.083} left={0}>
+            <NameTag
+              dead={enemyB.dead}
+              team={thisPlayer.team === enemyB.team}
+              top={2.083}
+              left={0}
+            >
               {enemyB.username}
             </NameTag>
           </PlayerIcon>
@@ -94,7 +109,12 @@ const PlayerIcons = ({ status }: HeaderProps) => {
                 left={7.2916}
               ></PlayingFlag>
             )}
-            <NameTag dead={enemyA.team} top={2.083} left={6.25}>
+            <NameTag
+              dead={enemyA.dead}
+              team={thisPlayer.team === enemyA.team}
+              top={2.083}
+              left={6.25}
+            >
               {enemyA.username}
             </NameTag>
           </PlayerIcon>

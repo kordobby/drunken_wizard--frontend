@@ -57,6 +57,7 @@ export interface HeaderProps {
 }
 
 export interface PlayerFieldProps {
+  status: string;
   sendStompMsgFunc: (
     roomId: string | undefined,
     sender: number,
@@ -90,6 +91,7 @@ export interface NameTagsProps {
   dead: boolean;
   top: number;
   left: number;
+  team: boolean;
 }
 export interface NameTagProps {
   dead: boolean;

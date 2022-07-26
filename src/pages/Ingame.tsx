@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
 
 /* Modules */
 import {
+  setRoomTitleTK,
   setCraveTK,
   setNowPlayerIdTK,
   setThisPlayerTK,
@@ -149,6 +150,7 @@ const Ingame = () => {
               const playerOrder = setPlayerOrder.map(
                 (value: playersSetting) => value.username
               );
+              dispatch(setRoomTitleTK(msgData.roomName));
               dispatch(setPlayOrderTK(playerOrder));
               dispatch(setNowPlayerIdTK(setPlayerOrder[0].playerId));
               dispatch(setNowPlayerNameTK(setPlayerOrder[0].username));
@@ -499,21 +501,21 @@ const Ingame = () => {
           bottomText="다음 턴으로 넘어갑니다."
         />
       )}
-      {craveCard.target === "SELECT" && status === "CARDUSESUCCESS" && (
+      {craveCard?.target === "SELECT" && status === "CARDUSESUCCESS" && (
         <AlertPopUp
           upperText={`${nowPlayerName}님이`}
           middleText={`${targetText}님에게`}
           bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
         />
       )}
-      {craveCard.target === "ALLY" && status === "CARDUSESUCCESS" && (
+      {craveCard?.target === "ALLY" && status === "CARDUSESUCCESS" && (
         <AlertPopUp
           upperText={`${nowPlayerName}님이`}
           middleText={`같은 팀에게`}
           bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
         />
       )}
-      {craveCard.target === "ENEMY" && status === "CARDUSESUCCESS" && (
+      {craveCard?.target === "ENEMY" && status === "CARDUSESUCCESS" && (
         <AlertPopUp
           upperText={`${nowPlayerName}님이`}
           middleText={`상대팀에게`}
@@ -522,17 +524,23 @@ const Ingame = () => {
       )}
       <StGameWrap>
         <StGameWrapFilter>
-          {status !== "" ? (
-            <StartModal setStatus={setStatus}></StartModal>
-          ) : (
+          {status === "" && <StartModal setStatus={setStatus}></StartModal>}
+
+          {status === "PRECHECK" && (
             <>
               <NoticeField></NoticeField>
               <MainWrap>
                 <PlayerStatus></PlayerStatus>
                 <PlayerIcons status={status}></PlayerIcons>
-                <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
+                <CraveField
+                  status={status}
+                  sendStompMsgFunc={sendStompMsgFunc}
+                ></CraveField>
               </MainWrap>
-              <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
+              <PlayerField
+                status={status}
+                sendStompMsgFunc={sendStompMsgFunc}
+              ></PlayerField>
               {drawModalOpen && (
                 <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
               )}
