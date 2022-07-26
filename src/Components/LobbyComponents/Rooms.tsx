@@ -42,12 +42,15 @@ import rightend from "../../images/buttons/BTN_rightend.svg";
 import left from "../../images/buttons/BTN_left.svg";
 import leftend from "../../images/buttons/BTN_leftend.svg";
 import { VSImg } from "../waitingRoomCP/WaitingRoomStyled";
+import { useModal } from "../../hooks/useModal";
+import OneBtnModal from "../../elem/OneBtnModal";
 
 const Rooms = () => {
   const queryClient = useQueryClient();
   const stompClient = stompJS.over(socket);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  const [roomCheckModal, setRoomCheckModal] = useModal(false);
   const accessId = getCookie("id");
   const accessName = getCookie("nickname");
 
@@ -107,6 +110,15 @@ const Rooms = () => {
 
   return (
     <RoomWrap>
+      {roomCheckModal && (
+        <OneBtnModal
+          headerText={"방이 가득 찼습니다!"}
+          upperText={"다른 방을 찾아주세요."}
+          lowerText={""}
+          confirmText={"확인"}
+          clickFunc={setRoomCheckModal}
+        />
+      )}
       {roomList_query && roomList_query.content.length === 0 ? (
         <XWrap>
           <XBox>
@@ -121,7 +133,7 @@ const Rooms = () => {
               return (
                 <RoomBox
                   key={i}
-                  onClick={() => {
+                  onClick={(e: any) => {
                     if (
                       room?.player1 === null ||
                       room?.player2 === null ||
@@ -129,6 +141,8 @@ const Rooms = () => {
                       room?.player4 === null
                     ) {
                       joinRoom({ id: accessId, roomId: room.roomId });
+                    } else {
+                      setRoomCheckModal(e);
                     }
                   }}
                 >

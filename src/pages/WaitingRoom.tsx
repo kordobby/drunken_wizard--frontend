@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
+// hooks
+import { useModal } from "../hooks/useModal";
 // stomp
 import stompJS from "stompjs";
 import sockJS from "sockjs-client";
@@ -12,7 +14,6 @@ import apis from "../shared/api/apis";
 import team1 from "../images/lobby/team1.jpg";
 import team2 from "../images/lobby/team2.jpg";
 import noteam from "../images/lobby/noteam.jpg";
-import roomoutBtn from "../images/buttons/BTN_roomout.png";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
 // css
 import {
@@ -21,7 +22,6 @@ import {
   Header,
   MyTeamBox,
   MyTeamHeader,
-  RoomoutBtn,
   SwitImg,
   TeamWrap,
   User1,
@@ -34,11 +34,15 @@ import {
   VSImg,
   WaitingWrap,
 } from "../Components/waitingRoomCP/WaitingRoomStyled";
+import HeaderBtn from "../elem/HeaderBtn";
+import TwoBtnModal from "../elem/TwoBtnModal";
+import HeaderRoomTitle from "../Components/Common/RoomTitle";
 
 const WaitingRoom = () => {
   const API_URL = process.env.REACT_APP_API_URL;
   const [waitingUsers, setWaitingUsers] = useState<any>();
   const [readyUser, setReadyUser] = useState<boolean>(false);
+  const [roomOutModal, setRoomOutModal] = useModal<boolean>(false);
   const navigate = useNavigate();
   const { roomId } = useParams();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
@@ -198,10 +202,20 @@ const WaitingRoom = () => {
 
   return (
     <>
+      {roomOutModal && (
+        <TwoBtnModal
+          confirmText={"확인"}
+          cancelText={"취소"}
+          titleText={"정말 방에서 나가시겠습니까?"}
+          upperText={"로비 화면으로 돌아갑니다."}
+          lowerText={""}
+          confirmFunc={leaveHandler}
+          cancelFunc={setRoomOutModal}
+        />
+      )}
       <Header>
-        <RoomoutBtn onClick={leaveHandler}>
-          <img src={roomoutBtn}></img>
-        </RoomoutBtn>
+        <HeaderBtn clickFunc={setRoomOutModal} text={"방나가기"} />
+        <HeaderRoomTitle text={`${roomId}`} />
       </Header>
       <WaitingWrap>
         {waitingUsers && (
@@ -216,7 +230,7 @@ const WaitingRoom = () => {
                     style={{ backgroundImage: `url(${team1})` }}
                   ></UserImg>
                   <UserName>
-                    {waitingUsers.player1.nickname}_[{waitingUsers.player1.id}]
+                    {waitingUsers.player1.nickname}[{waitingUsers.player1.id}]
                   </UserName>
                 </User1>
               ) : (
@@ -228,7 +242,7 @@ const WaitingRoom = () => {
                   <UserImg
                     style={{ backgroundImage: `url(${noteam})` }}
                   ></UserImg>
-                  <UserName>유저 없음</UserName>
+                  <UserName>???</UserName>
                 </User1>
               )}
               {waitingUsers.player3 ? (
@@ -237,7 +251,7 @@ const WaitingRoom = () => {
                     style={{ backgroundImage: `url(${team1})` }}
                   ></UserImg>
                   <UserName>
-                    {waitingUsers.player3.nickname}_[{waitingUsers.player3.id}]
+                    {waitingUsers.player3.nickname}[{waitingUsers.player3.id}]
                   </UserName>
                 </User2>
               ) : (
@@ -249,7 +263,7 @@ const WaitingRoom = () => {
                   <UserImg
                     style={{ backgroundImage: `url(${noteam})` }}
                   ></UserImg>
-                  <UserName>유저 없음</UserName>
+                  <UserName>???</UserName>
                 </User2>
               )}
             </MyTeamBox>
@@ -281,7 +295,7 @@ const WaitingRoom = () => {
                   <UserImg2
                     style={{ backgroundImage: `url(${noteam})` }}
                   ></UserImg2>
-                  <UserName2>유저 없음</UserName2>
+                  <UserName2>???</UserName2>
                 </User1>
               )}
               {waitingUsers.player4 ? (
@@ -290,7 +304,7 @@ const WaitingRoom = () => {
                     style={{ backgroundImage: `url(${team2})` }}
                   ></UserImg2>
                   <UserName2>
-                    {waitingUsers.player4.nickname}_[{waitingUsers.player4.id}]
+                    {waitingUsers.player4.nickname}[{waitingUsers.player4.id}]
                   </UserName2>
                 </User2>
               ) : (
@@ -302,7 +316,7 @@ const WaitingRoom = () => {
                   <UserImg2
                     style={{ backgroundImage: `url(${noteam})` }}
                   ></UserImg2>
-                  <UserName2>유저 없음</UserName2>
+                  <UserName2>???</UserName2>
                 </User2>
               )}
             </EnemyTeamBox>

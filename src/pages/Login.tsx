@@ -1,5 +1,5 @@
 // package
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
@@ -25,12 +25,13 @@ import {
   InputBoxPw,
   SpeechBubble,
   LoginBtnBox,
-  Check,
 } from "../Components/UserComponents/UserStyled";
 import { DefaultBtn, FormWrapSt } from "../Components/Common/CommonStyle";
 
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
+import { useModal } from "../hooks/useModal";
+import OneBtnModal from "../elem/OneBtnModal";
 
 const Login = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
   const [password, setPassword] = useInput<string>("");
   const [idFocus, setIdFocus] = useFocus<boolean>(false);
   const [pwFocus, setPwFocus] = useFocus<boolean>(false);
+  const [loginCheck, setLoginCheck] = useModal<boolean>(false);
   const [play] = useSound(btnSound);
 
   // mutate
@@ -59,13 +61,18 @@ const Login = ({ setLoginState }: loginStateProps) => {
         path: "/",
         expire: "after60m",
       });
+      setCookie("imageNum", res.data.imageNum, {
+        path: "/",
+        expire: "after60m",
+      });
       navigate("/lobby");
       setLoginState(true);
     },
-    onError: (error) => {
+    onError: (error, e: any) => {
       navigate("/login");
       setLoginState(false);
       console.log(error);
+      setLoginCheck(e);
     },
   });
 
@@ -80,9 +87,17 @@ const Login = ({ setLoginState }: loginStateProps) => {
 
   return (
     <BackWrap>
+      {loginCheck && (
+        <OneBtnModal
+          headerText={"로그인 양식이 잘못되었습니다!"}
+          upperText={"다시한번 확인해주세요."}
+          lowerText={""}
+          confirmText={"확인"}
+          clickFunc={setLoginCheck}
+        />
+      )}
       <FormWrapSt>
         <LogLogo top={5.729} bottom={4.6875} />
-        {/* <LogLogo src={logo} /> */}
         <form>
           <label id="user-id-label">
             <InputBoxId>

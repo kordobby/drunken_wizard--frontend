@@ -1,8 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, MouseEvent, SetStateAction } from "react";
 
 export interface HeaderBtnProps {
   text: string;
-  clickFunc: () => void;
+  clickFunc: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+export interface HeaderTitleProps {
+  text: string;
 }
 
 export interface OneBtnModalProps {
@@ -10,7 +13,7 @@ export interface OneBtnModalProps {
   upperText: string;
   lowerText: string;
   confirmText: string;
-  clickFunc: () => void;
+  clickFunc: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export interface Card {
@@ -193,7 +196,7 @@ export interface TwoBtnProps {
   upperText: string;
   lowerText: string;
   confirmFunc: () => void;
-  cancelFunc: () => void;
+  cancelFunc: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 export interface IngameAlertProps {

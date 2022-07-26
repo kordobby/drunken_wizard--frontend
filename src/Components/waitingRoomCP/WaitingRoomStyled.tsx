@@ -5,7 +5,6 @@ import waitingBack from "../../images/background/lobbyBackground.png";
 import header from "../../images/imgs/header.png";
 import vs2 from "../../images/waiting/vs2.png";
 import swit from "../../images/waiting/swit.png";
-import roomoutBtn from "../../images/buttons/BTN_roomout.png";
 
 export const Header = styled.header`
   width: 100vw;
@@ -16,19 +15,7 @@ export const Header = styled.header`
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url(${header});
-  ${flex({ align: "center", justify: "space-between" })}
-`;
-
-export const RoomoutBtn = styled.button`
-  border: none;
-  background-color: transparent;
-  margin-left: 2.6vw;
-  background-image: url(${roomoutBtn});
-  &:hover {
-    cursor: pointer;
-    filter: brightness(120%);
-    box-shadow: 0px 0px 0.52vw 2px #fd6f33;
-  }
+  ${flex({ align: "center", justify: "left" })}
 `;
 
 export const WaitingWrap = styled.div`

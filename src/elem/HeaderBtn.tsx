@@ -21,6 +21,7 @@ const Icon = styled.img.attrs({
 const HeaderBtnSt = styled.button`
   width: 12.708vw;
   height: 3.854vw;
+  margin-left: 2.1875vw;
   background-color: #564d4d;
   color: var(--white);
   font-size: 1.875vw;

@@ -73,7 +73,7 @@ const AlertTextBox = styled.div`
   }
 `;
 
-const ModalBtn = styled.div`
+const ModalBtn = styled.button`
   background-color: var(--purple-1);
   color: white;
   font-size: 1.875vw;
@@ -84,6 +84,10 @@ const ModalBtn = styled.div`
   ${flex({ justify: "center", align: "center" })};
   position: absolute;
   bottom: 0;
+  &:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+  }
 `;
 
 export default OneBtnModal;

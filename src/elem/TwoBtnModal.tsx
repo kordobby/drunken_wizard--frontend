@@ -56,8 +56,10 @@ export const StModalWrap = styled.div`
 const StModalBox = styled.div`
   width: 28.125vw;
   height: 15.625vw;
+  outline: 0.2vw solid var(--purple-1);
+  outline-offset: -0.2vw;
   background-color: white;
-  border: 0.10416vw solid var(--purple-1);
+  /* border: 0.10416vw solid var(--purple-1); */
   border-radius: 0.83vw;
 `;
 
@@ -84,21 +86,30 @@ const BtnBox = styled.div`
   font-size: 1.875vw;
 `;
 
-const ConfirmBtn = styled.div`
-  width: 14.0625vw;
+const ConfirmBtn = styled.button`
+  width: 14.5625vw;
   height: 5.208vw;
   background-color: var(--purple-1);
   border-bottom-left-radius: 0.729vw;
   ${flex({ justify: "center", align: "center" })};
   color: white;
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+  }
 `;
 
-const CancelBtn = styled.div`
-  width: 14.0625vw;
+const CancelBtn = styled.button`
+  width: 14.5625vw;
   height: 5.208vw;
   border-bottom-right-radius: 0.729vw;
   border: 1px solid var(--purple-1);
   color: var(--purple-1);
   ${flex({ justify: "center", align: "center" })};
+  &:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+  }
 `;
 export default TwoBtnModal;

@@ -44,7 +44,6 @@ const LobbyChat = () => {
   const queryClient = useQueryClient();
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
-  console.log(accessId.slice(-1));
   const accessNickname = getCookie("nickname");
 
   const { data: userHistory_query } = useQuery(
@@ -197,7 +196,7 @@ const LobbyChat = () => {
             );
           })}
       </UserBox>
-      <ChatBox>
+      <ChatBox ref={scrollRef}>
         <ChatWrap ref={scrollRef}>
           {msgList?.map((msg: ChatType, idx: number) => {
             if (msg === undefined) {

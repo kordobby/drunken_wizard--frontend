@@ -37,24 +37,14 @@ export const InputBoxId = styled.div`
 
 export const InputBoxPw = styled.div`
   position: relative;
-<<<<<<< HEAD
-  margin-bottom: 6.48vh;
-=======
   margin-bottom: 3.645vmin;
->>>>>>> team/yoon
 `;
 
 export const Input = styled.input`
   position: relative;
-<<<<<<< HEAD
-  width: 23.958vw;
-  height: 5.55vh;
-  padding: 0px 1.041vw;
-=======
   width: 23.958vmax;
   height: 3.125vmax;
   padding: 0px 1.041vmax;
->>>>>>> team/yoon
   box-sizing: border-box;
   border-radius: 0.625vmax;
   border-color: transparent;
@@ -87,16 +77,12 @@ export const Check = styled.span`
 // signUp
 export const IdCheckButton = styled.button<DupCheckProps>`
   position: absolute;
-<<<<<<< HEAD
-  width: 4.6875vw;
-  height: 5.55vh;
-=======
   width: 4.6875vmax;
   height: 3.125vmax;
->>>>>>> team/yoon
   box-sizing: border-box;
   top: 0;
   right: 0;
+  font-size: 0.9375vw;
   border-radius: 0 0.625vw 0.625vw 0;
   outline: 1px solid var(--orange);
   outline-offset: -1px;
@@ -129,6 +115,7 @@ export const SpeechBubble = styled.div`
   top: -0.5208vw;
   right: -13.02vw;
   box-sizing: border-box;
+
   .bubble__notice {
     font-size: 0.9375vw;
     font-family: "국립박물관문화재단클래식B";

@@ -407,8 +407,8 @@ export const VSImgRomm = styled.img.attrs({
   width: 3.75vw;
   height: 8.33vh;
 `;
-// chat
 
+// chat
 export const Wrap = styled.div`
   width: 17.18vw;
   margin-top: 0.92vh;
@@ -504,6 +504,7 @@ export const ChatUser = styled.div`
   width: 10.67vw;
   margin: 0.46vh 0;
   span {
+    font-size: 1.25vw;
     margin: auto 0;
     color: rgba(0, 0, 0, 1);
   }
@@ -514,6 +515,7 @@ export const MyChat = styled.div`
   width: 11.45vw;
   margin: 0.46vh 0 0.46vh 8vh;
   span {
+    font-size: 1.25vw;
     margin: auto 0;
     color: #3f0984;
   }

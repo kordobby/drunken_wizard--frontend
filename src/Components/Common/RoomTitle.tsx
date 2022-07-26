@@ -1,19 +1,21 @@
 import styled from "styled-components";
+import { HeaderTitleProps } from "../../typings/typedb";
 import flex from "../GlobalStyled/flex";
 
-const RoomTitle = () => {
+const HeaderRoomTitle = ({ text }: HeaderTitleProps) => {
   return (
     <RoomTitleSt>
-      <span className="room__title">방이름여깃다</span>
+      <span className="room__title">{text}</span>
     </RoomTitleSt>
   );
 };
 
-export default RoomTitle;
+export default HeaderRoomTitle;
 
 const RoomTitleSt = styled.div`
   width: 71.354vw;
   height: 3.854vw;
+  margin-left: 1.35vw;
   background-color: #564d4d;
   color: var(--white);
   font-size: 1.875vmax;

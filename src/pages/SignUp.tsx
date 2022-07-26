@@ -28,6 +28,8 @@ import { DefaultBtn } from "../Components/Common/CommonStyle";
 import { FormWrapSt } from "../Components/Common/CommonStyle";
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
+import OneBtnModal from "../elem/OneBtnModal";
+import { useModal } from "../hooks/useModal";
 
 const SignUp = () => {
   const [username, setUsername] = useState<string>("");
@@ -39,6 +41,8 @@ const SignUp = () => {
   const [signUpError, setSignUpError] = useState<string>("");
   const [signUpSuccess, setSignUpSuccess] = useState<boolean>(false);
   const [signUpCheckId, setSignUpCheckId] = useState<boolean>(false);
+  const [signUpCheckModal, setSignUpCheckModal] = useModal<boolean>(false);
+  const [signUpErrorModal, setSignUpErrorModal] = useModal<boolean>(false);
   // focus State
   const [idFocus, setIdFocus] = useFocus<boolean>(false);
   const [nickFocus, setNickFocus] = useFocus<boolean>(false);
@@ -104,13 +108,13 @@ const SignUp = () => {
   // id check mutate
   const { mutate: signUpidCheck } = useMutation(apis.signUpIdCheckMT, {
     onMutate: () => {},
-    onSuccess: (res) => {
+    onSuccess: (res, e: any) => {
       setSignUpCheckId(res.data);
       console.log(res);
       if (res.data) {
-        alert("사용할 수 있는 ID입니다.");
+        setSignUpCheckModal(e);
       } else {
-        alert("이미 존재하는 ID입니다.");
+        setSignUpErrorModal(e);
       }
     },
     onError: (error: string) => {
@@ -159,6 +163,24 @@ const SignUp = () => {
 
   return (
     <BackWrap>
+      {signUpCheckModal && (
+        <OneBtnModal
+          headerText={"사용가능한 ID입니다."}
+          upperText={""}
+          lowerText={""}
+          confirmText={"확인"}
+          clickFunc={setSignUpCheckModal}
+        />
+      )}
+      {signUpErrorModal && (
+        <OneBtnModal
+          headerText={"중복된 ID입니다."}
+          upperText={"다른 ID를 입력해주세요."}
+          lowerText={""}
+          confirmText={"확인"}
+          clickFunc={setSignUpErrorModal}
+        />
+      )}
       <FormWrapSt>
         <LogLogo top={5.208} bottom={2.604} />
         <form>
@@ -182,7 +204,7 @@ const SignUp = () => {
                     onClick={onIdCheck}
                     disabled={idCheckDisabled()}
                   >
-                    사용가능
+                    Check
                   </IdCheckButton>
                 ) : (
                   <IdCheckButton
@@ -190,7 +212,7 @@ const SignUp = () => {
                     onClick={onIdCheck}
                     disabled={idCheckDisabled()}
                   >
-                    중복확인
+                    Check
                   </IdCheckButton>
                 )}
                 {idCheck(username) &&
@@ -243,7 +265,7 @@ const SignUp = () => {
                 id="nickname"
                 name="nickname"
                 placeholder="NickName"
-                maxLength={13}
+                maxLength={10}
                 value={nickname}
                 onChange={setNickname}
                 onFocus={setNickFocus}

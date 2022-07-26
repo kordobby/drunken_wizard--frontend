@@ -14,6 +14,7 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
 
   const kakao_query = useQuery("kakao_login", apis.kakaoQR, {
     onSuccess: (res) => {
+      console.log(res);
       setCookie("token", res.headers.authorization, {
         path: "/",
         expire: "after60m",
@@ -30,7 +31,10 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
         path: "/",
         expire: "after60m",
       });
-
+      setCookie("imageNum", res.data.imageNum, {
+        path: "/",
+        expire: "after60m",
+      });
       setLoginState(true);
       navigate("/lobby");
     },

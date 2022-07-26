@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 /* CSS & SC */
 import { HeaderWrap } from "../InGameStyled/InGameStyled";
 import HeaderBtn from "../../../elem/HeaderBtn";
-import RoomTitle from "../../Common/RoomTitle";
+import HeaderRoomTitle from "../../Common/RoomTitle";
 const NoticeField = () => {
   // send StompMsg for leaveRoom
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const NoticeField = () => {
     <>
       <HeaderWrap>
         <HeaderBtn text="방 나가기" clickFunc={leaveRoomHandler} />
-        <RoomTitle />
+        <HeaderRoomTitle text={""} />
       </HeaderWrap>
     </>
   );
