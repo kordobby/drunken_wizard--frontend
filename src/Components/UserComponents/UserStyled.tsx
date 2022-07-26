@@ -10,14 +10,16 @@ import shadow from "../../images/splash/shadow.png";
 import { LogoProps, DupCheckProps } from "../../typings/typedb";
 
 export const BackWrap = styled.div`
-  ${flex({ direction: "column", align: "center" })};
+  ${flex({ direction: "column", justify: "center", align: "center" })};
   width: 100vw;
   height: 100vh;
   background-image: url(${introBg});
   background-position: center;
   background-size: cover;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   z-index: -5;
+  overflow: scroll;
+  position: fixed;
 `;
 
 export const InputBoxId = styled.div`
@@ -27,21 +29,21 @@ export const InputBoxId = styled.div`
 
 export const InputBoxPw = styled.div`
   position: relative;
-  margin-bottom: 3.645vw;
+  margin-bottom: 3.645vmin;
 `;
 
 export const Input = styled.input`
   position: relative;
-  width: 23.958vw;
-  height: 3.125vw;
-  padding: 0px 1.041vw;
+  width: 23.958vmax;
+  height: 3.125vmax;
+  padding: 0px 1.041vmax;
   box-sizing: border-box;
-  border-radius: 0.625vw;
+  border-radius: 0.625vmax;
   border-color: transparent;
   outline: 1px solid var(--orange);
   outline-offset: -1px;
   font-family: "국립박물관문화재단클래식M";
-  font-size: 2.22vh;
+  font-size: 1.25vmax;
   &::placeholder {
     font-size: 1.25vw;
     color: var(--grey);
@@ -60,8 +62,8 @@ export const Input = styled.input`
 // signUp
 export const IdCheckButton = styled.button<DupCheckProps>`
   position: absolute;
-  width: 4.6875vw;
-  height: 3.125vw;
+  width: 4.6875vmax;
+  height: 3.125vmax;
   box-sizing: border-box;
   top: 0;
   right: 0;
@@ -81,7 +83,8 @@ export const IdCheckButton = styled.button<DupCheckProps>`
 
 export const LoginBtnBox = styled.div`
   position: relative;
-  width: 22.8125vw;
+  width: 22.916vw;
+  height: 5.208vw;
   margin-bottom: 1.5625vw;
   ${flex({ justify: "space-between" })};
 `;
@@ -105,6 +108,7 @@ export const SpeechBubble = styled.div`
 export const ButtonBox = styled.div`
   ${flex({ justify: "space-between" })};
   width: 23.958vw;
+  margin-bottom: 2.77vw;
 `;
 
 // 전체화면 전환
@@ -236,6 +240,28 @@ const logoFlash = keyframes`
   }
 `;
 
+const enterGame = keyframes`
+0% {
+  opacity: 0;
+} 25% {
+  opacity: 0.5;
+} 50% {
+  opacity: 1;
+} 75% {
+  opacity: 0.5;
+} 100% {
+  opacity: 0;
+}
+`;
+
+export const DarkBg = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  position: fixed;
+  z-index: 100;
+`;
+
 const beerFlows = keyframes`
   0% {
     opacity: 1;
@@ -283,9 +309,8 @@ export const Shadow = styled.img.attrs({
 export const LogLogo = styled.img.attrs({
   src: `${logoImg}`,
 })<LogoProps>`
-  width: 36.51vw;
-  /* animation: ${logoFlash} 2s 3s ease; */
-  margin-top: ${(props) => props.top && `${props.top}vw`};
-  margin-bottom: ${(props) => props.bottom && `${props.bottom}vw`};
+  width: 36.51vmax;
+  margin-top: ${(props) => props.top && `${props.top}vmax`};
+  margin-bottom: ${(props) => props.bottom && `${props.bottom}vmax`};
   z-index: 5;
 `;

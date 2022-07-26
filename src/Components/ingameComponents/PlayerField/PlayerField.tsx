@@ -209,7 +209,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   /* 카드사용 관련 함수들 */
 
   // TARGETING BTN(COMPONENT) :: SELECT
-  const TargetBtns = playersList.map((value) => (
+  const TargetBtns = playersList.map((value, index) => (
     <TargetBtn
       key={value.playerId}
       onMouseOver={(event: any) => onMouseOverTargeting(event, value)}
@@ -219,7 +219,10 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       value={value.playerId}
       team={value.team === thisPlayer.team}
     >
-      {value.username}
+      {index === 0 && "E1"}
+      {index === 1 && "E2"}
+      {index === 2 && "AL"}
+      {index === 3 && "ME"}
     </TargetBtn>
   ));
 

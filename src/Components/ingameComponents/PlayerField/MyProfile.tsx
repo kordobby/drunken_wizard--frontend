@@ -106,14 +106,14 @@ const MyProfile = () => {
               <MyStatIcon>
                 <StatIcon
                   stat="sleepDuration"
-                  size={90}
+                  size={4.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
                   {mouseOver && <CoverIcon>수면</CoverIcon>}
                 </StatIcon>
-                <StatCnt size={40}>{thisPlayer.sleepDuration}</StatCnt>
+                <StatCnt size={2.083}>{thisPlayer.sleepDuration}</StatCnt>
               </MyStatIcon>
             )}
 
@@ -121,14 +121,14 @@ const MyProfile = () => {
               <MyStatIcon>
                 <StatIcon
                   stat="mutedDuration"
-                  size={90}
+                  size={4.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
                   {mouseOver && <CoverIcon>침묵</CoverIcon>}
                 </StatIcon>
-                <StatCnt size={40}>{thisPlayer.mutedDuration}</StatCnt>
+                <StatCnt size={2.083}>{thisPlayer.mutedDuration}</StatCnt>
               </MyStatIcon>
             )}
 
@@ -136,14 +136,14 @@ const MyProfile = () => {
               <MyStatIcon>
                 <StatIcon
                   stat="petrifiedDuration"
-                  size={90}
+                  size={4.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
                   {mouseOver && <CoverIcon>석화</CoverIcon>}
                 </StatIcon>
-                <StatCnt size={40}>{thisPlayer.petrifiedDuration}</StatCnt>
+                <StatCnt size={2.083}>{thisPlayer.petrifiedDuration}</StatCnt>
               </MyStatIcon>
             )}
 
@@ -151,14 +151,14 @@ const MyProfile = () => {
               <MyStatIcon>
                 <StatIcon
                   stat="poisonedDuration"
-                  size={90}
+                  size={4.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
                   {mouseOver && <CoverIcon>독</CoverIcon>}
                 </StatIcon>
-                <StatCnt size={40}>{thisPlayer.poisonedDuration}</StatCnt>
+                <StatCnt size={2.083}>{thisPlayer.poisonedDuration}</StatCnt>
               </MyStatIcon>
             )}
 
@@ -166,14 +166,14 @@ const MyProfile = () => {
               <MyStatIcon>
                 <StatIcon
                   stat="stunnedDuration"
-                  size={90}
+                  size={4.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
                   {mouseOver && <CoverIcon>기절</CoverIcon>}
                 </StatIcon>
-                <StatCnt size={40}>{thisPlayer.stunnedDuration}</StatCnt>
+                <StatCnt size={2.083}>{thisPlayer.stunnedDuration}</StatCnt>
               </MyStatIcon>
             )}
 
@@ -181,7 +181,7 @@ const MyProfile = () => {
               <MyStatIcon>
                 <StatIcon
                   stat={weakDurationFunc(thisPlayer.weakDuration)}
-                  size={90}
+                  size={4.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
@@ -200,7 +200,7 @@ const MyProfile = () => {
                     </>
                   )}
                 </StatIcon>
-                <StatCnt size={40}>{thisPlayer.weakDuration}</StatCnt>
+                <StatCnt size={2.083}>{thisPlayer.weakDuration}</StatCnt>
               </MyStatIcon>
             )}
 
@@ -208,7 +208,7 @@ const MyProfile = () => {
               <MyStatIcon>
                 <StatIcon
                   stat={damageModifierFunc(thisPlayer.damageModifierDuration)}
-                  size={90}
+                  size={4.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
@@ -236,7 +236,7 @@ const MyProfile = () => {
                     </>
                   )}
                 </StatIcon>
-                <StatCnt size={40}>{thisPlayer.weakDuration}</StatCnt>
+                <StatCnt size={2.083}>{thisPlayer.weakDuration}</StatCnt>
               </MyStatIcon>
             )}
 
@@ -244,7 +244,7 @@ const MyProfile = () => {
               <MyStatIcon>
                 <StatIcon
                   stat="shield"
-                  size={90}
+                  size={4.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}

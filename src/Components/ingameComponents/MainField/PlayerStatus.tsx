@@ -64,8 +64,8 @@ const PlayerStatus = () => {
 };
 
 const StatusBoxWrap = styled.div`
-  width: 396px;
-  height: 630px; // 210px;
+  width: 20.625vw;
+  height: 32.8125vw; // 210px;
   background-color: white;
   ${flex({ direction: "column" })};
   border: 1px solid black;
@@ -73,32 +73,32 @@ const StatusBoxWrap = styled.div`
 
 const StatusCard = styled.div<Targeting>`
   background-color: var(--white);
-  width: 396px;
-  height: 210px; // 210
+  width: 20.625vw;
+  height: 10.9375vw; // 210
   border-bottom: 1px solid black;
   box-shadow: ${({ targeting }) =>
-    targeting && `0px 0px 0px 10px var(--yellow) inset`};
+    targeting && `0px 0px 0px 0.5208vw var(--yellow) inset`};
 `;
 
 const StatusUpper = styled.div`
-  width: 396px;
-  height: 70px;
+  width: 20.625vw;
+  height: 3.6458vw;
   box-sizing: border-box;
-  padding-top: 10px;
-  padding-left: 20px;
+  padding-top: 0.5208vw;
+  padding-left: 1.0416vw;
   ${flex({})};
-  font-size: 24px;
+  font-size: 1.25vw;
   font-family: "국립박물관문화재단클래식M";
 `;
 
 const StatusNameTag = styled.div<TeamColorProps>`
-  width: 154px;
-  height: 50px;
-  border-radius: 50px;
+  width: 8.02vw;
+  height: 2.604vw;
+  border-radius: 2.604vw;
   border: 1px solid var(--white);
-  margin-right: 20px;
+  margin-right: 1.0416vw;
   color: white;
-  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0.104vw 0.208vw 0.208vw rgba(0, 0, 0, 0.25);
   background-color: ${({ team }) =>
     team ? "var(--purple-1)" : "var(--brown-1)"};
   ${flex({ justify: "center", align: "center" })};

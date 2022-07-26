@@ -46,86 +46,86 @@ const StatusLower = ({
   return (
     <StatBarRow>
       {sleepDuration !== 0 && (
-        <StatIconBox size={60}>
+        <StatIconBox size={3.125}>
           <StatIcon
             stat="sleepDuration"
             mouseOver={mouseOver}
-            size={54}
+            size={2.8125}
             onMouseOver={MouseOverFunc}
             onMouseLeave={MouseLeaveFunc}
           >
             {mouseOver && <CoverIcon>수면</CoverIcon>}
           </StatIcon>
-          <StatCnt size={24}>{sleepDuration}</StatCnt>
+          <StatCnt size={1.25}>{sleepDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {mutedDuration !== 0 && (
-        <StatIconBox size={60}>
+        <StatIconBox size={3.125}>
           <StatIcon
             stat="mutedDuration"
             mouseOver={mouseOver}
-            size={54}
+            size={2.8125}
             onMouseOver={MouseOverFunc}
             onMouseLeave={MouseLeaveFunc}
           >
             {mouseOver && <CoverIcon>침묵</CoverIcon>}
           </StatIcon>
-          <StatCnt size={24}>{mutedDuration}</StatCnt>
+          <StatCnt size={1.25}>{mutedDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {petrifiedDuration !== 0 && (
-        <StatIconBox size={60}>
+        <StatIconBox size={3.125}>
           <StatIcon
             stat="petrifiedDuration"
             mouseOver={mouseOver}
-            size={54}
+            size={2.8125}
             onMouseOver={MouseOverFunc}
             onMouseLeave={MouseLeaveFunc}
           >
             {mouseOver && <CoverIcon>석화</CoverIcon>}
           </StatIcon>
-          <StatCnt size={24}>{petrifiedDuration}</StatCnt>
+          <StatCnt size={1.25}>{petrifiedDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {poisonedDuration !== 0 && (
-        <StatIconBox size={60}>
+        <StatIconBox size={3.125}>
           <StatIcon
             stat="poisonedDuration"
             mouseOver={mouseOver}
-            size={54}
+            size={2.8125}
             onMouseOver={MouseOverFunc}
             onMouseLeave={MouseLeaveFunc}
           >
             {mouseOver && <CoverIcon>독</CoverIcon>}
           </StatIcon>
-          <StatCnt size={24}>{poisonedDuration}</StatCnt>
+          <StatCnt size={1.25}>{poisonedDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {stunnedDuration !== 0 && (
-        <StatIconBox size={60}>
+        <StatIconBox size={3.125}>
           <StatIcon
             stat="stunnedDuration"
             mouseOver={mouseOver}
-            size={54}
+            size={2.8125}
             onMouseOver={MouseOverFunc}
             onMouseLeave={MouseLeaveFunc}
           >
             {mouseOver && <CoverIcon>기절</CoverIcon>}
           </StatIcon>
-          <StatCnt size={24}>{stunnedDuration}</StatCnt>
+          <StatCnt size={1.25}>{stunnedDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {weakDuration !== 0 && (
-        <StatIconBox size={60}>
+        <StatIconBox size={3.125}>
           <StatIcon
             stat={weakDurationFunc(weakDuration)}
             mouseOver={mouseOver}
-            size={54}
+            size={2.8125}
             onMouseOver={MouseOverFunc}
             onMouseLeave={MouseLeaveFunc}
           >
@@ -143,16 +143,16 @@ const StatusLower = ({
               </>
             )}
           </StatIcon>
-          <StatCnt size={24}>{Math.abs(weakDuration)}</StatCnt>
+          <StatCnt size={1.25}>{Math.abs(weakDuration)}</StatCnt>
         </StatIconBox>
       )}
 
       {damageModifierDuration !== 0 && (
-        <StatIconBox size={60}>
+        <StatIconBox size={3.125}>
           <StatIcon
             stat={damageModifierFunc(damageModifierDuration)}
             mouseOver={mouseOver}
-            size={54}
+            size={2.8125}
             onMouseOver={MouseOverFunc}
             onMouseLeave={MouseLeaveFunc}
           >
@@ -178,16 +178,16 @@ const StatusLower = ({
               </>
             )}
           </StatIcon>
-          <StatCnt size={24}>{Math.abs(damageModifierDuration)}</StatCnt>
+          <StatCnt size={1.25}>{Math.abs(damageModifierDuration)}</StatCnt>
         </StatIconBox>
       )}
 
       {shield && (
-        <StatIconBox size={60}>
+        <StatIconBox size={3.125}>
           <StatIcon
             stat="shield"
             mouseOver={mouseOver}
-            size={54}
+            size={2.8125}
             onMouseOver={MouseOverFunc}
             onMouseLeave={MouseLeaveFunc}
           >

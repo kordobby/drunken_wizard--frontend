@@ -520,13 +520,13 @@ const Ingame = () => {
           bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
         />
       )}
-      <NoticeField></NoticeField>
       <StGameWrap>
         <StGameWrapFilter>
           {status !== "" ? (
             <StartModal setStatus={setStatus}></StartModal>
           ) : (
             <>
+              <NoticeField></NoticeField>
               <MainWrap>
                 <PlayerStatus></PlayerStatus>
                 <PlayerIcons status={status}></PlayerIcons>

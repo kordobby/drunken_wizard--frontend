@@ -54,49 +54,49 @@ export const StModalWrap = styled.div`
 `;
 
 const StModalBox = styled.div`
-  width: 540px;
-  height: 300px;
+  width: 28.125vw;
+  height: 15.625vw;
   background-color: white;
-  border: 2px solid var(--purple-1);
-  border-radius: 16px;
+  border: 0.10416vw solid var(--purple-1);
+  border-radius: 0.83vw;
 `;
 
 const ContentBox = styled.div`
-  width: 540px;
-  height: 200px;
+  width: 28.125vw;
+  height: 10.416vw;
   ${flex({ direction: "column", justify: "center", align: "center" })};
   .modal__text {
-    font-size: 24px;
-    margin-top: 18px;
+    font-size: 1.25vw;
+    margin-top: 0.9375vw;
   }
 `;
 
 const ModalTitle = styled.span`
-  font-size: 36px;
+  font-size: 1.875vw;
   color: var(--purple-1);
-  margin-bottom: 16px;
+  margin-bottom: 0.833vw;
 `;
 
 const BtnBox = styled.div`
-  width: 540px;
-  height: 100px;
+  width: 28.125vw;
+  height: 5.208vw;
   ${flex({})};
-  font-size: 36px;
+  font-size: 1.875vw;
 `;
 
 const ConfirmBtn = styled.div`
-  width: 270px;
-  height: 100px;
+  width: 14.0625vw;
+  height: 5.208vw;
   background-color: var(--purple-1);
-  border-bottom-left-radius: 14px;
+  border-bottom-left-radius: 0.729vw;
   ${flex({ justify: "center", align: "center" })};
   color: white;
 `;
 
 const CancelBtn = styled.div`
-  width: 270px;
-  height: 100px;
-  border-bottom-right-radius: 14px;
+  width: 14.0625vw;
+  height: 5.208vw;
+  border-bottom-right-radius: 0.729vw;
   border: 1px solid var(--purple-1);
   color: var(--purple-1);
   ${flex({ justify: "center", align: "center" })};

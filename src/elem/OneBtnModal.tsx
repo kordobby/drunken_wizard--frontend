@@ -1,10 +1,7 @@
 import styled from "styled-components";
 import flex from "../Components/GlobalStyled/flex";
 import { OneBtnModalProps } from "../typings/typedb";
-import {
-  NoticeIcon,
-  DrawModalHeader,
-} from "../Components/IngameComponents/InGameStyled/InGameStyled";
+import { NoticeIcon } from "../Components/IngameComponents/InGameStyled/InGameStyled";
 
 const OneBtnModal = ({
   headerText,
@@ -17,12 +14,12 @@ const OneBtnModal = ({
     <StAlertWrap>
       <StAlertBox>
         <NoticeIcon>!</NoticeIcon>
-        <span className="modal__title">asdfasf</span>
+        <span className="modal__title">{headerText}</span>
         <AlertTextBox>
-          <span>asdf</span>
-          <span>asdf</span>
+          <span>{upperText}</span>
+          <span>{lowerText}</span>
         </AlertTextBox>
-        <ModalBtn onClick={clickFunc}>확인</ModalBtn>
+        <ModalBtn onClick={clickFunc}>{confirmText}</ModalBtn>
       </StAlertBox>
     </StAlertWrap>
   );
@@ -50,40 +47,40 @@ const StAlertWrap = styled.div`
 
 const StAlertBox = styled.div`
   ${flex({ direction: "column", justify: "flex-start", align: "center" })};
-  width: 800px;
-  height: 420px;
+  width: 41.66vw;
+  height: 21.875vw;
   background-color: white;
-  font-size: 36px;
-  border: 2px solid var(--purple-1);
-  border-radius: 16px;
+  font-size: 1.875vw;
+  border: 0.104vw solid var(--purple-1);
+  border-radius: 0.833vw;
   box-sizing: border-box;
-  padding-top: 30px;
+  padding-top: 1.5625vw;
   position: relative;
   .modal__title {
-    margin-top: 30px;
+    margin-top: 1.5625vw;
     font-weight: 700;
   }
 `;
 
 const AlertTextBox = styled.div`
   ${flex({ direction: "column", justify: "center", align: "center" })};
-  width: 800px;
-  height: 150px;
+  width: 41.66vw;
+  height: 7.8125vw;
   color: var(--purple-1);
   span {
     color: var(--purple-1);
-    font-size: 36px;
+    font-size: 1.875vw;
   }
 `;
 
 const ModalBtn = styled.div`
   background-color: var(--purple-1);
   color: white;
-  font-size: 36px;
-  width: 800px;
-  height: 100px;
-  border-bottom-right-radius: 16px;
-  border-bottom-left-radius: 16px;
+  font-size: 1.875vw;
+  width: 41.66vw;
+  height: 5.208vw;
+  border-bottom-right-radius: 0.83vw;
+  border-bottom-left-radius: 0.83vw;
   ${flex({ justify: "center", align: "center" })};
   position: absolute;
   bottom: 0;
