@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import flex from "../GlobalStyled/flex";
 // images
-import waitingBack from "../../images/background/lobbyBackground.png";
+import waitingBack from "../../images/background/lobbybackground.png";
 import header from "../../images/imgs/header.png";
 import vs2 from "../../images/waiting/vs2.png";
 import swit from "../../images/waiting/swit.png";

@@ -11,7 +11,7 @@ import team1 from "../../images/lobby/team1.png";
 import team2 from "../../images/lobby/team2.png";
 import teamX1 from "../../images/lobby/teamX1.png";
 import teamX2 from "../../images/lobby/teamX2.png";
-import lobbyBack from "../../images/background/lobbyBackground.png";
+import lobbyBack from "../../images/background/lobbybackground.png";
 import { TeamProps } from "../../typings/typedb";
 
 // lobby
