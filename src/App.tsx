@@ -19,7 +19,7 @@ import ruleBook from "./images/rules/rulebook.svg";
 import { useModal } from "./hooks/useModal";
 
 import Splash from "./pages/Splash";
-
+import Loading from "./pages/Loading";
 function App() {
   const navigate = useNavigate();
   const [loginState, setLoginState] = useState(false);
@@ -59,6 +59,7 @@ function App() {
         />
         <Route path="/waiting/:roomId" element={<WaitingRoom />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
+        <Route path="/loading" element={<Loading />}></Route>
         <Route path="/ingame/:roomId" element={<Ingame></Ingame>}></Route>
       </Routes>
       <ResizeBtn

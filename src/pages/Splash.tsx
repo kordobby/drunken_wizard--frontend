@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { toggleFullScreen } from "../hooks/fullScreen";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
 const Splash = () => {
+  const [clicked, setClicked] = useState<boolean>(false);
   const [toggle, setToggle] = useState<boolean>(false);
   const navigate = useNavigate();
   useEffect(() => {
@@ -26,6 +27,7 @@ const Splash = () => {
 
   const toggleFunc = () => {
     toggleFullScreen(document.body);
+    setClicked(true);
     setTimeout(() => {
       setToggle(!toggle);
     }, 2000);
@@ -44,7 +46,7 @@ const Splash = () => {
       ) : (
         <>
           <LogLogo top={5.729} bottom={4.6875}></LogLogo>
-          <DefaultBtnL disabled={false} onClick={toggleFunc}>
+          <DefaultBtnL disabled={clicked} onClick={toggleFunc}>
             입장하기
           </DefaultBtnL>
         </>

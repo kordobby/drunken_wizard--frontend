@@ -26,7 +26,6 @@ import MyProfile from "./MyProfile";
 import AlertPopUp from "../InGameCommon/AlertPopUp";
 import {
   TurnBtn,
-  TurnOrderBtn,
   PlayerFieldWrap,
   CardsArea,
   PlayerCtrlWrap,
@@ -44,6 +43,7 @@ import {
 
 const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   sendStompMsgFunc,
+  status,
 }) => {
   /* useState */
   const [healCnt, setHealCnt] = useState<boolean>(false);
@@ -238,50 +238,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     </TargetNullBtn>
   ));
 
-  const Cardss = [
-    {
-      cardId: 1,
-      target: "SELECT",
-      description: "hello",
-      manaCost: 2,
-      cardName: "Resistance",
-    },
-    {
-      cardId: 9,
-      target: "SELECT",
-      description: "hello",
-      manaCost: 2,
-      cardName: "Shield",
-    },
-    {
-      cardId: 4,
-      target: "ALLY",
-      description: "hello",
-      manaCost: 2,
-      cardName: "Mute",
-    },
-    {
-      cardId: 2,
-      target: "ENEMY",
-      description: "hello",
-      manaCost: 2,
-      cardName: "BeerMug",
-    },
-    {
-      cardId: 14,
-      target: "SELECT",
-      description: "hello",
-      manaCost: 2,
-      cardName: "Panacea",
-    },
-    {
-      cardId: 7,
-      target: "SELECT",
-      description: "hello",
-      manaCost: 2,
-      cardName: "FireBall",
-    },
-  ];
   return (
     <>
       {useFail && (
@@ -296,10 +252,9 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
 
         <CardsArea>
           <Divider></Divider>
-          {/*thisPlayer.cardsOnHand */}
           {thisPlayer.mutedDuration <= 0 ? (
             <>
-              {Cardss.map((value: Card) => (
+              {thisPlayer.cardsOnHand.map((value: Card) => (
                 <PlayerCards
                   key={value.cardId}
                   className={generateClassName(target, value.cardId, mouseIn)}
