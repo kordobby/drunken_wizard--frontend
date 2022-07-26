@@ -1,5 +1,18 @@
 import { Dispatch, SetStateAction } from "react";
 
+export interface HeaderBtnProps {
+  text: string;
+  clickFunc: () => void;
+}
+
+export interface OneBtnModalProps {
+  headerText: string;
+  upperText: string;
+  lowerText: string;
+  confirmText: string;
+  clickFunc: () => void;
+}
+
 export interface Card {
   cardId: number;
   cardName: string;
@@ -63,10 +76,31 @@ export interface DrawProps {
 export interface IconsImgProps {
   job: string;
   dead: boolean;
-  team: boolean;
+  reverse: boolean;
+  size: number;
 }
 
+export interface positionProps {
+  layer: number;
+  top: number;
+  left: number;
+}
+
+export interface NameTagsProps {
+  dead: boolean;
+  top: number;
+  left: number;
+}
 export interface NameTagProps {
+  dead: boolean;
+}
+
+export interface FlagProps {
+  status: string;
+  top: number;
+  left: number;
+}
+export interface TeamColorProps {
   team: boolean;
 }
 export interface StatBarProps {
@@ -83,6 +117,7 @@ export interface StatBarProps {
 export interface StatIconsImgProps {
   stat: string;
   size: number;
+  mouseOver: boolean;
 }
 
 export interface CardBg {
@@ -95,8 +130,11 @@ export interface DrawableCardsProps {
   drawDisabled: boolean;
 }
 
+export interface CraveCardsProps {
+  value: Card;
+}
 export interface DrawableCardSC {
-  cardId: number;
+  cardName: string;
   selected: boolean;
 }
 export interface UseCardProps {
@@ -106,10 +144,22 @@ export interface UseCardProps {
   className: string;
 }
 export interface TargetBtnProps {
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseOver: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  team: boolean;
+  value: number;
 }
 
+export interface HealBtnProps {
+  onMouseOver: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  team: boolean;
+  value: number;
+}
+export interface TurnOrderProps {
+  team: boolean;
+}
 export interface BtnSettings {
   disabled: boolean;
 }
@@ -134,4 +184,27 @@ export interface LogoProps {
 
 export interface DupCheckProps {
   dup: boolean;
+}
+
+export interface TwoBtnProps {
+  confirmText: string;
+  cancelText: string;
+  titleText: string;
+  upperText: string;
+  lowerText: string;
+  confirmFunc: () => void;
+  cancelFunc: () => void;
+}
+
+export interface IngameAlertProps {
+  upperText: string;
+  middleText: string;
+  bottomText: string;
+}
+export interface Targeting {
+  targeting: boolean;
+}
+
+export interface BtnColorType {
+  color: string;
 }

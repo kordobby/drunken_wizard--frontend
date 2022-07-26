@@ -6,14 +6,20 @@ import activeMBtn from "../../images/buttons/BTN_activeM.png";
 import inactiveMBtn from "../../images/buttons/BTN_inactiveM.png";
 import BtnActive from "../../images/buttons/BTN_active.png";
 import BtnInActive from "../../images/buttons/BTN_inActive.png";
-import BtnActiveS from "../../images/buttons/BTN_activeS.png";
-import BtnInActiveS from "../../images/buttons/BTN_inActiveS.png";
 
 export const StWrap = styled.div`
-  width: 100%;
-  height: 100vh;
+  width: 100vmax;
+  height: 100vmax;
   background-color: ${(props) => props.theme.bgColor};
   z-index: -5;
+`;
+
+export const FormWrapSt = styled.div`
+  width: 100%;
+  height: 100%;
+  ${flex({ direction: "column", align: "center" })};
+  /* padding-bottom: 2.77vw;
+  box-sizing: border-box; */
 `;
 
 export default function matchBtnImg(data: string) {
@@ -58,7 +64,7 @@ export const DefaultBtnL = styled.div<BtnSettings>`
   &:hover {
     cursor: pointer;
     filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
+    box-shadow: 0px 0px 0.5208vw 0.104vw #fd6f33;
   }
 `;
 
@@ -66,7 +72,7 @@ export const DefaultBtn = styled.button<BtnProps>`
   &:hover {
     cursor: pointer;
     filter: brightness(110%);
-    box-shadow: 0px 0px 10px 2px #fd6f33;
+    box-shadow: 0px 0px 0.5208vw 0.104vw #fd6f33;
   }
   background-image: url(${(props) => matchBtnImg(props.btnType)});
   background-size: cover;
@@ -76,21 +82,7 @@ export const DefaultBtn = styled.button<BtnProps>`
   span {
     ${BtnTextSt};
   }
+  .kakao__btn {
+    margin-bottom: 7.552vw;
+  }
 `;
-
-// export const DefaultBtn2 = styled.button<BtnSettings>`
-//   &:hover {
-//     cursor: pointer;
-//     filter: brightness(110%);
-//     box-shadow: 0px 0px 10px 2px #fd6f33;
-//   }
-//   background-size: cover;
-//   width: ${({ size }) => size && `${size}vw`};
-//   height: 4.3229vw;
-//   font-size: 1.25vw;
-//   background-image: url(${(props) =>
-//     props.disabled ? BtnInActiveS : BtnActiveS});
-//   span {
-//     ${BtnTextSt};
-//   }
-// `;
