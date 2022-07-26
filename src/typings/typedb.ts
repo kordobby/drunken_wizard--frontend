@@ -130,6 +130,9 @@ export interface DrawableCardsProps {
   drawDisabled: boolean;
 }
 
+export interface CraveCardsProps {
+  value: Card;
+}
 export interface DrawableCardSC {
   cardName: string;
   selected: boolean;

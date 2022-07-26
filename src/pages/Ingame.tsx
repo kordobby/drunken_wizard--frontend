@@ -44,7 +44,7 @@ import {
 } from "../Components/IngameComponents/InGameStyled/InGameStyled";
 import { playersSetting } from "../typings/typedb";
 import AlertPopUp from "../Components/IngameComponents/InGameCommon/AlertPopUp";
-import OneBtnModal from "../elem/OneBtnModal";
+
 const Ingame = () => {
   /* useState */
   // #GAME :: Turn Ctrl
@@ -79,11 +79,16 @@ const Ingame = () => {
   const [drawFailModal, setDrawFailModal] = useState<boolean>(false);
   const [timeOutModal, setTimeOutModal] = useState<boolean>(false);
 
+  /* targetText */
+  const [targetText, setTargetText] = useState<string>("깅준호");
+
   /* tookit things */
   const dispatch = useAppDispatch();
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
+  const nowPlayerName = useAppSelector((state) => state.game.game.nowPlayer);
+  const craveCard = useAppSelector((state) => state.game.game.cardCrave[0]);
   const API_URL = process.env.REACT_APP_API_URL;
   /* socket connect - token */
   const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
@@ -343,13 +348,17 @@ const Ingame = () => {
         );
         if (PlayerA[0] !== undefined) {
           dispatch(setPlayerATK(PlayerA[0]));
+          setTargetText(PlayerA[0].username);
         }
         if (PlayerB[0] !== undefined) {
           dispatch(setPlayerBTK(PlayerB[0]));
+          setTargetText(PlayerA[0].username);
         }
         if (PlayerC[0] !== undefined) {
           dispatch(setPlayerCTK(PlayerC[0]));
+          setTargetText(PlayerA[0].username);
         }
+
         break;
       case "DISCARD":
         if (nowPlayerId !== playersData.thisPlayer.playerId) {
@@ -490,11 +499,25 @@ const Ingame = () => {
           bottomText="다음 턴으로 넘어갑니다."
         />
       )}
-      {status === "CARDUSESUCCESS" && (
+      {craveCard.target === "SELECT" && status === "CARDUSESUCCESS" && (
         <AlertPopUp
-          upperText="nowPlayer님이"
-          middleText="targetUserName 님에게"
-          bottomText="useCard 카드를 사용했습니다!"
+          upperText={`${nowPlayerName}님이`}
+          middleText={`${targetText}님에게`}
+          bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
+        />
+      )}
+      {craveCard.target === "ALLY" && status === "CARDUSESUCCESS" && (
+        <AlertPopUp
+          upperText={`${nowPlayerName}님이`}
+          middleText={`같은 팀에게`}
+          bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
+        />
+      )}
+      {craveCard.target === "ENEMY" && status === "CARDUSESUCCESS" && (
+        <AlertPopUp
+          upperText={`${nowPlayerName}님이`}
+          middleText={`상대팀에게`}
+          bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
         />
       )}
       <NoticeField></NoticeField>
@@ -510,20 +533,13 @@ const Ingame = () => {
                 <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
               </MainWrap>
               <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
-              {!drawModalOpen && (
+              {drawModalOpen && (
                 <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
               )}
             </>
           )}
         </StGameWrapFilter>
       </StGameWrap>
-      <button
-        onClick={() => {
-          sendStompMsgFunc(roomId, myId, "ENDGAME", null);
-        }}
-      >
-        게임 종료
-      </button>
     </>
   );
 };

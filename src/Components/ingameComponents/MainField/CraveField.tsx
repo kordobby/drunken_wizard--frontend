@@ -30,11 +30,11 @@ const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
       <CraveWrap>
         <Crave></Crave>
         {CardsSet.map((value) => (
-          <CraveCards />
+          <CraveCards value={value} />
         ))}
-        {actionTimer === "action" && nowPlayer === thisPlayer && (
+        {nowPlayer === thisPlayer && (
           <DefaultBtnL
-            disabled={clicked}
+            disabled={actionTimer !== "action"}
             onClick={() => {
               setClicked(true);
               sendStompMsgFunc(roomId, thisPlayer, "ENDTURN", null);

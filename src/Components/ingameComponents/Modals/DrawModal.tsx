@@ -53,14 +53,14 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
       target: "SELECT",
       description: "hello",
       manaCost: 2,
-      cardName: "venom",
+      cardName: "Venom",
     },
     {
       cardId: 2,
       target: "SELECT",
       description: "hello",
       manaCost: 2,
-      cardName: "panacea",
+      cardName: "Panacea",
     },
   ];
   return (

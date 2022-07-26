@@ -16,7 +16,7 @@ import {
   UseCardProps,
   StatProps,
   TurnOrderProps,
-  NameTagProps,
+  CraveCardsProps,
   StatNumberProps,
   NameTagsProps,
   BtnColorType,
@@ -100,8 +100,8 @@ export const PlayerIcon = styled.div<IconsImgProps>`
   .wizard__img {
     height: ${({ size }) => size && `${size}px`};
     width: ${({ size }) => size && `${size}px`};
-    filter: ${(props) => props.dead && `grayscale(100%);`};
-    -webkit-filter: ${(props) => props.dead && `grayscale(100%)`};
+    filter: ${(props) => props.dead && `brightness(0%)`};
+    -webkit-filter: ${(props) => props.dead && `brightness(0%)`};
     background-size: cover;
     background-position: center;
     transform: ${({ reverse }) => (reverse ? "scaleX(-1)" : null)};
@@ -279,15 +279,23 @@ export const Crave = styled.div`
   border-radius: 10px;
 `;
 
-export const CraveCards = styled.div`
+const usedCard = keyframes`
+  0% {
+    transform: translateY(500px) rotate(-12deg);
+  } 100%{
+    transform: translateY(0px) rotate(-12deg);
+  }
+`;
+
+export const CraveCards = styled.div<CraveCardsProps>`
   width: 202px;
   height: 359px;
   border-radius: 10px;
   top: 1.8229vw;
   left: 9.031vw;
   position: absolute;
-  background-color: var(--brown-2);
-  border: 1px solid var(--white);
+  background-image: url(${(props) => matchCardImg(props.value.cardName)});
+  background-size: cover;
   box-shadow: 0.208vw 0.208vw 1.041vw rgba(0, 0, 0, 0.25);
   &:nth-child(2) {
     top: 2.604vw;
@@ -296,6 +304,7 @@ export const CraveCards = styled.div`
     z-index: 1;
   }
   &:nth-child(3) {
+    animation: ${usedCard} 0.5s ease;
     top: 1.804vw;
     left: 3.645vw;
     transform: rotate(-12deg);

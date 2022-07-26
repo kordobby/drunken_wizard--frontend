@@ -29,32 +29,32 @@ const PlayerIcons = ({ status }: HeaderProps) => {
         <TeamPosition layer={5} top={10} left={50}>
           <PlayerIcon
             size={360}
-            job={thisPlayer.charactorClass}
-            dead={thisPlayer.dead}
+            job={teamPlayer.charactorClass}
+            dead={teamPlayer.dead}
             reverse={true}
           >
             <div className="wizard__img"></div>
-            {nowPlayerId === thisPlayer.playerId && (
+            {nowPlayerId === teamPlayer.playerId && (
               <PlayingFlag status={status} top={-80} left={140}></PlayingFlag>
             )}
             <NameTag dead={true} top={10} left={108}>
-              {thisPlayer.username}
+              {teamPlayer.username}
             </NameTag>
           </PlayerIcon>
         </TeamPosition>
         <TeamPosition layer={5} top={10} left={640}>
           <PlayerIcon
             size={360}
-            job={teamPlayer.charactorClass}
-            dead={teamPlayer.dead}
+            job={thisPlayer.charactorClass}
+            dead={thisPlayer.dead}
             reverse={false}
           >
             <div className="wizard__img"></div>
-            {nowPlayerId === teamPlayer.playerId && (
+            {nowPlayerId === thisPlayer.playerId && (
               <PlayingFlag status={status} top={-80} left={170}></PlayingFlag>
             )}
             <NameTag dead={true} top={10} left={85}>
-              {teamPlayer.username}
+              {thisPlayer.username}
             </NameTag>
           </PlayerIcon>
         </TeamPosition>
