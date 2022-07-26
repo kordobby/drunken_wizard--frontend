@@ -510,7 +510,7 @@ const Ingame = () => {
                 <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
               </MainWrap>
               <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
-              {drawModalOpen && (
+              {!drawModalOpen && (
                 <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
               )}
             </>

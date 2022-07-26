@@ -236,6 +236,17 @@ export const StatIcon = styled.div<StatIconsImgProps>`
   background-image: url(${(props) => matchStatusImg(props.stat)});
   background-size: cover;
   border-radius: 1.0416vw;
+  filter: brightness(150%);
+  -webkit-filter: brightness(150%);
+`;
+
+export const CoverIcon = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: var(--purple-1);
+  border-radius: 1.0416vw;
+  color: white;
+  ${flex({ justify: "center", align: "center" })}
 `;
 
 export const StatCnt = styled.div<StatNumberProps>`
@@ -406,6 +417,13 @@ export const CardsArea = styled.div`
   box-sizing: border-box;
   height: 330px;
   width: 920px;
+`;
+
+export const ActionFailText = styled.div`
+  height: 330px;
+  width: 620px;
+  font-size: 24px;
+  ${flex({ justify: "center", align: "center" })};
 `;
 
 export const Divider = styled.div`

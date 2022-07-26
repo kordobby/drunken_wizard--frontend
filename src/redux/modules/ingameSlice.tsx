@@ -85,7 +85,7 @@ const initialState: ingameState = {
       stunnedDuration: 2,
       team: true,
       turnOrder: 3,
-      weakDuration: 3,
+      weakDuration: -3,
       damageModifierDuration: 2,
     },
     thisPlayer: {
@@ -97,7 +97,7 @@ const initialState: ingameState = {
       dead: false,
       mana: 5,
       manaCostModifierDuration: 1,
-      mutedDuration: 2,
+      mutedDuration: 0,
       petrifiedDuration: 1,
       poisonedDuration: 2,
       shield: false,

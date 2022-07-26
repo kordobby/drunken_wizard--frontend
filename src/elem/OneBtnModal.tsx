@@ -28,7 +28,7 @@ const OneBtnModal = ({
   );
 };
 
-/*
+/* 사용방법
       <OneBtnModal
         headerText="안녕하세요"
         upperText="네네"

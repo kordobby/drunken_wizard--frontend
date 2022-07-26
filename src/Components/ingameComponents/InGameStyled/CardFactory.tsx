@@ -2,6 +2,8 @@ import curse from "../../../images/cardsBack/curseBack.png";
 import attack from "../../../images/cardsBack/attackBack.png";
 import item from "../../../images/cardsBack/itemBack.png";
 import enchant from "../../../images/cardsBack/enchantBack.png";
+import flipped from "../../../images/cardsBack/commonBack.png";
+
 export default function matchCardImg(data: string) {
   switch (data) {
     case "Boulder Strike":
@@ -55,6 +57,6 @@ export default function matchCardImg(data: string) {
     case "Magic Armor":
       return enchant;
     default:
-      return enchant;
+      return flipped;
   }
 }

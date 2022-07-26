@@ -117,6 +117,7 @@ export interface StatBarProps {
 export interface StatIconsImgProps {
   stat: string;
   size: number;
+  mouseOver: boolean;
 }
 
 export interface CardBg {

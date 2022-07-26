@@ -23,6 +23,7 @@ import {
 import MyProfile from "./MyProfile";
 
 /* CSS & SC */
+import AlertPopUp from "../InGameCommon/AlertPopUp";
 import {
   TurnBtn,
   TurnOrderBtn,
@@ -38,6 +39,7 @@ import {
   TurnTap,
   TurnHealBtn,
   SendHealBtn,
+  ActionFailText,
 } from "../InGameStyled/InGameStyled";
 
 const PlayerField: FunctionComponent<PlayerFieldProps> = ({
@@ -52,11 +54,18 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   const [mouseIn, setMouseIn] = useState(false);
   const [clicked, setClicked] = useState(false);
 
+  // alert modal
+  const [useFail, setUseFail] = useState(false);
+
   useEffect(() => {
     setTimeout(() => {
       setClicked(false);
     }, 1000);
-  }, [clicked]);
+
+    setTimeout(() => {
+      setUseFail(false);
+    }, 1000);
+  }, [useFail]);
 
   /* tookit things */
   const dispatch = useAppDispatch();
@@ -110,21 +119,20 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     value: playersSetting
   ) => {
     dispatch(setTargetTK(value.playerId));
-    console.log(value.playerId);
   };
   const onMouseLeaveTargeting = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     dispatch(setTargetTK(0));
   };
-  console.log(selectedTarget);
+
   // USECARD FUNC
   const cardUseHandler = (
     event: React.MouseEvent<HTMLButtonElement>,
     value: playersSetting | null
   ) => {
     if (value?.dead === true && value !== null) {
-      alert("이미 사망한 플레이어입니다.");
+      setUseFail(true);
       return;
     } else {
       console.log("hey");
@@ -171,7 +179,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     value: playersSetting
   ) => {
     if (value.dead === true) {
-      alert("이미 사망한 플레이어입니다.");
+      setUseFail(true);
       return;
     } else {
       const data = {
@@ -272,106 +280,125 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     },
   ];
   return (
-    <PlayerFieldWrap>
-      <MyProfile></MyProfile>
-      <CardsArea>
-        <Divider></Divider>
-        {/*thisPlayer.cardsOnHand */}
-        {Cardss.map((value: Card) => (
-          <PlayerCards
-            key={value.cardId}
-            className={generateClassName(target, value.cardId, mouseIn)}
-            onMouseOver={(event: any) => onMouseOverCards(event, value)}
-            onMouseLeave={onMouseLeaveCards}
-            value={value}
-          >
-            {nowPlayer === thisPlayer.playerId &&
-              value.target === "SELECT" &&
-              mouseIn &&
-              target === value.cardId && (
-                <>
-                  <TargetBtnBox>{TargetBtns}</TargetBtnBox>
-                  <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
-                </>
-              )}
-            {nowPlayer === thisPlayer.playerId &&
-              value.target === "ME" &&
-              mouseIn &&
-              target === value.cardId && (
-                <>
-                  {TargetNullBtns[0]}
-                  <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
-                </>
-              )}
-            {nowPlayer === thisPlayer.playerId &&
-              value.target === "ALLY" &&
-              mouseIn &&
-              target === value.cardId && (
-                <>
-                  {TargetNullBtns[1]}
-                  <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
-                </>
-              )}
-            {nowPlayer === thisPlayer.playerId &&
-              value.target === "ENEMY" &&
-              mouseIn &&
-              target === value.cardId && (
-                <>
-                  {TargetNullBtns[2]}
-                  <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
-                </>
-              )}
-          </PlayerCards>
-        ))}
-      </CardsArea>
-      <div>
-        <PlayerCtrlWrap>
-          {thisPlayer.charactorClass === "HEALER" ? (
+    <>
+      {useFail && (
+        <AlertPopUp
+          upperText="카드 사용 불가!"
+          middleText="이미 사망한 플레이어입니다."
+          bottomText=""
+        ></AlertPopUp>
+      )}
+      <PlayerFieldWrap>
+        <MyProfile></MyProfile>
+
+        <CardsArea>
+          <Divider></Divider>
+          {/*thisPlayer.cardsOnHand */}
+          {thisPlayer.mutedDuration <= 0 ? (
             <>
-              <TurnTap>
-                {thisPlayer.playerId === nowPlayer && healCnt === true ? (
-                  <>
-                    <span>힐 대상 선택</span>
-                    <div className="turn__button--box">{HealTargetBtns}</div>
-                  </>
-                ) : (
-                  <>
-                    <span>순서 확인</span>
-                    <div className="turn__button--box">
-                      {playersList.map((value) => (
-                        <TurnBtn
-                          key={value.playerId}
-                          team={value.team === thisPlayer.team}
-                        >
-                          {value.turnOrder}
-                        </TurnBtn>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </TurnTap>
-              <SendHealBtn
-                disabled={disableHeal}
-                onClick={openHealModalHandler}
-              >
-                Heal
-              </SendHealBtn>
+              {Cardss.map((value: Card) => (
+                <PlayerCards
+                  key={value.cardId}
+                  className={generateClassName(target, value.cardId, mouseIn)}
+                  onMouseOver={(event: any) => onMouseOverCards(event, value)}
+                  onMouseLeave={onMouseLeaveCards}
+                  value={value}
+                >
+                  {nowPlayer === thisPlayer.playerId &&
+                    value.target === "SELECT" &&
+                    mouseIn &&
+                    target === value.cardId && (
+                      <>
+                        <TargetBtnBox>{TargetBtns}</TargetBtnBox>
+                        <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
+                      </>
+                    )}
+                  {nowPlayer === thisPlayer.playerId &&
+                    value.target === "ME" &&
+                    mouseIn &&
+                    target === value.cardId && (
+                      <>
+                        {TargetNullBtns[0]}
+                        <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
+                      </>
+                    )}
+                  {nowPlayer === thisPlayer.playerId &&
+                    value.target === "ALLY" &&
+                    mouseIn &&
+                    target === value.cardId && (
+                      <>
+                        {TargetNullBtns[1]}
+                        <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
+                      </>
+                    )}
+                  {nowPlayer === thisPlayer.playerId &&
+                    value.target === "ENEMY" &&
+                    mouseIn &&
+                    target === value.cardId && (
+                      <>
+                        {TargetNullBtns[2]}
+                        <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
+                      </>
+                    )}
+                </PlayerCards>
+              ))}
             </>
           ) : (
-            <TurnTap>
-              <span>순서확인</span>
-              <div className="turn__button--box">
-                {playersList.map((value) => (
-                  <TurnBtn team={value.team === thisPlayer.team}>
-                    {value.turnOrder}
-                  </TurnBtn>
-                ))}
-              </div>
-            </TurnTap>
+            <ActionFailText>
+              <span>shit... 침묵에 걸린 자는 턴을 넘길 수 밖에..</span>
+            </ActionFailText>
           )}
-        </PlayerCtrlWrap>
-      </div>
-    </PlayerFieldWrap>
+        </CardsArea>
+        <div>
+          <PlayerCtrlWrap>
+            {thisPlayer.charactorClass === "HEALER" &&
+            thisPlayer.mutedDuration <= 0 ? (
+              <>
+                <TurnTap>
+                  {thisPlayer.playerId === nowPlayer && healCnt === true ? (
+                    <>
+                      <span>힐 대상 선택</span>
+                      <div className="turn__button--box">{HealTargetBtns}</div>
+                    </>
+                  ) : (
+                    <>
+                      <span>순서 확인</span>
+                      <div className="turn__button--box">
+                        {playersList.map((value) => (
+                          <TurnBtn
+                            key={value.playerId}
+                            team={value.team === thisPlayer.team}
+                          >
+                            {value.turnOrder}
+                          </TurnBtn>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </TurnTap>
+                <SendHealBtn
+                  disabled={disableHeal}
+                  onClick={openHealModalHandler}
+                >
+                  Heal
+                </SendHealBtn>
+              </>
+            ) : (
+              <TurnTap>
+                <span>순서확인</span>
+                <div className="turn__button--box">
+                  {playersList.map((value) => (
+                    <TurnBtn team={value.team === thisPlayer.team}>
+                      {value.turnOrder}
+                    </TurnBtn>
+                  ))}
+                </div>
+              </TurnTap>
+            )}
+          </PlayerCtrlWrap>
+        </div>
+      </PlayerFieldWrap>
+    </>
   );
 };
 
