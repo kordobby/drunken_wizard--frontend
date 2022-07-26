@@ -26,68 +26,76 @@ const PlayerIcons = ({ status }: HeaderProps) => {
   return (
     <>
       <PlayerIconsFields>
-        <TeamPosition layer={5} top={10} left={50}>
+        <TeamPosition layer={5} top={0.5208} left={2.604}>
           <PlayerIcon
-            size={360}
-            job={thisPlayer.charactorClass}
-            dead={thisPlayer.dead}
+            size={18.75}
+            job={teamPlayer.charactorClass}
+            dead={teamPlayer.dead}
             reverse={true}
           >
             <div className="wizard__img"></div>
-            {nowPlayerId === thisPlayer.playerId && (
+            {nowPlayerId === teamPlayer.playerId && (
               <PlayingFlag status={status} top={-80} left={140}></PlayingFlag>
             )}
-            <NameTag dead={true} top={10} left={108}>
-              {thisPlayer.username}
-            </NameTag>
-          </PlayerIcon>
-        </TeamPosition>
-        <TeamPosition layer={5} top={10} left={640}>
-          <PlayerIcon
-            size={360}
-            job={teamPlayer.charactorClass}
-            dead={teamPlayer.dead}
-            reverse={false}
-          >
-            <div className="wizard__img"></div>
-            {nowPlayerId === teamPlayer.playerId && (
-              <PlayingFlag status={status} top={-80} left={170}></PlayingFlag>
-            )}
-            <NameTag dead={true} top={10} left={85}>
+            <NameTag dead={teamPlayer.team} top={0.5208} left={5.625}>
               {teamPlayer.username}
             </NameTag>
           </PlayerIcon>
         </TeamPosition>
-        <TableImg />
-        <TeamPosition layer={1} top={260} left={550}>
+        <TeamPosition layer={5} top={0.5208} left={33.33}>
           <PlayerIcon
-            size={290}
-            job={enemyA.charactorClass}
-            dead={enemyA.dead}
+            size={18.75}
+            job={thisPlayer.charactorClass}
+            dead={thisPlayer.dead}
             reverse={false}
           >
             <div className="wizard__img"></div>
-            {nowPlayerId === enemyA.playerId && (
-              <PlayingFlag status={status} top={-60} left={80}></PlayingFlag>
+            {nowPlayerId === thisPlayer.playerId && (
+              <PlayingFlag status={status} top={-80} left={170}></PlayingFlag>
             )}
-            <NameTag dead={enemyA.dead} top={40} left={0}>
-              {enemyA.username}
+            <NameTag dead={thisPlayer.team} top={0.5208} left={4.427}>
+              {thisPlayer.username}
             </NameTag>
           </PlayerIcon>
         </TeamPosition>
-        <TeamPosition layer={1} top={260} left={250}>
+        <TableImg />
+        <TeamPosition layer={1} top={13.541} left={28.645}>
           <PlayerIcon
-            size={290}
+            size={15.104}
             job={enemyB.charactorClass}
             dead={enemyB.dead}
-            reverse={true}
+            reverse={false}
           >
             <div className="wizard__img"></div>
             {nowPlayerId === enemyB.playerId && (
-              <PlayingFlag status={status} top={-60} left={140}></PlayingFlag>
+              <PlayingFlag
+                status={status}
+                top={-3.125}
+                left={4.166}
+              ></PlayingFlag>
             )}
-            <NameTag dead={enemyB.dead} top={40} left={120}>
+            <NameTag dead={enemyB.team} top={2.083} left={0}>
               {enemyB.username}
+            </NameTag>
+          </PlayerIcon>
+        </TeamPosition>
+        <TeamPosition layer={1} top={13.541} left={13.02}>
+          <PlayerIcon
+            size={15.104}
+            job={enemyA.charactorClass}
+            dead={enemyA.dead}
+            reverse={true}
+          >
+            <div className="wizard__img"></div>
+            {nowPlayerId === enemyA.playerId && (
+              <PlayingFlag
+                status={status}
+                top={-3.125}
+                left={7.2916}
+              ></PlayingFlag>
+            )}
+            <NameTag dead={enemyA.team} top={2.083} left={6.25}>
+              {enemyA.username}
             </NameTag>
           </PlayerIcon>
         </TeamPosition>

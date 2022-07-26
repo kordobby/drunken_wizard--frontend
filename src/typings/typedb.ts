@@ -5,6 +5,14 @@ export interface HeaderBtnProps {
   clickFunc: () => void;
 }
 
+export interface OneBtnModalProps {
+  headerText: string;
+  upperText: string;
+  lowerText: string;
+  confirmText: string;
+  clickFunc: () => void;
+}
+
 export interface Card {
   cardId: number;
   cardName: string;
@@ -109,6 +117,7 @@ export interface StatBarProps {
 export interface StatIconsImgProps {
   stat: string;
   size: number;
+  mouseOver: boolean;
 }
 
 export interface CardBg {
@@ -121,6 +130,9 @@ export interface DrawableCardsProps {
   drawDisabled: boolean;
 }
 
+export interface CraveCardsProps {
+  value: Card;
+}
 export interface DrawableCardSC {
   cardName: string;
   selected: boolean;
@@ -132,10 +144,22 @@ export interface UseCardProps {
   className: string;
 }
 export interface TargetBtnProps {
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseOver: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  team: boolean;
+  value: number;
 }
 
+export interface HealBtnProps {
+  onMouseOver: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  team: boolean;
+  value: number;
+}
+export interface TurnOrderProps {
+  team: boolean;
+}
 export interface BtnSettings {
   disabled: boolean;
 }
@@ -170,6 +194,12 @@ export interface TwoBtnProps {
   lowerText: string;
   confirmFunc: () => void;
   cancelFunc: () => void;
+}
+
+export interface IngameAlertProps {
+  upperText: string;
+  middleText: string;
+  bottomText: string;
 }
 export interface Targeting {
   targeting: boolean;

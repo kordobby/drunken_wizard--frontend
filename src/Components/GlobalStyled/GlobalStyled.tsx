@@ -17,6 +17,7 @@ input:focus {
     box-shadow: none;
 }
 body {
+    font-family: "국립박물관문화재단클래식M";
     -ms-overflow-style: none;
     }
     ::-webkit-scrollbar {

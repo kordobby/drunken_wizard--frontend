@@ -5,21 +5,39 @@ import StatusLower from "./StatusLower";
 import { Targeting } from "../../../typings/typedb";
 import { useEffect, useState } from "react";
 import { TeamColorProps } from "../../../typings/typedb";
+import { Card } from "../../../typings/typedb";
 const PlayerStatus = () => {
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
   const targeted = useAppSelector((state) => state.game.game.targetPlayer);
   const data = playersList.pop();
-  const [targetTypes, setTargetTypes] = useState<boolean>(false);
-  useEffect(() => {}, [targeted]);
-
-  const types = useAppSelector((state) => state.game.game.cardType);
+  console.log(targeted);
+  const selectedCard = useAppSelector(
+    (state) => state.game.game.selectForUseCard
+  );
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
-  console.log(types);
+  console.log(selectedCard);
+  const targetingFunc = (playerId: number) => {
+    if (selectedCard.target === "SELECT" && targeted === playerId) return true;
+    else if (
+      selectedCard.target === "ALLY" &&
+      playerId === playersData.PlayerA.playerId
+    )
+      return true;
+    else if (
+      selectedCard.target === "ENEMY" &&
+      playerId !== playersData.PlayerA.playerId
+    )
+      return true;
+    else if (selectedCard.target === "" && playerId === targeted) return true;
+    else {
+      return false;
+    }
+  };
   return (
     <StatusBoxWrap>
       {playersList.map((value) => (
-        <StatusCard targeting={targeted === value.playerId}>
+        <StatusCard targeting={targetingFunc(value.playerId)}>
           <StatusUpper>
             <StatusNameTag team={value.team === thisPlayer.team}>
               <span>{value.username}</span>
@@ -46,8 +64,8 @@ const PlayerStatus = () => {
 };
 
 const StatusBoxWrap = styled.div`
-  width: 396px;
-  height: 630px; // 210px;
+  width: 20.625vw;
+  height: 32.8125vw; // 210px;
   background-color: white;
   ${flex({ direction: "column" })};
   border: 1px solid black;
@@ -55,32 +73,32 @@ const StatusBoxWrap = styled.div`
 
 const StatusCard = styled.div<Targeting>`
   background-color: var(--white);
-  width: 396px;
-  height: 210px; // 210
+  width: 20.625vw;
+  height: 10.9375vw; // 210
   border-bottom: 1px solid black;
   box-shadow: ${({ targeting }) =>
-    targeting && `0px 0px 0px 10px var(--yellow) inset`};
+    targeting && `0px 0px 0px 0.5208vw var(--yellow) inset`};
 `;
 
 const StatusUpper = styled.div`
-  width: 396px;
-  height: 70px;
+  width: 20.625vw;
+  height: 3.6458vw;
   box-sizing: border-box;
-  padding-top: 10px;
-  padding-left: 20px;
+  padding-top: 0.5208vw;
+  padding-left: 1.0416vw;
   ${flex({})};
-  font-size: 24px;
+  font-size: 1.25vw;
   font-family: "국립박물관문화재단클래식M";
 `;
 
 const StatusNameTag = styled.div<TeamColorProps>`
-  width: 154px;
-  height: 50px;
-  border-radius: 50px;
+  width: 8.02vw;
+  height: 2.604vw;
+  border-radius: 2.604vw;
   border: 1px solid var(--white);
-  margin-right: 20px;
+  margin-right: 1.0416vw;
   color: white;
-  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0.104vw 0.208vw 0.208vw rgba(0, 0, 0, 0.25);
   background-color: ${({ team }) =>
     team ? "var(--purple-1)" : "var(--brown-1)"};
   ${flex({ justify: "center", align: "center" })};

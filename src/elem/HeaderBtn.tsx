@@ -14,20 +14,20 @@ const HeaderBtn = ({ text, clickFunc }: HeaderBtnProps) => {
 const Icon = styled.img.attrs({
   src: `${icon}`,
 })`
-  width: 36px;
-  height: 45px;
+  width: 1.875vw;
+  height: 2.34375vw;
 `;
 
 const HeaderBtnSt = styled.button`
-  width: 244px;
-  height: 74px;
+  width: 12.708vw;
+  height: 3.854vw;
   background-color: #564d4d;
   color: var(--white);
-  font-size: 36px;
+  font-size: 1.875vw;
   border-radius: 0.55vh;
   border: none;
   font-family: "국립박물관문화재단클래식B";
-  box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0.208vw 0.208vw 0.208vw rgba(0, 0, 0, 0.25);
   ${flex({ justify: "center", align: "center" })};
   .logout__text {
     background-color: #ffffff;

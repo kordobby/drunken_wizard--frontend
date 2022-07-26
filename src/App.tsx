@@ -76,9 +76,6 @@ function App() {
       >
         <img src={ruleBook} />
       </RuleBtn>
-      <button style={{ position: "fixed", top: "0" }} onClick={logoutHandler}>
-        로그아웃
-      </button>
     </>
   );
 }

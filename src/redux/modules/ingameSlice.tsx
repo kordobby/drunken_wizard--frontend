@@ -15,15 +15,13 @@ interface ingameState {
     order: number[];
     nowPlayer: string;
     nowPlayerId: number;
-    cardCrave: string;
+    cardCrave: Card[];
     targetPlayer: number;
-    selectForUseCardId: number;
-    selectForUseCardName: string;
+    selectForUseCard: Card;
     selectableCnt: number;
     selectableCards: Card[];
     selectedDrawCard: number[];
     timer: string;
-    cardType: string;
     drawSelectCards: DrawCard[];
   };
 }
@@ -36,7 +34,7 @@ const initialState: ingameState = {
       playerId: 3,
       health: 0,
       username: "enemyL",
-      dead: false,
+      dead: true,
       mana: 0,
       manaCostModifierDuration: 0,
       mutedDuration: 0,
@@ -46,7 +44,7 @@ const initialState: ingameState = {
       sleepDuration: 0,
       stunnedDuration: 0,
       team: false,
-      turnOrder: 2,
+      turnOrder: 0,
       weakDuration: 0,
       damageModifierDuration: 0,
     },
@@ -56,7 +54,7 @@ const initialState: ingameState = {
       playerId: 1,
       health: 0,
       username: "enemyR",
-      dead: false,
+      dead: true,
       mana: 0,
       manaCostModifierDuration: 0,
       mutedDuration: 0,
@@ -76,7 +74,7 @@ const initialState: ingameState = {
       playerId: 2,
       health: 5,
       username: "team",
-      dead: false,
+      dead: true,
       mana: 5,
       manaCostModifierDuration: 1,
       mutedDuration: 2,
@@ -87,19 +85,19 @@ const initialState: ingameState = {
       stunnedDuration: 2,
       team: true,
       turnOrder: 3,
-      weakDuration: 3,
+      weakDuration: -3,
       damageModifierDuration: 2,
     },
     thisPlayer: {
       cardsOnHand: [],
-      charactorClass: "HEALER",
+      charactorClass: "FARSEER",
       playerId: 4,
       health: 25,
       username: "me",
       dead: false,
       mana: 5,
       manaCostModifierDuration: 1,
-      mutedDuration: 2,
+      mutedDuration: 0,
       petrifiedDuration: 1,
       poisonedDuration: 2,
       shield: false,
@@ -116,13 +114,60 @@ const initialState: ingameState = {
     status: "",
     order: [],
     gamOver: false, // 필요없을지도!
-    nowPlayer: "",
+    nowPlayer: "킹승준",
     nowPlayerId: 4,
-    cardCrave: "",
+    cardCrave: [
+      {
+        cardId: 1,
+        target: "SELECT",
+        description: "hello",
+        manaCost: 2,
+        cardName: "Resistance",
+      },
+      {
+        cardId: 9,
+        target: "SELECT",
+        description: "hello",
+        manaCost: 2,
+        cardName: "Shield",
+      },
+      {
+        cardId: 4,
+        target: "ALLY",
+        description: "hello",
+        manaCost: 2,
+        cardName: "Mute",
+      },
+      {
+        cardId: 2,
+        target: "ENEMY",
+        description: "hello",
+        manaCost: 2,
+        cardName: "BeerMug",
+      },
+      {
+        cardId: 14,
+        target: "SELECT",
+        description: "hello",
+        manaCost: 2,
+        cardName: "Panacea",
+      },
+      {
+        cardId: 7,
+        target: "SELECT",
+        description: "hello",
+        manaCost: 2,
+        cardName: "FireBall",
+      },
+    ],
     targetPlayer: 0,
-    cardType: "",
-    selectForUseCardId: 0,
-    selectForUseCardName: "",
+    selectForUseCard: {
+      cardId: 0,
+      cardName: "",
+      description: "",
+      manaCost: 0,
+      target: "",
+    },
     drawSelectCards: [],
     selectableCards: [],
     selectableCnt: 2,
@@ -170,14 +215,11 @@ const gameSlice = createSlice({
     }, // use
     // 사용한 카드, 버려진 카드, 드로우 실패한 카드
     setCraveTK: (state, action) => {
-      state.game.cardCrave = action.payload;
+      state.game.cardCrave.unshift(action.payload);
     },
     // 마지막 타켓팅된 유저
     setTargetTK: (state, action) => {
       state.game.targetPlayer = action.payload;
-    },
-    setCardTypeTK: (state, action) => {
-      state.game.cardType = action.payload;
     },
     setTimerTK: (state, action) => {
       state.game.timer = action.payload;
@@ -185,11 +227,8 @@ const gameSlice = createSlice({
     setSelectableCardCnt: (state, action) => {
       state.game.selectableCnt = action.payload;
     },
-    setSelectUseCardIdTK: (state, action) => {
-      state.game.selectForUseCardId = action.payload;
-    },
-    setSelectUseCardNameTK: (state, action) => {
-      state.game.selectForUseCardName = action.payload;
+    setSelectUseCardTK: (state, action) => {
+      state.game.selectForUseCard = action.payload;
     },
     setDrawCardSelectTK: (state, action) => {
       state.game.drawSelectCards.push(action.payload);
@@ -209,7 +248,6 @@ const gameSlice = createSlice({
 });
 
 export const {
-  setCardTypeTK,
   setPlayOrderTK,
   setNowPlayerIdTK,
   setNowPlayerNameTK,
@@ -217,15 +255,14 @@ export const {
   setPlayerATK, // use
   setPlayerBTK, // use
   setPlayerCTK, // use
-  setCraveTK,
+  setCraveTK, // use
   setTargetTK, // use
   setTimerTK, // use
   cancelSelectDrawCardsTK, // use
   setSelectableCardCnt, //use
   setSelectableCardTK, // use
   setMyCardsUpdateTK, // use
-  setSelectUseCardIdTK, // use
-  setSelectUseCardNameTK,
+  setSelectUseCardTK, // use
   setDrawCardSelectTK, // use
   clearDrawCardsTK, // use
   updateMyCardsTK, // use

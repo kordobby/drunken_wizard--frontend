@@ -63,10 +63,8 @@ const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
             selectCardHandler(event, value);
           }}
           selected={selected}
-          cardName={value.cardName}
-        >
-          <p>나와라 얍</p>
-        </DrawableCard>
+          cardName="flipped"
+        ></DrawableCard>
       )}
     </>
   );
