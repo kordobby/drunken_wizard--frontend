@@ -1,4 +1,3 @@
-import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 // hooks
 import { deleteCookie } from "../shared/Cookies";
@@ -9,30 +8,18 @@ import LobbyChat from "../Components/LobbyComponents/LobbyChat";
 import Rooms from "../Components/LobbyComponents/Rooms";
 // css
 import {
-  CancelButton,
   Header,
   LobbyWrap,
-  LogoutBox,
-  LogoutButton,
-  LogoutQ,
-  LogoutQ2,
-  LogoutQBox,
   ModalBack,
-  ModalContainer,
   SideBar,
   WrapBack,
 } from "../Components/LobbyComponents/LobbyStyled";
-import { ButtonBox } from "../Components/UserComponents/UserStyled";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
-import LogoutBtn from "../elem/Button";
-// images
-import Back from "../images/background/lobbyBackground.png";
 import TwoBtnModal from "../elem/TwoBtnModal";
 import HeaderBtn from "../elem/HeaderBtn";
 
 const Lobby = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [createRoomModal, setCreateRoomMoadl] = useModal<boolean>(false);
   const [logoutModal, setlogoutMoadl] = useModal<boolean>(false);
 
@@ -46,7 +33,7 @@ const Lobby = () => {
   };
 
   return (
-    <WrapBack style={{ backgroundImage: `url(${Back})` }}>
+    <WrapBack>
       {logoutModal && (
         <ModalBack
           onClick={(e: any) => {

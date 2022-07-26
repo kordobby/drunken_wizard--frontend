@@ -5,6 +5,9 @@ import waitingBack from "../../images/background/lobbyBackground.png";
 import header from "../../images/imgs/header.png";
 import vs2 from "../../images/waiting/vs2.png";
 import swit from "../../images/waiting/swit.png";
+import xUser from "../../images/waiting/XUser.png";
+import xUser2 from "../../images/waiting/XUser2.png";
+import { TeamProps } from "../../typings/typedb";
 
 export const Header = styled.header`
   width: 100vw;
@@ -33,47 +36,25 @@ export const TeamWrap = styled.div`
   width: 74.47vw;
   height: 62.96vh;
   margin-bottom: 1.85vh;
-
   ${flex({ align: "center", justify: "space-between" })}
 `;
 
-export const MyTeamBox = styled.div`
+export const TeamBox = styled.div<TeamProps>`
   width: 23.95vw;
-  height: 35.41vw;
+  height: 34.41vw;
   border-radius: 0.625vw;
-  border: 2px solid #3f0984;
-  background-color: #ede4f2;
-  box-sizing: border-box;
-  ${flex({ align: "center", direction: "column" })}
-`;
-export const EnemyTeamBox = styled.div`
-  width: 23.95vw;
-  height: 35.41vw;
-  border-radius: 0.625vw;
-  border: 2px solid #5d180a;
-  background-color: #d6b27f;
+  border: 2px solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
+  background-color: ${(props) => (props.team ? "#ede4f2" : "#d6b27f")};
   box-sizing: border-box;
   ${flex({ align: "center", direction: "column" })}
 `;
 
-export const MyTeamHeader = styled.div`
+export const TeamHeader = styled.div<TeamProps>`
   width: 23.95vw;
   height: 18.25vh;
   box-sizing: border-box;
-  border-radius: 0.52vw 0.52vw 0 0;
-  background-color: #3f0984;
-  span {
-    font-size: 1.875vw;
-    color: white;
-  }
-  ${flex({ align: "center", justify: "center" })}
-`;
-export const EnemyTeamHeader = styled.div`
-  width: 23.95vw;
-  height: 18.25vh;
-  box-sizing: border-box;
-  border-radius: 0.52vw 0.52vw 0 0;
-  background-color: #5d180a;
+  border-radius: 0.525vw 0.525vw 0 0;
+  background-color: ${(props) => (props.team ? "#3f0984" : "#5d180a")};
   span {
     font-size: 1.875vw;
     color: white;
@@ -84,65 +65,64 @@ export const EnemyTeamHeader = styled.div`
 export const User1 = styled.div`
   width: 14.58vw;
   height: 35.41vw;
-  padding: 2.6vw 7.81vw 0 0;
-  /* background-color: red; */
+  padding: 1.3vw 7.81vw 0 0;
   ${flex({ align: "center", direction: "column" })}
 `;
 
 export const User2 = styled.div`
   width: 14.58vw;
   height: 35.41vw;
-  padding: 0 0 0 7.81vw;
-  /* background-color: blue; */
+  padding: 1.3vw 0 0 7.81vw;
   ${flex({ align: "center", direction: "column" })}
 `;
 
-export const UserImg = styled.div`
+export const UserImg = styled.div<TeamProps>`
   width: 10.41vw;
   height: 10.41vw;
-  outline: 0.05vw solid #3f0984;
+  outline: 0.05vw solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
   outline-offset: -0.05vw;
   border-radius: 5.2vw;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  background-image: url(${(props) => (props.team ? "#3f0984" : "#5d180a")});
+`;
+export const XUserImg = styled.div<TeamProps>`
+  width: 10.41vw;
+  height: 10.41vw;
+  outline: 0.05vw solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
+  outline-offset: -0.05vw;
+  border-radius: 5.2vw;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url(${(props) => (props.team ? xUser : xUser2)});
 `;
 
-export const UserName = styled.span`
+export const UserName: any = styled.span<TeamProps>`
   width: 11.45vw;
   height: 2.6vw;
   border-radius: 5.2vw;
   font-size: 1.25vw;
   margin: -1vw;
-  outline: 0.05vw solid #3f0984;
+  outline: 0.05vw solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
   outline-offset: -0.05vw;
   background-color: white;
-  color: #3f0984;
+  color: ${(props) => (props.team ? "#3f0984" : "#5d180a")};
   ${flex({ align: "center", justify: "center" })}
 `;
 
-export const UserImg2 = styled.div`
-  width: 10.41vw;
-  height: 10.41vw;
-  outline: 0.05vw solid #5d180a;
-  outline-offset: -0.05vw;
-  border-radius: 5.2vw;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-`;
-
-export const UserName2 = styled.span`
+export const ReadyName: any = styled.span<TeamProps>`
   width: 11.45vw;
   height: 2.6vw;
   border-radius: 5.2vw;
   font-size: 1.25vw;
   margin: -1vw;
-  outline: 0.05vw solid #5d180a;
+  outline: 0.05vw solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
   outline-offset: -0.05vw;
-  background-color: white;
-  color: #5d180a;
-  ${flex({ align: "center", justify: "center" })};
+  background-color: ${(props) => (props.team ? "#3f0984" : "#5d180a")};
+  color: white;
+  ${flex({ align: "center", justify: "center" })}
 `;
 
 export const VSImg = styled.img.attrs({

@@ -60,7 +60,11 @@ export type PageNum = {
 };
 
 // useModal
-
 export interface ModalDivProps {
   onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+}
+
+// mutate
+export interface UserHistoryProps {
+  userHistory: any;
 }

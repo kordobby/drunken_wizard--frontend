@@ -13,7 +13,7 @@ const apis = {
     const response = await api.get(`/game/rooms?page=${page}&size=6`);
     return response.data;
   },
-  userHistoryQR: async () => await api.get(`/userhistory`),
+  userHistoryQR: async () => await api.post(`/userhistory`),
   createRoomMT: async (data: AddRoomType) => await api.post("/game/room", data),
   joinRoomMT: async (data: WaitingRoom) =>
     await api.post(`/game/${data.roomId}/join`, data),

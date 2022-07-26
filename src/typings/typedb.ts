@@ -211,3 +211,7 @@ export interface Targeting {
 export interface BtnColorType {
   color: string;
 }
+
+export interface TeamProps {
+  team: boolean;
+}

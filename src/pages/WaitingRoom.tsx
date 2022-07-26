@@ -17,22 +17,20 @@ import noteam from "../images/lobby/noteam.jpg";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
 // css
 import {
-  EnemyTeamBox,
-  EnemyTeamHeader,
   Header,
-  MyTeamBox,
-  MyTeamHeader,
+  ReadyName,
   SwitImg,
+  TeamBox,
+  TeamHeader,
   TeamWrap,
   User1,
   User2,
   UserImg,
-  UserImg2,
   UserName,
-  UserName2,
   VsBox,
   VSImg,
   WaitingWrap,
+  XUserImg,
 } from "../Components/waitingRoomCP/WaitingRoomStyled";
 import HeaderBtn from "../elem/HeaderBtn";
 import TwoBtnModal from "../elem/TwoBtnModal";
@@ -103,7 +101,7 @@ const WaitingRoom = () => {
             (data: any) => {
               const response = JSON.parse(data?.body);
               const res = JSON.parse(response?.content);
-              console.log(res.player1.ready);
+              console.log(res?.player1?.ready);
               setWaitingUsers(res);
               if (
                 (res?.player1?.ready === true &&
@@ -220,18 +218,25 @@ const WaitingRoom = () => {
       <WaitingWrap>
         {waitingUsers && (
           <TeamWrap>
-            <MyTeamBox>
-              <MyTeamHeader>
-                <span>나의 팀</span>
-              </MyTeamHeader>
+            <TeamBox team={true}>
+              <TeamHeader team={true}>
+                <span>Team Purple</span>
+              </TeamHeader>
               {waitingUsers.player1 ? (
                 <User1>
                   <UserImg
+                    team={true}
                     style={{ backgroundImage: `url(${team1})` }}
                   ></UserImg>
-                  <UserName>
-                    {waitingUsers.player1.nickname}[{waitingUsers.player1.id}]
-                  </UserName>
+                  {waitingUsers?.player1?.ready ? (
+                    <ReadyName team={true}>
+                      {waitingUsers.player1.nickname}[{waitingUsers.player1.id}]
+                    </ReadyName>
+                  ) : (
+                    <UserName team={true}>
+                      {waitingUsers.player1.nickname}[{waitingUsers.player1.id}]
+                    </UserName>
+                  )}
                 </User1>
               ) : (
                 <User1
@@ -239,20 +244,25 @@ const WaitingRoom = () => {
                     changeTeam(1);
                   }}
                 >
-                  <UserImg
-                    style={{ backgroundImage: `url(${noteam})` }}
-                  ></UserImg>
-                  <UserName>???</UserName>
+                  <XUserImg team={true}></XUserImg>
+                  <UserName team={true}>???</UserName>
                 </User1>
               )}
               {waitingUsers.player3 ? (
                 <User2>
                   <UserImg
+                    team={true}
                     style={{ backgroundImage: `url(${team1})` }}
                   ></UserImg>
-                  <UserName>
-                    {waitingUsers.player3.nickname}[{waitingUsers.player3.id}]
-                  </UserName>
+                  {waitingUsers?.player3?.ready ? (
+                    <ReadyName team={true}>
+                      {waitingUsers.player3.nickname}[{waitingUsers.player3.id}]
+                    </ReadyName>
+                  ) : (
+                    <UserName team={true}>
+                      {waitingUsers.player3.nickname}[{waitingUsers.player3.id}]
+                    </UserName>
+                  )}
                 </User2>
               ) : (
                 <User2
@@ -260,66 +270,74 @@ const WaitingRoom = () => {
                     changeTeam(3);
                   }}
                 >
-                  <UserImg
-                    style={{ backgroundImage: `url(${noteam})` }}
-                  ></UserImg>
-                  <UserName>???</UserName>
+                  <XUserImg team={true}></XUserImg>
+                  <UserName team={true}>???</UserName>
                 </User2>
               )}
-            </MyTeamBox>
+            </TeamBox>
             <VsBox>
               <VSImg></VSImg>
               <SwitImg></SwitImg>
               <span>팀을 교체하려면</span>
               <span>빈칸을 누르세요.</span>
             </VsBox>
-            <EnemyTeamBox>
-              <EnemyTeamHeader>
-                <span>상대 팀</span>
-              </EnemyTeamHeader>
+            <TeamBox team={false}>
+              <TeamHeader team={false}>
+                <span>Team Brown</span>
+              </TeamHeader>
               {waitingUsers.player2 ? (
-                <User1>
-                  <UserImg2
-                    style={{ backgroundImage: `url(${team2})` }}
-                  ></UserImg2>
-                  <UserName2>
-                    {waitingUsers.player2.nickname}[{waitingUsers.player2.id}]
-                  </UserName2>
-                </User1>
-              ) : (
-                <User1
-                  onClick={() => {
-                    changeTeam(2);
-                  }}
-                >
-                  <UserImg2
-                    style={{ backgroundImage: `url(${noteam})` }}
-                  ></UserImg2>
-                  <UserName2>???</UserName2>
-                </User1>
-              )}
-              {waitingUsers.player4 ? (
                 <User2>
-                  <UserImg2
+                  <UserImg
+                    team={false}
                     style={{ backgroundImage: `url(${team2})` }}
-                  ></UserImg2>
-                  <UserName2>
-                    {waitingUsers.player4.nickname}[{waitingUsers.player4.id}]
-                  </UserName2>
+                  ></UserImg>
+                  {waitingUsers?.player2?.ready ? (
+                    <ReadyName team={false}>
+                      {waitingUsers.player2.nickname}[{waitingUsers.player2.id}]
+                    </ReadyName>
+                  ) : (
+                    <UserName team={false}>
+                      {waitingUsers.player2.nickname}[{waitingUsers.player2.id}]
+                    </UserName>
+                  )}
                 </User2>
               ) : (
                 <User2
                   onClick={() => {
+                    changeTeam(2);
+                  }}
+                >
+                  <XUserImg team={false}></XUserImg>
+                  <UserName team={false}>???</UserName>
+                </User2>
+              )}
+              {waitingUsers.player4 ? (
+                <User1>
+                  <UserImg
+                    team={false}
+                    style={{ backgroundImage: `url(${team2})` }}
+                  ></UserImg>
+                  {waitingUsers?.player4?.ready ? (
+                    <ReadyName team={false}>
+                      {waitingUsers.player4.nickname}[{waitingUsers.player4.id}]
+                    </ReadyName>
+                  ) : (
+                    <UserName team={false}>
+                      {waitingUsers.player4.nickname}[{waitingUsers.player4.id}]
+                    </UserName>
+                  )}
+                </User1>
+              ) : (
+                <User1
+                  onClick={() => {
                     changeTeam(4);
                   }}
                 >
-                  <UserImg2
-                    style={{ backgroundImage: `url(${noteam})` }}
-                  ></UserImg2>
-                  <UserName2>???</UserName2>
-                </User2>
+                  <XUserImg team={false}></XUserImg>
+                  <UserName team={false}>???</UserName>
+                </User1>
               )}
-            </EnemyTeamBox>
+            </TeamBox>
           </TeamWrap>
         )}
         <DefaultBtnL disabled={readyUser} onClick={readyHandler}>

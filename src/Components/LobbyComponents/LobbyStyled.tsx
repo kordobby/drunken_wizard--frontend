@@ -9,11 +9,16 @@ import vs from "../../images/imgs/vs.png";
 import x from "../../images/lobby/x.png";
 import team1 from "../../images/lobby/team1.png";
 import team2 from "../../images/lobby/team2.png";
+import teamX1 from "../../images/lobby/teamX1.png";
+import teamX2 from "../../images/lobby/teamX2.png";
+import lobbyBack from "../../images/background/lobbyBackground.png";
+import { TeamProps } from "../../typings/typedb";
 
 // lobby
 export const WrapBack = styled.div`
   width: 100vw;
   z-index: -10000;
+  background-image: url(${lobbyBack});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -275,10 +280,10 @@ export const RoomBox = styled.div<JoinRoomType>`
 `;
 
 export const RoomTitle = styled.div`
-  width: 37.5vw;
+  width: 36.98vw;
   height: 8.33vh;
   box-sizing: border-box;
-  border-radius: 1.25vw 1.25vw 0 0;
+  border-radius: 1vw 1vw 0 0;
   background-color: #5d180a;
   ${flex}
   float: left;
@@ -311,49 +316,29 @@ export const UsersWrap = styled.div`
   height: 12.03vh;
   ${flex};
 `;
-export const RoomUsers = styled.div`
+export const RoomUsers = styled.div<TeamProps>`
   width: 4.68vw;
   height: 4.68vw;
   margin: 0 0.26vw;
   ${flex({ align: "center" })};
   border-radius: 2.34vw;
-  box-shadow: 0.26vw 0.26vw 0.26vw 0.1px black;
-  background-image: url(${team1});
+  background-image: url(${(props) => (props.team ? team1 : teamX1)});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
-export const RoomUsers2 = styled.div`
+export const RoomUsers2 = styled.div<TeamProps>`
   width: 4.68vw;
   height: 4.68vw;
   margin: 0 0.26vw;
   ${flex({ align: "center" })};
   border-radius: 2.34vw;
-  box-shadow: 0.26vw 0.26vw 0.26vw 0.1px black;
-  background-image: url(${team2});
+  background-image: url(${(props) => (props.team ? team2 : teamX2)});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
 
-export const RoomUsersX = styled.div`
-  width: 4.68vw;
-  height: 4.68vw;
-  margin: 0 0.26vw;
-  ${flex({ align: "center" })};
-  border: 0.05vw #ffffff;
-  border-style: dashed;
-  border-radius: 2.34vw;
-`;
-export const RoomUsersX2 = styled.div`
-  width: 4.68vw;
-  height: 4.68vw;
-  margin: 0 0.26vw;
-  ${flex({ align: "center" })};
-  border: 0.05vw #9e9e9e;
-  border-style: dashed;
-  border-radius: 2.34vw;
-`;
 export const ComeIn = styled.div`
   width: 7.7vw;
   height: 6.48vh;
@@ -401,11 +386,11 @@ export const Team2 = styled.div`
   align-items: center;
 `;
 
-export const VSImgRomm = styled.img.attrs({
+export const VSImgRoom = styled.img.attrs({
   src: `${vs}`,
 })`
   width: 3.75vw;
-  height: 8.33vh;
+  height: 10.33vh;
 `;
 
 // chat
@@ -476,8 +461,8 @@ export const UsersImg = styled.div`
 export const ChatWrap = styled.div`
   width: 15.625vw;
   height: 30.55vh;
-  overflow-y: auto;
-  /* background-color: rgba(202, 37, 37, 0.5); */
+  overflow: scroll;
+  background-color: rgba(202, 37, 37, 0.5);
   ${flex({ direction: "column", align: "left" })}
   border-bottom: 2px solid black;
 `;

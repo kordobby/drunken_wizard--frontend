@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 // hooks
 import { getCookie } from "../../shared/Cookies";
 // stomp
 import stompJS from "stompjs";
 import sockJS from "sockjs-client";
 // interface
-import { ChatType } from "../../typings/db";
+import { ChatType, UserHistoryProps } from "../../typings/db";
 // css
 import {
   ChatBox,
@@ -39,6 +39,7 @@ const LobbyChat = () => {
   const [semiMsgList, setSemiMsgList] = useState<any>();
   const [msgList, setMsgList] = useState<any[]>([]);
   const [userList, setUserList] = useState<any>();
+  const [userHistoryState, setUserHistoryState] = useState<any>();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
   const queryClient = useQueryClient();
@@ -46,18 +47,16 @@ const LobbyChat = () => {
   const accessId = getCookie("id");
   const accessNickname = getCookie("nickname");
 
-  const { data: userHistory_query } = useQuery(
-    ["user_history"],
-    apis.userHistoryQR,
-    {
-      onSuccess: (data: any) => {
-        console.log("전적 로드 성공했어!");
-      },
-      onError: (error: any) => {
-        console.log("전적 로드 실패", error);
-      },
-    }
-  );
+  // mutate
+  const { mutate: userHistory } = useMutation(apis.userHistoryQR, {
+    onSuccess: (data: any) => {
+      console.log(data);
+      console.log("전적 로드 성공했어!");
+    },
+    onError: (error: any) => {
+      console.log("전적 로드 실패", error);
+    },
+  });
 
   // scroll
   const scrollToMyRef = useCallback(() => {
@@ -105,6 +104,7 @@ const LobbyChat = () => {
               queryClient.invalidateQueries(["room_list"]);
               if (response.type === "JOIN") {
                 setUserList(response.connectedUsers);
+                userHistory();
               }
             },
             { token: accessToken }
@@ -177,9 +177,8 @@ const LobbyChat = () => {
             {accessNickname}[{accessId}]
           </ProfileSpan>
           <ProfileSpan>
-            {userHistory_query?.data.winCount}승{" "}
-            {userHistory_query?.data.loseCount}패{" "}
-            {userHistory_query?.data.winRate}%
+            {/* {userHistory?.data.winCount}승 {userHistory?.data.loseCount}패{" "}
+            {userHistory?.data.winRate}% */}
           </ProfileSpan>
         </Profile>
       </ProfileBox>
@@ -196,7 +195,7 @@ const LobbyChat = () => {
             );
           })}
       </UserBox>
-      <ChatBox ref={scrollRef}>
+      <ChatBox>
         <ChatWrap ref={scrollRef}>
           {msgList?.map((msg: ChatType, idx: number) => {
             if (msg === undefined) {
@@ -211,7 +210,7 @@ const LobbyChat = () => {
             }
             if (Number(msg.sender) === Number(accessId)) {
               return (
-                <MyUserBox>
+                <MyUserBox key={idx}>
                   <MyChat>
                     <ChatImg
                       style={{ backgroundImage: `url(${user})` }}

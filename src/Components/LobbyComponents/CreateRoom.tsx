@@ -57,10 +57,12 @@ const CreateRoom = ({ modalHandler }: ModalType) => {
   // send
   const lobbyLeaveMessage = () => {
     const accessName = getCookie("nickname");
+    const accessId = getCookie("nickname");
     const data = {
       type: "LEAVE",
       roomId: 1,
-      sender: accessName,
+      sender: accessId,
+      nickname: accessName,
       message: `${accessName}님이 채팅방에서 나갔습니다.`,
     };
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));

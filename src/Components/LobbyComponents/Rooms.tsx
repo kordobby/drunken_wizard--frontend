@@ -6,6 +6,8 @@ import stompJS from "stompjs";
 import { socket } from "../../shared/WebStomp";
 // apis
 import apis from "../../shared/api/apis";
+// interface
+import { UserHistoryProps } from "../../typings/db";
 // hooks
 import { getCookie } from "../../shared/Cookies";
 // css
@@ -22,12 +24,11 @@ import {
   RoomTitle,
   RoomUsers,
   RoomUsers2,
-  RoomUsersX,
-  RoomUsersX2,
   RoomWrap,
   Team1,
   Team2,
   UsersWrap,
+  VSImgRoom,
   XBox,
   XImg,
   XWrap,
@@ -36,17 +37,14 @@ import {
 import team1 from "../../images/lobby/team1.jpg";
 import team2 from "../../images/lobby/team2.jpg";
 import noteam from "../../images/lobby/noteam.jpg";
-import vs from "../../images/lobby/vs.svg";
 import right from "../../images/buttons/BTN_right.svg";
 import rightend from "../../images/buttons/BTN_rightend.svg";
 import left from "../../images/buttons/BTN_left.svg";
 import leftend from "../../images/buttons/BTN_leftend.svg";
-import { VSImg } from "../waitingRoomCP/WaitingRoomStyled";
 import { useModal } from "../../hooks/useModal";
 import OneBtnModal from "../../elem/OneBtnModal";
 
 const Rooms = () => {
-  const queryClient = useQueryClient();
   const stompClient = stompJS.over(socket);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
@@ -86,6 +84,7 @@ const Rooms = () => {
     },
   });
 
+  // soket
   const leaveMessage = () => {
     // const accessId = getCookie("id");
     // const accessName = getCookie("nickname");
@@ -155,44 +154,27 @@ const Rooms = () => {
                   <UsersWrap>
                     <Team1>
                       {room?.player1 ? (
-                        <RoomUsers
-                          style={{ backgroundImage: `url(${team1})` }}
-                        ></RoomUsers>
+                        <RoomUsers team={true} />
                       ) : (
-                        <RoomUsersX
-                          style={{ backgroundImage: `url(${noteam})` }}
-                        ></RoomUsersX>
+                        <RoomUsers team={false} />
                       )}
-
                       {room?.player3 ? (
-                        <RoomUsers
-                          style={{ backgroundImage: `url(${team1})` }}
-                        ></RoomUsers>
+                        <RoomUsers team={true} />
                       ) : (
-                        <RoomUsersX
-                          style={{ backgroundImage: `url(${noteam})` }}
-                        ></RoomUsersX>
+                        <RoomUsers team={false} />
                       )}
                     </Team1>
-                    <VSImg src={vs} />
+                    <VSImgRoom />
                     <Team2>
                       {room?.player2 ? (
-                        <RoomUsers2
-                          style={{ backgroundImage: `url(${team2})` }}
-                        ></RoomUsers2>
+                        <RoomUsers2 team={true} />
                       ) : (
-                        <RoomUsersX2
-                          style={{ backgroundImage: `url(${noteam})` }}
-                        ></RoomUsersX2>
+                        <RoomUsers2 team={false} />
                       )}
                       {room?.player4 ? (
-                        <RoomUsers2
-                          style={{ backgroundImage: `url(${team2})` }}
-                        ></RoomUsers2>
+                        <RoomUsers2 team={true} />
                       ) : (
-                        <RoomUsersX2
-                          style={{ backgroundImage: `url(${noteam})` }}
-                        ></RoomUsersX2>
+                        <RoomUsers2 team={false} />
                       )}
                     </Team2>
                     {room?.player1 === null ||
