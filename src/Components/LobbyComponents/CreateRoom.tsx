@@ -18,6 +18,7 @@ import {
   CreateRoomBox,
   ModalContainer,
   ModalBack,
+  ButtonBox,
 } from "./LobbyStyled";
 // svg
 import { DefaultBtnL } from "../Common/CommonStyle";
@@ -81,16 +82,27 @@ const CreateRoom = ({ modalHandler }: ModalType) => {
             value={roomName}
             onChange={setRoomName}
           ></CreateInput>
-          <DefaultBtnL
-            disabled={false}
-            onClick={(e: any) => {
-              onCreateRoom(e);
-              modalHandler(e);
-              navigate("/waiting");
-            }}
-          >
-            <span>방만들기</span>
-          </DefaultBtnL>
+          <ButtonBox>
+            <DefaultBtnL
+              style={{ marginRight: "0.52vw" }}
+              disabled={false}
+              onClick={(e: any) => {
+                onCreateRoom(e);
+              }}
+            >
+              <span>방만들기</span>
+            </DefaultBtnL>
+            <DefaultBtnL
+              style={{ marginLeft: "0.52vw" }}
+              disabled={true}
+              onClick={(e: any) => {
+                modalHandler(e);
+                navigate("/lobby");
+              }}
+            >
+              <span>취소</span>
+            </DefaultBtnL>
+          </ButtonBox>
         </CreateRoomBox>
         <ModalBack
           onClick={(e: any) => {

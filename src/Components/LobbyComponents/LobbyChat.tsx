@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 // hooks
 import { getCookie } from "../../shared/Cookies";
 // stomp
@@ -28,8 +28,9 @@ import {
   UsersImg,
   Wrap,
 } from "./LobbyStyled";
-// svgs
+// images
 import user from "../../images/lobby/noteam.jpg";
+import apis from "../../shared/api/apis";
 
 const LobbyChat = () => {
   const API_URL = process.env.REACT_APP_API_URL;
@@ -43,14 +44,28 @@ const LobbyChat = () => {
   const queryClient = useQueryClient();
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
+  console.log(accessId.slice(-1));
   const accessNickname = getCookie("nickname");
 
+  const { data: userHistory_query } = useQuery(
+    ["user_history"],
+    apis.userHistoryQR,
+    {
+      onSuccess: (data: any) => {
+        console.log("전적 로드 성공했어!");
+      },
+      onError: (error: any) => {
+        console.log("전적 로드 실패", error);
+      },
+    }
+  );
+
   // scroll
-  const scrollToMyRef = () => {
+  const scrollToMyRef = useCallback(() => {
     const scroll =
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
     scrollRef.current.scrollTo(0, scroll);
-  };
+  }, []);
 
   useEffect(() => {
     scrollToMyRef();
@@ -86,24 +101,15 @@ const LobbyChat = () => {
             "/sub/public",
             (data: any) => {
               const response = JSON.parse(data.body);
-              // console.log(data);
+              console.log(data);
               setSemiMsgList(response);
               queryClient.invalidateQueries(["room_list"]);
               if (response.type === "JOIN") {
                 setUserList(response.connectedUsers);
-                // console.log(response.connectedUsers);
-              }
-              if (response.type === "LEAVE") {
-                const newUserList = userList.filter((v: any) => {
-                  return v.id === Number(accessId) ? false : true;
-                });
-                console.log(newUserList);
-                setUserList(newUserList);
               }
             },
             { token: accessToken }
           );
-
           joinMessage();
         }
       );
@@ -114,13 +120,13 @@ const LobbyChat = () => {
 
   const socketUnsubscribe = () => {
     try {
+      leaveMessage();
       stompClient.unsubscribe(`/sub/public`);
       console.log("success to unsubscribe");
     } catch (error) {
       console.log(error);
     }
   };
-
   //입장 메세지
   const joinMessage = () => {
     const accessId = getCookie("id");
@@ -130,6 +136,18 @@ const LobbyChat = () => {
       sender: accessId,
       nickname: accessName,
       message: `${accessName}님이 채팅방에 참여하였습니다!`,
+    };
+    stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
+  };
+  // leave 메세지
+  const leaveMessage = () => {
+    const accessId = getCookie("id");
+    const accessName = getCookie("nickname");
+    const data = {
+      type: "LEAVE",
+      sender: accessId,
+      nickname: accessName,
+      // message: `${accessName}님이 채팅방에서 나갔습니다.`,
     };
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
   };
@@ -157,9 +175,13 @@ const LobbyChat = () => {
         <ProfileImg style={{ backgroundImage: `url(${user})` }}></ProfileImg>
         <Profile>
           <ProfileSpan>
-            {accessNickname}_[{accessId}]
+            {accessNickname}[{accessId}]
           </ProfileSpan>
-          <ProfileSpan>10승 11패</ProfileSpan>
+          <ProfileSpan>
+            {userHistory_query?.data.winCount}승{" "}
+            {userHistory_query?.data.loseCount}패{" "}
+            {userHistory_query?.data.winRate}%
+          </ProfileSpan>
         </Profile>
       </ProfileBox>
       <UserBox>
@@ -169,7 +191,7 @@ const LobbyChat = () => {
               <Users key={i}>
                 <UsersImg style={{ backgroundImage: `url(${user})` }} />
                 <span>
-                  {v.nickname}_[{v.id}]
+                  {v.nickname}[{v.id}]
                 </span>
               </Users>
             );
@@ -188,7 +210,21 @@ const LobbyChat = () => {
                 </JoinUser>
               );
             }
-            if (msg.sender !== accessId) {
+            if (Number(msg.sender) === Number(accessId)) {
+              return (
+                <MyUserBox>
+                  <MyChat>
+                    <ChatImg
+                      style={{ backgroundImage: `url(${user})` }}
+                    ></ChatImg>
+                    <span>
+                      {msg?.nickname}[{msg?.sender}]
+                    </span>
+                  </MyChat>
+                  <MyMsg>{msg?.message}</MyMsg>
+                </MyUserBox>
+              );
+            } else {
               return (
                 <div key={idx}>
                   <ChatUser>
@@ -196,26 +232,13 @@ const LobbyChat = () => {
                       style={{ backgroundImage: `url(${user})` }}
                     ></ChatImg>
                     <span>
-                      {msg?.nickname}_[{msg?.sender}]
+                      {msg?.nickname}[{msg?.sender}]
                     </span>
                   </ChatUser>
                   <ChatMsg>{msg?.message}</ChatMsg>
                 </div>
               );
             }
-            return (
-              <MyUserBox>
-                <MyChat>
-                  <ChatImg
-                    style={{ backgroundImage: `url(${user})` }}
-                  ></ChatImg>
-                  <span>
-                    {msg?.nickname}_[{msg?.sender}]
-                  </span>
-                </MyChat>
-                <MyMsg>{msg?.message}</MyMsg>
-              </MyUserBox>
-            );
           })}
         </ChatWrap>
         <Input

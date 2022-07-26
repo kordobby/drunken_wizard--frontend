@@ -26,7 +26,7 @@ import { ButtonBox } from "../Components/UserComponents/UserStyled";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
 import LogoutBtn from "../elem/Button";
 // images
-import Back from "../images/background/lobbybackground.png";
+import Back from "../images/background/lobbyBackground.png";
 
 const Lobby = () => {
   const navigate = useNavigate();

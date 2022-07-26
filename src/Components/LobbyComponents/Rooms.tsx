@@ -11,6 +11,7 @@ import { getCookie } from "../../shared/Cookies";
 // css
 import {
   ComeIn,
+  Impossible,
   NextButton,
   PageButtonBox,
   PrevButton,
@@ -20,24 +21,27 @@ import {
   RoomNumber,
   RoomTitle,
   RoomUsers,
+  RoomUsers2,
+  RoomUsersX,
+  RoomUsersX2,
   RoomWrap,
   Team1,
   Team2,
   UsersWrap,
   XBox,
   XImg,
+  XWrap,
 } from "./LobbyStyled";
 // imgs
 import team1 from "../../images/lobby/team1.jpg";
 import team2 from "../../images/lobby/team2.jpg";
 import noteam from "../../images/lobby/noteam.jpg";
 import vs from "../../images/lobby/vs.svg";
-import x from "../../images/lobby/x.svg";
 import right from "../../images/buttons/BTN_right.svg";
 import rightend from "../../images/buttons/BTN_rightend.svg";
 import left from "../../images/buttons/BTN_left.svg";
 import leftend from "../../images/buttons/BTN_leftend.svg";
-import { DefaultBtn } from "../Common/CommonStyle";
+import { VSImg } from "../waitingRoomCP/WaitingRoomStyled";
 
 const Rooms = () => {
   const queryClient = useQueryClient();
@@ -45,6 +49,7 @@ const Rooms = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const accessId = getCookie("id");
+  const accessName = getCookie("nickname");
 
   // query
   const { data: roomList_query } = useQuery(
@@ -69,7 +74,7 @@ const Rooms = () => {
       if (res.data.joinSuccess) {
         navigate(`/waiting/${res.data.roomId}`);
         socketUnsubscribe();
-        queryClient.invalidateQueries(["room_list"]);
+        leaveMessage();
       }
     },
     onError: (error) => {
@@ -79,8 +84,8 @@ const Rooms = () => {
   });
 
   const leaveMessage = () => {
-    const accessId = getCookie("id");
-    const accessName = getCookie("nickname");
+    // const accessId = getCookie("id");
+    // const accessName = getCookie("nickname");
     const data = {
       type: "LEAVE",
       sender: accessId,
@@ -94,7 +99,7 @@ const Rooms = () => {
     try {
       stompClient.unsubscribe(`/sub/public`);
       console.log("success to unsubscribe");
-      leaveMessage();
+      // leaveMessage();
     } catch (error) {
       console.log(error);
     }
@@ -103,9 +108,12 @@ const Rooms = () => {
   return (
     <RoomWrap>
       {roomList_query && roomList_query.content.length === 0 ? (
-        <XBox>
-          <XImg src={x} />
-        </XBox>
+        <XWrap>
+          <XBox>
+            <XImg />
+            <span>현재 생성된 방이 없습니다.</span>
+          </XBox>
+        </XWrap>
       ) : (
         <>
           <RoomBoxWrap>
@@ -114,7 +122,12 @@ const Rooms = () => {
                 <RoomBox
                   key={i}
                   onClick={() => {
-                    if (room?.player4 !== "") {
+                    if (
+                      room?.player1 === null ||
+                      room?.player2 === null ||
+                      room?.player3 === null ||
+                      room?.player4 === null
+                    ) {
                       joinRoom({ id: accessId, roomId: room.roomId });
                     }
                   }}
@@ -132,9 +145,9 @@ const Rooms = () => {
                           style={{ backgroundImage: `url(${team1})` }}
                         ></RoomUsers>
                       ) : (
-                        <RoomUsers
+                        <RoomUsersX
                           style={{ backgroundImage: `url(${noteam})` }}
-                        ></RoomUsers>
+                        ></RoomUsersX>
                       )}
 
                       {room?.player3 ? (
@@ -142,35 +155,44 @@ const Rooms = () => {
                           style={{ backgroundImage: `url(${team1})` }}
                         ></RoomUsers>
                       ) : (
-                        <RoomUsers
+                        <RoomUsersX
                           style={{ backgroundImage: `url(${noteam})` }}
-                        ></RoomUsers>
+                        ></RoomUsersX>
                       )}
                     </Team1>
-                    <img src={vs} />
+                    <VSImg src={vs} />
                     <Team2>
                       {room?.player2 ? (
-                        <RoomUsers
+                        <RoomUsers2
                           style={{ backgroundImage: `url(${team2})` }}
-                        ></RoomUsers>
+                        ></RoomUsers2>
                       ) : (
-                        <RoomUsers
+                        <RoomUsersX2
                           style={{ backgroundImage: `url(${noteam})` }}
-                        ></RoomUsers>
+                        ></RoomUsersX2>
                       )}
                       {room?.player4 ? (
-                        <RoomUsers
+                        <RoomUsers2
                           style={{ backgroundImage: `url(${team2})` }}
-                        ></RoomUsers>
+                        ></RoomUsers2>
                       ) : (
-                        <RoomUsers
+                        <RoomUsersX2
                           style={{ backgroundImage: `url(${noteam})` }}
-                        ></RoomUsers>
+                        ></RoomUsersX2>
                       )}
                     </Team2>
-                    <ComeIn>
-                      <span>입장하기</span>
-                    </ComeIn>
+                    {room?.player1 === null ||
+                    room?.player2 === null ||
+                    room?.player3 === null ||
+                    room?.player4 === null ? (
+                      <ComeIn>
+                        <span>입장하기</span>
+                      </ComeIn>
+                    ) : (
+                      <Impossible>
+                        <span>입장불가</span>
+                      </Impossible>
+                    )}
                   </UsersWrap>
                 </RoomBox>
               );

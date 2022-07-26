@@ -5,6 +5,10 @@ import flex from "../GlobalStyled/flex";
 // img
 import chatIcon from "../../images/lobby/chat.png";
 import header from "../../images/imgs/header.png";
+import vs from "../../images/imgs/vs.png";
+import x from "../../images/lobby/x.png";
+import team1 from "../../images/lobby/team1.png";
+import team2 from "../../images/lobby/team2.png";
 
 // lobby
 export const WrapBack = styled.div`
@@ -76,12 +80,6 @@ export const LogoutQ2 = styled.span`
   margin-top: 1.125vw;
 `;
 
-export const ButtonBox = styled.div`
-  width: 28vw;
-  height: 9.25vh;
-  ${flex({ direction: "row" })}
-`;
-
 export const LogoutButton = styled.button`
   width: 14vw;
   height: 9.25vh;
@@ -136,20 +134,35 @@ export const LogoutBtn = styled.button`
 `;
 
 // lobby
-export const XBox = styled.div`
+export const XWrap = styled.div`
   width: 81.77vw;
   height: 87.03vh;
   ${flex({ align: "center", justify: "center" })}
 `;
-export const XImg = styled.img`
-  width: 29.68vw;
-  height: 22.91vw;
-  margin: auto;
+export const XBox = styled.div`
+  width: 40.1vw;
+  height: 30.55vh;
+  border-radius: 1.66vw;
+  background-color: white;
+  opacity: 0.8;
+  span {
+    font-size: 2.5vw;
+    color: #5d180a;
+  }
+  ${flex({ align: "center", justify: "center", direction: "column" })}
+`;
+
+export const XImg = styled.img.attrs({
+  src: `${x}`,
+})`
+  margin-bottom: 4.62vh;
+  width: 5.72vw;
+  height: 5.72vw;
 `;
 
 // creatRoom
 export const CreateRoomTitle = styled.div`
-  width: 58.33vw;
+  width: 57.81vw;
   height: 6.25vw;
   ${flex({ align: "center", justify: "center" })};
   border: none;
@@ -166,7 +179,7 @@ export const CreateRoomBox = styled.div`
   width: 58.33vw;
   height: 28.125vw;
   ${flex({ direction: "column", align: "center" })};
-  border: none;
+  border: 0.26vw solid white;
   border-radius: 0.83vw;
   box-shadow: 0 0 1.5625vw rgba(30, 30, 30, 0.185);
   box-sizing: border-box;
@@ -181,6 +194,11 @@ export const CreateInput = styled.input`
   margin: 4.68vw auto 2.68vw auto;
   padding: 0 1.5625vw;
   font-size: 1.87vw;
+`;
+export const ButtonBox = styled.div`
+  width: 32vw;
+  height: 9.25vh;
+  ${flex({ direction: "row" })}
 `;
 
 // room
@@ -244,15 +262,16 @@ export const RoomBoxWrap = styled.div`
 export const RoomBox = styled.div<JoinRoomType>`
   width: 37.5vw;
   height: 21vh;
+  border: 0.26vw solid white;
   background-color: #b68961;
   border-radius: 1.25vw;
-  margin: 0.78vw;
+  margin: 0.56vw;
   box-sizing: border-box;
-  ${flex({ direction: "column" })};
   &:hover {
     filter: brightness(110%);
     box-shadow: 0px 0px 10px 2px #fd6f33;
   }
+  ${flex({ direction: "column" })};
 `;
 
 export const RoomTitle = styled.div`
@@ -299,9 +318,41 @@ export const RoomUsers = styled.div`
   ${flex({ align: "center" })};
   border-radius: 2.34vw;
   box-shadow: 0.26vw 0.26vw 0.26vw 0.1px black;
+  background-image: url(${team1});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+`;
+export const RoomUsers2 = styled.div`
+  width: 4.68vw;
+  height: 4.68vw;
+  margin: 0 0.26vw;
+  ${flex({ align: "center" })};
+  border-radius: 2.34vw;
+  box-shadow: 0.26vw 0.26vw 0.26vw 0.1px black;
+  background-image: url(${team2});
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+`;
+
+export const RoomUsersX = styled.div`
+  width: 4.68vw;
+  height: 4.68vw;
+  margin: 0 0.26vw;
+  ${flex({ align: "center" })};
+  border: 0.05vw #ffffff;
+  border-style: dashed;
+  border-radius: 2.34vw;
+`;
+export const RoomUsersX2 = styled.div`
+  width: 4.68vw;
+  height: 4.68vw;
+  margin: 0 0.26vw;
+  ${flex({ align: "center" })};
+  border: 0.05vw #9e9e9e;
+  border-style: dashed;
+  border-radius: 2.34vw;
 `;
 export const ComeIn = styled.div`
   width: 7.7vw;
@@ -329,10 +380,10 @@ export const Impossible = styled.div`
   }
   ${flex({ align: "center" })};
   border-radius: 1.041vw;
-  outline: 0.1vw solid #d6b27f;
-  outline-offset: -0.1vw;
-  background-color: #b68961;
-  box-shadow: 0.26vw 0.26vw 0.26vw 0.1px black inset;
+  outline: 0.15vw solid #ffffff;
+  outline-offset: -0.15vw;
+  background-color: #ffffff;
+  box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
 export const Team1 = styled.div`
@@ -350,6 +401,12 @@ export const Team2 = styled.div`
   align-items: center;
 `;
 
+export const VSImgRomm = styled.img.attrs({
+  src: `${vs}`,
+})`
+  width: 3.75vw;
+  height: 8.33vh;
+`;
 // chat
 
 export const Wrap = styled.div`
@@ -455,7 +512,7 @@ export const ChatUser = styled.div`
 `;
 export const MyChat = styled.div`
   width: 11.45vw;
-  margin: 0.46vh 0;
+  margin: 0.46vh 0 0.46vh 8vh;
   span {
     margin: auto 0;
     color: #3f0984;
@@ -481,7 +538,7 @@ export const ChatMsg = styled.p`
   color: rgba(0, 0, 0, 1);
 `;
 export const MyMsg = styled.p`
-  margin: 0.92vh 0;
+  margin: 0.92vh 0 0.92vh 8vh;
   width: 10.67vw;
   font-size: 0.937vw;
   color: #3f0984;

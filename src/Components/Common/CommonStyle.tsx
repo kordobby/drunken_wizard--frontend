@@ -43,7 +43,9 @@ const BtnTextSt = css`
 export const DefaultBtnL = styled.div<BtnSettings>`
   width: 17.18vw; // 330px;
   height: 9.25vh; // 100px;
-  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
   font-size: 1.875vw;
   color: var(--white);
 

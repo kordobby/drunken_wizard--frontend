@@ -8,12 +8,7 @@ import sockJS from "sockjs-client";
 import { getCookie } from "../shared/Cookies";
 // apis
 import apis from "../shared/api/apis";
-import styled from "styled-components";
-import flex from "../Components/GlobalStyled/flex";
 // imgs
-import waitingBack from "../images/background/waitingBackground.png";
-import header from "../images/imgs/header.png";
-import vs from "../images/imgs/vs.png";
 import team1 from "../images/lobby/team1.jpg";
 import team2 from "../images/lobby/team2.jpg";
 import noteam from "../images/lobby/noteam.jpg";
@@ -21,15 +16,21 @@ import roomoutBtn from "../images/buttons/BTN_roomout.png";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
 // css
 import {
+  EnemyTeamBox,
+  EnemyTeamHeader,
   Header,
   MyTeamBox,
   MyTeamHeader,
   RoomoutBtn,
+  SwitImg,
   TeamWrap,
   User1,
   User2,
   UserImg,
+  UserImg2,
   UserName,
+  UserName2,
+  VsBox,
   VSImg,
   WaitingWrap,
 } from "../Components/waitingRoomCP/WaitingRoomStyled";
@@ -155,6 +156,26 @@ const WaitingRoom = () => {
     stompClient.send(`/pub/wroom/${roomId}`, {}, JSON.stringify(data));
   };
 
+  const changeTeam = (int: number) => {
+    let num = 0;
+    if (waitingUsers?.player1?.id === Number(accessId)) {
+      num = 1;
+    } else if (waitingUsers?.player2?.id === Number(accessId)) {
+      num = 2;
+    } else if (waitingUsers?.player3?.id === Number(accessId)) {
+      num = 3;
+    } else if (waitingUsers?.player4?.id === Number(accessId)) {
+      num = 4;
+    }
+    const data = {
+      type: "SWITCHING",
+      roomId: roomId,
+      sender: accessId,
+      content: JSON.stringify({ switchingRequest: int, switchingSubmit: num }),
+    };
+    stompClient.send(`/pub/wroom/${roomId}`, {}, JSON.stringify(data));
+  };
+
   const readyHandler = () => {
     gameReady();
   };
@@ -199,7 +220,11 @@ const WaitingRoom = () => {
                   </UserName>
                 </User1>
               ) : (
-                <User1>
+                <User1
+                  onClick={() => {
+                    changeTeam(1);
+                  }}
+                >
                   <UserImg
                     style={{ backgroundImage: `url(${noteam})` }}
                   ></UserImg>
@@ -216,7 +241,11 @@ const WaitingRoom = () => {
                   </UserName>
                 </User2>
               ) : (
-                <User2>
+                <User2
+                  onClick={() => {
+                    changeTeam(3);
+                  }}
+                >
                   <UserImg
                     style={{ backgroundImage: `url(${noteam})` }}
                   ></UserImg>
@@ -224,46 +253,59 @@ const WaitingRoom = () => {
                 </User2>
               )}
             </MyTeamBox>
-            <VSImg src={vs}></VSImg>
-            <MyTeamBox>
-              <MyTeamHeader>
+            <VsBox>
+              <VSImg></VSImg>
+              <SwitImg></SwitImg>
+              <span>팀을 교체하려면</span>
+              <span>빈칸을 누르세요.</span>
+            </VsBox>
+            <EnemyTeamBox>
+              <EnemyTeamHeader>
                 <span>상대 팀</span>
-              </MyTeamHeader>
+              </EnemyTeamHeader>
               {waitingUsers.player2 ? (
                 <User1>
-                  <UserImg
+                  <UserImg2
                     style={{ backgroundImage: `url(${team2})` }}
-                  ></UserImg>
-                  <UserName>
-                    {waitingUsers.player2.nickname}_[{waitingUsers.player2.id}]
-                  </UserName>
+                  ></UserImg2>
+                  <UserName2>
+                    {waitingUsers.player2.nickname}[{waitingUsers.player2.id}]
+                  </UserName2>
                 </User1>
               ) : (
-                <User1>
-                  <UserImg
+                <User1
+                  onClick={() => {
+                    changeTeam(2);
+                  }}
+                >
+                  <UserImg2
                     style={{ backgroundImage: `url(${noteam})` }}
-                  ></UserImg>
-                  <UserName>유저 없음</UserName>
+                  ></UserImg2>
+                  <UserName2>유저 없음</UserName2>
                 </User1>
               )}
               {waitingUsers.player4 ? (
                 <User2>
-                  <UserImg
+                  <UserImg2
                     style={{ backgroundImage: `url(${team2})` }}
-                  ></UserImg>
-                  <UserName>
+                  ></UserImg2>
+                  <UserName2>
                     {waitingUsers.player4.nickname}_[{waitingUsers.player4.id}]
-                  </UserName>
+                  </UserName2>
                 </User2>
               ) : (
-                <User2>
-                  <UserImg
+                <User2
+                  onClick={() => {
+                    changeTeam(4);
+                  }}
+                >
+                  <UserImg2
                     style={{ backgroundImage: `url(${noteam})` }}
-                  ></UserImg>
-                  <UserName>유저 없음</UserName>
+                  ></UserImg2>
+                  <UserName2>유저 없음</UserName2>
                 </User2>
               )}
-            </MyTeamBox>
+            </EnemyTeamBox>
           </TeamWrap>
         )}
         <DefaultBtnL disabled={readyUser} onClick={readyHandler}>
