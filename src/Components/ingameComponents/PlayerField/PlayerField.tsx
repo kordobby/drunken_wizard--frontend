@@ -24,6 +24,7 @@ import MyProfile from "./MyProfile";
 
 /* CSS & SC */
 import {
+  TurnBtn,
   TurnOrderBtn,
   PlayerFieldWrap,
   CardsArea,
@@ -109,22 +110,31 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     value: playersSetting
   ) => {
     dispatch(setTargetTK(value.playerId));
+    console.log(value.playerId);
   };
   const onMouseLeaveTargeting = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     dispatch(setTargetTK(0));
   };
-
-  console.log(selectedUseCard);
+  console.log(selectedTarget);
   // USECARD FUNC
-  const useCardHandler = () => {
-    const data = {
-      cardId: selectedUseCard.cardId,
-      targetPlayerId: selectedTarget,
-    };
-    setClicked(true); // 중복클릭 방지
-    sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
+  const cardUseHandler = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    value: playersSetting | null
+  ) => {
+    if (value?.dead === true && value !== null) {
+      alert("이미 사망한 플레이어입니다.");
+      return;
+    } else {
+      console.log("hey");
+      const data = {
+        cardId: selectedUseCard.cardId,
+        targetPlayerId: selectedTarget,
+      };
+      setClicked(true); // 중복클릭 방지
+      sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
+    }
   };
 
   // DISCARD FUNC
@@ -143,12 +153,9 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     isMouseIn: boolean
   ) => {
     if (itemValue === target && isMouseIn) {
-      console.log(target);
-      console.log(isMouseIn);
       return "active";
     }
     if (itemValue === target || mouseIn) {
-      console.log("workin");
       return "normal";
     }
     return "default";
@@ -159,21 +166,28 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     setHealCnt(!healCnt);
   };
 
-  const sendHealMsgHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const targetId = (event.target as HTMLButtonElement).id;
-    const data = {
-      targetPlayerId: Number(targetId),
-      cardId: 0,
-    };
-    sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
-    setHealCnt(false);
-    setDisableHeal(true);
+  const sendHealMsgHandler = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    value: playersSetting
+  ) => {
+    if (value.dead === true) {
+      alert("이미 사망한 플레이어입니다.");
+      return;
+    } else {
+      const data = {
+        targetPlayerId: target,
+        cardId: 0,
+      };
+      sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
+      setHealCnt(false);
+      setDisableHeal(true);
+    }
   };
 
   // HEALER BTN(COMPONENT)
   const HealTargetBtns = playersList.map((value, index) => (
     <TurnHealBtn
-      onClick={sendHealMsgHandler}
+      onClick={(event: any) => sendHealMsgHandler(event, value)}
       value={value.playerId}
       disabled={clicked}
       team={value.team === thisPlayer.team}
@@ -192,7 +206,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       key={value.playerId}
       onMouseOver={(event: any) => onMouseOverTargeting(event, value)}
       onMouseLeave={onMouseLeaveTargeting}
-      onClick={useCardHandler}
+      onClick={(event: any) => cardUseHandler(event, value)}
       disabled={clicked}
       value={value.playerId}
       team={value.team === thisPlayer.team}
@@ -206,7 +220,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     <TargetNullBtn
       key={index}
       color={value}
-      onClick={useCardHandler}
+      onClick={(event: any) => cardUseHandler(event, null)}
       disabled={clicked}
     >
       {value}
@@ -325,17 +339,12 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
                     <span>순서 확인</span>
                     <div className="turn__button--box">
                       {playersList.map((value) => (
-                        <TurnHealBtn
+                        <TurnBtn
                           key={value.playerId}
-                          value={value.playerId}
                           team={value.team === thisPlayer.team}
-                          onMouseOver={(event: any) =>
-                            onMouseOverTargeting(event, value)
-                          }
-                          onMouseLeave={onMouseLeaveTargeting}
                         >
                           {value.turnOrder}
-                        </TurnHealBtn>
+                        </TurnBtn>
                       ))}
                     </div>
                   </>
@@ -353,12 +362,9 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
               <span>순서확인</span>
               <div className="turn__button--box">
                 {playersList.map((value) => (
-                  <TurnOrderBtn
-                    value={value.playerId}
-                    team={value.team === thisPlayer.team}
-                  >
+                  <TurnBtn team={value.team === thisPlayer.team}>
                     {value.turnOrder}
-                  </TurnOrderBtn>
+                  </TurnBtn>
                 ))}
               </div>
             </TurnTap>

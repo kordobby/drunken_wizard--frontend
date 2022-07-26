@@ -5,6 +5,14 @@ export interface HeaderBtnProps {
   clickFunc: () => void;
 }
 
+export interface OneBtnModalProps {
+  headerText: string;
+  upperText: string;
+  lowerText: string;
+  confirmText: string;
+  clickFunc: () => void;
+}
+
 export interface Card {
   cardId: number;
   cardName: string;
@@ -132,12 +140,19 @@ export interface UseCardProps {
   className: string;
 }
 export interface TargetBtnProps {
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseOver: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void;
   team: boolean;
   value: number;
 }
 
+export interface HealBtnProps {
+  onMouseOver: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  team: boolean;
+  value: number;
+}
 export interface TurnOrderProps {
   team: boolean;
 }

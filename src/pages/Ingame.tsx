@@ -44,7 +44,7 @@ import {
 } from "../Components/IngameComponents/InGameStyled/InGameStyled";
 import { playersSetting } from "../typings/typedb";
 import AlertPopUp from "../Components/IngameComponents/InGameCommon/AlertPopUp";
-
+import OneBtnModal from "../elem/OneBtnModal";
 const Ingame = () => {
   /* useState */
   // #GAME :: Turn Ctrl

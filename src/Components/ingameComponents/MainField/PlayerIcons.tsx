@@ -62,32 +62,32 @@ const PlayerIcons = ({ status }: HeaderProps) => {
         <TeamPosition layer={1} top={260} left={550}>
           <PlayerIcon
             size={290}
-            job={enemyA.charactorClass}
-            dead={enemyA.dead}
+            job={enemyB.charactorClass}
+            dead={enemyB.dead}
             reverse={false}
           >
             <div className="wizard__img"></div>
-            {nowPlayerId === enemyA.playerId && (
+            {nowPlayerId === enemyB.playerId && (
               <PlayingFlag status={status} top={-60} left={80}></PlayingFlag>
             )}
-            <NameTag dead={enemyA.dead} top={40} left={0}>
-              {enemyA.username}
+            <NameTag dead={enemyB.dead} top={40} left={0}>
+              {enemyB.username}
             </NameTag>
           </PlayerIcon>
         </TeamPosition>
         <TeamPosition layer={1} top={260} left={250}>
           <PlayerIcon
             size={290}
-            job={enemyB.charactorClass}
-            dead={enemyB.dead}
+            job={enemyA.charactorClass}
+            dead={enemyA.dead}
             reverse={true}
           >
             <div className="wizard__img"></div>
-            {nowPlayerId === enemyB.playerId && (
+            {nowPlayerId === enemyA.playerId && (
               <PlayingFlag status={status} top={-60} left={140}></PlayingFlag>
             )}
             <NameTag dead={enemyB.dead} top={40} left={120}>
-              {enemyB.username}
+              {enemyA.username}
             </NameTag>
           </PlayerIcon>
         </TeamPosition>

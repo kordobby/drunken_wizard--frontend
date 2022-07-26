@@ -21,6 +21,7 @@ import {
   NameTagsProps,
   BtnColorType,
   FlagProps,
+  HealBtnProps,
 } from "../../../typings/typedb";
 import matchStatusImg from "./StatusIcon";
 import matchCardImg from "./CardFactory";
@@ -532,7 +533,7 @@ export const SendHealBtn = styled.button`
   font-size: 24px;
 `;
 
-export const TurnHealBtn = styled.button<TargetBtnProps>`
+export const TurnHealBtn = styled.button<HealBtnProps>`
   width: 42px;
   height: 42px;
   border-radius: 42px;
@@ -541,6 +542,15 @@ export const TurnHealBtn = styled.button<TargetBtnProps>`
   color: white;
 `;
 
+export const TurnBtn = styled.div<TurnOrderProps>`
+  width: 42px;
+  height: 42px;
+  border-radius: 42px;
+  background-color: ${({ team }) =>
+    team ? `var(--purple-1)` : `var(--brown-1)`};
+  color: white;
+  ${flex({ justify: "center", align: "center" })}
+`;
 export const TurnOrderBtn = styled.button<TurnOrderProps>`
   width: 42px;
   height: 42px;
@@ -548,6 +558,7 @@ export const TurnOrderBtn = styled.button<TurnOrderProps>`
   background-color: ${({ team }) =>
     team ? `var(--purple-1)` : `var(--brown-1)`};
   color: white;
+  ${flex({ justify: "center", align: "center" })}
 `;
 
 // 시작페이지 modal-bg
