@@ -13,6 +13,7 @@ const LogoutBtn = ({ modalHandler }: ModalType) => {
     alert("로그아웃 되었습니다!");
     navigate("/login");
   };
+
   return (
     <LogoutBtnSt onClick={modalHandler}>
       <span className="logout__text">Logout</span>

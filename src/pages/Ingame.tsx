@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
 
 /* Modules */
 import {
+  setCraveTK,
   setNowPlayerIdTK,
   setThisPlayerTK,
   setPlayOrderTK,
@@ -34,13 +35,15 @@ import NoticeField from "../Components/IngameComponents/NoticeField/NoticeField"
 import StartModal from "../Components/IngameComponents/Modals/StartModal";
 import PlayerIcons from "../Components/IngameComponents/MainField/PlayerIcons";
 import CraveField from "../Components/IngameComponents/MainField/CraveField";
-
+import PlayerStatus from "../Components/IngameComponents/MainField/PlayerStatus";
 /* CSS & SC */
 import {
   StGameWrap,
   MainWrap,
-} from "../Components/IngameComponents/InGameStyled";
-import { playersSetting, Card } from "../typings/typedb";
+  StGameWrapFilter,
+} from "../Components/IngameComponents/InGameStyled/InGameStyled";
+import { playersSetting } from "../typings/typedb";
+import AlertPopUp from "../Components/IngameComponents/InGameCommon/AlertPopUp";
 
 const Ingame = () => {
   /* useState */
@@ -71,11 +74,21 @@ const Ingame = () => {
     damageModifierDuration: 0,
   });
 
+  /* modal control  */
+  const [startModal, setStartModal] = useState<boolean>(false);
+  const [drawFailModal, setDrawFailModal] = useState<boolean>(false);
+  const [timeOutModal, setTimeOutModal] = useState<boolean>(false);
+
+  /* targetText */
+  const [targetText, setTargetText] = useState<string>("깅준호");
+
   /* tookit things */
   const dispatch = useAppDispatch();
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
+  const nowPlayerName = useAppSelector((state) => state.game.game.nowPlayer);
+  const craveCard = useAppSelector((state) => state.game.game.cardCrave[0]);
   const API_URL = process.env.REACT_APP_API_URL;
   /* socket connect - token */
   const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
@@ -120,29 +133,25 @@ const Ingame = () => {
       },
       () => {
         stompClient.subscribe(`/sub/game/${roomId}`, (data: any) => {
+          console.log(data);
           const response = JSON.parse(data.body);
-          const msgType = response?.type;
           const msgData = JSON.parse(response?.content);
-          console.log(msgData);
           const msgSender = response?.sender;
           const playersInfo = msgData.players;
-          switch (msgType) {
+          switch (response?.type) {
             case "START":
               stompClient.unsubscribe(`/sub/wroom/${roomId}`);
-              // 게임 방식 변경으로 인한 로직 변경 작업
-              // playersInfo ( 플레이어 배열 )
-              // 플레이어 순서 정렬 - type 나중에 넣어주기
-              const setPlayerOrder = playersInfo
-                .sort((a: any, b: any) => a.turnOrder - b.turnOrder)
-                .map((value: any) => value.username);
-              dispatch(setPlayOrderTK(setPlayerOrder));
 
-              // 유지
-              const findNowPlayer = playersInfo.filter(
-                (value: playersSetting) => value.turnOrder === 1
+              const setPlayerOrder = playersInfo.sort(
+                (a: playersSetting, b: playersSetting) =>
+                  a.turnOrder - b.turnOrder
               );
-              dispatch(setNowPlayerIdTK(findNowPlayer[0].playerId));
-              dispatch(setNowPlayerNameTK(findNowPlayer[0].username));
+              const playerOrder = setPlayerOrder.map(
+                (value: playersSetting) => value.username
+              );
+              dispatch(setPlayOrderTK(playerOrder));
+              dispatch(setNowPlayerIdTK(setPlayerOrder[0].playerId));
+              dispatch(setNowPlayerNameTK(setPlayerOrder[0].username));
 
               // 유지
               const myPlayerInfo = playersInfo.filter(
@@ -152,11 +161,20 @@ const Ingame = () => {
               const restPlayersInfo = playersInfo.filter(
                 (value: playersSetting) => value.playerId !== myId
               );
+
+              restPlayersInfo.sort((a: playersSetting, b: playersSetting) => {
+                if (
+                  (myPlayerInfo[0].team === a.team > myPlayerInfo[0].team) ===
+                  b.team
+                )
+                  return -1;
+              });
+
               dispatch(setPlayerATK(restPlayersInfo[0]));
               dispatch(setPlayerBTK(restPlayersInfo[1]));
               dispatch(setPlayerCTK(restPlayersInfo[2]));
 
-              if (findNowPlayer[0].playerId === myId) {
+              if (setPlayerOrder[0].playerId === myId) {
                 sendStompMsgFunc(roomId, myId, "PRECHECK", null);
               } else {
                 setStatus("WAITING");
@@ -231,20 +249,23 @@ const Ingame = () => {
                 sendStompMsgFunc(roomId, myId, "ENDGAME", null);
                 // 만약 현재 플레이어가 나이고 죽은게 아니라면?
               } else {
+                // 배열로 내려오는지 확인
+                dispatch(setCraveTK(msgData.usedCard));
                 setUpdate(msgData.players);
                 setStatus("USECARD");
               }
               break;
             case "USEFAIL":
               if (msgSender === myId) {
+                // 모달창..
                 alert("마나가 부족하거나 니가 침묵에 걸렸겠지!");
               }
               break;
             case "DISCARD":
+              dispatch(setCraveTK(msgData.discard));
               if (msgSender === myId) {
                 dispatch(setThisPlayerTK(msgData));
                 setStatus("ACTION");
-                // dispatch(setThisPlayerTK(msgData));
               } else {
                 setUpdateOne(msgData);
                 setStatus("DISCARD");
@@ -272,8 +293,10 @@ const Ingame = () => {
   useEffect(() => {
     switch (status) {
       case "READY":
+        setStartModal(true);
         setTimeout(() => {
           sendStompMsgFunc(roomId, myId, "START", null);
+          setStartModal(false);
         }, 3000);
         break;
       case "WAITING":
@@ -325,13 +348,17 @@ const Ingame = () => {
         );
         if (PlayerA[0] !== undefined) {
           dispatch(setPlayerATK(PlayerA[0]));
+          setTargetText(PlayerA[0].username);
         }
         if (PlayerB[0] !== undefined) {
           dispatch(setPlayerBTK(PlayerB[0]));
+          setTargetText(PlayerA[0].username);
         }
         if (PlayerC[0] !== undefined) {
           dispatch(setPlayerCTK(PlayerC[0]));
+          setTargetText(PlayerA[0].username);
         }
+
         break;
       case "DISCARD":
         if (nowPlayerId !== playersData.thisPlayer.playerId) {
@@ -379,6 +406,7 @@ const Ingame = () => {
   ) => {
     console.log(roomId);
     waitForConnection(stompClient, function () {
+      // connect - subscribe - send
       stompClient.send(
         "/pub/game/1",
         { token: accessToken },
@@ -400,7 +428,17 @@ const Ingame = () => {
       setDrawModalOpen(false);
       sendStompMsgFunc(roomId, myId, turn, null);
       dispatch(setTimerTK(""));
-      alert("시간초과!");
+      if (turn === "SELECT") {
+        setDrawFailModal(true);
+        setTimeout(() => {
+          setDrawFailModal(false);
+        }, 2000);
+      } else if (turn === "ENDTURN") {
+        setTimeOutModal(true);
+        setTimeout(() => {
+          setTimeOutModal(false);
+        }, 2000);
+      }
     }, sec);
   };
 
@@ -440,30 +478,68 @@ const Ingame = () => {
 
   return (
     <>
-      <NoticeField status={status}></NoticeField>
+      {startModal && (
+        <AlertPopUp
+          upperText="게임 시작!"
+          middleText="내 직업을 확인하세요!"
+          bottomText=""
+        />
+      )}
+      {drawFailModal && (
+        <AlertPopUp
+          upperText="시간 초과!"
+          middleText="10초가 경과하여"
+          bottomText="카드 드로우에 실패했습니다."
+        />
+      )}
+      {timeOutModal && (
+        <AlertPopUp
+          upperText="시간 초과!"
+          middleText="30초가 경과하여"
+          bottomText="다음 턴으로 넘어갑니다."
+        />
+      )}
+      {craveCard.target === "SELECT" && status === "CARDUSESUCCESS" && (
+        <AlertPopUp
+          upperText={`${nowPlayerName}님이`}
+          middleText={`${targetText}님에게`}
+          bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
+        />
+      )}
+      {craveCard.target === "ALLY" && status === "CARDUSESUCCESS" && (
+        <AlertPopUp
+          upperText={`${nowPlayerName}님이`}
+          middleText={`같은 팀에게`}
+          bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
+        />
+      )}
+      {craveCard.target === "ENEMY" && status === "CARDUSESUCCESS" && (
+        <AlertPopUp
+          upperText={`${nowPlayerName}님이`}
+          middleText={`상대팀에게`}
+          bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
+        />
+      )}
       <StGameWrap>
-        {status === "" ? (
-          <StartModal setStatus={setStatus}></StartModal>
-        ) : (
-          <>
-            <MainWrap>
-              <PlayerIcons></PlayerIcons>
-              <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
-            </MainWrap>
-            <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
-            {drawModalOpen && (
-              <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
-            )}
-          </>
-        )}
+        <StGameWrapFilter>
+          {status !== "" ? (
+            <StartModal setStatus={setStatus}></StartModal>
+          ) : (
+            <>
+              <NoticeField></NoticeField>
+              <MainWrap>
+                <PlayerStatus></PlayerStatus>
+                <PlayerIcons status={status}></PlayerIcons>
+                <CraveField sendStompMsgFunc={sendStompMsgFunc}></CraveField>
+              </MainWrap>
+              <PlayerField sendStompMsgFunc={sendStompMsgFunc}></PlayerField>
+              {drawModalOpen && (
+                <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
+              )}
+            </>
+          )}
+        </StGameWrapFilter>
       </StGameWrap>
-      <button
-        onClick={() => {
-          sendStompMsgFunc(roomId, myId, "ENDGAME", null);
-        }}
-      >
-        게임 종료
-      </button>
     </>
   );
 };

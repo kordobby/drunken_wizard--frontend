@@ -26,7 +26,7 @@ import {
   SpeechBubble,
   LoginBtnBox,
 } from "../Components/UserComponents/UserStyled";
-import { DefaultBtn } from "../Components/Common/CommonStyle";
+import { DefaultBtn, FormWrapSt } from "../Components/Common/CommonStyle";
 
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
@@ -79,105 +79,107 @@ const Login = ({ setLoginState }: loginStateProps) => {
 
   return (
     <BackWrap>
-      <LogLogo top={5.729} bottom={4.6875} />
-      {/* <LogLogo src={logo} /> */}
-      <form>
-        <label id="user-id-label">
-          <InputBoxId>
-            <Input
-              type="text"
-              id="user-id"
-              name="user-id"
-              value={username}
-              onChange={setUsername}
-              placeholder="ID"
-              onFocus={setIdFocus}
-              onBlur={setIdFocus}
-            />
-            {username === "" && idFocus && (
-              <SpeechBubble>
-                <span className="bubble__notice">
-                  아이디를 <br />
-                  입력해주세요.
-                </span>
-              </SpeechBubble>
-            )}
-            {username !== "" && idFocus && (
-              <SpeechBubble>
-                <span className="bubble__notice">
-                  올바른 형식의 <br />
-                  ID 입니다.
-                </span>
-              </SpeechBubble>
-            )}
-          </InputBoxId>
-        </label>
-        <label id="password-label">
-          <InputBoxPw>
-            <Input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              placeholder="Password"
-              onChange={setPassword}
-              onFocus={setPwFocus}
-              onBlur={setPwFocus}
-            />
-            {passwordCheckF(password) && pwFocus && (
-              <SpeechBubble>
-                <span className="bubble__notice">
-                  올바른 형식의 <br />
-                  비밀번호 입니다.
-                </span>
-              </SpeechBubble>
-            )}
-            {!passwordCheckF(password) && pwFocus && (
-              <SpeechBubble>
-                <span className="bubble__notice">
-                  영문, 숫자, <br /> 특수문자 포함 <br />
-                  6~15자
-                </span>
-              </SpeechBubble>
-            )}
-          </InputBoxPw>
-        </label>
-      </form>
-      <LoginBtnBox>
-        <DefaultBtn
-          btnType="activeM"
-          size={10.9895}
-          onClick={(e) => {
-            play();
-            handleLogin(e);
-          }}
-          type="submit"
-          disabled={username === "" || password === "" ? true : false}
-        >
-          <span>Login</span>
-        </DefaultBtn>
-        <Link to="/signup">
+      <FormWrapSt>
+        <LogLogo top={5.729} bottom={4.6875} />
+        {/* <LogLogo src={logo} /> */}
+        <form>
+          <label id="user-id-label">
+            <InputBoxId>
+              <Input
+                type="text"
+                id="user-id"
+                name="user-id"
+                value={username}
+                onChange={setUsername}
+                placeholder="ID"
+                onFocus={setIdFocus}
+                onBlur={setIdFocus}
+              />
+              {username === "" && idFocus && (
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    아이디를 <br />
+                    입력해주세요.
+                  </span>
+                </SpeechBubble>
+              )}
+              {username !== "" && idFocus && (
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    올바른 형식의 <br />
+                    ID 입니다.
+                  </span>
+                </SpeechBubble>
+              )}
+            </InputBoxId>
+          </label>
+          <label id="password-label">
+            <InputBoxPw>
+              <Input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                placeholder="Password"
+                onChange={setPassword}
+                onFocus={setPwFocus}
+                onBlur={setPwFocus}
+              />
+              {passwordCheckF(password) && pwFocus && (
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    올바른 형식의 <br />
+                    비밀번호 입니다.
+                  </span>
+                </SpeechBubble>
+              )}
+              {!passwordCheckF(password) && pwFocus && (
+                <SpeechBubble>
+                  <span className="bubble__notice">
+                    영문, 숫자, <br /> 특수문자 포함 <br />
+                    6~15자
+                  </span>
+                </SpeechBubble>
+              )}
+            </InputBoxPw>
+          </label>
+        </form>
+        <LoginBtnBox>
           <DefaultBtn
-            btnType="inactiveM"
+            btnType="activeM"
             size={10.9895}
+            onClick={(e) => {
+              play();
+              handleLogin(e);
+            }}
+            type="submit"
+            disabled={username === "" || password === "" ? true : false}
+          >
+            <span>Login</span>
+          </DefaultBtn>
+          <Link to="/signup">
+            <DefaultBtn
+              btnType="inactiveM"
+              size={10.9895}
+              onClick={() => {
+                play();
+              }}
+            >
+              <span>Register</span>
+            </DefaultBtn>
+          </Link>
+        </LoginBtnBox>
+        <a href={KAKAO_AUTH_URL}>
+          <DefaultBtn
+            btnType="kakao"
+            size={22.8125}
             onClick={() => {
               play();
             }}
-          >
-            <span>Register</span>
-          </DefaultBtn>
-        </Link>
-      </LoginBtnBox>
-      <a href={KAKAO_AUTH_URL}>
-        <DefaultBtn
-          btnType="kakao"
-          size={22.8125}
-          onClick={() => {
-            play();
-          }}
-          // style={{ backgroundImage: `url(${kakaoBtn})` }}
-        ></DefaultBtn>
-      </a>
+            style={{ marginBottom: "2.77vw" }}
+          ></DefaultBtn>
+        </a>
+      </FormWrapSt>
     </BackWrap>
   );
 };

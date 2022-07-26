@@ -76,7 +76,6 @@ function App() {
       >
         <img src={ruleBook} />
       </RuleBtn>
-      <button onClick={logoutHandler}>로그아웃</button>
     </>
   );
 }

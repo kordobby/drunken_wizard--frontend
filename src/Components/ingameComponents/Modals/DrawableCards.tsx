@@ -12,7 +12,7 @@ import {
 } from "../../../redux/modules/ingameSlice";
 
 /* CSS & SC */
-import { DrawableCard } from "../InGameStyled";
+import { DrawableCard } from "../InGameStyled/InGameStyled";
 
 const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
   const [selected, setSelected] = useState(false);
@@ -50,7 +50,7 @@ const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
             selectCardHandler(event, value);
           }}
           selected={selected}
-          cardId={0}
+          cardName={value.cardName}
         >
           <p>파시어</p>
           <p>{value.cardName}</p>
@@ -63,10 +63,8 @@ const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
             selectCardHandler(event, value);
           }}
           selected={selected}
-          cardId={value.cardId}
-        >
-          <p>나와라 얍</p>
-        </DrawableCard>
+          cardName="flipped"
+        ></DrawableCard>
       )}
     </>
   );
