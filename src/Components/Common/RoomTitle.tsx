@@ -19,6 +19,7 @@ const RoomTitleSt = styled.div`
   background-color: #564d4d;
   color: var(--white);
   font-size: 1.875vmax;
+  margin-left: 1.55vw;
   border-radius: 0.55vh;
   border: none;
   font-family: "국립박물관문화재단클래식B";

@@ -146,10 +146,13 @@ export const NameTag = styled.div<NameTagsProps>`
   border-radius: 2.604vw;
   font-size: 1.25vw;
   border: 1px solid var(--white);
+  filter: ${({ dead }) => dead && `grayscale(100%)`};
+  color: ${({ dead }) => dead && "var(--grey)"};
+  -webkit-filter: ${({ dead }) => dead && `grayscale(100%)`};
   box-shadow: 0.104vw 0.104vw 0.208vw rgba(0, 0, 0, 0.25);
   ${flex({ align: "center", justify: "center" })};
-  background-color: ${({ dead }) =>
-    dead ? `var(--purple-1)` : `var(--brown-1)`};
+  background-color: ${({ team }) =>
+    team ? `var(--purple-1)` : `var(--brown-1)`};
   position: absolute;
   bottom: ${({ top }) => top && `${top}vw`};
   left: ${({ left }) => left && `${left}vw`};
