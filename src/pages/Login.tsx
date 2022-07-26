@@ -25,6 +25,7 @@ import {
   InputBoxPw,
   SpeechBubble,
   LoginBtnBox,
+  Check,
 } from "../Components/UserComponents/UserStyled";
 import { DefaultBtn, FormWrapSt } from "../Components/Common/CommonStyle";
 
@@ -127,6 +128,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
                   </span>
                 </SpeechBubble>
               )}
+              {username !== "" && <Check>✔</Check>}
             </InputBoxId>
           </label>
           <label id="password-label">
@@ -157,6 +159,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
                   </span>
                 </SpeechBubble>
               )}
+              {passwordCheckF(password) && <Check>✔</Check>}
             </InputBoxPw>
           </label>
         </form>

@@ -70,7 +70,7 @@ export const Input = styled.input`
 export const Check = styled.span`
   top: 0.8vw;
   right: 1vw;
-  font-size: 0.93vw;
+  font-size: 1.3vw;
   position: absolute;
 `;
 

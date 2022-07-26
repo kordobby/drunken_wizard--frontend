@@ -288,6 +288,7 @@ const SignUp = () => {
                   </span>
                 </SpeechBubble>
               )}
+              {nickname && <Check>✔</Check>}
             </InputBoxId>
           </label>
           <label id="email-label">
@@ -320,6 +321,7 @@ const SignUp = () => {
                   </span>
                 </SpeechBubble>
               )}
+              {emailCheck(email) && <Check>✔</Check>}
             </InputBoxId>
           </label>
           <label id="password-label">
@@ -352,6 +354,7 @@ const SignUp = () => {
                   </span>
                 </SpeechBubble>
               )}
+              {passwordCheckF(password) && <Check>✔</Check>}
             </InputBoxId>
           </label>
           <label id="password-check-label">
@@ -384,6 +387,7 @@ const SignUp = () => {
                   </span>
                 </SpeechBubble>
               )}
+              {!mismatchError && <Check>✔</Check>}
             </InputBoxPw>
             {/* {signUpSuccess && <span>회원가입되었습니다! 로그인해주세요.</span>} */}
           </label>
