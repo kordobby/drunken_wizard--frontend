@@ -165,12 +165,8 @@ const Ingame = () => {
                 (value: playersSetting) => value.playerId !== myId
               );
 
-              restPlayersInfo.sort((a: playersSetting, b: playersSetting) => {
-                if (
-                  (myPlayerInfo[0].team === a.team > myPlayerInfo[0].team) ===
-                  b.team
-                )
-                  return -1;
+              restPlayersInfo.sort((value: playersSetting) => {
+                return value.team ? -1 : 1;
               });
 
               /* 팀에 따른 플레이어 구분, 같은 팀원 : PlayerA */
