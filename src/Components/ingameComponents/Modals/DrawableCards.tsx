@@ -51,12 +51,7 @@ const DrawableCards = ({ value, drawDisabled }: DrawableCardsProps) => {
           }}
           selected={selected}
           cardName={value.cardName}
-        >
-          <p>파시어</p>
-          <p>{value.cardName}</p>
-          <p>{value.description}</p>
-          <p>{value.manaCost}</p>
-        </DrawableCard>
+        ></DrawableCard>
       ) : (
         <DrawableCard
           onClick={(event: React.MouseEvent<HTMLDivElement>) => {

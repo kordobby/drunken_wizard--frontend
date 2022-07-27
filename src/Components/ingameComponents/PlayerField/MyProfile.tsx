@@ -19,6 +19,7 @@ import {
   StatIcon,
   StatCnt,
   CoverIcon,
+  CoverIconMine,
 } from "../InGameStyled/InGameStyled";
 
 const MyProfile = () => {
@@ -111,7 +112,7 @@ const MyProfile = () => {
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {mouseOver && <CoverIcon>수면</CoverIcon>}
+                  {mouseOver && <CoverIconMine>수면</CoverIconMine>}
                 </StatIcon>
                 <StatCnt size={2.083}>{thisPlayer.sleepDuration}</StatCnt>
               </MyStatIcon>
@@ -126,7 +127,7 @@ const MyProfile = () => {
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {mouseOver && <CoverIcon>침묵</CoverIcon>}
+                  {mouseOver && <CoverIconMine>침묵</CoverIconMine>}
                 </StatIcon>
                 <StatCnt size={2.083}>{thisPlayer.mutedDuration}</StatCnt>
               </MyStatIcon>
@@ -141,7 +142,7 @@ const MyProfile = () => {
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {mouseOver && <CoverIcon>석화</CoverIcon>}
+                  {mouseOver && <CoverIconMine>석화</CoverIconMine>}
                 </StatIcon>
                 <StatCnt size={2.083}>{thisPlayer.petrifiedDuration}</StatCnt>
               </MyStatIcon>
@@ -156,7 +157,7 @@ const MyProfile = () => {
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {mouseOver && <CoverIcon>독</CoverIcon>}
+                  {mouseOver && <CoverIconMine>독</CoverIconMine>}
                 </StatIcon>
                 <StatCnt size={2.083}>{thisPlayer.poisonedDuration}</StatCnt>
               </MyStatIcon>
@@ -171,7 +172,7 @@ const MyProfile = () => {
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {mouseOver && <CoverIcon>기절</CoverIcon>}
+                  {mouseOver && <CoverIconMine>기절</CoverIconMine>}
                 </StatIcon>
                 <StatCnt size={2.083}>{thisPlayer.stunnedDuration}</StatCnt>
               </MyStatIcon>
@@ -186,16 +187,16 @@ const MyProfile = () => {
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {thisPlayer.weakDuration > 0 ? (
-                    <>{mouseOver && <CoverIcon>방어</CoverIcon>}</>
+                  {thisPlayer.weakDuration <= 0 ? (
+                    <>{mouseOver && <CoverIconMine>방어</CoverIconMine>}</>
                   ) : (
                     <>
                       {mouseOver && (
-                        <CoverIcon>
+                        <CoverIconMine>
                           약점
                           <br />
                           노출
-                        </CoverIcon>
+                        </CoverIconMine>
                       )}
                     </>
                   )}
@@ -213,25 +214,24 @@ const MyProfile = () => {
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {" "}
                   {thisPlayer.damageModifierDuration > 0 ? (
                     <>
                       {mouseOver && (
-                        <CoverIcon>
+                        <CoverIconMine>
                           마법
                           <br />
                           증폭
-                        </CoverIcon>
+                        </CoverIconMine>
                       )}
                     </>
                   ) : (
                     <>
                       {mouseOver && (
-                        <CoverIcon>
+                        <CoverIconMine>
                           마법
                           <br />
                           약화
-                        </CoverIcon>
+                        </CoverIconMine>
                       )}
                     </>
                   )}
@@ -248,7 +248,9 @@ const MyProfile = () => {
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
-                ></StatIcon>
+                >
+                  {mouseOver && <CoverIconMine>실드</CoverIconMine>}
+                </StatIcon>
               </MyStatIcon>
             )}
           </StatusSizing>

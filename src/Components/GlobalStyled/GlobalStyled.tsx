@@ -25,8 +25,9 @@ body {
     
 }
 button {
+    font-family: "국립박물관문화재단클래식M";
     :hover {
-        cersor: pointer;
+        cursor: pointer;
     }
 }
 :root {
