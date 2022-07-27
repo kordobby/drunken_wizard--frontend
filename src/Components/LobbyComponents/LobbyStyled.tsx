@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { JoinRoomType, ModalDivProps } from "../../typings/db";
+import { ImgNumType, JoinRoomType, ModalDivProps } from "../../typings/db";
 // css
 import flex from "../GlobalStyled/flex";
 // img
@@ -11,8 +11,9 @@ import team1 from "../../images/lobby/team1.png";
 import team2 from "../../images/lobby/team2.png";
 import teamX1 from "../../images/lobby/teamX1.png";
 import teamX2 from "../../images/lobby/teamX2.png";
-import lobbyBack from "../../images/background/lobbyBackground.png";
+import lobbyBack from "../../images/background/lobbybackground.png";
 import { TeamProps } from "../../typings/typedb";
+import matchProfileImg from "./Team";
 
 // lobby
 export const WrapBack = styled.div`
@@ -413,7 +414,7 @@ export const Profile = styled.div`
   ${flex({ direction: "column", align: "left" })};
 `;
 
-export const ProfileImg = styled.div`
+export const ProfileImg = styled.div<ImgNumType>`
   width: 5.2vw;
   height: 5.2vw;
   margin-left: 0.78vw;
@@ -421,6 +422,7 @@ export const ProfileImg = styled.div`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  background-image: url(${(props) => matchProfileImg(props.ImgNum)});
 `;
 
 export const ProfileSpan = styled.span`
@@ -449,20 +451,21 @@ export const Users = styled.div`
   ${flex({ direction: "row", align: "left", justify: "center" })}
 `;
 
-export const UsersImg = styled.div`
+export const UsersImg = styled.div<ImgNumType>`
   width: 2.18vw;
   height: 2.18vw;
   border-radius: 1.09vw;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  background-image: url(${(props) => matchProfileImg(props.ImgNum)});
 `;
 
 export const ChatWrap = styled.div`
   width: 15.625vw;
   height: 30.55vh;
   overflow: scroll;
-  background-color: rgba(202, 37, 37, 0.5);
+  /* background-color: rgba(202, 37, 37, 0.5); */
   ${flex({ direction: "column", align: "left" })}
   border-bottom: 2px solid black;
 `;
@@ -508,7 +511,7 @@ export const MyChat = styled.div`
   border-bottom: 2px solid black;
 `;
 
-export const ChatImg = styled.div`
+export const ChatImg = styled.div<ImgNumType>`
   margin: 0.26vw;
   width: 1.875vw;
   height: 1.875vw;
@@ -516,6 +519,7 @@ export const ChatImg = styled.div`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  background-image: url(${(props) => matchProfileImg(props.ImgNum)});
 `;
 
 export const ChatMsg = styled.p`
@@ -533,7 +537,7 @@ export const MyMsg = styled.p`
 export const JoinUser = styled.div`
   margin: 0.26vw 0;
   width: 15.625vw;
-  height: 3.7vh;
+  padding: 1.45vh;
   box-sizing: border-box;
   border-radius: 0.52vw;
   span {
@@ -545,10 +549,10 @@ export const JoinUser = styled.div`
 `;
 
 export const Input = styled.input`
-  width: 15.1vw;
+  width: 14.1vw;
   height: 5.18vh;
   margin: auto;
-  padding: 0 0.52vw;
+  padding: 0 1.02vw;
   border-radius: 0.625vw;
   color: #3f0984;
   font-size: 0.9375vw;

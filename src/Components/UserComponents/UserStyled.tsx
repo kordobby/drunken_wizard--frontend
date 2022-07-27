@@ -131,12 +131,12 @@ export const ButtonBox = styled.div`
 // 전체화면 전환
 export const ResizeBtn = styled.button`
   position: fixed;
-  top: 1.5625vw;
+  top: 1.7625vw;
   right: 2.083vw;
   background-color: transparent;
   img {
-    width: 4.166vw;
-    height: 4.166vw;
+    width: 3.64vw;
+    height: 3.64vw;
   }
   &:hover {
     cursor: pointer;

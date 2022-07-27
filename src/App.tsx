@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
+// hook
+import { toggleFullScreen } from "./hooks/fullScreen";
+import { useModal } from "./hooks/useModal";
 // pages
 import Main from "./pages/Main";
 import Login from "./pages/Login";
@@ -9,17 +12,18 @@ import KakaoRedirect from "./pages/KakaoRedirect";
 import Ingame from "./pages/Ingame";
 // cookies
 import { getCookie, deleteCookie } from "./shared/Cookies";
+// component
 import WaitingRoom from "./pages/WaitingRoom";
 import NotFound from "./pages/NotFound";
 import Rule from "./Components/RuleComponents/Rule";
-import { toggleFullScreen } from "./hooks/fullScreen";
+// css
 import { ResizeBtn, RuleBtn } from "./Components/UserComponents/UserStyled";
-import resize from "./images/imgs/Resize.svg";
-import ruleBook from "./images/rules/rulebook.svg";
-import { useModal } from "./hooks/useModal";
-
+// image
+import resize from "./images/imgs/Resize.png";
+import ruleBook from "./images/rules/ruleBook.png";
 import Splash from "./pages/Splash";
 import Loading from "./pages/Loading";
+
 function App() {
   const navigate = useNavigate();
   const [loginState, setLoginState] = useState(false);
@@ -29,18 +33,18 @@ function App() {
     token ? setLoginState(true) : setLoginState(false);
   }, [token]);
 
-  const logoutHandler = () => {
-    if (loginState) {
-      deleteCookie("token");
-      deleteCookie("id");
-      deleteCookie("username");
-      deleteCookie("nickname");
-    }
+  // const logoutHandler = () => {
+  //   if (loginState) {
+  //     deleteCookie("token");
+  //     deleteCookie("id");
+  //     deleteCookie("username");
+  //     deleteCookie("nickname");
+  //   }
 
-    if (!loginState) {
-      navigate("/login");
-    }
-  };
+  //   if (!loginState) {
+  //     navigate("/login");
+  //   }
+  // };
 
   return (
     <>

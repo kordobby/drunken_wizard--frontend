@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import flex from "../Components/GlobalStyled/flex";
 import loading from "../images/splash/loadingFront.png";
 import background from "../images/background/IngameBackground.png";
 import beerBg from "../images/splash/beer_bg.png";

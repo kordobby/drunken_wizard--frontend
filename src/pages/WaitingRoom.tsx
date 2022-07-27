@@ -10,11 +10,6 @@ import sockJS from "sockjs-client";
 import { getCookie } from "../shared/Cookies";
 // apis
 import apis from "../shared/api/apis";
-// imgs
-import team1 from "../images/lobby/team1.jpg";
-import team2 from "../images/lobby/team2.jpg";
-import noteam from "../images/lobby/noteam.jpg";
-import { DefaultBtnL } from "../Components/Common/CommonStyle";
 // css
 import {
   Header,
@@ -35,6 +30,7 @@ import {
 import HeaderBtn from "../elem/HeaderBtn";
 import TwoBtnModal from "../elem/TwoBtnModal";
 import HeaderRoomTitle from "../Components/Common/RoomTitle";
+import { DefaultBtnL } from "../Components/Common/CommonStyle";
 
 const WaitingRoom = () => {
   const API_URL = process.env.REACT_APP_API_URL;
@@ -224,10 +220,7 @@ const WaitingRoom = () => {
               </TeamHeader>
               {waitingUsers.player1 ? (
                 <User1>
-                  <UserImg
-                    team={true}
-                    style={{ backgroundImage: `url(${team1})` }}
-                  ></UserImg>
+                  <UserImg team={true} />
                   {waitingUsers?.player1?.ready ? (
                     <ReadyName team={true}>
                       {waitingUsers.player1.nickname}[{waitingUsers.player1.id}]
@@ -244,16 +237,13 @@ const WaitingRoom = () => {
                     changeTeam(1);
                   }}
                 >
-                  <XUserImg team={true}></XUserImg>
+                  <XUserImg team={true} />
                   <UserName team={true}>???</UserName>
                 </User1>
               )}
               {waitingUsers.player3 ? (
                 <User2>
-                  <UserImg
-                    team={true}
-                    style={{ backgroundImage: `url(${team1})` }}
-                  ></UserImg>
+                  <UserImg team={true} />
                   {waitingUsers?.player3?.ready ? (
                     <ReadyName team={true}>
                       {waitingUsers.player3.nickname}[{waitingUsers.player3.id}]
@@ -270,16 +260,23 @@ const WaitingRoom = () => {
                     changeTeam(3);
                   }}
                 >
-                  <XUserImg team={true}></XUserImg>
+                  <XUserImg team={true} />
                   <UserName team={true}>???</UserName>
                 </User2>
               )}
             </TeamBox>
             <VsBox>
-              <VSImg></VSImg>
-              <SwitImg></SwitImg>
+              <VSImg />
+              <SwitImg />
               <span>팀을 교체하려면</span>
               <span>빈칸을 누르세요.</span>
+              <DefaultBtnL
+                style={{ marginTop: "1.56vw" }}
+                disabled={readyUser}
+                onClick={readyHandler}
+              >
+                {readyUser ? <span>준비 완료</span> : <span>게임 준비</span>}
+              </DefaultBtnL>
             </VsBox>
             <TeamBox team={false}>
               <TeamHeader team={false}>
@@ -287,10 +284,7 @@ const WaitingRoom = () => {
               </TeamHeader>
               {waitingUsers.player2 ? (
                 <User2>
-                  <UserImg
-                    team={false}
-                    style={{ backgroundImage: `url(${team2})` }}
-                  ></UserImg>
+                  <UserImg team={false} />
                   {waitingUsers?.player2?.ready ? (
                     <ReadyName team={false}>
                       {waitingUsers.player2.nickname}[{waitingUsers.player2.id}]
@@ -307,16 +301,13 @@ const WaitingRoom = () => {
                     changeTeam(2);
                   }}
                 >
-                  <XUserImg team={false}></XUserImg>
+                  <XUserImg team={false} />
                   <UserName team={false}>???</UserName>
                 </User2>
               )}
               {waitingUsers.player4 ? (
                 <User1>
-                  <UserImg
-                    team={false}
-                    style={{ backgroundImage: `url(${team2})` }}
-                  ></UserImg>
+                  <UserImg team={false} />
                   {waitingUsers?.player4?.ready ? (
                     <ReadyName team={false}>
                       {waitingUsers.player4.nickname}[{waitingUsers.player4.id}]
@@ -340,9 +331,6 @@ const WaitingRoom = () => {
             </TeamBox>
           </TeamWrap>
         )}
-        <DefaultBtnL disabled={readyUser} onClick={readyHandler}>
-          {readyUser ? <span>준비 완료</span> : <span>게임 준비</span>}
-        </DefaultBtnL>
       </WaitingWrap>
     </>
   );

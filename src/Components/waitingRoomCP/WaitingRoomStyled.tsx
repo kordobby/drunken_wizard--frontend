@@ -1,12 +1,15 @@
 import styled from "styled-components";
 import flex from "../GlobalStyled/flex";
 // images
-import waitingBack from "../../images/background/lobbyBackground.png";
+import waitingBack from "../../images/background/lobbybackground.png";
 import header from "../../images/imgs/header.png";
 import vs2 from "../../images/waiting/vs2.png";
 import swit from "../../images/waiting/swit.png";
 import xUser from "../../images/waiting/XUser.png";
 import xUser2 from "../../images/waiting/XUser2.png";
+import oUser from "../../images/waiting/OUser.png";
+import oUser2 from "../../images/waiting/OUser2.png";
+
 import { TeamProps } from "../../typings/typedb";
 
 export const Header = styled.header`
@@ -41,7 +44,7 @@ export const TeamWrap = styled.div`
 
 export const TeamBox = styled.div<TeamProps>`
   width: 23.95vw;
-  height: 34.41vw;
+  height: 32.41vw;
   border-radius: 0.625vw;
   border: 2px solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
   background-color: ${(props) => (props.team ? "#ede4f2" : "#d6b27f")};
@@ -85,7 +88,7 @@ export const UserImg = styled.div<TeamProps>`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url(${(props) => (props.team ? "#3f0984" : "#5d180a")});
+  background-image: url(${(props) => (props.team ? oUser : oUser2)});
 `;
 export const XUserImg = styled.div<TeamProps>`
   width: 10.41vw;

@@ -5,25 +5,26 @@ import useSound from "use-sound";
 // interface
 import { ModalType } from "../../typings/db";
 // svgs
-import rule1 from "../../images/rules/rule1.svg";
-import rule2 from "../../images/rules/rule2.svg";
-import rule3 from "../../images/rules/rule3.svg";
-import rule4 from "../../images/rules/rule4.svg";
-import rule5 from "../../images/rules/rule5.svg";
-import rule6 from "../../images/rules/rule6.svg";
-import rule7 from "../../images/rules/rule7.svg";
-import rule8 from "../../images/rules/rule8.svg";
-import rule9 from "../../images/rules/rule9.svg";
-import rule10 from "../../images/rules/rule10.svg";
-import rule11 from "../../images/rules/rule11.svg";
-import rule12 from "../../images/rules/rule12.svg";
-import bookMark from "../../images/rules/bookMark.svg";
-import bookCase from "../../images/rules/bookCase.svg";
+import rule1 from "../../images/rules/rule1.png";
+import rule2 from "../../images/rules/rule2.png";
+import rule3 from "../../images/rules/rule3.png";
+import rule4 from "../../images/rules/rule4.png";
+import rule5 from "../../images/rules/rule5.png";
+import rule6 from "../../images/rules/rule6.png";
+import rule7 from "../../images/rules/rule7.png";
+import rule8 from "../../images/rules/rule8.png";
+import rule9 from "../../images/rules/rule9.png";
+import rule10 from "../../images/rules/rule10.png";
+import rule11 from "../../images/rules/rule11.png";
+import rule12 from "../../images/rules/rule12.png";
+import bookMark from "../../images/rules/bookMark.png";
+import bookCase from "../../images/rules/bookCase.png";
 // sounds
 import pageflip from "../../sounds/pageflip.mp3";
 
 import {
   Backdrop,
+  BookMarkImg,
   CloseButton,
   ModalContainer,
   Page,
@@ -37,16 +38,21 @@ const Rule = ({ modalHandler }: ModalType) => {
 
   return (
     <ModalContainer>
+      <CloseButton onClick={modalHandler}>
+        <BookMarkImg src={bookMark} />
+      </CloseButton>
       <RuleWrap style={{ backgroundImage: `url(${bookCase})` }}>
         <RuleBox>
           <HTMLFlipBook
+            style={{ margin: "auto" }}
             maxWidth={740}
             maxHeight={860}
-            width={560}
-            height={650}
+            width={518}
+            height={602}
             ref={book}
             flippingTime={500}
             onFlip={play}
+            size={"stretch"}
           >
             <Page src={rule1} />
             <Page src={rule2} />
@@ -62,9 +68,6 @@ const Rule = ({ modalHandler }: ModalType) => {
             <Page src={rule12} />
           </HTMLFlipBook>
         </RuleBox>
-        <CloseButton onClick={modalHandler}>
-          <img src={bookMark} />
-        </CloseButton>
       </RuleWrap>
       <Backdrop
         onClick={(e: any) => {

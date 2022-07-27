@@ -39,8 +39,8 @@ const SignUp = () => {
   const [passwordCheck, setPasswordCheck] = useState<string>("");
   const [mismatchError, setMismatchError] = useState<boolean>(false);
   const [signUpError, setSignUpError] = useState<string>("");
-  const [signUpSuccess, setSignUpSuccess] = useState<boolean>(false);
   const [signUpCheckId, setSignUpCheckId] = useState<boolean>(false);
+  const [signUpSuccessModal, setSignUpSuccessModal] = useModal<boolean>(false);
   const [signUpCheckModal, setSignUpCheckModal] = useModal<boolean>(false);
   const [signUpErrorModal, setSignUpErrorModal] = useModal<boolean>(false);
   // focus State
@@ -125,8 +125,8 @@ const SignUp = () => {
 
   // signUp mutate
   const { mutate: signUp } = useMutation(apis.signUpMT, {
-    onSuccess: () => {
-      setSignUpSuccess(true);
+    onSuccess: (e: any) => {
+      setSignUpSuccessModal(e);
       navigate("/login");
     },
     onError: (error: string) => {
@@ -163,6 +163,15 @@ const SignUp = () => {
 
   return (
     <BackWrap>
+      {signUpCheckModal && (
+        <OneBtnModal
+          headerText={"가입완료 되었습니다!"}
+          upperText={"로그인 해주세요."}
+          lowerText={""}
+          confirmText={"확인"}
+          clickFunc={setSignUpCheckModal}
+        />
+      )}
       {signUpCheckModal && (
         <OneBtnModal
           headerText={"사용가능한 ID입니다."}

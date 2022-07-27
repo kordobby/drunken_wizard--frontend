@@ -354,11 +354,11 @@ const Ingame = () => {
         }
         if (PlayerB[0] !== undefined) {
           dispatch(setPlayerBTK(PlayerB[0]));
-          setTargetText(PlayerA[0].username);
+          setTargetText(PlayerB[0].username);
         }
         if (PlayerC[0] !== undefined) {
           dispatch(setPlayerCTK(PlayerC[0]));
-          setTargetText(PlayerA[0].username);
+          setTargetText(PlayerC[0].username);
         }
 
         break;
@@ -526,7 +526,7 @@ const Ingame = () => {
         <StGameWrapFilter>
           {status === "" && <StartModal setStatus={setStatus}></StartModal>}
 
-          {status === "PRECHECK" && (
+          {status !== "PRECHECK" && (
             <>
               <NoticeField></NoticeField>
               <MainWrap>

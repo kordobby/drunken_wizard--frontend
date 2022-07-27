@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 // stomp
 import stompJS from "stompjs";
 import { socket } from "../../shared/WebStomp";
 // apis
 import apis from "../../shared/api/apis";
-// interface
-import { UserHistoryProps } from "../../typings/db";
 // hooks
 import { getCookie } from "../../shared/Cookies";
 // css
@@ -34,9 +32,6 @@ import {
   XWrap,
 } from "./LobbyStyled";
 // imgs
-import team1 from "../../images/lobby/team1.jpg";
-import team2 from "../../images/lobby/team2.jpg";
-import noteam from "../../images/lobby/noteam.jpg";
 import right from "../../images/buttons/BTN_right.svg";
 import rightend from "../../images/buttons/BTN_rightend.svg";
 import left from "../../images/buttons/BTN_left.svg";
@@ -75,7 +70,6 @@ const Rooms = () => {
       if (res.data.joinSuccess) {
         navigate(`/waiting/${res.data.roomId}`);
         socketUnsubscribe();
-        leaveMessage();
       }
     },
     onError: (error) => {
@@ -85,17 +79,17 @@ const Rooms = () => {
   });
 
   // soket
-  const leaveMessage = () => {
-    // const accessId = getCookie("id");
-    // const accessName = getCookie("nickname");
-    const data = {
-      type: "LEAVE",
-      sender: accessId,
-      nickname: accessName,
-      message: `${accessName}님이 채팅방에서 나갔습니다.`,
-    };
-    stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
-  };
+  // const leaveMessage = () => {
+  //   // const accessId = getCookie("id");
+  //   // const accessName = getCookie("nickname");
+  //   const data = {
+  //     type: "LEAVE",
+  //     sender: accessId,
+  //     nickname: accessName,
+  //     message: `${accessName}님이 채팅방에서 나갔습니다.`,
+  //   };
+  //   stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
+  // };
 
   const socketUnsubscribe = () => {
     try {

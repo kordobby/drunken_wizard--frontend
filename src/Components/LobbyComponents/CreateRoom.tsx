@@ -7,10 +7,10 @@ import useInput from "../../hooks/useInput";
 // stomp
 import stompJS from "stompjs";
 import { socket } from "../../shared/WebStomp";
-// interface
-import { ModalType } from "../../typings/db";
 // apis
 import apis from "../../shared/api/apis";
+// interface
+import { ModalType } from "../../typings/db";
 // css
 import {
   CreateInput,

@@ -23,6 +23,11 @@ export interface ModalType {
   modalHandler: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
+///// profileImg
+export interface ImgNumType {
+  ImgNum: string;
+}
+
 // chatList
 export interface ChatType {
   type: string;

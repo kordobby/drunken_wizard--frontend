@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 // hooks
 import { getCookie } from "../../shared/Cookies";
 // stomp
 import stompJS from "stompjs";
 import sockJS from "sockjs-client";
+// api
+import apis from "../../shared/api/apis";
 // interface
-import { ChatType, UserHistoryProps } from "../../typings/db";
+import { ChatType } from "../../typings/db";
 // css
 import {
   ChatBox,
@@ -28,9 +30,6 @@ import {
   UsersImg,
   Wrap,
 } from "./LobbyStyled";
-// images
-import user from "../../images/lobby/noteam.jpg";
-import apis from "../../shared/api/apis";
 
 const LobbyChat = () => {
   const API_URL = process.env.REACT_APP_API_URL;
@@ -46,11 +45,13 @@ const LobbyChat = () => {
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
   const accessNickname = getCookie("nickname");
+  const accessImgNum = getCookie("imageNum");
 
   // mutate
   const { mutate: userHistory } = useMutation(apis.userHistoryQR, {
     onSuccess: (data: any) => {
       console.log(data);
+      setUserHistoryState(data.data);
       console.log("전적 로드 성공했어!");
     },
     onError: (error: any) => {
@@ -59,11 +60,11 @@ const LobbyChat = () => {
   });
 
   // scroll
-  const scrollToMyRef = useCallback(() => {
+  const scrollToMyRef = () => {
     const scroll =
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
     scrollRef.current.scrollTo(0, scroll);
-  }, []);
+  };
 
   useEffect(() => {
     scrollToMyRef();
@@ -146,7 +147,7 @@ const LobbyChat = () => {
       type: "LEAVE",
       sender: accessId,
       nickname: accessName,
-      // message: `${accessName}님이 채팅방에서 나갔습니다.`,
+      message: `${accessName}님이 채팅방에서 나갔습니다.`,
     };
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
   };
@@ -164,21 +165,20 @@ const LobbyChat = () => {
       };
       stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
       iptRef.current.value = "";
-      // window.scrollTo(9000, 9000);
     }
   };
 
   return (
     <Wrap>
       <ProfileBox>
-        <ProfileImg style={{ backgroundImage: `url(${user})` }}></ProfileImg>
+        <ProfileImg ImgNum={accessImgNum}></ProfileImg>
         <Profile>
           <ProfileSpan>
             {accessNickname}[{accessId}]
           </ProfileSpan>
           <ProfileSpan>
-            {/* {userHistory?.data.winCount}승 {userHistory?.data.loseCount}패{" "}
-            {userHistory?.data.winRate}% */}
+            {userHistoryState?.winCount}승 {userHistoryState?.loseCount}패{" "}
+            {userHistoryState?.winRate}%
           </ProfileSpan>
         </Profile>
       </ProfileBox>
@@ -187,7 +187,7 @@ const LobbyChat = () => {
           userList.map((v: any, i: number) => {
             return (
               <Users key={i}>
-                <UsersImg style={{ backgroundImage: `url(${user})` }} />
+                <UsersImg ImgNum={accessImgNum} />
                 <span>
                   {v.nickname}[{v.id}]
                 </span>
@@ -212,9 +212,7 @@ const LobbyChat = () => {
               return (
                 <MyUserBox key={idx}>
                   <MyChat>
-                    <ChatImg
-                      style={{ backgroundImage: `url(${user})` }}
-                    ></ChatImg>
+                    <ChatImg ImgNum={accessImgNum}></ChatImg>
                     <span>
                       {msg?.nickname}[{msg?.sender}]
                     </span>
@@ -226,9 +224,7 @@ const LobbyChat = () => {
               return (
                 <div key={idx}>
                   <ChatUser>
-                    <ChatImg
-                      style={{ backgroundImage: `url(${user})` }}
-                    ></ChatImg>
+                    <ChatImg ImgNum={accessImgNum}></ChatImg>
                     <span>
                       {msg?.nickname}[{msg?.sender}]
                     </span>
@@ -251,7 +247,6 @@ const LobbyChat = () => {
           }}
         ></Input>
       </ChatBox>
-      {/* <button onClick={sendMessage}>send</button> */}
     </Wrap>
   );
 };
