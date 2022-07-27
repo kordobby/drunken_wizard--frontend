@@ -27,9 +27,7 @@ export const WrapBack = styled.div`
 export const LobbyWrap = styled.div`
   width: 100vw;
   height: 87.03vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${flex({ align: "center", justify: "center" })}
 `;
 export const SideBar = styled.div`
   width: 18.2vw;
@@ -234,7 +232,6 @@ export const NextButton = styled.button`
   height: 4.32vw;
   border: none;
   margin-left: 0.52vw;
-  margin-right: 0.8vw;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -249,14 +246,15 @@ export const RoomWrap = styled.div`
   width: 81.77vw;
   height: 87.03vh;
   box-sizing: border-box;
-  flex-direction: column;
+  ${flex({ align: "center", justify: "center", direction: "column" })};
+  /* flex-direction: column;
   align-items: center;
   justify-content: center;
-  display: flex;
+  display: flex; */
 `;
 
 export const RoomBoxWrap = styled.div`
-  width: 79vw;
+  width: 77.24vw;
   height: 71.5vh;
   margin-top: 1.85vh;
   box-sizing: border-box;
