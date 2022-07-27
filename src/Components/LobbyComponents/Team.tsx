@@ -5,19 +5,19 @@ import profile3 from "../../images/lobby/profile3.png";
 import profile4 from "../../images/lobby/profile4.png";
 import profile5 from "../../images/lobby/profile5.png";
 
-export default function matchProfileImg(data: string) {
+export default function matchProfileImg(data: number) {
   switch (data) {
-    case "0":
+    case 0:
       return profile0;
-    case "1":
+    case 1:
       return profile1;
-    case "2":
+    case 2:
       return profile2;
-    case "3":
+    case 3:
       return profile3;
-    case "4":
+    case 4:
       return profile4;
-    case "5":
+    case 5:
       return profile5;
     default:
       return;

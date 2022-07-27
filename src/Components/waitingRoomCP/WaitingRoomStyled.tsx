@@ -37,14 +37,14 @@ export const WaitingWrap = styled.div`
 
 export const TeamWrap = styled.div`
   width: 74.47vw;
-  height: 62.96vh;
+  height: 35.41vh;
   margin-bottom: 1.85vh;
   ${flex({ align: "center", justify: "space-between" })}
 `;
 
 export const TeamBox = styled.div<TeamProps>`
   width: 23.95vw;
-  height: 32.41vw;
+  height: 35.41vw;
   border-radius: 0.625vw;
   border: 2px solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
   background-color: ${(props) => (props.team ? "#ede4f2" : "#d6b27f")};
@@ -54,7 +54,7 @@ export const TeamBox = styled.div<TeamProps>`
 
 export const TeamHeader = styled.div<TeamProps>`
   width: 23.95vw;
-  height: 18.25vh;
+  height: 5.2vw;
   box-sizing: border-box;
   border-radius: 0.525vw 0.525vw 0 0;
   background-color: ${(props) => (props.team ? "#3f0984" : "#5d180a")};
@@ -67,16 +67,16 @@ export const TeamHeader = styled.div<TeamProps>`
 
 export const User1 = styled.div`
   width: 14.58vw;
-  height: 35.41vw;
-  padding: 1.3vw 7.81vw 0 0;
-  ${flex({ align: "center", direction: "column" })}
+  height: 26.8vh;
+  padding: 0.7vw 7.81vw 0 0;
+  ${flex({ align: "center", direction: "column", justify: "center" })}
 `;
 
 export const User2 = styled.div`
   width: 14.58vw;
-  height: 35.41vw;
-  padding: 1.3vw 0 0 7.81vw;
-  ${flex({ align: "center", direction: "column" })}
+  height: 26.8vh;
+  padding: 0.7vw 0 0 7.81vw;
+  ${flex({ align: "center", direction: "column", justify: "center" })}
 `;
 
 export const UserImg = styled.div<TeamProps>`

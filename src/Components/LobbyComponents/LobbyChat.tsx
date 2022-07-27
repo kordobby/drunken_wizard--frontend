@@ -21,11 +21,13 @@ import {
   MyChat,
   MyMsg,
   MyUserBox,
+  Playing,
   Profile,
   ProfileBox,
   ProfileImg,
   ProfileSpan,
   UserBox,
+  UserNick,
   Users,
   UsersImg,
   Wrap,
@@ -50,7 +52,7 @@ const LobbyChat = () => {
   // mutate
   const { mutate: userHistory } = useMutation(apis.userHistoryQR, {
     onSuccess: (data: any) => {
-      console.log(data);
+      // console.log(data);
       setUserHistoryState(data.data);
       console.log("전적 로드 성공했어!");
     },
@@ -117,7 +119,7 @@ const LobbyChat = () => {
       console.log(error);
     }
   }, []);
-
+  console.log(userList);
   const socketUnsubscribe = () => {
     try {
       leaveMessage();
@@ -155,11 +157,11 @@ const LobbyChat = () => {
   // 채팅 메세지 보내기
   const sendMessage = () => {
     if (iptRef.current.value !== "") {
-      const accessName = getCookie("nickname");
       const data = {
         type: "CHAT",
         sender: accessId,
-        nickname: accessName,
+        nickname: accessNickname,
+        imagNum: accessImgNum,
         message: iptRef.current.value,
         connectedUsers: [],
       };
@@ -171,7 +173,7 @@ const LobbyChat = () => {
   return (
     <Wrap>
       <ProfileBox>
-        <ProfileImg ImgNum={accessImgNum}></ProfileImg>
+        <ProfileImg ImgNum={Number(accessImgNum)}></ProfileImg>
         <Profile>
           <ProfileSpan>
             {accessNickname}[{accessId}]
@@ -187,10 +189,11 @@ const LobbyChat = () => {
           userList.map((v: any, i: number) => {
             return (
               <Users key={i}>
-                <UsersImg ImgNum={accessImgNum} />
-                <span>
+                <UsersImg ImgNum={v.imageNum} />
+                <UserNick>
                   {v.nickname}[{v.id}]
-                </span>
+                </UserNick>
+                {v.playing && <Playing>Playing</Playing>}
               </Users>
             );
           })}
@@ -198,21 +201,22 @@ const LobbyChat = () => {
       <ChatBox>
         <ChatWrap ref={scrollRef}>
           {msgList?.map((msg: ChatType, idx: number) => {
+            console.log(msg?.imageNum);
             if (msg === undefined) {
               return null;
             }
-            if (msg.type === "JOIN" || msg.type === "LEAVE") {
+            if (msg?.type === "JOIN" || msg.type === "LEAVE") {
               return (
                 <JoinUser key={idx}>
                   <span>{msg?.message}</span>
                 </JoinUser>
               );
             }
-            if (Number(msg.sender) === Number(accessId)) {
+            if (Number(msg?.sender) === Number(accessId)) {
               return (
                 <MyUserBox key={idx}>
                   <MyChat>
-                    <ChatImg ImgNum={accessImgNum}></ChatImg>
+                    <ChatImg ImgNum={msg?.imageNum}></ChatImg>
                     <span>
                       {msg?.nickname}[{msg?.sender}]
                     </span>
@@ -224,7 +228,7 @@ const LobbyChat = () => {
               return (
                 <div key={idx}>
                   <ChatUser>
-                    <ChatImg ImgNum={accessImgNum}></ChatImg>
+                    <ChatImg ImgNum={msg?.imageNum}></ChatImg>
                     <span>
                       {msg?.nickname}[{msg?.sender}]
                     </span>

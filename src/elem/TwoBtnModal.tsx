@@ -93,10 +93,11 @@ const ConfirmBtn = styled.button`
   border-bottom-left-radius: 0.729vw;
   ${flex({ justify: "center", align: "center" })};
   color: white;
-
+  font-size: 1.875vw;
+  font-family: "국립박물관문화재단클래식B";
   &:hover {
     cursor: pointer;
-    filter: brightness(90%);
+    filter: brightness(120%);
   }
 `;
 
@@ -106,10 +107,12 @@ const CancelBtn = styled.button`
   border-bottom-right-radius: 0.729vw;
   border: 1px solid var(--purple-1);
   color: var(--purple-1);
+  font-size: 1.875vw;
+  font-family: "국립박물관문화재단클래식B";
   ${flex({ justify: "center", align: "center" })};
   &:hover {
     cursor: pointer;
-    filter: brightness(90%);
+    filter: brightness(110%);
   }
 `;
 export default TwoBtnModal;

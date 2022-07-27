@@ -38,11 +38,11 @@ const Rule = ({ modalHandler }: ModalType) => {
 
   return (
     <ModalContainer>
-      <CloseButton onClick={modalHandler}>
-        <BookMarkImg src={bookMark} />
-      </CloseButton>
       <RuleWrap style={{ backgroundImage: `url(${bookCase})` }}>
         <RuleBox>
+          <CloseButton onClick={modalHandler}>
+            <BookMarkImg src={bookMark} />
+          </CloseButton>
           <HTMLFlipBook
             style={{ margin: "auto" }}
             maxWidth={740}

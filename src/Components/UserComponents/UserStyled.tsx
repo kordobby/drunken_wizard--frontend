@@ -89,6 +89,7 @@ export const IdCheckButton = styled.button<DupCheckProps>`
   background-color: ${(props) => (props.dup ? "var(--orange)" : "var(--grey)")};
   color: white;
   font-size: 1.666vh;
+  font-family: "국립박물관문화재단클래식B";
   z-index: 5;
   &:hover {
     cursor: pointer;

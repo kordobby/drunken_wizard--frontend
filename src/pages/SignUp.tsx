@@ -274,7 +274,7 @@ const SignUp = () => {
                 id="nickname"
                 name="nickname"
                 placeholder="NickName"
-                maxLength={10}
+                maxLength={5}
                 value={nickname}
                 onChange={setNickname}
                 onFocus={setNickFocus}
@@ -285,7 +285,7 @@ const SignUp = () => {
                   <span className="bubble__notice">
                     닉네임을 <br />
                     입력해주세요! <br />
-                    1~13자
+                    1~5자
                   </span>
                 </SpeechBubble>
               )}

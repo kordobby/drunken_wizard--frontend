@@ -25,7 +25,7 @@ export interface ModalType {
 
 ///// profileImg
 export interface ImgNumType {
-  ImgNum: string;
+  ImgNum: number;
 }
 
 // chatList
@@ -34,6 +34,7 @@ export interface ChatType {
   sender: string;
   nickname: string;
   message: string;
+  imageNum: number;
 }
 
 // createroom

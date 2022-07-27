@@ -37,9 +37,9 @@ export const RuleBox = styled.div`
 `;
 
 export const CloseButton = styled.button`
-  position: fixed;
-  top: 9vh;
-  right: 13vw;
+  position: absolute;
+  top: -0.5vw;
+  right: 1.5vw;
   border: none;
   ${flex({ justify: "stretch" })};
 

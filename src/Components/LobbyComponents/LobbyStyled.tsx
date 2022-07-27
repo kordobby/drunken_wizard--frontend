@@ -198,6 +198,7 @@ export const CreateInput = styled.input`
   margin: 4.68vw auto 2.68vw auto;
   padding: 0 1.5625vw;
   font-size: 1.87vw;
+  font-family: "국립박물관문화재단클래식B";
 `;
 export const ButtonBox = styled.div`
   width: 32vw;
@@ -425,7 +426,7 @@ export const ProfileImg = styled.div<ImgNumType>`
 
 export const ProfileSpan = styled.span`
   margin: 0.52vw 0px 0.52vw 1vw;
-  font-size: 1.25vw;
+  font-size: 1.15vw;
   color: #5d180a;
 `;
 
@@ -440,13 +441,21 @@ export const UserBox = styled.div`
   ${flex({ direction: "column", align: "left" })};
 `;
 export const Users = styled.div`
-  margin: 0.78vw;
-  span {
-    font-size: 1.25vw;
-    color: #5d180a;
-    margin: auto auto auto 0.52vw;
-  }
-  ${flex({ direction: "row", align: "left", justify: "center" })}
+  margin: 0.6vw 0.9vw;
+  justify-content: space-between;
+  ${flex({ direction: "row", align: "left" })}
+`;
+export const UserNick = styled.span`
+  font-size: 1.1vw;
+  color: #5d180a;
+  margin: auto auto auto 0.52vw;
+`;
+export const Playing = styled.span`
+  font-size: 0.25vw;
+  color: #5d180a;
+  margin: 0.6vw;
+  float: right;
+  ${flex({ direction: "row", align: "center" })}
 `;
 
 export const UsersImg = styled.div<ImgNumType>`
@@ -490,7 +499,7 @@ export const ChatUser = styled.div`
   width: 10.67vw;
   margin: 0.46vh 0;
   span {
-    font-size: 1.25vw;
+    font-size: 1vw;
     margin: auto 0;
     color: rgba(0, 0, 0, 1);
   }
@@ -501,7 +510,7 @@ export const MyChat = styled.div`
   width: 11.45vw;
   margin: 0.46vh 0 0.46vh 8vh;
   span {
-    font-size: 1.25vw;
+    font-size: 1vw;
     margin: auto 0;
     color: #3f0984;
   }

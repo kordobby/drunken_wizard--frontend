@@ -77,6 +77,7 @@ const ModalBtn = styled.button`
   background-color: var(--purple-1);
   color: white;
   font-size: 1.875vw;
+  font-family: "국립박물관문화재단클래식B";
   width: 41.66vw;
   height: 5.208vw;
   border-bottom-right-radius: 0.83vw;

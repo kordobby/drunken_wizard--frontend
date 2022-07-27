@@ -209,7 +209,7 @@ const WaitingRoom = () => {
       )}
       <Header>
         <HeaderBtn clickFunc={setRoomOutModal} text={"방나가기"} />
-        <HeaderRoomTitle text={`${roomId}`} />
+        <HeaderRoomTitle text={`${waitingUsers?.roomName}`} />
       </Header>
       <WaitingWrap>
         {waitingUsers && (
