@@ -465,6 +465,7 @@ export const ChatWrap = styled.div`
   background-color: rgba(202, 37, 37, 0.5);
   ${flex({ direction: "column", align: "left" })}
   border-bottom: 2px solid black;
+  box-sizing: border-box;
 `;
 
 export const ChatBox = styled.div`
@@ -533,7 +534,7 @@ export const MyMsg = styled.p`
 export const JoinUser = styled.div`
   margin: 0.26vw 0;
   width: 15.625vw;
-  height: 3.7vh;
+  padding: 1.45vh 0;
   box-sizing: border-box;
   border-radius: 0.52vw;
   span {

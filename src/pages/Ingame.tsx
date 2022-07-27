@@ -37,6 +37,7 @@ import StartModal from "../Components/IngameComponents/Modals/StartModal";
 import PlayerIcons from "../Components/IngameComponents/MainField/PlayerIcons";
 import CraveField from "../Components/IngameComponents/MainField/CraveField";
 import PlayerStatus from "../Components/IngameComponents/MainField/PlayerStatus";
+
 /* CSS & SC */
 import {
   StGameWrap,
@@ -172,9 +173,16 @@ const Ingame = () => {
                   return -1;
               });
 
-              dispatch(setPlayerATK(restPlayersInfo[0]));
-              dispatch(setPlayerBTK(restPlayersInfo[1]));
-              dispatch(setPlayerCTK(restPlayersInfo[2]));
+              /* 팀에 따른 플레이어 구분, 같은 팀원 : PlayerA */
+              if (myPlayerInfo[0].team === true) {
+                dispatch(setPlayerATK(restPlayersInfo[0]));
+                dispatch(setPlayerBTK(restPlayersInfo[1]));
+                dispatch(setPlayerCTK(restPlayersInfo[2]));
+              } else {
+                dispatch(setPlayerATK(restPlayersInfo[2]));
+                dispatch(setPlayerBTK(restPlayersInfo[0]));
+                dispatch(setPlayerCTK(restPlayersInfo[1]));
+              }
 
               if (setPlayerOrder[0].playerId === myId) {
                 sendStompMsgFunc(roomId, myId, "PRECHECK", null);
@@ -182,15 +190,13 @@ const Ingame = () => {
                 setStatus("WAITING");
               }
               break;
+            /* 게임 내내 루프 돌게 되는 함수들 */
             case "PRECHECK":
-              // 게임이 만약 끝났다면, ENDGAME 처리
               if (msgData.gameOver === true) {
                 sendStompMsgFunc(roomId, myId, "ENDGAME", null);
-                // 만약 현재 플레이어가 나이고 죽은게 아니라면?
               } else if (msgSender === myId && msgData.player.dead === false) {
                 dispatch(setThisPlayerTK(msgData.player));
                 dispatch(setSelectableCardTK(msgData.cardsDrawed));
-                // 내가 지금 플레이를 하는게 아니라면, 해당 유저의 데이터를 바꾸러 갈 것이다.
               } else if (msgSender !== myId) {
                 setUpdateOne(msgData.player);
               }
@@ -238,7 +244,6 @@ const Ingame = () => {
               clearDrawCardsFunc();
               if (msgSender === myId && msgData.action === true) {
                 dispatch(setTimerTK("action"));
-                timerFunc(30000, "ENDTURN");
                 setStatus("ACTION");
               } else if (msgSender === myId && msgData.action === false) {
                 setStatus("ACTIONFAILED");
@@ -260,7 +265,7 @@ const Ingame = () => {
             case "USEFAIL":
               if (msgSender === myId) {
                 // 모달창..
-                alert("마나가 부족하거나 니가 침묵에 걸렸겠지!");
+                alert("마나가 부족합니다!");
               }
               break;
             case "DISCARD":
@@ -292,6 +297,8 @@ const Ingame = () => {
     );
   };
 
+  const roomTitle = useAppSelector((state) => state.game.game.roomTitle);
+  console.log(roomTitle);
   useEffect(() => {
     switch (status) {
       case "READY":
@@ -316,12 +323,14 @@ const Ingame = () => {
       case "DRAW":
         break;
       case "ACTION":
+        timerFunc(30000, "ENDTURN");
         break;
       case "ACTIONFAILED":
         if (nowPlayerId === playersData.thisPlayer.playerId) {
+          // 상태이상으로 인해 턴을 진행할 수 없습니다!
           setTimeout(() => {
             sendStompMsgFunc(roomId, Number(myId), "ENDTURN", null);
-          }, 3000);
+          }, 2000);
         }
         break;
       case "USECARD":
@@ -375,13 +384,9 @@ const Ingame = () => {
         dispatch(setNowPlayerNameTK(nowPlayerName[0].username));
         updatePlayersFunc();
         if (nowPlayerId === Number(playersData.thisPlayer.playerId)) {
-          setTimeout(function () {
-            sendStompMsgFunc(roomId, myId, "PRECHECK", null);
-          }, 3000);
+          sendStompMsgFunc(roomId, myId, "PRECHECK", null);
         } else {
-          setTimeout(function () {
-            setStatus("WAITING");
-          }, 1000);
+          setStatus("WAITING");
         }
         break;
       default:
@@ -397,7 +402,7 @@ const Ingame = () => {
       } else {
         waitForConnection(stompClient, callback);
       }
-    }, 1);
+    }, 1000);
   }
 
   const sendStompMsgFunc = (
@@ -434,12 +439,12 @@ const Ingame = () => {
         setDrawFailModal(true);
         setTimeout(() => {
           setDrawFailModal(false);
-        }, 2000);
+        }, 1000);
       } else if (turn === "ENDTURN") {
         setTimeOutModal(true);
         setTimeout(() => {
           setTimeOutModal(false);
-        }, 2000);
+        }, 1000);
       }
     }, sec);
   };
@@ -501,7 +506,7 @@ const Ingame = () => {
           bottomText="다음 턴으로 넘어갑니다."
         />
       )}
-      {craveCard?.target === "SELECT" && status === "CARDUSESUCCESS" && (
+      {/* {craveCard?.target === "SELECT" && status === "CARDUSESUCCESS" && (
         <AlertPopUp
           upperText={`${nowPlayerName}님이`}
           middleText={`${targetText}님에게`}
@@ -521,14 +526,14 @@ const Ingame = () => {
           middleText={`상대팀에게`}
           bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
         />
-      )}
+      )} */}
       <StGameWrap>
+        <NoticeField></NoticeField>
         <StGameWrapFilter>
-          {status === "" && <StartModal setStatus={setStatus}></StartModal>}
-
-          {status !== "PRECHECK" && (
+          {status === "" ? (
+            <StartModal setStatus={setStatus}></StartModal>
+          ) : (
             <>
-              <NoticeField></NoticeField>
               <MainWrap>
                 <PlayerStatus></PlayerStatus>
                 <PlayerIcons status={status}></PlayerIcons>
@@ -543,7 +548,7 @@ const Ingame = () => {
               ></PlayerField>
               {drawModalOpen && (
                 <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
-              )}
+              )}{" "}
             </>
           )}
         </StGameWrapFilter>

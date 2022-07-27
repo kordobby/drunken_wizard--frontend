@@ -34,25 +34,26 @@ const StAlertWrap = styled.div`
 
 const StAlertBox = styled.div`
   ${flex({ direction: "column", justify: "center", align: "center" })};
-  width: 800px;
-  height: 270px;
+  width: 41.66vw; // 800px;
+  height: 25vh; // 270px;
   background-color: white;
-  font-size: 36px;
+  font-size: 1.875vmax;
   border: 2px solid var(--purple-1);
-  border-radius: 16px;
+  border-radius: 0.833vmax;
   box-sizing: border-box;
-  padding-top: 20px;
+  padding-top: 1.0416vh;
 `;
 
 const AlertTextBox = styled.div`
-  ${flex({ direction: "column", justify: "space-around", align: "center" })};
-  width: 800px;
-  height: 150px;
+  ${flex({ direction: "column", justify: "center", align: "center" })};
+  width: 41.66vw; // 800px;
+  height: 13.88vh; // 150px;
   color: var(--purple-1);
-  margin-top: 15px;
+  margin-top: 1.38vh;
   span {
     color: var(--purple-1);
-    font-size: 36px;
+    font-size: 1.875vmax;
+    margin-bottom: 1.38vh;
   }
 `;
 

@@ -59,11 +59,11 @@ const LobbyChat = () => {
   });
 
   // scroll
-  const scrollToMyRef = useCallback(() => {
+  const scrollToMyRef = () => {
     const scroll =
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
     scrollRef.current.scrollTo(0, scroll);
-  }, []);
+  };
 
   useEffect(() => {
     scrollToMyRef();

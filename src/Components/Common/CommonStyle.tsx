@@ -51,7 +51,7 @@ export const DefaultBtnL = styled.div<BtnSettings>`
   height: 9.25vh; // 100px;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
+  background-size: cover;
   font-size: 1.875vw;
   color: var(--white);
 
