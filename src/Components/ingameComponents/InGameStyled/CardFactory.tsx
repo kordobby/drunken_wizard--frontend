@@ -1,7 +1,3 @@
-import curse from "../../../images/cardsBack/curseBack.png";
-import attack from "../../../images/cardsBack/attackBack.png";
-import item from "../../../images/cardsBack/itemBack.png";
-import enchant from "../../../images/cardsBack/enchantBack.png";
 import flipped from "../../../images/cardsBack/commonBack.png";
 
 import boulderStrike from "../../../images/cards/attack/boulderStrike.png";
@@ -48,7 +44,7 @@ export default function matchCardImg(data: string) {
       return mute;
     case "Petrification":
       return petrification;
-    case "WeaknessExposure":
+    case "Weakness Exposure":
       return weaknessExposure;
     case "Venom":
       return venom;

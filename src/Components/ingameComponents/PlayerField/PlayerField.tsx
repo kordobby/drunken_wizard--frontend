@@ -262,6 +262,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
                   onMouseLeave={onMouseLeaveCards}
                   value={value}
                 >
+                  {value.cardName}
                   {nowPlayer === thisPlayer.playerId &&
                     value.target === "SELECT" &&
                     mouseIn &&

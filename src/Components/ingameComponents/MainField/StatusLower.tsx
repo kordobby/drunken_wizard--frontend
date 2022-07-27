@@ -43,6 +43,7 @@ const StatusLower = ({
     else return "antiDamageModifierDuration";
   };
 
+  console.log(shield);
   return (
     <StatBarRow>
       {sleepDuration !== 0 && (
@@ -129,7 +130,7 @@ const StatusLower = ({
             onMouseOver={MouseOverFunc}
             onMouseLeave={MouseLeaveFunc}
           >
-            {weakDuration > 0 ? (
+            {weakDuration <= 0 ? (
               <>{mouseOver && <CoverIcon>방어</CoverIcon>}</>
             ) : (
               <>
@@ -143,7 +144,7 @@ const StatusLower = ({
               </>
             )}
           </StatIcon>
-          <StatCnt size={1.25}>{Math.abs(weakDuration)}</StatCnt>
+          <StatCnt size={1.25}>{weakDuration}</StatCnt>
         </StatIconBox>
       )}
 

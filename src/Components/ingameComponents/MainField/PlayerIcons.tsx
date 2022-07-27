@@ -36,7 +36,11 @@ const PlayerIcons = ({ status }: HeaderProps) => {
           >
             <div className="wizard__img"></div>
             {nowPlayerId === teamPlayer.playerId && (
-              <PlayingFlag status={status} top={-80} left={140}></PlayingFlag>
+              <PlayingFlag
+                status={status}
+                top={-3.125}
+                left={9.2916}
+              ></PlayingFlag>
             )}
             <NameTag
               dead={teamPlayer.dead}
@@ -58,7 +62,11 @@ const PlayerIcons = ({ status }: HeaderProps) => {
           >
             <div className="wizard__img"></div>
             {nowPlayerId === thisPlayer.playerId && (
-              <PlayingFlag status={status} top={-80} left={170}></PlayingFlag>
+              <PlayingFlag
+                status={status}
+                top={-3.125}
+                left={12.2916}
+              ></PlayingFlag>
             )}
             <NameTag
               dead={thisPlayer.dead}
