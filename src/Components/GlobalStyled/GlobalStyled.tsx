@@ -24,6 +24,11 @@ body {
     display: none;
     
 }
+button {
+    :hover {
+        cersor: pointer;
+    }
+}
 :root {
     --purple-1 : #3f0984;
     --purple-2 : #c59aef;

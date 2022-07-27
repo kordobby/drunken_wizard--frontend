@@ -44,25 +44,11 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
   }, [removeDupSelectedCard]);
 
   const sendDrawCardsHandler = () => {
+    console.log("보낸다.");
     const data = { selectedCards: removeDupSelectedCard };
     sendStompMsgFunc(roomId, thisPlayer.playerId, "SELECT", data);
   };
-  const Cardss = [
-    {
-      cardId: 1,
-      target: "SELECT",
-      description: "hello",
-      manaCost: 2,
-      cardName: "Venom",
-    },
-    {
-      cardId: 2,
-      target: "SELECT",
-      description: "hello",
-      manaCost: 2,
-      cardName: "Panacea",
-    },
-  ];
+
   return (
     <StModalWrap>
       <DrawModalWrap>
@@ -74,8 +60,7 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
           </span>
         </DrawModalHeader>
         <DrawableCardsWrap>
-          {/* selectableCards */}
-          {Cardss?.map((value: any) => (
+          {selectableCards?.map((value: any) => (
             <DrawableCards
               key={value.cardId}
               drawDisabled={drawDisabled}

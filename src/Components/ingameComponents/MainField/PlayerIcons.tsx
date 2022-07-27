@@ -26,6 +26,7 @@ const PlayerIcons = ({ status }: HeaderProps) => {
   return (
     <>
       <PlayerIconsFields>
+        {/* ME */}
         <TeamPosition layer={5} top={0.5208} left={2.604}>
           <PlayerIcon
             size={18.75}
@@ -47,6 +48,7 @@ const PlayerIcons = ({ status }: HeaderProps) => {
             </NameTag>
           </PlayerIcon>
         </TeamPosition>
+        {/* This Player */}
         <TeamPosition layer={5} top={0.5208} left={33.33}>
           <PlayerIcon
             size={18.75}
@@ -60,7 +62,7 @@ const PlayerIcons = ({ status }: HeaderProps) => {
             )}
             <NameTag
               dead={thisPlayer.dead}
-              team={thisPlayer.team}
+              team={true}
               top={0.5208}
               left={4.427}
             >

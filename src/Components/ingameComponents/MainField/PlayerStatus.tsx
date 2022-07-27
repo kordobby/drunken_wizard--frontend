@@ -74,7 +74,7 @@ const StatusBoxWrap = styled.div`
 const StatusCard = styled.div<Targeting>`
   background-color: var(--white);
   width: 20.625vw;
-  height: 10.9375vw; // 210
+  height: 19.44vw; // 210
   border-bottom: 1px solid black;
   box-shadow: ${({ targeting }) =>
     targeting && `0px 0px 0px 0.5208vw var(--yellow) inset`};

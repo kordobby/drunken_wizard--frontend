@@ -65,7 +65,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     setTimeout(() => {
       setUseFail(false);
     }, 1000);
-  }, [useFail]);
+  }, [clicked, useFail]);
 
   /* tookit things */
   const dispatch = useAppDispatch();

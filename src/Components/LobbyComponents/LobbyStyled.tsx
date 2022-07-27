@@ -475,6 +475,7 @@ export const ChatWrap = styled.div`
   /* background-color: rgba(202, 37, 37, 0.5); */
   ${flex({ direction: "column", align: "left" })}
   border-bottom: 2px solid black;
+  box-sizing: border-box;
 `;
 
 export const ChatBox = styled.div`
