@@ -3,7 +3,7 @@ import flex from "../../GlobalStyled/flex";
 
 import table from "../../../images/playerfield/table.png";
 import BeerIcon from "../../../images/icons/BeerIcon.png";
-import InGameBackground from "../../../images/background/BG_lobby.png";
+import lobbyBack from "../../../images/background/lobbybackground.png";
 import matchFlagImg from "./TurnFlag";
 import matchClassImg from "./MatchClass";
 import matchProfileImg from "./MatchProfile";
@@ -29,33 +29,27 @@ import matchCardImg from "./CardFactory";
 /* Common */
 export const StGameWrap = styled.div`
   width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
-  /* padding-top: 6.25vw; */
-  background-image: url(${InGameBackground});
-  /* background-position: center; */
+  z-index: -10;
+  background-image: url(${lobbyBack});
   background-size: cover;
   background-repeat: no-repeat;
-  position: fixed;
-  z-index: -5;
   ${flex({ direction: "column", align: "center" })};
 `;
 
 export const StGameWrapFilter = styled.div`
-  width: 100%;
-  height: 100%;
-  /* padding-top: 6.25vw; */
-  background: rgba(0, 0, 0, 0.6);
+  width: 100vw;
+  height: 87.03vh;
   z-index: 1;
   ${flex({ direction: "column", align: "center" })};
 `;
 
 /* Notice Section */
 export const HeaderWrap = styled.div`
+  width: 100vw;
+  min-width: 70vw;
   height: 6.25vw;
   background-color: var(--grey);
   font-family: "국립박물관문화재단클래식M";
-  width: 100vw;
   /* font-size: 3.33vh; */
   color: white;
   box-sizing: border-box;
@@ -130,6 +124,7 @@ const nowPlaying = keyframes`
 export const PlayingFlag = styled.div<FlagProps>`
   animation: ${nowPlaying} 1s ease infinite;
   background-image: url(${(props) => matchFlagImg(props.status)});
+  background-size: cover;
   width: 3.177vw;
   height: 5.05vw;
   position: absolute;
@@ -297,8 +292,10 @@ export const CraveCards = styled.div<CraveCardsProps>`
   width: 10.52vw;
   height: 18.697vw;
   border-radius: 0.5208vw;
-  top: 1.8229vw;
-  left: 9.031vw;
+  top: 1.804vw;
+  left: 3.645vw;
+  transform: rotate(-12deg);
+  z-index: 1;
   position: absolute;
   background-image: url(${(props) => matchCardImg(props.value.cardName)});
   background-size: cover;
@@ -310,15 +307,14 @@ export const CraveCards = styled.div<CraveCardsProps>`
     z-index: 1;
   }
   &:nth-child(3) {
-    animation: ${usedCard} 0.5s ease;
-    top: 1.804vw;
-    left: 3.645vw;
-    transform: rotate(-12deg);
-    z-index: 1;
+    /* animation: ${usedCard} 0.5s ease; */
+    top: 1.8229vw;
+    left: 9.031vw;
   }
 `;
 /* PlayerField */
 export const PlayerFieldWrap = styled.div`
+  /* height: 30.55vh; */
   height: 17.1875vw;
   width: 100vw;
   box-sizing: border-box;
@@ -662,7 +658,7 @@ export const DrawableCard = styled.div<DrawableCardSC>`
   }
 `;
 
-export const PurpleConfirmBtn = styled.div`
+export const PurpleConfirmBtn = styled.button`
   width: 9.375vw;
   height: 3.125vw;
   border-radius: 3.125vw;

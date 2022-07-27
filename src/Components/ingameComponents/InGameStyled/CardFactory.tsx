@@ -4,20 +4,31 @@ import item from "../../../images/cardsBack/itemBack.png";
 import enchant from "../../../images/cardsBack/enchantBack.png";
 import flipped from "../../../images/cardsBack/commonBack.png";
 
+import boulderStrike from "../../../images/cards/boulderStrike.png";
+import deathRay from "../../../images/cards/deathRay.png";
+import beerMug from "../../../images/cards/beerMug.png";
+import fireBall from "../../../images/cards/fireBall.png";
+import leftOverOctopus from "../../../images/cards/leftOverOctopus.png";
+import magicMissile from "../../../images/cards/magicMissile.png";
+import manaPotion from "../../../images/cards/manaPotion.png";
+import manaSiphon from "../../../images/cards/manaSiphon.png";
+import panacea from "../../../images/cards/panacea.png";
+import poisonArrow from "../../../images/cards/poisonArrow.png";
+
 export default function matchCardImg(data: string) {
   switch (data) {
-    case "Boulder Strike":
-      return attack;
+    case "Boulder Strike": //
+      return boulderStrike;
     case "Death Ray":
-      return attack;
+      return deathRay;
     case "Fire Ball":
-      return attack;
+      return fireBall;
     case "Magic Missile":
-      return attack;
+      return magicMissile;
     case "Mana Siphon":
-      return attack;
+      return manaSiphon;
     case "Poison Arrow":
-      return attack;
+      return poisonArrow;
     case "Mute":
       return curse;
     case "Petrification":
@@ -33,13 +44,13 @@ export default function matchCardImg(data: string) {
     case "Magic Attenuation":
       return curse;
     case "Beer Mug":
-      return item;
+      return beerMug;
     case "Leftover Octopus":
-      return item;
+      return leftOverOctopus;
     case "Mana Potion":
-      return item;
+      return manaPotion;
     case "Panacea":
-      return item;
+      return panacea;
     case "Channeling Mana":
       return enchant;
     case "Heal":
