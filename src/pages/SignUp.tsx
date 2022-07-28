@@ -294,40 +294,6 @@ const SignUp = () => {
             </label>
             <label id="nickname-label">
               <InputBoxId>
-                <div>
-                  <Input
-                    type="text"
-                    id="nickname"
-                    name="nickname"
-                    placeholder="NickName"
-                    maxLength={5}
-                    value={nickname}
-                    onChange={setNickname}
-                    onFocus={setNickFocus}
-                    onBlur={setNickFocus}
-                  />
-                  {!nickname && nickFocus && (
-                    <SpeechBubble>
-                      <span className="bubble__notice">
-                        닉네임을 <br />
-                        입력해주세요! <br />
-                        1~5자
-                      </span>
-                    </SpeechBubble>
-                  )}
-                  {nickname && nickFocus && (
-                    <SpeechBubble>
-                      <span className="bubble__notice">
-                        사용가능한 <br />
-                        닉네임입니다.
-                      </span>
-                    </SpeechBubble>
-                  )}
-                </div>
-              </InputBoxId>
-            </label>
-            <label id="nickname-label">
-              <InputBoxId>
                 <Input
                   type="text"
                   id="nickname"
