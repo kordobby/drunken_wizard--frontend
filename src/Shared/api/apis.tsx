@@ -8,7 +8,7 @@ const apis = {
   signUpIdCheckMT: async (data: object) =>
     await api.post("/user/dubcheck", data),
   loginMT: async (data: LogUser) => await api.post("/login", data),
-  kakaoQR: async () => await api.get(`/user/kakao/callback?code=${code}`),
+  kakaoQR: async () => await api.get(`/auth/kakao/callback?code=${code}`),
   getRoomListQR: async (page: number) => {
     const response = await api.get(`/game/rooms?page=${page}&size=6`);
     return response.data;
