@@ -395,24 +395,39 @@ const Ingame = () => {
         if (nowPlayerId === playersData.thisPlayer.playerId) {
           if (PlayerA[0] !== undefined) {
             dispatch(setPlayerATK(PlayerA[0]));
-            setTargetText(PlayerA[0].username);
           }
           if (PlayerB[0] !== undefined) {
             dispatch(setPlayerBTK(PlayerB[0]));
-            setTargetText(PlayerB[0].username);
           }
           if (PlayerC[0] !== undefined) {
             dispatch(setPlayerCTK(PlayerC[0]));
-            setTargetText(PlayerC[0].username);
-          }
-        } else {
-          if (thisPlayer[0] !== undefined) {
-            setTargetText(thisPlayer[0].username);
           }
         }
-
         switch (craveCard.target) {
           case "SELECT":
+            const targetPlayer = update.filter(
+              (value: playersSetting) =>
+                Number(value.playerId) !== Number(nowPlayerId)
+            );
+            if (targetPlayer[0] === undefined) {
+              setTargetText(update[0].username);
+            }
+            switch (targetPlayer[0]?.playerId) {
+              case playersData.PlayerA.playerId:
+                setTargetText(targetPlayer[0].username);
+                break;
+              case playersData.PlayerB.playerId:
+                setTargetText(targetPlayer[0].username);
+                break;
+              case playersData.PlayerC.playerId:
+                setTargetText(targetPlayer[0].username);
+                break;
+              case playersData.thisPlayer.playerId:
+                setTargetText(targetPlayer[0].username);
+                break;
+              default:
+                break;
+            }
             setSelectModal(true);
             setTimeout(() => {
               setSelectModal(false);
