@@ -54,10 +54,10 @@ const LobbyChat = () => {
     onSuccess: (data: any) => {
       // console.log(data);
       setUserHistoryState(data.data);
-      console.log("전적 로드 성공했어!");
+      // console.log("전적 로드 성공했어!");
     },
     onError: (error: any) => {
-      console.log("전적 로드 실패", error);
+      // console.log("전적 로드 실패", error);
     },
   });
 
@@ -87,7 +87,7 @@ const LobbyChat = () => {
     }
     setMsgList(list);
   }, [semiMsgList]);
-
+  // stompClient.debug() =>{ console.log('debug')},
   // /* function Subscribe */
   const socketSubscribe = useCallback(() => {
     try {
@@ -97,12 +97,12 @@ const LobbyChat = () => {
           id: accessId,
         },
         (data: any) => {
-          console.log(data);
+          // console.log(data);
           stompClient.subscribe(
             "/sub/public",
             (data: any) => {
               const response = JSON.parse(data.body);
-              console.log(data);
+              // console.log(data);
               setSemiMsgList(response);
               queryClient.invalidateQueries(["room_list"]);
               if (response.type === "JOIN") {
@@ -116,17 +116,18 @@ const LobbyChat = () => {
         }
       );
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
+    // stompClient.debug = (str) => null;
   }, []);
-  console.log(userList);
+
   const socketUnsubscribe = () => {
     try {
       leaveMessage();
       stompClient.unsubscribe(`/sub/public`);
-      console.log("success to unsubscribe");
+      // console.log("success to unsubscribe");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   //입장 메세지
@@ -201,7 +202,6 @@ const LobbyChat = () => {
       <ChatBox>
         <ChatWrap ref={scrollRef}>
           {msgList?.map((msg: ChatType, idx: number) => {
-            console.log(msg?.imageNum);
             if (msg === undefined) {
               return null;
             }

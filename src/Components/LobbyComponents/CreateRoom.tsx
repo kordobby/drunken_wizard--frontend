@@ -10,7 +10,7 @@ import { socket } from "../../shared/WebStomp";
 // apis
 import apis from "../../shared/api/apis";
 // interface
-import { ModalType } from "../../typings/db";
+import { ModalType, SoundModalType } from "../../typings/db";
 // css
 import {
   CreateInput,
@@ -23,7 +23,7 @@ import {
 // svg
 import { DefaultBtnL } from "../Common/CommonStyle";
 
-const CreateRoom = ({ modalHandler }: ModalType) => {
+const CreateRoom = ({ modalHandler, btnSound }: SoundModalType) => {
   const [roomName, setRoomName] = useInput<string>("");
   const accessToken = getCookie("token");
   const queryClient = useQueryClient();
@@ -33,12 +33,12 @@ const CreateRoom = ({ modalHandler }: ModalType) => {
   // mutate
   const { mutate: createRoom } = useMutation(apis.createRoomMT, {
     onSuccess: (res) => {
-      console.log(res.data);
+      // console.log(res.data);
       navigate(`/waiting/${res.data.roomId}`);
       lobbyLeaveMessage();
     },
     onError: (error) => {
-      console.log(error);
+      // console.log(error);
       navigate(`/lobby`);
     },
   });
@@ -89,6 +89,7 @@ const CreateRoom = ({ modalHandler }: ModalType) => {
               style={{ marginRight: "0.52vw" }}
               disabled={false}
               onClick={(e: any) => {
+                btnSound();
                 onCreateRoom(e);
               }}
             >
@@ -98,6 +99,7 @@ const CreateRoom = ({ modalHandler }: ModalType) => {
               style={{ marginLeft: "0.52vw" }}
               disabled={true}
               onClick={(e: any) => {
+                btnSound();
                 modalHandler(e);
                 navigate("/lobby");
               }}

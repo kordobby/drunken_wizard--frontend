@@ -82,8 +82,8 @@ export const User2 = styled.div`
 export const UserImg = styled.div<TeamProps>`
   width: 10.41vw;
   height: 10.41vw;
-  outline: 0.05vw solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
-  outline-offset: -0.05vw;
+  outline: 0.15vw solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
+  outline-offset: -0.15vw;
   border-radius: 5.2vw;
   background-position: center;
   background-size: cover;
@@ -93,8 +93,8 @@ export const UserImg = styled.div<TeamProps>`
 export const XUserImg = styled.div<TeamProps>`
   width: 10.41vw;
   height: 10.41vw;
-  outline: 0.05vw solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
-  outline-offset: -0.05vw;
+  outline: 0.15vw solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
+  outline-offset: -0.15vw;
   border-radius: 5.2vw;
   background-position: center;
   background-size: cover;
@@ -108,8 +108,8 @@ export const UserName: any = styled.span<TeamProps>`
   border-radius: 5.2vw;
   font-size: 1.25vw;
   margin: -1vw;
-  outline: 0.05vw solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
-  outline-offset: -0.05vw;
+  outline: 0.15vw solid ${(props) => (props.team ? "#3f0984" : "#5d180a")};
+  outline-offset: -0.15vw;
   background-color: white;
   color: ${(props) => (props.team ? "#3f0984" : "#5d180a")};
   ${flex({ align: "center", justify: "center" })}

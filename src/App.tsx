@@ -25,7 +25,7 @@ import Splash from "./pages/Splash";
 import Loading from "./pages/Loading";
 
 function App() {
-  const navigate = useNavigate();
+  const [loading, setLoding] = useState<boolean>(true);
   const [loginState, setLoginState] = useState(false);
   const [ruleModal, setRuleMoadl] = useModal<boolean>(false);
   const token = getCookie("token");

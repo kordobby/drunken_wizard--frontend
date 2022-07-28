@@ -18,9 +18,10 @@ import { BrowserRouter } from "react-router-dom";
 
 /* Cookies settings */
 import { CookiesProvider } from "react-cookie";
+import Loading from "./pages/Loading";
 
 const queryClient = new QueryClient();
-//   {
+// {
 //   defaultOptions: {
 //     queries: {
 //       staleTime: 5 * 60 * 1000,
@@ -28,12 +29,11 @@ const queryClient = new QueryClient();
 //     },
 //   },
 // }
-
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement as Element);
 
 root.render(
-  // <React.Suspense fallback={<div>로딩 중이에요!</div>}>
+  // <React.Suspense fallback={<Loading />}>
   <CookiesProvider>
     <QueryClientProvider client={queryClient}>
       {/* <ReactQueryDevtools initialIsOpen={true} /> */}

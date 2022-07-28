@@ -12,8 +12,12 @@ import team2 from "../../images/lobby/team2.png";
 import teamX1 from "../../images/lobby/teamX1.png";
 import teamX2 from "../../images/lobby/teamX2.png";
 import lobbyBack from "../../images/background/lobbybackground.png";
-import { TeamProps } from "../../typings/typedb";
+import { pageProps, TeamProps } from "../../typings/typedb";
 import matchProfileImg from "./Team";
+import left from "../../images/buttons/BTN_left.png";
+import leftEnd from "../../images/buttons/BTN_leftend.png";
+import right from "../../images/buttons/BTN_right.png";
+import rightEnd from "../../images/buttons/BTN_rightend.png";
 
 // lobby
 export const WrapBack = styled.div`
@@ -213,7 +217,7 @@ export const PageButtonBox = styled.div`
   ${flex({ align: "center", justify: "center" })};
 `;
 
-export const PrevButton = styled.button`
+export const PrevButton = styled.button<pageProps>`
   width: 10.98vw;
   height: 4.32vw;
   margin-right: 0.52vw;
@@ -221,6 +225,7 @@ export const PrevButton = styled.button`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  background-image: url(${(props) => (props.page ? left : leftEnd)});
   &:hover {
     cursor: pointer;
     filter: brightness(110%);
@@ -228,7 +233,7 @@ export const PrevButton = styled.button`
   }
 `;
 
-export const NextButton = styled.button`
+export const NextButton = styled.button<pageProps>`
   width: 10.98vw;
   height: 4.32vw;
   border: none;
@@ -236,6 +241,7 @@ export const NextButton = styled.button`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  background-image: url(${(props) => (props.page ? right : rightEnd)});
   &:hover {
     cursor: pointer;
     filter: brightness(110%);
@@ -348,11 +354,9 @@ export const ComeIn = styled.div`
     font-weight: 1000;
     margin: auto;
   }
-
   ${flex({ align: "center" })};
   border-radius: 1.041vw;
   background-color: #d6b27f;
-  /* box-shadow: 5px 5px 5px 0.1px black inset; */
 `;
 export const Impossible = styled.div`
   width: 7.7vw;
@@ -364,10 +368,9 @@ export const Impossible = styled.div`
     margin: auto;
   }
   ${flex({ align: "center" })};
+  border: 0.15vw solid #ffffff;
   border-radius: 1.041vw;
-  outline: 0.15vw solid #ffffff;
-  outline-offset: -0.15vw;
-  background-color: #ffffff;
+  background-color: transparent;
   box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 

@@ -1,5 +1,5 @@
 // package
-import React, { useCallback, MouseEvent } from "react";
+import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
@@ -7,6 +7,7 @@ import useSound from "use-sound";
 // hooks
 import useInput from "../hooks/useInput";
 import { passwordCheckF } from "../hooks/useCheck";
+import { useModal } from "../hooks/useModal";
 import { useFocus } from "../hooks/useFocus";
 // cookies
 import { setCookie } from "../shared/Cookies";
@@ -28,16 +29,15 @@ import {
   Check,
 } from "../Components/UserComponents/UserStyled";
 import { DefaultBtn, FormWrapSt } from "../Components/Common/CommonStyle";
+import OneBtnModal from "../elem/OneBtnModal";
 
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
-import { useModal } from "../hooks/useModal";
-import OneBtnModal from "../elem/OneBtnModal";
 
 const Login = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
-  const [username, setUsername] = useInput<string>("");
-  const [password, setPassword] = useInput<string>("");
+  const [username, setUsername, setUsernameValue] = useInput<string>("");
+  const [password, setPassword, setPasswordValue] = useInput<string>("");
   const [idFocus, setIdFocus] = useFocus<boolean>(false);
   const [pwFocus, setPwFocus] = useFocus<boolean>(false);
   const [loginCheck, setLoginCheck] = useModal<boolean>(false);
@@ -74,6 +74,8 @@ const Login = ({ setLoginState }: loginStateProps) => {
       setLoginState(false);
       console.log(error);
       setLoginCheck(e);
+      setUsernameValue("");
+      setPasswordValue("");
     },
   });
 

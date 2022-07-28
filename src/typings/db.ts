@@ -22,6 +22,13 @@ export interface loginStateProps {
 export interface ModalType {
   modalHandler: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
+export interface SoundModalType {
+  modalHandler: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  btnSound: () => void;
+}
+export interface SoundModalType2 {
+  btnSound: () => void;
+}
 
 ///// profileImg
 export interface ImgNumType {

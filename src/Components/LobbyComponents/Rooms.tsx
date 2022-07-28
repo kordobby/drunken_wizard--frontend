@@ -8,6 +8,8 @@ import { socket } from "../../shared/WebStomp";
 import apis from "../../shared/api/apis";
 // hooks
 import { getCookie } from "../../shared/Cookies";
+// interface
+import { SoundModalType2 } from "../../typings/db";
 // css
 import {
   ComeIn,
@@ -32,14 +34,10 @@ import {
   XWrap,
 } from "./LobbyStyled";
 // imgs
-import right from "../../images/buttons/BTN_right.svg";
-import rightend from "../../images/buttons/BTN_rightend.svg";
-import left from "../../images/buttons/BTN_left.svg";
-import leftend from "../../images/buttons/BTN_leftend.svg";
 import { useModal } from "../../hooks/useModal";
 import OneBtnModal from "../../elem/OneBtnModal";
 
-const Rooms = () => {
+const Rooms = ({ btnSound }: SoundModalType2) => {
   const stompClient = stompJS.over(socket);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
@@ -53,11 +51,11 @@ const Rooms = () => {
     () => apis.getRoomListQR(page),
     {
       onSuccess: (data: any) => {
-        console.log(data);
-        console.log("성공했어!");
+        // console.log(data);
+        // console.log("성공했어!");
       },
       onError: (error: any) => {
-        console.log("실패", error);
+        // console.log("실패", error);
       },
       keepPreviousData: true,
       // refetchInterval: 2000,
@@ -73,7 +71,7 @@ const Rooms = () => {
       }
     },
     onError: (error) => {
-      console.log(error);
+      // console.log(error);
       navigate("/lobby");
     },
   });
@@ -94,10 +92,10 @@ const Rooms = () => {
   const socketUnsubscribe = () => {
     try {
       stompClient.unsubscribe(`/sub/public`);
-      console.log("success to unsubscribe");
+      // console.log("success to unsubscribe");
       // leaveMessage();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -191,27 +189,27 @@ const Rooms = () => {
           <PageButtonBox>
             {roomList_query?.content?.pageable?.totalPages < page ? (
               <PrevButton
-                style={{ backgroundImage: `url(${left})` }}
-                onClick={() =>
-                  setPage((prevState) => Math.max(prevState - 1, 0))
-                }
+                page={true}
+                onClick={() => {
+                  setPage((prevState) => Math.max(prevState - 1, 0));
+                  btnSound();
+                }}
                 disabled={page === 1}
               ></PrevButton>
             ) : (
-              <PrevButton
-                style={{ backgroundImage: `url(${leftend})` }}
-              ></PrevButton>
+              <PrevButton page={false} />
             )}
 
             {roomList_query?.content?.pageable?.totalPages > page ? (
               <NextButton
-                style={{ backgroundImage: `url(${right})` }}
-                onClick={() => setPage((nextState) => nextState + 1)}
+                page={true}
+                onClick={() => {
+                  setPage((nextState) => nextState + 1);
+                  btnSound();
+                }}
               ></NextButton>
             ) : (
-              <NextButton
-                style={{ backgroundImage: `url(${rightend})` }}
-              ></NextButton>
+              <NextButton page={false} />
             )}
           </PageButtonBox>
         </>

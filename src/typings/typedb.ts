@@ -217,3 +217,7 @@ export interface BtnColorType {
 export interface TeamProps {
   team: boolean;
 }
+
+export interface pageProps {
+  page: boolean;
+}

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import useSound from "use-sound";
 // hooks
 import { useModal } from "../hooks/useModal";
 // stomp
@@ -31,29 +32,33 @@ import HeaderBtn from "../elem/HeaderBtn";
 import TwoBtnModal from "../elem/TwoBtnModal";
 import HeaderRoomTitle from "../Components/Common/RoomTitle";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
+// sounds
+import btnSound from "../sounds/buttonSound.mp3";
+import Loading from "./Loading";
 
 const WaitingRoom = () => {
   const API_URL = process.env.REACT_APP_API_URL;
   const [waitingUsers, setWaitingUsers] = useState<any>();
   const [readyUser, setReadyUser] = useState<boolean>(false);
   const [roomOutModal, setRoomOutModal] = useModal<boolean>(false);
-  const navigate = useNavigate();
   const { roomId } = useParams();
+  const navigate = useNavigate();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
   const queryClient = useQueryClient();
+  const [play] = useSound(btnSound);
 
   const { mutate: leaveRoom } = useMutation(apis.leaveRoomMT, {
     onSuccess: (res) => {
-      console.log(res);
+      // console.log(res);
       queryClient.invalidateQueries(["room_list"]);
       socketUnsubscribe();
       navigate("/lobby");
     },
     onError: (error) => {
-      console.log(error);
+      // console.log(error);
     },
   });
   // // 새로고침 막기
@@ -97,7 +102,6 @@ const WaitingRoom = () => {
             (data: any) => {
               const response = JSON.parse(data?.body);
               const res = JSON.parse(response?.content);
-              console.log(res?.player1?.ready);
               setWaitingUsers(res);
               if (
                 (res?.player1?.ready === true &&
@@ -120,16 +124,16 @@ const WaitingRoom = () => {
         }
       );
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }, []);
 
   const socketUnsubscribe = useCallback(() => {
     try {
       stompClient.unsubscribe(`/sub/game/${roomId}`);
-      console.log("success to unsubscribe");
+      // console.log("success to unsubscribe");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }, []);
 
@@ -176,6 +180,7 @@ const WaitingRoom = () => {
 
   const readyHandler = () => {
     gameReady();
+    play();
   };
 
   useEffect(() => {
@@ -216,7 +221,7 @@ const WaitingRoom = () => {
           <TeamWrap>
             <TeamBox team={true}>
               <TeamHeader team={true}>
-                <span>Team Purple</span>
+                <span>● Team Purple ●</span>
               </TeamHeader>
               {waitingUsers.player1 ? (
                 <User1>
@@ -280,7 +285,7 @@ const WaitingRoom = () => {
             </VsBox>
             <TeamBox team={false}>
               <TeamHeader team={false}>
-                <span>Team Brown</span>
+                <span>● Team Brown ●</span>
               </TeamHeader>
               {waitingUsers.player2 ? (
                 <User2>

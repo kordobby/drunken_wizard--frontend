@@ -7,10 +7,9 @@ import useSound from "use-sound";
 import useInput from "../hooks/useInput";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
 import { useFocus } from "../hooks/useFocus";
-
+import { useModal } from "../hooks/useModal";
 // apis
 import apis from "../shared/api/apis";
-
 // css
 import {
   BackWrap,
@@ -23,27 +22,28 @@ import {
   IdCheckButton,
   Check,
 } from "../Components/UserComponents/UserStyled";
-
+import OneBtnModal from "../elem/OneBtnModal";
+import TwoBtnModal from "../elem/TwoBtnModal";
 import { DefaultBtn } from "../Components/Common/CommonStyle";
 import { FormWrapSt } from "../Components/Common/CommonStyle";
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
-import OneBtnModal from "../elem/OneBtnModal";
-import { useModal } from "../hooks/useModal";
 
 const SignUp = () => {
   const [username, setUsername] = useState<string>("");
-  const [nickname, setNickname] = useInput<string>("");
-  const [email, setEmail] = useInput<string>("");
+  const [signUpCheckId, setSignUpCheckId] = useState<boolean>(false);
+  const [nickname, setNickname, setNickValue] = useInput<string>("");
+  const [email, setEmail, setEmailValue] = useInput<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordCheck, setPasswordCheck] = useState<string>("");
   const [mismatchError, setMismatchError] = useState<boolean>(false);
-  const [signUpError, setSignUpError] = useState<string>("");
-  const [signUpCheckId, setSignUpCheckId] = useState<boolean>(false);
+  // modal
+  const [signUpErrorModal, setSignUpErrorModal] = useModal<string>("");
   const [signUpSuccessModal, setSignUpSuccessModal] = useModal<boolean>(false);
   const [signUpCheckModal, setSignUpCheckModal] = useModal<boolean>(false);
-  const [signUpErrorModal, setSignUpErrorModal] = useModal<boolean>(false);
-  // focus State
+  const [signUpCheckErrorModal, setSignUpCheckErrorModal] =
+    useModal<boolean>(false);
+  // focus
   const [idFocus, setIdFocus] = useFocus<boolean>(false);
   const [nickFocus, setNickFocus] = useFocus<boolean>(false);
   const [emailFocus, setEmailFocus] = useFocus<boolean>(false);
@@ -110,28 +110,33 @@ const SignUp = () => {
     onMutate: () => {},
     onSuccess: (res, e: any) => {
       setSignUpCheckId(res.data);
-      console.log(res);
+      // console.log(res);
       if (res.data) {
         setSignUpCheckModal(e);
       } else {
-        setSignUpErrorModal(e);
+        setSignUpCheckErrorModal(e);
       }
     },
     onError: (error: string) => {
       setSignUpCheckId(false);
-      console.log(error);
+      // console.log(error);
     },
   });
 
   // signUp mutate
   const { mutate: signUp } = useMutation(apis.signUpMT, {
     onSuccess: (e: any) => {
+      console.log(e);
       setSignUpSuccessModal(e);
-      navigate("/login");
+      setUsername("");
+      setNickValue("");
+      setEmailValue("");
+      setPassword("");
+      setPasswordCheck("");
     },
-    onError: (error: string) => {
+    onError: (error: string, e: any) => {
       navigate("/signup");
-      setSignUpError(error);
+      setSignUpErrorModal(e);
     },
   });
 
@@ -160,16 +165,30 @@ const SignUp = () => {
     },
     [username, nickname, email, password, passwordCheck, mismatchError, signUp]
   );
-
+  // navigate
+  const logNavigate = () => {
+    navigate("/login");
+  };
   return (
     <BackWrap>
-      {signUpCheckModal && (
+      {signUpSuccessModal && (
+        <TwoBtnModal
+          confirmText={"Login"}
+          cancelText={"Rejoin"}
+          titleText={"축하합니다!"}
+          upperText={"가입이 완료 되었습니다."}
+          lowerText={"로그인하기  |  재가입하기"}
+          confirmFunc={logNavigate}
+          cancelFunc={setSignUpSuccessModal}
+        />
+      )}
+      {signUpErrorModal && (
         <OneBtnModal
-          headerText={"가입완료 되었습니다!"}
-          upperText={"로그인 해주세요."}
+          headerText={"양식을 다시한번 확인해주세요!"}
+          upperText={""}
           lowerText={""}
           confirmText={"확인"}
-          clickFunc={setSignUpCheckModal}
+          clickFunc={setSignUpErrorModal}
         />
       )}
       {signUpCheckModal && (
@@ -181,13 +200,13 @@ const SignUp = () => {
           clickFunc={setSignUpCheckModal}
         />
       )}
-      {signUpErrorModal && (
+      {signUpCheckErrorModal && (
         <OneBtnModal
           headerText={"중복된 ID입니다."}
           upperText={"다른 ID를 입력해주세요."}
           lowerText={""}
           confirmText={"확인"}
-          clickFunc={setSignUpErrorModal}
+          clickFunc={setSignUpCheckErrorModal}
         />
       )}
       <FormWrapSt>
@@ -396,9 +415,8 @@ const SignUp = () => {
                   </span>
                 </SpeechBubble>
               )}
-              {!mismatchError && <Check>✔</Check>}
+              {!mismatchError && passwordCheck !== "" && <Check>✔</Check>}
             </InputBoxPw>
-            {/* {signUpSuccess && <span>회원가입되었습니다! 로그인해주세요.</span>} */}
           </label>
         </form>
         <ButtonBox>
@@ -420,7 +438,6 @@ const SignUp = () => {
               <span>Sign up</span>
             </DefaultBtn>
           )}
-
           <Link to="/login">
             <DefaultBtn
               btnType="inactiveM"

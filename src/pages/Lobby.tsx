@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import useSound from "use-sound";
 // hooks
 import { deleteCookie } from "../shared/Cookies";
 import { useModal } from "../hooks/useModal";
@@ -17,11 +18,14 @@ import {
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
 import TwoBtnModal from "../elem/TwoBtnModal";
 import HeaderBtn from "../elem/HeaderBtn";
+// sounds
+import btnSound from "../sounds/buttonSound.mp3";
 
 const Lobby = () => {
   const navigate = useNavigate();
   const [createRoomModal, setCreateRoomMoadl] = useModal<boolean>(false);
   const [logoutModal, setlogoutMoadl] = useModal<boolean>(false);
+  const [play] = useSound(btnSound);
 
   const logoutHandler = () => {
     deleteCookie("token");
@@ -51,17 +55,20 @@ const Lobby = () => {
           />
         </ModalBack>
       )}
-      {createRoomModal && <CreateRoom modalHandler={setCreateRoomMoadl} />}
+      {createRoomModal && (
+        <CreateRoom btnSound={play} modalHandler={setCreateRoomMoadl} />
+      )}
       <Header>
         <HeaderBtn clickFunc={setlogoutMoadl} text={"Logout"} />
       </Header>
       <LobbyWrap>
-        <Rooms />
+        <Rooms btnSound={play} />
         <SideBar>
           <LobbyChat />
           <DefaultBtnL
             disabled={false}
             onClick={(e: any) => {
+              play();
               setCreateRoomMoadl(e);
             }}
           >
