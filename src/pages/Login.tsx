@@ -16,6 +16,7 @@ import { KAKAO_AUTH_URL } from "../shared/Kakao";
 import { loginStateProps } from "../typings/db";
 // apis
 import apis from "../shared/api/apis";
+import { Helmet } from "react-helmet";
 // css
 import {
   BackWrap,
@@ -87,119 +88,125 @@ const Login = ({ setLoginState }: loginStateProps) => {
   );
 
   return (
-    <BackWrap>
-      {loginCheck && (
-        <OneBtnModal
-          headerText={"로그인 양식이 잘못되었습니다!"}
-          upperText={"다시한번 확인해주세요."}
-          lowerText={""}
-          confirmText={"확인"}
-          clickFunc={setLoginCheck}
-        />
-      )}
-      <FormWrapSt>
-        <LogLogo top={5.729} bottom={4.6875} />
-        <form>
-          <label id="user-id-label">
-            <InputBoxId>
-              <Input
-                type="text"
-                id="user-id"
-                name="user-id"
-                value={username}
-                onChange={setUsername}
-                placeholder="ID"
-                onFocus={setIdFocus}
-                onBlur={setIdFocus}
-              />
-              {username === "" && idFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    아이디를 <br />
-                    입력해주세요.
-                  </span>
-                </SpeechBubble>
-              )}
-              {username !== "" && idFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    올바른 형식의 <br />
-                    ID 입니다.
-                  </span>
-                </SpeechBubble>
-              )}
-              {username !== "" && <Check>✔</Check>}
-            </InputBoxId>
-          </label>
-          <label id="password-label">
-            <InputBoxPw>
-              <Input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                placeholder="Password"
-                onChange={setPassword}
-                onFocus={setPwFocus}
-                onBlur={setPwFocus}
-              />
-              {passwordCheckF(password) && pwFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    올바른 형식의 <br />
-                    비밀번호 입니다.
-                  </span>
-                </SpeechBubble>
-              )}
-              {!passwordCheckF(password) && pwFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    영문, 숫자, <br /> 특수문자 포함 <br />
-                    6~15자
-                  </span>
-                </SpeechBubble>
-              )}
-              {passwordCheckF(password) && <Check>✔</Check>}
-            </InputBoxPw>
-          </label>
-        </form>
-        <LoginBtnBox>
-          <DefaultBtn
-            btnType="activeM"
-            size={10.9895}
-            onClick={(e) => {
-              play();
-              handleLogin(e);
-            }}
-            type="submit"
-            disabled={username === "" || password === "" ? true : false}
-          >
-            <span>Login</span>
-          </DefaultBtn>
-          <Link to="/signup">
+    <>
+      <Helmet>
+        <title>Drunken Wizard - Login</title>
+      </Helmet>
+
+      <BackWrap>
+        {loginCheck && (
+          <OneBtnModal
+            headerText={"로그인 양식이 잘못되었습니다!"}
+            upperText={"다시한번 확인해주세요."}
+            lowerText={""}
+            confirmText={"확인"}
+            clickFunc={setLoginCheck}
+          />
+        )}
+        <FormWrapSt>
+          <LogLogo top={5.729} bottom={4.6875} />
+          <form>
+            <label id="user-id-label">
+              <InputBoxId>
+                <Input
+                  type="text"
+                  id="user-id"
+                  name="user-id"
+                  value={username}
+                  onChange={setUsername}
+                  placeholder="ID"
+                  onFocus={setIdFocus}
+                  onBlur={setIdFocus}
+                />
+                {username === "" && idFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      아이디를 <br />
+                      입력해주세요.
+                    </span>
+                  </SpeechBubble>
+                )}
+                {username !== "" && idFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      올바른 형식의 <br />
+                      ID 입니다.
+                    </span>
+                  </SpeechBubble>
+                )}
+                {username !== "" && <Check>✔</Check>}
+              </InputBoxId>
+            </label>
+            <label id="password-label">
+              <InputBoxPw>
+                <Input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={password}
+                  placeholder="Password"
+                  onChange={setPassword}
+                  onFocus={setPwFocus}
+                  onBlur={setPwFocus}
+                />
+                {passwordCheckF(password) && pwFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      올바른 형식의 <br />
+                      비밀번호 입니다.
+                    </span>
+                  </SpeechBubble>
+                )}
+                {!passwordCheckF(password) && pwFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      영문, 숫자, <br /> 특수문자 포함 <br />
+                      6~15자
+                    </span>
+                  </SpeechBubble>
+                )}
+                {passwordCheckF(password) && <Check>✔</Check>}
+              </InputBoxPw>
+            </label>
+          </form>
+          <LoginBtnBox>
             <DefaultBtn
-              btnType="inactiveM"
+              btnType="activeM"
               size={10.9895}
+              onClick={(e) => {
+                play();
+                handleLogin(e);
+              }}
+              type="submit"
+              disabled={username === "" || password === "" ? true : false}
+            >
+              <span>Login</span>
+            </DefaultBtn>
+            <Link to="/signup">
+              <DefaultBtn
+                btnType="inactiveM"
+                size={10.9895}
+                onClick={() => {
+                  play();
+                }}
+              >
+                <span>Register</span>
+              </DefaultBtn>
+            </Link>
+          </LoginBtnBox>
+          <a href={KAKAO_AUTH_URL}>
+            <DefaultBtn
+              btnType="kakao"
+              size={22.8125}
               onClick={() => {
                 play();
               }}
-            >
-              <span>Register</span>
-            </DefaultBtn>
-          </Link>
-        </LoginBtnBox>
-        <a href={KAKAO_AUTH_URL}>
-          <DefaultBtn
-            btnType="kakao"
-            size={22.8125}
-            onClick={() => {
-              play();
-            }}
-            style={{ marginBottom: "2.77vw" }}
-          ></DefaultBtn>
-        </a>
-      </FormWrapSt>
-    </BackWrap>
+              style={{ marginBottom: "2.77vw" }}
+            ></DefaultBtn>
+          </a>
+        </FormWrapSt>
+      </BackWrap>
+    </>
   );
 };
 

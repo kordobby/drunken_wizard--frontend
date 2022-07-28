@@ -17,7 +17,7 @@ import {
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
 import TwoBtnModal from "../elem/TwoBtnModal";
 import HeaderBtn from "../elem/HeaderBtn";
-
+import { Helmet } from "react-helmet";
 const Lobby = () => {
   const navigate = useNavigate();
   const [createRoomModal, setCreateRoomMoadl] = useModal<boolean>(false);
@@ -34,6 +34,9 @@ const Lobby = () => {
 
   return (
     <WrapBack>
+      <Helmet>
+        <title>Welcome! Drunken Wizard</title>
+      </Helmet>
       {logoutModal && (
         <ModalBack
           onClick={(e: any) => {

@@ -3,7 +3,6 @@ import flex from "../../GlobalStyled/flex";
 import { useAppSelector } from "../../../hooks/tsHooks";
 import StatusLower from "./StatusLower";
 import { Targeting } from "../../../typings/typedb";
-import { useEffect, useState } from "react";
 import { TeamColorProps } from "../../../typings/typedb";
 import { Card } from "../../../typings/typedb";
 const PlayerStatus = () => {

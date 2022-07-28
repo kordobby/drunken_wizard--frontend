@@ -7,7 +7,7 @@ import useSound from "use-sound";
 import useInput from "../hooks/useInput";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
 import { useFocus } from "../hooks/useFocus";
-
+import { Helmet } from "react-helmet";
 // apis
 import apis from "../shared/api/apis";
 
@@ -161,279 +161,284 @@ const SignUp = () => {
   );
 
   return (
-    <BackWrap>
-      {signUpCheckModal && (
-        <OneBtnModal
-          headerText={"가입완료 되었습니다!"}
-          upperText={"로그인 해주세요."}
-          lowerText={""}
-          confirmText={"확인"}
-          clickFunc={setSignUpCheckModal}
-        />
-      )}
-      {signUpCheckModal && (
-        <OneBtnModal
-          headerText={"사용가능한 ID입니다."}
-          upperText={""}
-          lowerText={""}
-          confirmText={"확인"}
-          clickFunc={setSignUpCheckModal}
-        />
-      )}
-      {signUpErrorModal && (
-        <OneBtnModal
-          headerText={"중복된 ID입니다."}
-          upperText={"다른 ID를 입력해주세요."}
-          lowerText={""}
-          confirmText={"확인"}
-          clickFunc={setSignUpErrorModal}
-        />
-      )}
-      <FormWrapSt>
-        <LogLogo top={5.208} bottom={2.604} />
-        <form>
-          <label id="user-id-label">
-            <InputBoxId>
-              <div>
+    <>
+      <Helmet>
+        <title>Drunken Wizard - Sign Up</title>
+      </Helmet>
+      <BackWrap>
+        {signUpCheckModal && (
+          <OneBtnModal
+            headerText={"가입완료 되었습니다!"}
+            upperText={"로그인 해주세요."}
+            lowerText={""}
+            confirmText={"확인"}
+            clickFunc={setSignUpCheckModal}
+          />
+        )}
+        {signUpCheckModal && (
+          <OneBtnModal
+            headerText={"사용가능한 ID입니다."}
+            upperText={""}
+            lowerText={""}
+            confirmText={"확인"}
+            clickFunc={setSignUpCheckModal}
+          />
+        )}
+        {signUpErrorModal && (
+          <OneBtnModal
+            headerText={"중복된 ID입니다."}
+            upperText={"다른 ID를 입력해주세요."}
+            lowerText={""}
+            confirmText={"확인"}
+            clickFunc={setSignUpErrorModal}
+          />
+        )}
+        <FormWrapSt>
+          <LogLogo top={5.208} bottom={2.604} />
+          <form>
+            <label id="user-id-label">
+              <InputBoxId>
+                <div>
+                  <Input
+                    type="text"
+                    id="user-id"
+                    name="user-id"
+                    placeholder="ID"
+                    maxLength={15}
+                    value={username}
+                    onChange={onChangeIdCheck}
+                    onFocus={setIdFocus}
+                    onBlur={setIdFocus}
+                  />
+                  {signUpCheckId ? (
+                    <IdCheckButton
+                      dup={true}
+                      onClick={onIdCheck}
+                      disabled={idCheckDisabled()}
+                    >
+                      Check
+                    </IdCheckButton>
+                  ) : (
+                    <IdCheckButton
+                      dup={false}
+                      onClick={onIdCheck}
+                      disabled={idCheckDisabled()}
+                    >
+                      Check
+                    </IdCheckButton>
+                  )}
+                  {idCheck(username) &&
+                    username !== "" &&
+                    signUpCheckId === false &&
+                    idFocus && (
+                      <SpeechBubble>
+                        <span className="bubble__notice">
+                          ID중복 확인을
+                          <br />
+                          해주세요.
+                        </span>
+                      </SpeechBubble>
+                    )}
+                  {idCheck(username) &&
+                    username !== "" &&
+                    signUpCheckId === true &&
+                    idFocus && (
+                      <SpeechBubble>
+                        <span className="bubble__notice">
+                          사용가능한
+                          <br />
+                          ID 입니다.
+                        </span>
+                      </SpeechBubble>
+                    )}
+                  {!idCheck(username) && username !== "" && idFocus && (
+                    <SpeechBubble>
+                      <span className="bubble__notice">
+                        올바른 아이디 <br />
+                        형식이 아닙니다.
+                      </span>
+                    </SpeechBubble>
+                  )}
+                  {username === "" && idFocus && (
+                    <SpeechBubble>
+                      <span className="bubble__notice">
+                        아이디를 <br />
+                        입력해주세요.
+                      </span>
+                    </SpeechBubble>
+                  )}
+                </div>
+              </InputBoxId>
+            </label>
+            <label id="nickname-label">
+              <InputBoxId>
                 <Input
                   type="text"
-                  id="user-id"
-                  name="user-id"
-                  placeholder="ID"
-                  maxLength={15}
-                  value={username}
-                  onChange={onChangeIdCheck}
-                  onFocus={setIdFocus}
-                  onBlur={setIdFocus}
+                  id="nickname"
+                  name="nickname"
+                  placeholder="NickName"
+                  maxLength={5}
+                  value={nickname}
+                  onChange={setNickname}
+                  onFocus={setNickFocus}
+                  onBlur={setNickFocus}
                 />
-                {signUpCheckId ? (
-                  <IdCheckButton
-                    dup={true}
-                    onClick={onIdCheck}
-                    disabled={idCheckDisabled()}
-                  >
-                    Check
-                  </IdCheckButton>
-                ) : (
-                  <IdCheckButton
-                    dup={false}
-                    onClick={onIdCheck}
-                    disabled={idCheckDisabled()}
-                  >
-                    Check
-                  </IdCheckButton>
-                )}
-                {idCheck(username) &&
-                  username !== "" &&
-                  signUpCheckId === false &&
-                  idFocus && (
-                    <SpeechBubble>
-                      <span className="bubble__notice">
-                        ID중복 확인을
-                        <br />
-                        해주세요.
-                      </span>
-                    </SpeechBubble>
-                  )}
-                {idCheck(username) &&
-                  username !== "" &&
-                  signUpCheckId === true &&
-                  idFocus && (
-                    <SpeechBubble>
-                      <span className="bubble__notice">
-                        사용가능한
-                        <br />
-                        ID 입니다.
-                      </span>
-                    </SpeechBubble>
-                  )}
-                {!idCheck(username) && username !== "" && idFocus && (
+                {!nickname && nickFocus && (
                   <SpeechBubble>
                     <span className="bubble__notice">
-                      올바른 아이디 <br />
-                      형식이 아닙니다.
+                      닉네임을 <br />
+                      입력해주세요! <br />
+                      1~5자
                     </span>
                   </SpeechBubble>
                 )}
-                {username === "" && idFocus && (
+                {nickname && nickFocus && (
                   <SpeechBubble>
                     <span className="bubble__notice">
-                      아이디를 <br />
-                      입력해주세요.
+                      사용가능한 <br />
+                      닉네임입니다.
                     </span>
                   </SpeechBubble>
                 )}
-              </div>
-            </InputBoxId>
-          </label>
-          <label id="nickname-label">
-            <InputBoxId>
-              <Input
-                type="text"
-                id="nickname"
-                name="nickname"
-                placeholder="NickName"
-                maxLength={5}
-                value={nickname}
-                onChange={setNickname}
-                onFocus={setNickFocus}
-                onBlur={setNickFocus}
-              />
-              {!nickname && nickFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    닉네임을 <br />
-                    입력해주세요! <br />
-                    1~5자
-                  </span>
-                </SpeechBubble>
-              )}
-              {nickname && nickFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    사용가능한 <br />
-                    닉네임입니다.
-                  </span>
-                </SpeechBubble>
-              )}
-              {nickname && <Check>✔</Check>}
-            </InputBoxId>
-          </label>
-          <label id="email-label">
-            <InputBoxId>
-              <Input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="E-Mail"
-                value={email}
-                onChange={setEmail}
-                onFocus={setEmailFocus}
-                onBlur={setEmailFocus}
-              />
-              {emailCheck(email) && emailFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    사용 가능한 <br />
-                    이메일입니다.
-                  </span>
-                </SpeechBubble>
-              )}
-              {!emailCheck(email) && emailFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    올바른 <br />
-                    이메일 형식이
-                    <br />
-                    아닙니다.
-                  </span>
-                </SpeechBubble>
-              )}
-              {emailCheck(email) && <Check>✔</Check>}
-            </InputBoxId>
-          </label>
-          <label id="password-label">
-            <InputBoxId>
-              <Input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                maxLength={15}
-                placeholder="PassWord"
-                onChange={onChangePassword}
-                onFocus={setPwFocus}
-                onBlur={setPwFocus}
-              />
-              {passwordCheckF(password) && pwFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    사용 가능한 <br />
-                    비밀번호입니다.
-                  </span>
-                </SpeechBubble>
-              )}
-              {!passwordCheckF(password) && pwFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    영문, 숫자, <br />
-                    특수 문자 포함 <br />
-                    6~15자
-                  </span>
-                </SpeechBubble>
-              )}
-              {passwordCheckF(password) && <Check>✔</Check>}
-            </InputBoxId>
-          </label>
-          <label id="password-check-label">
-            <InputBoxPw>
-              <Input
-                type="password"
-                id="password-check"
-                name="password-check"
-                placeholder="PassWordCheck"
-                maxLength={15}
-                value={passwordCheck}
-                onChange={onChangePasswordCheck}
-                onFocus={setPwCheckFocus}
-                onBlur={setPwCheckFocus}
-              />
-              {mismatchError && pwCheckFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    비밀번호가 <br />
-                    일치하지 <br />
-                    않습니다.
-                  </span>
-                </SpeechBubble>
-              )}
-              {!mismatchError && pwCheckFocus && (
-                <SpeechBubble>
-                  <span className="bubble__notice">
-                    비밀번호가 <br />
-                    일치합니다.
-                  </span>
-                </SpeechBubble>
-              )}
-              {!mismatchError && <Check>✔</Check>}
-            </InputBoxPw>
-            {/* {signUpSuccess && <span>회원가입되었습니다! 로그인해주세요.</span>} */}
-          </label>
-        </form>
-        <ButtonBox>
-          {disabledHandler() ? (
-            <DefaultBtn btnType="inactiveM" size={10.9895}>
-              <span>Sign up</span>
-            </DefaultBtn>
-          ) : (
-            <DefaultBtn
-              btnType="activeM"
-              size={10.9895}
-              onClick={(e) => {
-                onSubmit(e);
-                play();
-              }}
-              type="submit"
-              disabled={disabledHandler()}
-            >
-              <span>Sign up</span>
-            </DefaultBtn>
-          )}
+                {nickname && <Check>✔</Check>}
+              </InputBoxId>
+            </label>
+            <label id="email-label">
+              <InputBoxId>
+                <Input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="E-Mail"
+                  value={email}
+                  onChange={setEmail}
+                  onFocus={setEmailFocus}
+                  onBlur={setEmailFocus}
+                />
+                {emailCheck(email) && emailFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      사용 가능한 <br />
+                      이메일입니다.
+                    </span>
+                  </SpeechBubble>
+                )}
+                {!emailCheck(email) && emailFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      올바른 <br />
+                      이메일 형식이
+                      <br />
+                      아닙니다.
+                    </span>
+                  </SpeechBubble>
+                )}
+                {emailCheck(email) && <Check>✔</Check>}
+              </InputBoxId>
+            </label>
+            <label id="password-label">
+              <InputBoxId>
+                <Input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={password}
+                  maxLength={15}
+                  placeholder="PassWord"
+                  onChange={onChangePassword}
+                  onFocus={setPwFocus}
+                  onBlur={setPwFocus}
+                />
+                {passwordCheckF(password) && pwFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      사용 가능한 <br />
+                      비밀번호입니다.
+                    </span>
+                  </SpeechBubble>
+                )}
+                {!passwordCheckF(password) && pwFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      영문, 숫자, <br />
+                      특수 문자 포함 <br />
+                      6~15자
+                    </span>
+                  </SpeechBubble>
+                )}
+                {passwordCheckF(password) && <Check>✔</Check>}
+              </InputBoxId>
+            </label>
+            <label id="password-check-label">
+              <InputBoxPw>
+                <Input
+                  type="password"
+                  id="password-check"
+                  name="password-check"
+                  placeholder="PassWordCheck"
+                  maxLength={15}
+                  value={passwordCheck}
+                  onChange={onChangePasswordCheck}
+                  onFocus={setPwCheckFocus}
+                  onBlur={setPwCheckFocus}
+                />
+                {mismatchError && pwCheckFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      비밀번호가 <br />
+                      일치하지 <br />
+                      않습니다.
+                    </span>
+                  </SpeechBubble>
+                )}
+                {!mismatchError && pwCheckFocus && (
+                  <SpeechBubble>
+                    <span className="bubble__notice">
+                      비밀번호가 <br />
+                      일치합니다.
+                    </span>
+                  </SpeechBubble>
+                )}
+                {!mismatchError && <Check>✔</Check>}
+              </InputBoxPw>
+              {/* {signUpSuccess && <span>회원가입되었습니다! 로그인해주세요.</span>} */}
+            </label>
+          </form>
+          <ButtonBox>
+            {disabledHandler() ? (
+              <DefaultBtn btnType="inactiveM" size={10.9895}>
+                <span>Sign up</span>
+              </DefaultBtn>
+            ) : (
+              <DefaultBtn
+                btnType="activeM"
+                size={10.9895}
+                onClick={(e) => {
+                  onSubmit(e);
+                  play();
+                }}
+                type="submit"
+                disabled={disabledHandler()}
+              >
+                <span>Sign up</span>
+              </DefaultBtn>
+            )}
 
-          <Link to="/login">
-            <DefaultBtn
-              btnType="inactiveM"
-              size={10.9895}
-              onClick={() => {
-                play();
-              }}
-            >
-              <span>Cancel</span>
-            </DefaultBtn>
-          </Link>
-        </ButtonBox>
-      </FormWrapSt>
-    </BackWrap>
+            <Link to="/login">
+              <DefaultBtn
+                btnType="inactiveM"
+                size={10.9895}
+                onClick={() => {
+                  play();
+                }}
+              >
+                <span>Cancel</span>
+              </DefaultBtn>
+            </Link>
+          </ButtonBox>
+        </FormWrapSt>
+      </BackWrap>
+    </>
   );
 };
 

@@ -10,6 +10,7 @@ import sockJS from "sockjs-client";
 import { getCookie } from "../shared/Cookies";
 // apis
 import apis from "../shared/api/apis";
+import { Helmet } from "react-helmet";
 // css
 import {
   Header,
@@ -194,6 +195,9 @@ const WaitingRoom = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Welcome! Drunken Wizard</title>
+      </Helmet>
       {roomOutModal && (
         <TwoBtnModal
           confirmText={"확인"}

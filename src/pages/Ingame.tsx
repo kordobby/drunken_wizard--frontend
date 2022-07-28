@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
-
+import { Helmet } from "react-helmet";
 /* Modules */
 import {
   setRoomTitleTK,
@@ -567,6 +567,9 @@ const Ingame = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Fight! Drunken Wizard</title>
+      </Helmet>
       {/* <PlayBtn></PlayBtn> */}
       {connectModal && (
         <TwoBtnModal

@@ -31,16 +31,6 @@ const StatusLower = ({
     setMouseOver(false);
   }, [mouseOver]);
 
-  const weakDurationFunc = (value: number) => {
-    if (value > 0) return "weakDuration";
-    else return "antiWeakDuration";
-  };
-
-  const damageModifierFunc = (value: number) => {
-    if (value > 0) return "damageModifierDuration";
-    else return "antiDamageModifierDuration";
-  };
-
   return (
     <StatBarRow>
       {sleepDuration !== 0 && (
@@ -121,7 +111,7 @@ const StatusLower = ({
       {weakDuration !== 0 && (
         <StatIconBox size={3.125}>
           <StatIcon
-            stat={weakDurationFunc(weakDuration)}
+            stat="weakDuration"
             mouseOver={mouseOver}
             size={2.8125}
             onMouseOver={MouseOverFunc}
@@ -148,7 +138,7 @@ const StatusLower = ({
       {damageModifierDuration !== 0 && (
         <StatIconBox size={3.125}>
           <StatIcon
-            stat={damageModifierFunc(damageModifierDuration)}
+            stat="damageModifierDuration"
             mouseOver={mouseOver}
             size={2.8125}
             onMouseOver={MouseOverFunc}
@@ -176,7 +166,7 @@ const StatusLower = ({
               </>
             )}
           </StatIcon>
-          <StatCnt size={1.25}>{Math.abs(damageModifierDuration)}</StatCnt>
+          <StatCnt size={1.25}>{damageModifierDuration}</StatCnt>
         </StatIconBox>
       )}
 
