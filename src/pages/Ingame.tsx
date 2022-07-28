@@ -322,7 +322,6 @@ const Ingame = () => {
                 // 여기서 win/lose Modal
                 setOverTeam(msgData.winningTeam);
                 setStatus("ENDGAME");
-                alert("게임 끝! 이거는 나중에 만들게요!");
                 break;
               default:
                 break;

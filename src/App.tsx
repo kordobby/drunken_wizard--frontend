@@ -22,7 +22,7 @@ import { ResizeBtn, RuleBtn } from "./Components/UserComponents/UserStyled";
 import resize from "./images/imgs/Resize.png";
 import ruleBook from "./images/rules/ruleBook.png";
 import Splash from "./pages/Splash";
-import Loading from "./pages/Loading";
+import LoadingLobby from "./pages/LoadingLobby";
 
 function App() {
   const [loading, setLoding] = useState<boolean>(true);
@@ -49,6 +49,7 @@ function App() {
   return (
     <>
       <Routes>
+        {/* <Route path="/loading" element={<LoadingLobby />}></Route> */}
         <Route path="/" element={<Splash />}></Route>
         <Route path="/lobby" element={<Lobby />}></Route>
         <Route

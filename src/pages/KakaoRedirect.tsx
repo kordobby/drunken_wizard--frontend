@@ -7,7 +7,9 @@ import { getCookie, setCookie } from "../Shared/Cookies";
 import { loginStateProps } from "../typings/db";
 // apis
 import apis from "../Shared/api/apis";
-import Loading from "./Loading";
+import LoadingLobby from "./LoadingLobby";
+import { BackWrap, LogLogo } from "../Components/UserComponents/UserStyled";
+
 const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
   const accessToken = getCookie("token");
@@ -50,7 +52,11 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
       navigate("/lobby");
     }
   }, [accessToken]);
-  return <Loading></Loading>;
+  return (
+    <BackWrap>
+      <LogLogo top={5.729} bottom={4.6875}></LogLogo>
+    </BackWrap>
+  );
 };
 
 export default KakaoRedirect;
