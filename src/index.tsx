@@ -20,34 +20,35 @@ import { BrowserRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 import Loading from "./pages/Loading";
 
-const queryClient = new QueryClient();
-// {
-//   defaultOptions: {
-//     queries: {
-//       staleTime: 5 * 60 * 1000,
-//       suspense: true,
-//     },
-//   },
-// }
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      suspense: true,
+    },
+  },
+});
+
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement as Element);
 
 root.render(
-  // <React.Suspense fallback={<Loading />}>
-  <CookiesProvider>
-    <QueryClientProvider client={queryClient}>
-      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
-      <BrowserRouter>
-        <React.StrictMode>
-          <GlobalStyled />
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </React.StrictMode>
-      </BrowserRouter>
-    </QueryClientProvider>
-  </CookiesProvider>
-  // </React.Suspense>
+  <React.Suspense fallback={<Loading />}>
+    <CookiesProvider>
+      <QueryClientProvider client={queryClient}>
+        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+        <BrowserRouter>
+          <React.StrictMode>
+            <GlobalStyled />
+            <Provider store={store}>
+              <App />
+            </Provider>
+          </React.StrictMode>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </CookiesProvider>
+    //{" "}
+  </React.Suspense>
 );
 
 // If you want to start measuring performance in your app, pass a function
