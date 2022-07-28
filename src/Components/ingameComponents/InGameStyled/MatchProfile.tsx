@@ -1,9 +1,9 @@
-import bloodmage from "../../../images/class/BM.png";
-import farseer from "../../../images/class/FS.png";
-import warock from "../../../images/class/WR.png";
-import healer from "../../../images/class/HL.png";
-import enchanter from "../../../images/class/EC.png";
-import invoker from "../../../images/class/IV.png";
+import bloodmage from "../../../images/class/BM1.png";
+import farseer from "../../../images/class/FS1.png";
+import warock from "../../../images/class/WR1.png";
+import healer from "../../../images/class/HL1.png";
+import enchanter from "../../../images/class/EC1.png";
+import invoker from "../../../images/class/IV1.png";
 /* character class images-matching func*/
 export default function matchProfileImg(data: string) {
   switch (data) {

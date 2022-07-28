@@ -141,7 +141,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       setUseFail(true);
       return;
     } else {
-      console.log("hey");
       const data = {
         cardId: selectedUseCard.cardId,
         targetPlayerId: selectedTarget,
@@ -251,7 +250,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     </TargetNullBtn>
   ));
 
-  console.log(healCnt);
   return (
     <>
       {useFail && (

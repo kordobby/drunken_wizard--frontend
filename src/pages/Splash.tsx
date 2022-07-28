@@ -43,7 +43,6 @@ const Splash = () => {
       <BackWrap>
         {toggle ? (
           <>
-            <PlayBtn></PlayBtn>
             {/* <DarkBg></DarkBg> */}
             <LogLogo top={5.729} bottom={4.6875}></LogLogo>
             <BeerBgImg></BeerBgImg>
@@ -53,6 +52,7 @@ const Splash = () => {
           </>
         ) : (
           <>
+            <PlayBtn></PlayBtn>
             <LogLogo top={5.729} bottom={4.6875}></LogLogo>
             <DefaultBtnL disabled={clicked} onClick={toggleFunc}>
               입장하기
