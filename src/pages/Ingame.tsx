@@ -453,11 +453,12 @@ const Ingame = () => {
           default:
             break;
         }
+        setStatus("WAITING");
         break;
       case "DISCARD":
         if (nowPlayerId !== playersData.thisPlayer.playerId) {
           updatePlayersFunc();
-          setStatus("ACTION");
+          setStatus("WAITING");
         }
         break;
       case "CHANGETURN":

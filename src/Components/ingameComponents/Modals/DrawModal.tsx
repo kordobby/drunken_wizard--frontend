@@ -24,7 +24,7 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
   const selectableCnt = useAppSelector(
     (state) => state.game.game.selectableCnt
   );
-  // console.log(selectableCnt);
+
   const selectableCards = useAppSelector(
     (state) => state.game.game.selectableCards
   );
@@ -44,7 +44,6 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
   }, [removeDupSelectedCard]);
 
   const sendDrawCardsHandler = () => {
-    // console.log("보낸다.");
     const data = { selectedCards: removeDupSelectedCard };
     sendStompMsgFunc(roomId, thisPlayer.playerId, "SELECT", data);
   };
