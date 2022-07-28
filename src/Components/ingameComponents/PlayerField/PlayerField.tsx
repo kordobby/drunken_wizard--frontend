@@ -70,6 +70,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
 
   useEffect(() => {
     setDisableHeal(false);
+    setHealCnt(true);
   }, [status]);
 
   /* tookit things */
@@ -215,7 +216,6 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       {index === 1 && "E2"}
       {index === 2 && "AL"}
       {index === 3 && "ME"}
-      {value.username}
     </TurnHealBtn>
   ));
 
@@ -250,6 +250,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       {value}
     </TargetNullBtn>
   ));
+
   console.log(healCnt);
   return (
     <>
@@ -337,40 +338,42 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
         <div>
           <PlayerCtrlWrap>
             {thisPlayer.charactorClass === "HEALER" &&
-            thisPlayer.mutedDuration <= 0 ? (
-              <>
-                <TurnTap>
-                  {thisPlayer.playerId === nowPlayer &&
-                  healCnt === true &&
-                  timerCtrl === "action" ? (
-                    <>
-                      <span>힐 대상 선택</span>
-                      <div className="turn__button--box">{HealTargetBtns}</div>
-                    </>
-                  ) : (
-                    <>
-                      <span>순서 확인</span>
-                      <div className="turn__button--box">
-                        {playersList.map((value) => (
-                          <TurnBtn
-                            key={value.turnOrder}
-                            team={value.team === thisPlayer.team}
-                          >
-                            {value.turnOrder}
-                          </TurnBtn>
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </TurnTap>
-                <SendHealBtn
-                  disabled={disableHeal}
-                  onClick={openHealModalHandler}
-                >
-                  Heal
-                </SendHealBtn>
-              </>
-            ) : (
+              thisPlayer.mutedDuration <= 0 && (
+                <>
+                  <TurnTap>
+                    {thisPlayer.playerId === nowPlayer && healCnt === true ? (
+                      <>
+                        <span>힐 대상 선택</span>
+                        <div className="turn__button--box">
+                          {HealTargetBtns}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <span>순서 확인</span>
+                        <div className="turn__button--box">
+                          {playersList.map((value) => (
+                            <TurnBtn
+                              key={value.turnOrder}
+                              team={value.team === thisPlayer.team}
+                            >
+                              {value.turnOrder}
+                            </TurnBtn>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </TurnTap>
+                  <SendHealBtn
+                    disabled={disableHeal}
+                    onClick={openHealModalHandler}
+                  >
+                    Heal
+                  </SendHealBtn>
+                </>
+              )}
+
+            {thisPlayer.charactorClass !== "HEALER" && (
               <TurnTap>
                 <span>순서확인</span>
                 <div className="turn__button--box">

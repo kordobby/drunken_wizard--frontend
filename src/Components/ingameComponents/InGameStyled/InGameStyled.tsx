@@ -313,14 +313,16 @@ export const CraveCards = styled.div<CraveCardsProps>`
   box-shadow: 0.208vw 0.208vw 1.041vw rgba(0, 0, 0, 0.25);
   &:nth-child(2) {
     top: 2.604vw;
-    left: 7.031vw;
-    transform: rotate(12deg);
-    z-index: 1;
+    left: 5.031vw;
+    transform: rotate(8deg);
+    z-index: 4;
   }
   &:nth-child(3) {
     /* animation: ${usedCard} 0.5s ease; */
-    top: 1.8229vw;
-    left: 9.031vw;
+    top: 2.8229vw;
+    transform: rotate(8deg);
+    left: 10.031vw;
+    z-index: 3;
   }
 `;
 /* PlayerField */

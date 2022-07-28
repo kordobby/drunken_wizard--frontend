@@ -15,9 +15,8 @@ const StartModal = ({ setStatus }: StartModalProps) => {
   // 유저 접속 텀을 고려해서, 5초 뒤에 버튼 활성화
   useEffect(() => {
     setTimeout(() => {
-      play();
       setStatus("READY");
-    }, 5000);
+    }, 8000);
   }, []);
 
   return (
