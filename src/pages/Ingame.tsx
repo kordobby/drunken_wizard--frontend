@@ -379,7 +379,6 @@ const Ingame = () => {
         if (thisPlayer[0] !== undefined) {
           dispatch(setThisPlayerTK(thisPlayer[0]));
           dispatch(setMyCardsUpdateTK(thisPlayer[0].cardsOnHand));
-          setTargetText(playersData.thisPlayer.username);
         }
         const PlayerA = update.filter(
           (value: playersSetting) =>
@@ -393,18 +392,25 @@ const Ingame = () => {
           (value: playersSetting) =>
             value.playerId === playersData.PlayerC.playerId
         );
-        if (PlayerA[0] !== undefined) {
-          dispatch(setPlayerATK(PlayerA[0]));
-          setTargetText(PlayerA[0].username);
+        if (nowPlayerId === playersData.thisPlayer.playerId) {
+          if (PlayerA[0] !== undefined) {
+            dispatch(setPlayerATK(PlayerA[0]));
+            setTargetText(PlayerA[0].username);
+          }
+          if (PlayerB[0] !== undefined) {
+            dispatch(setPlayerBTK(PlayerB[0]));
+            setTargetText(PlayerB[0].username);
+          }
+          if (PlayerC[0] !== undefined) {
+            dispatch(setPlayerCTK(PlayerC[0]));
+            setTargetText(PlayerC[0].username);
+          }
+        } else {
+          if (thisPlayer[0] !== undefined) {
+            setTargetText(thisPlayer[0].username);
+          }
         }
-        if (PlayerB[0] !== undefined) {
-          dispatch(setPlayerBTK(PlayerB[0]));
-          setTargetText(PlayerB[0].username);
-        }
-        if (PlayerC[0] !== undefined) {
-          dispatch(setPlayerCTK(PlayerC[0]));
-          setTargetText(PlayerC[0].username);
-        }
+
         switch (craveCard.target) {
           case "SELECT":
             setSelectModal(true);
