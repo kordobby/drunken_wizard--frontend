@@ -7,7 +7,7 @@ import { getCookie, setCookie } from "../shared/Cookies";
 import { loginStateProps } from "../typings/db";
 // apis
 import apis from "../shared/api/apis";
-
+import Loading from "./Loading";
 const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
   const accessToken = getCookie("token");
@@ -50,13 +50,7 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
       navigate("/lobby");
     }
   }, [accessToken]);
-  return (
-    <div>
-      <div>
-        <span>잠시만 기다려 주세요! 로그인 중입니다.</span>
-      </div>
-    </div>
-  );
+  return <Loading></Loading>;
 };
 
 export default KakaoRedirect;

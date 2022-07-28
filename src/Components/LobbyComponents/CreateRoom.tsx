@@ -10,7 +10,7 @@ import { socket } from "../../shared/WebStomp";
 // apis
 import apis from "../../shared/api/apis";
 // interface
-import { ModalType, SoundModalType } from "../../typings/db";
+import { SoundModalType } from "../../typings/db";
 // css
 import {
   CreateInput,
@@ -28,6 +28,7 @@ const CreateRoom = ({ modalHandler, btnSound }: SoundModalType) => {
   const accessToken = getCookie("token");
   const queryClient = useQueryClient();
   const stompClient = stompJS.over(socket);
+  stompClient.debug = (f) => f;
   const navigate = useNavigate();
 
   // mutate

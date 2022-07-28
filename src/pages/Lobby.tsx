@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
+import { Helmet } from "react-helmet";
 // hooks
 import { deleteCookie } from "../shared/Cookies";
 import { useModal } from "../hooks/useModal";
@@ -18,6 +19,7 @@ import {
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
 import TwoBtnModal from "../elem/TwoBtnModal";
 import HeaderBtn from "../elem/HeaderBtn";
+
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
 
@@ -38,6 +40,9 @@ const Lobby = () => {
 
   return (
     <WrapBack>
+      <Helmet>
+        <title>Welcome! Drunken Wizard</title>
+      </Helmet>
       {logoutModal && (
         <ModalBack
           onClick={(e: any) => {

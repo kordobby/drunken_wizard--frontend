@@ -221,3 +221,8 @@ export interface TeamProps {
 export interface pageProps {
   page: boolean;
 }
+
+export interface OverModalProps {
+  status: string;
+  clickFunc: () => void;
+}

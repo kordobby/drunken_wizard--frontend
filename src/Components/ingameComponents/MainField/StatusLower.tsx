@@ -25,23 +25,11 @@ const StatusLower = ({
 
   const MouseOverFunc = useCallback(() => {
     setMouseOver(true);
-    console.log("짠");
   }, [mouseOver]);
 
   const MouseLeaveFunc = useCallback(() => {
     setMouseOver(false);
-    console.log("짠");
   }, [mouseOver]);
-
-  const weakDurationFunc = (value: number) => {
-    if (value > 0) return "weakDuration";
-    else return "antiWeakDuration";
-  };
-
-  const damageModifierFunc = (value: number) => {
-    if (value > 0) return "damageModifierDuration";
-    else return "antiDamageModifierDuration";
-  };
 
   return (
     <StatBarRow>
@@ -123,13 +111,13 @@ const StatusLower = ({
       {weakDuration !== 0 && (
         <StatIconBox size={3.125}>
           <StatIcon
-            stat={weakDurationFunc(weakDuration)}
+            stat="weakDuration"
             mouseOver={mouseOver}
             size={2.8125}
             onMouseOver={MouseOverFunc}
             onMouseLeave={MouseLeaveFunc}
           >
-            {weakDuration > 0 ? (
+            {weakDuration <= 0 ? (
               <>{mouseOver && <CoverIcon>방어</CoverIcon>}</>
             ) : (
               <>
@@ -143,14 +131,14 @@ const StatusLower = ({
               </>
             )}
           </StatIcon>
-          <StatCnt size={1.25}>{Math.abs(weakDuration)}</StatCnt>
+          <StatCnt size={1.25}>{weakDuration}</StatCnt>
         </StatIconBox>
       )}
 
       {damageModifierDuration !== 0 && (
         <StatIconBox size={3.125}>
           <StatIcon
-            stat={damageModifierFunc(damageModifierDuration)}
+            stat="damageModifierDuration"
             mouseOver={mouseOver}
             size={2.8125}
             onMouseOver={MouseOverFunc}
@@ -178,7 +166,7 @@ const StatusLower = ({
               </>
             )}
           </StatIcon>
-          <StatCnt size={1.25}>{Math.abs(damageModifierDuration)}</StatCnt>
+          <StatCnt size={1.25}>{damageModifierDuration}</StatCnt>
         </StatIconBox>
       )}
 

@@ -130,9 +130,10 @@ export const PlayingFlag = styled.div<FlagProps>`
   position: absolute;
   top: ${({ top }) => top && `${top}vw`};
   left: ${({ left }) => left && `${left}vw`};
-  &:nth-child(2) {
+  /* &:nth-child(2) {
     right: 7.8125vw;
-  }
+  } */
+  z-index: 100;
 `;
 
 export const NameTag = styled.div<NameTagsProps>`
@@ -163,7 +164,7 @@ export const PlayerPointBox = styled.div`
 `;
 
 export const PlayerPointBar = styled.div<StatProps>`
-  font-size: 1.25vw;
+  font-size: 0.75vw;
   margin-bottom: 1.5625vw;
   .stat__full {
     width: 10.416vw;
@@ -231,14 +232,14 @@ export const StatIcon = styled.div<StatIconsImgProps>`
   position: absolute;
   bottom: 0;
   left: 0;
+  font-size: 0.8vw;
+  ${flex({ justify: "center", align: "center" })}
   width: ${({ size }) => size && `${size}vw`};
   height: ${({ size }) => size && `${size}vw`};
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25); */
   background-image: url(${(props) => matchStatusImg(props.stat)});
   background-size: cover;
   border-radius: 1.0416vw;
-  filter: brightness(150%);
-  -webkit-filter: brightness(150%);
 `;
 
 export const CoverIcon = styled.div`
@@ -247,6 +248,16 @@ export const CoverIcon = styled.div`
   background-color: var(--purple-1);
   border-radius: 1.0416vw;
   color: white;
+  ${flex({ justify: "center", align: "center" })}
+`;
+
+export const CoverIconMine = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: var(--purple-1);
+  border-radius: 1.0416vw;
+  color: white;
+  font-size: 1.2vw;
   ${flex({ justify: "center", align: "center" })}
 `;
 
@@ -260,7 +271,7 @@ export const StatCnt = styled.div<StatNumberProps>`
   border-radius: 1.666vw;
   background-color: var(--purple-3);
   ${flex({ justify: "center", align: "center" })}
-  font-size : 0.3125vw;
+  font-size: ${({ size }) => (size === 1.25 ? "0.8vw" : "1.2vw")}; 0.8vw;
 `;
 
 // Main => Crave Field
@@ -302,14 +313,16 @@ export const CraveCards = styled.div<CraveCardsProps>`
   box-shadow: 0.208vw 0.208vw 1.041vw rgba(0, 0, 0, 0.25);
   &:nth-child(2) {
     top: 2.604vw;
-    left: 7.031vw;
-    transform: rotate(12deg);
-    z-index: 1;
+    left: 5.031vw;
+    transform: rotate(8deg);
+    z-index: 4;
   }
   &:nth-child(3) {
     /* animation: ${usedCard} 0.5s ease; */
-    top: 1.8229vw;
-    left: 9.031vw;
+    top: 2.8229vw;
+    transform: rotate(8deg);
+    left: 10.031vw;
+    z-index: 3;
   }
 `;
 /* PlayerField */
@@ -325,7 +338,7 @@ export const PlayerFieldWrap = styled.div`
 
 // PlayerField => [LEFT] PlayerIcon
 export const ProfileSizing = styled.div`
-  width: 41.66vw;
+  width: 38.66vw;
   height: 17.1875vw;
   box-sizing: border-box;
   margin-left: 0.78125vw;
@@ -362,13 +375,13 @@ export const ProfileIcon = styled.div<IconsImgProps>`
 export const MyStatBox = styled.div`
   position: absolute;
   top: 1.822vw;
-  right: 0;
+  right: 0.4vw;
   z-index: -2;
-  width: 32.8125vw;
+  width: 30.4125vw;
   height: 7.2916vw;
   box-sizing: border-box;
-  padding-left: 2.604vw;
-  font-size: 1.875vw;
+  padding-left: 2.704vw;
+  font-size: 1.575vw;
   font-family: "국립박물관문화재단클래식M";
   background-color: var(--white);
   border-top-right-radius: 1.48vw;
@@ -419,7 +432,7 @@ export const CardsArea = styled.div`
   .normal {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
-    transform: scale(0.8);
+    transform: scale(0.9);
   }
   .default {
     /* background: yellow; */
@@ -427,13 +440,13 @@ export const CardsArea = styled.div`
   transition: all 100ms ease-in-out;
   box-sizing: border-box;
   height: 17.1875vw;
-  width: 47.916vw;
+  width: 49.916vw;
 `;
 
 export const ActionFailText = styled.div`
   height: 17.1875vw;
-  width: 32.2916vw;
-  font-size: 1.25vw;
+  width: 50.2916vw;
+  font-size: 1.85vw;
   ${flex({ justify: "center", align: "center" })};
 `;
 
@@ -442,16 +455,17 @@ export const Divider = styled.div`
   height: 14.583vw;
   border-radius: 0.15625vw;
   background-color: var(--brown-1);
-  margin-left: 0.52083vw;
+  margin-left: 0.03083vw;
 `;
 
 export const PlayerCards = styled.div<UseCardProps>`
-  height: 11.666vw;
-  width: 7.2916vw;
-  margin: 0 0.5208vw;
+  height: 13.666vw;
+  width: 7.6716vw;
+  margin: 0 0.3208vw;
+  border-radius: 0.5208vw;
   background-size: cover;
   font-size: 0.78125vw;
-  border-radius: 0.833vw;
+  /* border-radius: 0.833vw; */
   box-sizing: border-box;
   background-image: url(${(props) => matchCardImg(props.value.cardName)});
   ${flex({ direction: "column", justify: "center", align: "center" })};
@@ -461,7 +475,7 @@ export const PlayerCards = styled.div<UseCardProps>`
   .normal {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
-    transform: scale(0.8);
+    transform: scale(0.9);
     background: var(--grey);
   }
   .default {

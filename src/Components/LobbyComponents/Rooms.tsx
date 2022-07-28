@@ -39,6 +39,7 @@ import OneBtnModal from "../../elem/OneBtnModal";
 
 const Rooms = ({ btnSound }: SoundModalType2) => {
   const stompClient = stompJS.over(socket);
+  stompClient.debug = (f) => f;
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [roomCheckModal, setRoomCheckModal] = useModal(false);

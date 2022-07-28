@@ -1,29 +1,29 @@
-import shield from "../../../Public/Images/shield.png";
-import sleepDuration from "../../../Public/Images/sleepDuration.png";
-import stunnedDuration from "../../../Public/Images/stunnedDuration.png";
-import muteDuration from "../../../Public/Images/muteDuration.png";
-import poisonedDuration from "../../../Public/Images/poisonedDuration.png";
-import weakDuration from "../../../Public/Images/weakDuration.png";
-import manaCostModifierDuration from "../../../Public/Images/manaCostModifierDuration.png";
-import damageModifierDuration from "../../../Public/Images/damageModifierDuration.png";
+import shield from "../../../images/statIcon/S1.png";
+import sleepDuration from "../../../images/statIcon/S2.png";
+import stunnedDuration from "../../../images/statIcon/S3.png";
+import muteDuration from "../../../images/statIcon/S4.png";
+import poisonedDuration from "../../../images/statIcon/S5.png";
+import weakDuration from "../../../images/statIcon/S6.png";
+import petrifiedDuration from "../../../images/statIcon/S7.png";
+import damageModifierDuration from "../../../images/statIcon/S8.png";
 export default function matchStatusImg(data: string) {
   switch (data) {
-    case "shield":
-      return shield;
     case "sleepDuration":
       return sleepDuration;
-    case "stunnedDuration":
-      return stunnedDuration;
     case "mutedDuration":
       return muteDuration;
+    case "petrifiedDuration":
+      return petrifiedDuration;
     case "poisonedDuration":
       return poisonedDuration;
+    case "stunnedDuration":
+      return stunnedDuration;
     case "weakDuration":
       return weakDuration;
-    case "petrifiedDuration":
-      return manaCostModifierDuration;
     case "damageModifierDuration":
       return damageModifierDuration;
+    case "shield":
+      return shield;
     default:
       return;
   }

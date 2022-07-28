@@ -34,7 +34,7 @@ const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
         ))}
         {nowPlayer === thisPlayer && (
           <DefaultBtnL
-            disabled={actionTimer !== "action"}
+            disabled={clicked}
             onClick={() => {
               setClicked(true);
               sendStompMsgFunc(roomId, thisPlayer, "ENDTURN", null);

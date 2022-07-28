@@ -43,6 +43,7 @@ const LobbyChat = () => {
   const [userHistoryState, setUserHistoryState] = useState<any>();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
+  stompClient.debug = (f) => f;
   const queryClient = useQueryClient();
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
@@ -52,7 +53,6 @@ const LobbyChat = () => {
   // mutate
   const { mutate: userHistory } = useMutation(apis.userHistoryQR, {
     onSuccess: (data: any) => {
-      // console.log(data);
       setUserHistoryState(data.data);
       // console.log("전적 로드 성공했어!");
     },
@@ -87,6 +87,7 @@ const LobbyChat = () => {
     }
     setMsgList(list);
   }, [semiMsgList]);
+
   // stompClient.debug() =>{ console.log('debug')},
   // /* function Subscribe */
   const socketSubscribe = useCallback(() => {

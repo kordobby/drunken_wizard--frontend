@@ -3,7 +3,6 @@ import flex from "../../GlobalStyled/flex";
 import { useAppSelector } from "../../../hooks/tsHooks";
 import StatusLower from "./StatusLower";
 import { Targeting } from "../../../typings/typedb";
-import { useEffect, useState } from "react";
 import { TeamColorProps } from "../../../typings/typedb";
 import { Card } from "../../../typings/typedb";
 const PlayerStatus = () => {
@@ -11,12 +10,10 @@ const PlayerStatus = () => {
   const playersList = Object.values(playersData);
   const targeted = useAppSelector((state) => state.game.game.targetPlayer);
   const data = playersList.pop();
-  console.log(targeted);
   const selectedCard = useAppSelector(
     (state) => state.game.game.selectForUseCard
   );
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
-  console.log(selectedCard);
   const targetingFunc = (playerId: number) => {
     if (selectedCard.target === "SELECT" && targeted === playerId) return true;
     else if (
@@ -36,8 +33,8 @@ const PlayerStatus = () => {
   };
   return (
     <StatusBoxWrap>
-      {playersList.map((value) => (
-        <StatusCard targeting={targetingFunc(value.playerId)}>
+      {playersList.map((value, index) => (
+        <StatusCard key={index} targeting={targetingFunc(value.playerId)}>
           <StatusUpper>
             <StatusNameTag team={value.team === thisPlayer.team}>
               <span>{value.username}</span>
