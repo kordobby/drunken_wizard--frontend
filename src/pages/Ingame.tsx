@@ -102,7 +102,7 @@ const Ingame = () => {
   /* socket connect - token */
   const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
-  stompClient.debug = (f) => f;
+  // stompClient.debug = (f) => f;
   const accessToken = getCookie("token");
   const { roomId } = useParams();
   const myId = Number(getCookie("id"));
@@ -122,7 +122,7 @@ const Ingame = () => {
   });
 
   useEffect(() => {
-    socketSubscribe();
+    waitForConnection(stompClient, socketSubscribe());
     return () => {
       socketUnsubscribe();
     };
@@ -145,6 +145,7 @@ const Ingame = () => {
         () => {
           stompClient.subscribe(`/sub/game/${roomId}`, (data: any) => {
             console.log(data);
+            console.log(stompClient.ws.readyState);
             const response = JSON.parse(data.body);
             const msgData = JSON.parse(response?.content);
             const msgSender = response?.sender;
@@ -451,6 +452,7 @@ const Ingame = () => {
   const waitForConnection = (stompClient: stompJS.Client, callback: any) => {
     setTimeout(function () {
       if (stompClient.ws.readyState === 1) {
+        console.log("running");
         callback();
       } else {
         waitForConnection(stompClient, callback);
@@ -464,7 +466,6 @@ const Ingame = () => {
     msgType: string,
     data: object | null
   ) => {
-    console.log(roomId);
     waitForConnection(stompClient, function () {
       // connect - subscribe - send
       try {
@@ -627,7 +628,7 @@ const Ingame = () => {
       <StGameWrap>
         <NoticeField></NoticeField>
         <StGameWrapFilter>
-          {status !== "" ? (
+          {status === "" ? (
             <StartModal setStatus={setStatus}></StartModal>
           ) : (
             <>

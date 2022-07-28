@@ -195,6 +195,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // HEALER BTN(COMPONENT)
   const HealTargetBtns = playersList.map((value, index) => (
     <TurnHealBtn
+      key={index + 1}
       onClick={(event: any) => sendHealMsgHandler(event, value)}
       value={value.playerId}
       disabled={clicked}
@@ -211,7 +212,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // TARGETING BTN(COMPONENT) :: SELECT
   const TargetBtns = playersList.map((value, index) => (
     <TargetBtn
-      key={value.playerId}
+      key={value.playerId + 1}
       onMouseOver={(event: any) => onMouseOverTargeting(event, value)}
       onMouseLeave={onMouseLeaveTargeting}
       onClick={(event: any) => cardUseHandler(event, value)}
@@ -229,7 +230,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // TARGETING BTN(COMPONENT) :: ME / ALLY / ENEMY
   const TargetNullBtns = ["ME", "ALLY", "ENEMY"].map((value, index: number) => (
     <TargetNullBtn
-      key={index}
+      key={index + 2}
       color={value}
       onClick={(event: any) => cardUseHandler(event, null)}
       disabled={clicked}
@@ -256,7 +257,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
             <>
               {thisPlayer.cardsOnHand.map((value: Card) => (
                 <PlayerCards
-                  key={value.cardId}
+                  key={value.cardId + 3}
                   className={generateClassName(target, value.cardId, mouseIn)}
                   onMouseOver={(event: any) => onMouseOverCards(event, value)}
                   onMouseLeave={onMouseLeaveCards}
@@ -325,7 +326,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
                       <div className="turn__button--box">
                         {playersList.map((value) => (
                           <TurnBtn
-                            key={value.playerId}
+                            key={value.turnOrder + 5}
                             team={value.team === thisPlayer.team}
                           >
                             {value.turnOrder}
@@ -346,8 +347,8 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
               <TurnTap>
                 <span>순서확인</span>
                 <div className="turn__button--box">
-                  {playersList.map((value) => (
-                    <TurnBtn team={value.team === thisPlayer.team}>
+                  {playersList.map((value, index) => (
+                    <TurnBtn key={index} team={value.team === thisPlayer.team}>
                       {value.turnOrder}
                     </TurnBtn>
                   ))}

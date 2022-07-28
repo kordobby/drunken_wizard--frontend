@@ -22,7 +22,6 @@ const PlayerIcons = ({ status }: HeaderProps) => {
   const enemyA = useAppSelector((state) => state.game.players.PlayerB);
   const enemyB = useAppSelector((state) => state.game.players.PlayerC);
 
-  console.log(status);
   return (
     <>
       <PlayerIconsFields>

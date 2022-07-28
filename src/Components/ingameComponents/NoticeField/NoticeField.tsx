@@ -8,7 +8,6 @@ import HeaderBtn from "../../../elem/HeaderBtn";
 import HeaderRoomTitle from "../../Common/RoomTitle";
 const NoticeField = () => {
   const roomTitle = useAppSelector((state) => state.game.game.roomTitle);
-  console.log(roomTitle);
 
   // send StompMsg for leaveRoom
   const navigate = useNavigate();
