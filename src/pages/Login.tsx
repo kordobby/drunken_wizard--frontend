@@ -73,7 +73,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
     onError: (error, e: any) => {
       navigate("/login");
       setLoginState(false);
-      console.log(error);
+      // console.log(error);
       setLoginCheck(e);
       setUsernameValue("");
       setPasswordValue("");

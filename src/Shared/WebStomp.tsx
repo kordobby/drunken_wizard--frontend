@@ -17,7 +17,7 @@ export const trySocketConnect = () => {
       id: accessId,
     },
     () => {
-      console.log("connect success");
+      // console.log("connect success");
     }
   );
 };
@@ -25,7 +25,7 @@ export const trySocketConnect = () => {
 export const socketDisconnect = () => {
   stompClient.disconnect(
     () => {
-      console.log("disconnect");
+      // console.log("disconnect");
     },
     { token: accessToken }
   );
@@ -37,10 +37,10 @@ const socketUnsubscribe = () => {
     stompClient
       .subscribe(`/sub/public`, function (data: any) {}, {})
       .unsubscribe();
-    console.log("success to unsubscribe");
+    // console.log("success to unsubscribe");
     //   setSubscribeState(false);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 

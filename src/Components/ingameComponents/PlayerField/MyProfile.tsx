@@ -29,12 +29,12 @@ const MyProfile = () => {
 
   const MouseOverFunc = useCallback(() => {
     setMouseOver(true);
-    console.log("짠");
+    // console.log("짠");
   }, [mouseOver]);
 
   const MouseLeaveFunc = useCallback(() => {
     setMouseOver(false);
-    console.log("짠");
+    // console.log("짠");
   }, [mouseOver]);
 
   const weakDurationFunc = (value: number) => {

@@ -128,7 +128,7 @@ const SignUp = () => {
   // signUp mutate
   const { mutate: signUp } = useMutation(apis.signUpMT, {
     onSuccess: (e: any) => {
-      console.log(e);
+      // console.log(e);
       setSignUpSuccessModal(e);
       setUsername("");
       setNickValue("");

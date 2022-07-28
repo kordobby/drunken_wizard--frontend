@@ -137,7 +137,7 @@ const Ingame = () => {
     try {
       stompClient.unsubscribe("sub-0");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -149,8 +149,8 @@ const Ingame = () => {
         },
         () => {
           stompClient.subscribe(`/sub/game/${roomId}`, (data: any) => {
-            console.log(data);
-            console.log(stompClient.ws.readyState);
+            // console.log(data);
+            // console.log(stompClient.ws.readyState);
             const response = JSON.parse(data.body);
             const msgData = JSON.parse(response?.content);
             const msgSender = response?.sender;
@@ -331,7 +331,7 @@ const Ingame = () => {
         }
       );
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setConnectModal(true);
     }
   };
@@ -344,7 +344,7 @@ const Ingame = () => {
         }, 2000);
         break;
       case "WAITING":
-        console.log("아직 내 턴이 아니옵니다.");
+        // console.log("아직 내 턴이 아니옵니다.");
         break;
       case "PRECHECK":
         // 만약 그게 나라면 이제 드로우를 하러 갑니다.
@@ -489,7 +489,7 @@ const Ingame = () => {
   const waitForConnection = (stompClient: stompJS.Client, callback: any) => {
     setTimeout(function () {
       if (stompClient.ws.readyState === 1) {
-        console.log("running");
+        // console.log("running");
         callback();
       } else {
         waitForConnection(stompClient, callback);
@@ -517,7 +517,7 @@ const Ingame = () => {
           })
         );
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setConnectModal(true);
       }
     });
