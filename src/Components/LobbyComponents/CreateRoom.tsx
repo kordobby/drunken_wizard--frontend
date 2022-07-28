@@ -2,13 +2,13 @@ import React, { useCallback } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 // hooks
-import { getCookie } from "../../shared/Cookies";
+import { getCookie } from "../../Shared/Cookies";
 import useInput from "../../hooks/useInput";
 // stomp
 import stompJS from "stompjs";
-import { socket } from "../../shared/WebStomp";
+import { socket } from "../../Shared/WebStomp";
 // apis
-import apis from "../../shared/api/apis";
+import apis from "../../Shared/api/apis";
 // interface
 import { SoundModalType } from "../../typings/db";
 // css
