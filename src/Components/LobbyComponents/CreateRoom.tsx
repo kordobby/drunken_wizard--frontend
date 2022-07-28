@@ -28,12 +28,12 @@ const CreateRoom = ({ modalHandler }: ModalType) => {
   const accessToken = getCookie("token");
   const queryClient = useQueryClient();
   const stompClient = stompJS.over(socket);
+  stompClient.debug = (f) => f;
   const navigate = useNavigate();
 
   // mutate
   const { mutate: createRoom } = useMutation(apis.createRoomMT, {
     onSuccess: (res) => {
-      console.log(res.data);
       navigate(`/waiting/${res.data.roomId}`);
       lobbyLeaveMessage();
     },

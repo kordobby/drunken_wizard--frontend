@@ -56,7 +56,7 @@ const loadingsDup = keyframes`
 `;
 
 const BeerWrap = styled.div`
-  animation: ${loadings} 5s ease infinite;
+  animation: ${loadings} 5s 2s ease infinite;
   width: 30vw;
   height: 50vh;
   position: fixed;
@@ -71,7 +71,7 @@ const BeerWrap = styled.div`
 `;
 
 const BeerWrapDup = styled.div`
-  animation: ${loadingsDup} 5s ease infinite;
+  animation: ${loadingsDup} 5s 2s ease infinite;
   width: 30vw;
   height: 50vh;
   position: fixed;

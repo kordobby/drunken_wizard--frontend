@@ -7,14 +7,13 @@ import { getCookie, setCookie } from "../shared/Cookies";
 import { loginStateProps } from "../typings/db";
 // apis
 import apis from "../shared/api/apis";
-
+import Loading from "./Loading";
 const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
   const accessToken = getCookie("token");
 
   const kakao_query = useQuery("kakao_login", apis.kakaoQR, {
     onSuccess: (res) => {
-      console.log(res);
       setCookie("token", res.headers.authorization, {
         path: "/",
         expire: "after60m",
@@ -39,7 +38,6 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
       navigate("/lobby");
     },
     onError: (error) => {
-      console.log("실패");
       setLoginState(false);
       navigate("/login");
     },
@@ -50,13 +48,7 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
       navigate("/lobby");
     }
   }, [accessToken]);
-  return (
-    <div>
-      <div>
-        <span>잠시만 기다려 주세요! 로그인 중입니다.</span>
-      </div>
-    </div>
-  );
+  return <Loading></Loading>;
 };
 
 export default KakaoRedirect;

@@ -41,13 +41,13 @@ const WaitingRoom = () => {
   const { roomId } = useParams();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
+  stompClient.debug = (f) => f;
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
   const queryClient = useQueryClient();
 
   const { mutate: leaveRoom } = useMutation(apis.leaveRoomMT, {
     onSuccess: (res) => {
-      console.log(res);
       queryClient.invalidateQueries(["room_list"]);
       socketUnsubscribe();
       navigate("/lobby");
@@ -97,7 +97,6 @@ const WaitingRoom = () => {
             (data: any) => {
               const response = JSON.parse(data?.body);
               const res = JSON.parse(response?.content);
-              console.log(res?.player1?.ready);
               setWaitingUsers(res);
               if (
                 (res?.player1?.ready === true &&
@@ -127,7 +126,6 @@ const WaitingRoom = () => {
   const socketUnsubscribe = useCallback(() => {
     try {
       stompClient.unsubscribe(`/sub/game/${roomId}`);
-      console.log("success to unsubscribe");
     } catch (error) {
       console.log(error);
     }

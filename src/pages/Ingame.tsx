@@ -38,6 +38,8 @@ import PlayerIcons from "../Components/IngameComponents/MainField/PlayerIcons";
 import CraveField from "../Components/IngameComponents/MainField/CraveField";
 import PlayerStatus from "../Components/IngameComponents/MainField/PlayerStatus";
 import TwoBtnModal from "../elem/TwoBtnModal";
+import OverModal from "../Components/IngameComponents/Modals/OverModal";
+import PlayBtn from "../Components/Common/PlayBtn";
 /* CSS & SC */
 import {
   StGameWrap,
@@ -46,10 +48,13 @@ import {
 } from "../Components/IngameComponents/InGameStyled/InGameStyled";
 import { playersSetting } from "../typings/typedb";
 import AlertPopUp from "../Components/IngameComponents/InGameCommon/AlertPopUp";
+import useSound from "use-sound";
+import turn from "../sounds/turn.mp3";
 
 const Ingame = () => {
   /* useState */
   // #GAME :: Turn Ctrl
+  const [turnChange] = useSound(turn);
   const [status, setStatus] = useState<string>("");
 
   // #DRAW-TURN :: Modal Ctrl
@@ -87,7 +92,7 @@ const Ingame = () => {
   const [manaModal, setManaModal] = useState<boolean>(false);
   const [useFailModal, setUseFailModal] = useState<boolean>(false);
   const [connectModal, setConnectModal] = useState<boolean>(false);
-
+  const [overTeam, setOverTeam] = useState<boolean>(false);
   /* targetText */
   const [targetText, setTargetText] = useState<string>("");
 
@@ -102,7 +107,7 @@ const Ingame = () => {
   /* socket connect - token */
   const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
-  // stompClient.debug = (f) => f;
+  stompClient.debug = (f) => f;
   const accessToken = getCookie("token");
   const { roomId } = useParams();
   const myId = Number(getCookie("id"));
@@ -218,6 +223,7 @@ const Ingame = () => {
                 break;
               case "DRAW":
                 if (msgSender === myId) {
+                  turnChange();
                   dispatch(setSelectableCardCnt(msgData.selectable));
                   setDrawModalOpen(true);
                   timerFunc(10000, "SELECT");
@@ -255,6 +261,7 @@ const Ingame = () => {
                 }
                 break;
               case "TURNCHECK":
+                turnChange();
                 clearDrawCardsFunc();
                 if (msgSender === myId && msgData.action === true) {
                   dispatch(setTimerTK("action"));
@@ -305,6 +312,7 @@ const Ingame = () => {
                 }
                 break;
               case "ENDTURN":
+                turnChange();
                 clearActionTurnFunc();
                 setUpdateOne(msgData.player);
                 dispatch(setNowPlayerIdTK(msgData.nextPlayerId));
@@ -312,7 +320,8 @@ const Ingame = () => {
                 break;
               case "ENDGAME":
                 // 여기서 win/lose Modal
-                console.log("게임 끝!");
+                setOverTeam(msgData.winningTeam);
+                setStatus("ENDGAME");
                 alert("게임 끝! 이거는 나중에 만들게요!");
                 break;
               default:
@@ -443,6 +452,13 @@ const Ingame = () => {
           setStatus("WAITING");
         }
         break;
+      case "ENDGAME":
+        if (overTeam === playersData.thisPlayer.team) {
+          setStatus("WIN");
+        } else {
+          setStatus("LOSE");
+        }
+        break;
       default:
         break;
     }
@@ -544,13 +560,14 @@ const Ingame = () => {
 
   const navigate = useNavigate();
   const leaveRoomFunc = () => {
-    setConnectModal(false);
+    // setConnectModal(false);
     socketUnsubscribe();
     navigate("/lobby");
   };
 
   return (
     <>
+      {/* <PlayBtn></PlayBtn> */}
       {connectModal && (
         <TwoBtnModal
           titleText="서버 연결 오류!"
@@ -625,32 +642,43 @@ const Ingame = () => {
           bottomText={`${craveCard.cardName} 카드를 사용했습니다!`}
         />
       )}
-      <StGameWrap>
-        <NoticeField></NoticeField>
-        <StGameWrapFilter>
-          {status === "" ? (
+      {status === "WIN" && (
+        <OverModal status={status} clickFunc={leaveRoomFunc}></OverModal>
+      )}
+      {status === "LOSE" && (
+        <OverModal status={status} clickFunc={leaveRoomFunc}></OverModal>
+      )}
+
+      {status === "" ? (
+        <StartModal setStatus={setStatus}></StartModal>
+      ) : (
+        <StGameWrap>
+          <NoticeField></NoticeField>
+          <StGameWrapFilter>
+            {/* {status === "" ? (
             <StartModal setStatus={setStatus}></StartModal>
           ) : (
-            <>
-              <MainWrap>
-                <PlayerStatus></PlayerStatus>
-                <PlayerIcons status={status}></PlayerIcons>
-                <CraveField
-                  status={status}
-                  sendStompMsgFunc={sendStompMsgFunc}
-                ></CraveField>
-              </MainWrap>
-              <PlayerField
+            <> */}
+            <MainWrap>
+              <PlayerStatus></PlayerStatus>
+              <PlayerIcons status={status}></PlayerIcons>
+              <CraveField
                 status={status}
                 sendStompMsgFunc={sendStompMsgFunc}
-              ></PlayerField>
-              {drawModalOpen && (
-                <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
-              )}{" "}
-            </>
-          )}
-        </StGameWrapFilter>
-      </StGameWrap>
+              ></CraveField>
+            </MainWrap>
+            <PlayerField
+              status={status}
+              sendStompMsgFunc={sendStompMsgFunc}
+            ></PlayerField>
+            {drawModalOpen && (
+              <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
+            )}{" "}
+            {/* </>
+          )} */}
+          </StGameWrapFilter>
+        </StGameWrap>
+      )}
     </>
   );
 };

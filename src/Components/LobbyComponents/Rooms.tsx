@@ -41,6 +41,7 @@ import OneBtnModal from "../../elem/OneBtnModal";
 
 const Rooms = () => {
   const stompClient = stompJS.over(socket);
+  stompClient.debug = (f) => f;
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [roomCheckModal, setRoomCheckModal] = useModal(false);
@@ -52,10 +53,7 @@ const Rooms = () => {
     ["room_list", { page }],
     () => apis.getRoomListQR(page),
     {
-      onSuccess: (data: any) => {
-        console.log(data);
-        console.log("성공했어!");
-      },
+      onSuccess: (data: any) => {},
       onError: (error: any) => {
         console.log("실패", error);
       },

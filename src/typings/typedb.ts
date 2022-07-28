@@ -217,3 +217,8 @@ export interface BtnColorType {
 export interface TeamProps {
   team: boolean;
 }
+
+export interface OverModalProps {
+  status: string;
+  clickFunc: () => void;
+}

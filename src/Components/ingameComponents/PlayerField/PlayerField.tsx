@@ -4,7 +4,8 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 /* Hooks */
 import { useAppSelector, useAppDispatch } from "../../../hooks/tsHooks";
 import { useParams } from "react-router-dom";
-
+import useSound from "use-sound";
+import cardSound from "../../../sounds/card.mp3";
 /* Modules */
 import {
   setSelectUseCardTK,
@@ -48,7 +49,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   /* useState */
   const [healCnt, setHealCnt] = useState<boolean>(false);
   const [disableHeal, setDisableHeal] = useState<boolean>(false);
-
+  const [play] = useSound(cardSound);
   // card Use & Discard
   const [target, setTarget] = useState(0);
   const [mouseIn, setMouseIn] = useState(false);
@@ -67,6 +68,10 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     }, 1000);
   }, [clicked, useFail]);
 
+  useEffect(() => {
+    setDisableHeal(false);
+  }, [status]);
+
   /* tookit things */
   const dispatch = useAppDispatch();
   // card Use & Targeting settings
@@ -80,7 +85,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // find my states
   const nowPlayer = useAppSelector((state) => state.game.game.nowPlayerId);
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
-
+  const timerCtrl = useAppSelector((state) => state?.game.game.timer);
   // settings for make buttons
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
@@ -140,6 +145,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
         cardId: selectedUseCard.cardId,
         targetPlayerId: selectedTarget,
       };
+      play();
       setClicked(true); // 중복클릭 방지
       sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
     }
@@ -150,6 +156,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     const data = {
       cardId: selectedUseCard.cardId,
     };
+    play();
     setClicked(true); // 중복클릭 방지
     sendStompMsgFunc(roomId, thisPlayer.playerId, "DISCARD", data);
   };
@@ -186,6 +193,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
         targetPlayerId: target,
         cardId: 0,
       };
+      play();
       sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
       setHealCnt(false);
       setDisableHeal(true);
@@ -195,7 +203,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // HEALER BTN(COMPONENT)
   const HealTargetBtns = playersList.map((value, index) => (
     <TurnHealBtn
-      key={index + 1}
+      key={index}
       onClick={(event: any) => sendHealMsgHandler(event, value)}
       value={value.playerId}
       disabled={clicked}
@@ -203,6 +211,10 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       onMouseOver={(event: any) => onMouseOverTargeting(event, value)}
       onMouseLeave={onMouseLeaveTargeting}
     >
+      {index === 0 && "E1"}
+      {index === 1 && "E2"}
+      {index === 2 && "AL"}
+      {index === 3 && "ME"}
       {value.username}
     </TurnHealBtn>
   ));
@@ -212,7 +224,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // TARGETING BTN(COMPONENT) :: SELECT
   const TargetBtns = playersList.map((value, index) => (
     <TargetBtn
-      key={value.playerId + 1}
+      key={value.playerId}
       onMouseOver={(event: any) => onMouseOverTargeting(event, value)}
       onMouseLeave={onMouseLeaveTargeting}
       onClick={(event: any) => cardUseHandler(event, value)}
@@ -230,7 +242,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
   // TARGETING BTN(COMPONENT) :: ME / ALLY / ENEMY
   const TargetNullBtns = ["ME", "ALLY", "ENEMY"].map((value, index: number) => (
     <TargetNullBtn
-      key={index + 2}
+      key={index}
       color={value}
       onClick={(event: any) => cardUseHandler(event, null)}
       disabled={clicked}
@@ -238,7 +250,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       {value}
     </TargetNullBtn>
   ));
-
+  console.log(healCnt);
   return (
     <>
       {useFail && (
@@ -257,16 +269,16 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
             <>
               {thisPlayer.cardsOnHand.map((value: Card) => (
                 <PlayerCards
-                  key={value.cardId + 3}
+                  key={value.cardId}
                   className={generateClassName(target, value.cardId, mouseIn)}
                   onMouseOver={(event: any) => onMouseOverCards(event, value)}
                   onMouseLeave={onMouseLeaveCards}
                   value={value}
                 >
-                  {value.cardName}
                   {nowPlayer === thisPlayer.playerId &&
                     value.target === "SELECT" &&
                     mouseIn &&
+                    timerCtrl === "action" &&
                     target === value.cardId && (
                       <>
                         <TargetBtnBox>{TargetBtns}</TargetBtnBox>
@@ -276,6 +288,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
                   {nowPlayer === thisPlayer.playerId &&
                     value.target === "ME" &&
                     mouseIn &&
+                    timerCtrl === "action" &&
                     target === value.cardId && (
                       <>
                         {TargetNullBtns[0]}
@@ -285,6 +298,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
                   {nowPlayer === thisPlayer.playerId &&
                     value.target === "ALLY" &&
                     mouseIn &&
+                    timerCtrl === "action" &&
                     target === value.cardId && (
                       <>
                         {TargetNullBtns[1]}
@@ -294,6 +308,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
                   {nowPlayer === thisPlayer.playerId &&
                     value.target === "ENEMY" &&
                     mouseIn &&
+                    timerCtrl === "action" &&
                     target === value.cardId && (
                       <>
                         {TargetNullBtns[2]}
@@ -304,9 +319,19 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
               ))}
             </>
           ) : (
-            <ActionFailText>
-              <span>shit... 침묵에 걸린 자는 턴을 넘길 수 밖에..</span>
-            </ActionFailText>
+            <>
+              {thisPlayer.cardsOnHand.map((value: Card) => (
+                <PlayerCards
+                  key={value.cardId}
+                  className={generateClassName(target, value.cardId, mouseIn)}
+                  onMouseOver={(event: any) => onMouseOverCards(event, value)}
+                  onMouseLeave={onMouseLeaveCards}
+                  value={value}
+                >
+                  <DisCardBrn onClick={discardHanlder}>버리기</DisCardBrn>
+                </PlayerCards>
+              ))}
+            </>
           )}
         </CardsArea>
         <div>
@@ -315,7 +340,9 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
             thisPlayer.mutedDuration <= 0 ? (
               <>
                 <TurnTap>
-                  {thisPlayer.playerId === nowPlayer && healCnt === true ? (
+                  {thisPlayer.playerId === nowPlayer &&
+                  healCnt === true &&
+                  timerCtrl === "action" ? (
                     <>
                       <span>힐 대상 선택</span>
                       <div className="turn__button--box">{HealTargetBtns}</div>
@@ -326,7 +353,7 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
                       <div className="turn__button--box">
                         {playersList.map((value) => (
                           <TurnBtn
-                            key={value.turnOrder + 5}
+                            key={value.turnOrder}
                             team={value.team === thisPlayer.team}
                           >
                             {value.turnOrder}

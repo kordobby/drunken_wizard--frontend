@@ -164,7 +164,7 @@ export const PlayerPointBox = styled.div`
 `;
 
 export const PlayerPointBar = styled.div<StatProps>`
-  font-size: 1.25vw;
+  font-size: 0.75vw;
   margin-bottom: 1.5625vw;
   .stat__full {
     width: 10.416vw;
@@ -379,7 +379,7 @@ export const MyStatBox = styled.div`
   height: 7.2916vw;
   box-sizing: border-box;
   padding-left: 2.704vw;
-  font-size: 1.875vw;
+  font-size: 1.575vw;
   font-family: "국립박물관문화재단클래식M";
   background-color: var(--white);
   border-top-right-radius: 1.48vw;

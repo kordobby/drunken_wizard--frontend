@@ -43,6 +43,7 @@ const LobbyChat = () => {
   const [userHistoryState, setUserHistoryState] = useState<any>();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
+  stompClient.debug = (f) => f;
   const queryClient = useQueryClient();
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
@@ -52,12 +53,10 @@ const LobbyChat = () => {
   // mutate
   const { mutate: userHistory } = useMutation(apis.userHistoryQR, {
     onSuccess: (data: any) => {
-      // console.log(data);
       setUserHistoryState(data.data);
-      console.log("전적 로드 성공했어!");
     },
     onError: (error: any) => {
-      console.log("전적 로드 실패", error);
+      console.log(error);
     },
   });
 
@@ -97,12 +96,10 @@ const LobbyChat = () => {
           id: accessId,
         },
         (data: any) => {
-          console.log(data);
           stompClient.subscribe(
             "/sub/public",
             (data: any) => {
               const response = JSON.parse(data.body);
-              console.log(data);
               setSemiMsgList(response);
               queryClient.invalidateQueries(["room_list"]);
               if (response.type === "JOIN") {
@@ -119,12 +116,10 @@ const LobbyChat = () => {
       console.log(error);
     }
   }, []);
-  console.log(userList);
   const socketUnsubscribe = () => {
     try {
       leaveMessage();
       stompClient.unsubscribe(`/sub/public`);
-      console.log("success to unsubscribe");
     } catch (error) {
       console.log(error);
     }
@@ -201,7 +196,6 @@ const LobbyChat = () => {
       <ChatBox>
         <ChatWrap ref={scrollRef}>
           {msgList?.map((msg: ChatType, idx: number) => {
-            console.log(msg?.imageNum);
             if (msg === undefined) {
               return null;
             }

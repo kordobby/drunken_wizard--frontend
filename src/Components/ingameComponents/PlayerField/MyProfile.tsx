@@ -181,7 +181,7 @@ const MyProfile = () => {
             {thisPlayer.weakDuration !== 0 && (
               <MyStatIcon>
                 <StatIcon
-                  stat={weakDurationFunc(thisPlayer.weakDuration)}
+                  stat="weakDuration"
                   size={4.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
@@ -208,7 +208,7 @@ const MyProfile = () => {
             {thisPlayer.damageModifierDuration !== 0 && (
               <MyStatIcon>
                 <StatIcon
-                  stat={damageModifierFunc(thisPlayer.damageModifierDuration)}
+                  stat={"damageModifierDuration"}
                   size={4.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
@@ -240,7 +240,7 @@ const MyProfile = () => {
               </MyStatIcon>
             )}
 
-            {thisPlayer.shield && (
+            {thisPlayer.shield === true && (
               <MyStatIcon>
                 <StatIcon
                   stat="shield"

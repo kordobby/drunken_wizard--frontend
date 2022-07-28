@@ -110,7 +110,6 @@ const SignUp = () => {
     onMutate: () => {},
     onSuccess: (res, e: any) => {
       setSignUpCheckId(res.data);
-      console.log(res);
       if (res.data) {
         setSignUpCheckModal(e);
       } else {
