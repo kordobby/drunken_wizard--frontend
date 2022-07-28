@@ -47,7 +47,6 @@ root.render(
         </BrowserRouter>
       </QueryClientProvider>
     </CookiesProvider>
-    //{" "}
   </React.Suspense>
 );
 
