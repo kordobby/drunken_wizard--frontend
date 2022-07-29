@@ -15,7 +15,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 /* Router settings */
 import { BrowserRouter } from "react-router-dom";
-
+import { HashRouter } from "react-router-dom";
 /* Cookies settings */
 import Loading from "./pages/Loading";
 
@@ -35,14 +35,14 @@ root.render(
   <React.Suspense fallback={<Loading />}>
     <QueryClientProvider client={queryClient}>
       {/* <ReactQueryDevtools initialIsOpen={true} /> */}
-      <BrowserRouter>
+      <HashRouter>
         <React.StrictMode>
           <GlobalStyled />
           <Provider store={store}>
             <App />
           </Provider>
         </React.StrictMode>
-      </BrowserRouter>
+      </HashRouter>
     </QueryClientProvider>
   </React.Suspense>
 );
