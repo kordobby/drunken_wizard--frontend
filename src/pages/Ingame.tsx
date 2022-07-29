@@ -507,23 +507,23 @@ const Ingame = () => {
   ) => {
     waitForConnection(stompClient, function () {
       // connect - subscribe - send
-      setTimeout(() => {
-        try {
-          stompClient.send(
-            `/pub/game/${roomId}`,
-            { token: accessToken },
-            JSON.stringify({
-              roomId: roomId,
-              sender: sender,
-              content: JSON.stringify(data),
-              type: msgType,
-            })
-          );
-        } catch (error) {
-          // console.log(error);
-          setConnectModal(true);
-        }
-      }, 1000);
+      // setTimeout(() => {
+      try {
+        stompClient.send(
+          `/pub/game/${roomId}`,
+          { token: accessToken },
+          JSON.stringify({
+            roomId: roomId,
+            sender: sender,
+            content: JSON.stringify(data),
+            type: msgType,
+          })
+        );
+      } catch (error) {
+        // console.log(error);
+        setConnectModal(true);
+      }
+      // }, 1000);
     });
   };
 
