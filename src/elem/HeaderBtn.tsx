@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { HeaderBtnProps } from "../typings/typedb";
-import icon from "../images/icons/OutIcon.png";
+import icon from "../images/icons/OutIcon.webp";
 import flex from "../Components/GlobalStyled/flex";
 const HeaderBtn = ({ text, clickFunc }: HeaderBtnProps) => {
   return (

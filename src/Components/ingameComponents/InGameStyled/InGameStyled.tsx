@@ -2,8 +2,8 @@ import styled, { keyframes } from "styled-components";
 import flex from "../../GlobalStyled/flex";
 
 import table from "../../../images/playerfield/table.png";
-import BeerIcon from "../../../images/icons/BeerIcon.png";
-import lobbyBack from "../../../images/background/lobbybackground.png";
+import BeerIcon from "../../../images/icons/BeerIcon.webp";
+import lobbyBack from "../../../images/background/lobbybackground.webp";
 import matchFlagImg from "./TurnFlag";
 import matchClassImg from "./MatchClass";
 import matchProfileImg from "./MatchProfile";

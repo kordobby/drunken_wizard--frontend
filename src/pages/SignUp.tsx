@@ -11,7 +11,7 @@ import { useFocus } from "../hooks/useFocus";
 import { useModal } from "../hooks/useModal";
 
 // apis
-import apis from "../shared/api/apis";
+import apis from "../Shared/api/apis";
 // css
 import {
   BackWrap,
@@ -216,7 +216,7 @@ const SignUp = () => {
           />
         )}
         <FormWrapSt>
-          <LogLogo top={5.208} bottom={2.604} />
+          <LogLogo top={10.208} bottom={2.604} />
           <form>
             <label id="user-id-label">
               <InputBoxId>

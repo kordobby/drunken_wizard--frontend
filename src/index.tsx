@@ -15,9 +15,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 /* Router settings */
 import { BrowserRouter } from "react-router-dom";
-
+import { HashRouter } from "react-router-dom";
 /* Cookies settings */
-import { CookiesProvider } from "react-cookie";
 import Loading from "./pages/Loading";
 
 const queryClient = new QueryClient({
@@ -34,19 +33,17 @@ const root = createRoot(rootElement as Element);
 
 root.render(
   <React.Suspense fallback={<Loading />}>
-    <CookiesProvider>
-      <QueryClientProvider client={queryClient}>
-        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
-        <BrowserRouter>
-          <React.StrictMode>
-            <GlobalStyled />
-            <Provider store={store}>
-              <App />
-            </Provider>
-          </React.StrictMode>
-        </BrowserRouter>
-      </QueryClientProvider>
-    </CookiesProvider>
+    <QueryClientProvider client={queryClient}>
+      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      <BrowserRouter>
+        <React.StrictMode>
+          <GlobalStyled />
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </React.StrictMode>
+      </BrowserRouter>
+    </QueryClientProvider>
   </React.Suspense>
 );
 

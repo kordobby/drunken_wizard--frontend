@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
-import { Helmet } from "react-helmet";
 // hooks
-import { deleteCookie } from "../shared/Cookies";
+import { deleteCookie } from "../Shared/Cookies";
 import { useModal } from "../hooks/useModal";
 // components
 import CreateRoom from "../Components/LobbyComponents/CreateRoom";
@@ -40,9 +39,6 @@ const Lobby = () => {
 
   return (
     <WrapBack>
-      <Helmet>
-        <title>Welcome! Drunken Wizard</title>
-      </Helmet>
       {logoutModal && (
         <ModalBack
           onClick={(e: any) => {

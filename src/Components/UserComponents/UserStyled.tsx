@@ -1,8 +1,8 @@
 import styled, { keyframes } from "styled-components";
 import flex from "../GlobalStyled/flex";
 import logoImg from "../../images/logo/logo.png";
-import bubble from "../../images/imgs/bubble.png";
-import introBg from "../../images/background/introBackground.png";
+import bubble from "../../images/imgs/bubble.webp";
+import introBg from "../../images/background/introBackground.webp";
 import LeftBeer from "../../images/splash/leftBeer.png";
 import RightBeer from "../../images/splash/rightBeer.png";
 import beerBg from "../../images/splash/beer_bg.png";

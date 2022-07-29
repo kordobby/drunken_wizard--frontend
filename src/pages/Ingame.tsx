@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 /* Hooks */
 import { useAppSelector, useAppDispatch } from "../hooks/tsHooks";
-import { Helmet } from "react-helmet";
+
 /* Modules */
 import {
   setRoomTitleTK,
@@ -27,27 +27,28 @@ import {
 } from "../redux/modules/ingameSlice";
 
 /* Cookies */
-import { getCookie } from "../shared/Cookies";
+import { getCookie } from "../Shared/Cookies";
 
 /* Components */
-import PlayerField from "../Components/IngameComponents/PlayerField/PlayerField";
-import DrawModal from "../Components/IngameComponents/Modals/DrawModal";
-import NoticeField from "../Components/IngameComponents/NoticeField/NoticeField";
-import StartModal from "../Components/IngameComponents/Modals/StartModal";
-import PlayerIcons from "../Components/IngameComponents/MainField/PlayerIcons";
-import CraveField from "../Components/IngameComponents/MainField/CraveField";
-import PlayerStatus from "../Components/IngameComponents/MainField/PlayerStatus";
+import PlayerField from "../Components/ingameComponents/PlayerField/PlayerField";
+import DrawModal from "../Components/ingameComponents/Modals/DrawModal";
+import NoticeField from "../Components/ingameComponents/NoticeField/NoticeField";
+import StartModal from "../Components/ingameComponents/Modals/StartModal";
+import PlayerIcons from "../Components/ingameComponents/MainField/PlayerIcons";
+import CraveField from "../Components/ingameComponents/MainField/CraveField";
+import PlayerStatus from "../Components/ingameComponents/MainField/PlayerStatus";
 import TwoBtnModal from "../elem/TwoBtnModal";
-import OverModal from "../Components/IngameComponents/Modals/OverModal";
-import PlayBtn from "../Components/Common/PlayBtn";
+import OverModal from "../Components/ingameComponents/Modals/OverModal";
+import Header from "../Components/HeaderComponents/Header";
+
 /* CSS & SC */
 import {
   StGameWrap,
   MainWrap,
   StGameWrapFilter,
-} from "../Components/IngameComponents/InGameStyled/InGameStyled";
+} from "../Components/ingameComponents/InGameStyled/InGameStyled";
 import { playersSetting } from "../typings/typedb";
-import AlertPopUp from "../Components/IngameComponents/InGameCommon/AlertPopUp";
+import AlertPopUp from "../Components/ingameComponents/InGameCommon/AlertPopUp";
 import useSound from "use-sound";
 import turn from "../sounds/turn.mp3";
 
@@ -322,7 +323,6 @@ const Ingame = () => {
                 // 여기서 win/lose Modal
                 setOverTeam(msgData.winningTeam);
                 setStatus("ENDGAME");
-                alert("게임 끝! 이거는 나중에 만들게요!");
                 break;
               default:
                 break;
@@ -392,16 +392,17 @@ const Ingame = () => {
           (value: playersSetting) =>
             value.playerId === playersData.PlayerC.playerId
         );
-        if (nowPlayerId === playersData.thisPlayer.playerId) {
-          if (PlayerA[0] !== undefined) {
-            dispatch(setPlayerATK(PlayerA[0]));
-          }
-          if (PlayerB[0] !== undefined) {
-            dispatch(setPlayerBTK(PlayerB[0]));
-          }
-          if (PlayerC[0] !== undefined) {
-            dispatch(setPlayerCTK(PlayerC[0]));
-          }
+        if (PlayerA[0] !== undefined) {
+          dispatch(setPlayerATK(PlayerA[0]));
+          setTargetText(PlayerA[0].username);
+        }
+        if (PlayerB[0] !== undefined) {
+          dispatch(setPlayerBTK(PlayerB[0]));
+          setTargetText(PlayerB[0].username);
+        }
+        if (PlayerC[0] !== undefined) {
+          dispatch(setPlayerCTK(PlayerC[0]));
+          setTargetText(PlayerC[0].username);
         }
         switch (craveCard.target) {
           case "SELECT":
@@ -454,11 +455,12 @@ const Ingame = () => {
           default:
             break;
         }
+        setStatus("WAITING");
         break;
       case "DISCARD":
         if (nowPlayerId !== playersData.thisPlayer.playerId) {
           updatePlayersFunc();
-          setStatus("ACTION");
+          setStatus("WAITING");
         }
         break;
       case "CHANGETURN":
@@ -586,23 +588,10 @@ const Ingame = () => {
     navigate("/lobby");
   };
 
+  const [roomOutModal, setRoomOutModal] = useState<boolean>(false);
   return (
     <>
-      <Helmet>
-        <title>Fight! Drunken Wizard</title>
-      </Helmet>
       {/* <PlayBtn></PlayBtn> */}
-      {connectModal && (
-        <TwoBtnModal
-          titleText="서버 연결 오류!"
-          upperText="원활한 게임 진행을 위해"
-          lowerText="서버 재접속을 진행하시겠습니까?"
-          confirmText="확인"
-          cancelText="취소"
-          confirmFunc={() => socketSubscribe()} // 함수는 사용할 함수를 보내주세요.
-          cancelFunc={() => leaveRoomFunc()} // 모달 창 닫을 useState 함수 보내주세요.
-        />
-      )}
       {startModal && (
         <AlertPopUp
           upperText="게임 시작!"
@@ -673,35 +662,43 @@ const Ingame = () => {
         <OverModal status={status} clickFunc={leaveRoomFunc}></OverModal>
       )}
 
+      {roomOutModal && (
+        <TwoBtnModal
+          confirmText={"확인"}
+          cancelText={"취소"}
+          titleText={"정말 방에서 나가시겠습니까?"}
+          upperText={"로비 화면으로 돌아갑니다."}
+          lowerText={"게임 도중 퇴장 시에는 패배로 기록됩니다."}
+          confirmFunc={leaveRoomFunc}
+          cancelFunc={() => setRoomOutModal(false)}
+        />
+      )}
+
       {status === "" ? (
         <StartModal setStatus={setStatus}></StartModal>
       ) : (
-        <StGameWrap>
-          <NoticeField></NoticeField>
-          <StGameWrapFilter>
-            {/* {status === "" ? (
-            <StartModal setStatus={setStatus}></StartModal>
-          ) : (
-            <> */}
-            <MainWrap>
-              <PlayerStatus></PlayerStatus>
-              <PlayerIcons status={status}></PlayerIcons>
-              <CraveField
+        <>
+          <NoticeField setRoomOutModal={setRoomOutModal}></NoticeField>
+          <StGameWrap>
+            <StGameWrapFilter>
+              <MainWrap>
+                <PlayerStatus></PlayerStatus>
+                <PlayerIcons status={status}></PlayerIcons>
+                <CraveField
+                  status={status}
+                  sendStompMsgFunc={sendStompMsgFunc}
+                ></CraveField>
+              </MainWrap>
+              <PlayerField
                 status={status}
                 sendStompMsgFunc={sendStompMsgFunc}
-              ></CraveField>
-            </MainWrap>
-            <PlayerField
-              status={status}
-              sendStompMsgFunc={sendStompMsgFunc}
-            ></PlayerField>
-            {drawModalOpen && (
-              <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
-            )}{" "}
-            {/* </>
-          )} */}
-          </StGameWrapFilter>
-        </StGameWrap>
+              ></PlayerField>
+              {drawModalOpen && (
+                <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
+              )}
+            </StGameWrapFilter>
+          </StGameWrap>
+        </>
       )}
     </>
   );

@@ -14,7 +14,7 @@ import {
 } from "../InGameStyled/InGameStyled";
 
 import { HeaderProps } from "../../../typings/typedb";
-
+import AudioBtn from "../../Common/AudioBtn";
 const PlayerIcons = ({ status }: HeaderProps) => {
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
@@ -25,6 +25,7 @@ const PlayerIcons = ({ status }: HeaderProps) => {
   return (
     <>
       <PlayerIconsFields>
+        {/* <AudioBtn></AudioBtn> */}
         {/* ME */}
         <TeamPosition layer={5} top={0.5208} left={2.604}>
           <PlayerIcon

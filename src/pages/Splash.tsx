@@ -14,8 +14,8 @@ import { useEffect } from "react";
 import { toggleFullScreen } from "../hooks/fullScreen";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
 import PlayBtn from "../Components/Common/PlayBtn";
-import { Helmet } from "react-helmet";
-
+// import { Helmet } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 const Splash = () => {
   const [clicked, setClicked] = useState<boolean>(false);
   const [toggle, setToggle] = useState<boolean>(false);
@@ -37,9 +37,11 @@ const Splash = () => {
   };
   return (
     <>
-      <Helmet>
-        <title>Welcome! Drunken Wizard</title>
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <title>Welcome! Drunken Wizard</title>
+        </Helmet>
+      </HelmetProvider>
       <BackWrap>
         {toggle ? (
           <>

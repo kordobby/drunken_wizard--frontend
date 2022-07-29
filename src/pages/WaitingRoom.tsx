@@ -8,10 +8,9 @@ import { useModal } from "../hooks/useModal";
 import stompJS from "stompjs";
 import sockJS from "sockjs-client";
 // cookies
-import { getCookie } from "../shared/Cookies";
+import { getCookie } from "../Shared/Cookies";
 // apis
-import apis from "../shared/api/apis";
-import { Helmet } from "react-helmet";
+import apis from "../Shared/api/apis";
 // css
 import {
   Header,
@@ -63,19 +62,6 @@ const WaitingRoom = () => {
       // console.log(error);
     },
   });
-  // // 새로고침 막기
-  // const doNotReload = (event) => {
-  //   if (
-  //     (event.ctrlKey === true &&
-  //       (event.keyCode === 78 || event.keyCode === 82)) ||
-  //     event.keyCode === 116
-  //   ) {
-  //     return window.confirm('새로고침하면 게임이 정상작동하지 않아요:(');
-  //   }
-  // };
-  // useEffect(() => {
-  //   document.onkeydown = doNotReload;
-  // });
 
   // leaveHandler
   const leaveHandler = useCallback(() => {
@@ -203,9 +189,6 @@ const WaitingRoom = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Welcome! Drunken Wizard</title>
-      </Helmet>
       {roomOutModal && (
         <TwoBtnModal
           confirmText={"확인"}
@@ -217,10 +200,6 @@ const WaitingRoom = () => {
           cancelFunc={setRoomOutModal}
         />
       )}
-      <Header>
-        <HeaderBtn clickFunc={setRoomOutModal} text={"방나가기"} />
-        <HeaderRoomTitle text={`${waitingUsers?.roomName}`} />
-      </Header>
       <WaitingWrap>
         {waitingUsers && (
           <TeamWrap>

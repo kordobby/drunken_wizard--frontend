@@ -3,10 +3,13 @@ import { useNavigate } from "react-router-dom";
 /* Interface */
 import { useAppSelector } from "../../../hooks/tsHooks";
 /* CSS & SC */
-import { HeaderWrap } from "../InGameStyled/InGameStyled";
+import { Header } from "../../waitingRoomCP/WaitingRoomStyled";
 import HeaderBtn from "../../../elem/HeaderBtn";
 import HeaderRoomTitle from "../../Common/RoomTitle";
-const NoticeField = () => {
+import { NoticeProps } from "../../../typings/typedb";
+
+import AudioBtn from "../../Common/AudioBtn";
+const NoticeField = ({ setRoomOutModal }: NoticeProps) => {
   const roomTitle = useAppSelector((state) => state.game.game.roomTitle);
 
   // send StompMsg for leaveRoom
@@ -18,10 +21,11 @@ const NoticeField = () => {
 
   return (
     <>
-      <HeaderWrap>
-        <HeaderBtn text="방 나가기" clickFunc={leaveRoomHandler} />
+      <Header>
+        <HeaderBtn text="방 나가기" clickFunc={() => setRoomOutModal(true)} />
         <HeaderRoomTitle text={roomTitle} />
-      </HeaderWrap>
+        {/* <AudioBtn></AudioBtn> */}
+      </Header>
     </>
   );
 };
