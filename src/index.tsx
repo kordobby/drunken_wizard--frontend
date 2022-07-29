@@ -35,14 +35,14 @@ root.render(
   <React.Suspense fallback={<Loading />}>
     <QueryClientProvider client={queryClient}>
       {/* <ReactQueryDevtools initialIsOpen={true} /> */}
-      <HashRouter>
+      <BrowserRouter>
         <React.StrictMode>
           <GlobalStyled />
           <Provider store={store}>
             <App />
           </Provider>
         </React.StrictMode>
-      </HashRouter>
+      </BrowserRouter>
     </QueryClientProvider>
   </React.Suspense>
 );
