@@ -3,12 +3,12 @@ import flex from "../GlobalStyled/flex";
 // images
 import waitingBack from "../../images/background/lobbybackground.webp";
 import header from "../../images/imgs/header.webp";
-import vs2 from "../../images/waiting/vs2.png";
-import swit from "../../images/waiting/swit.png";
-import xUser from "../../images/waiting/XUser.png";
-import xUser2 from "../../images/waiting/XUser2.png";
-import oUser from "../../images/waiting/OUser.png";
-import oUser2 from "../../images/waiting/OUser2.png";
+import vs2 from "../../images/waiting/vs2.webp";
+import swit from "../../images/waiting/swit.webp";
+import xUser from "../../images/waiting/XUser.webp";
+import xUser2 from "../../images/waiting/XUser2.webp";
+import oUser from "../../images/waiting/OUser.webp";
+import oUser2 from "../../images/waiting/OUser2.webp";
 
 import { TeamProps } from "../../typings/typedb";
 

@@ -1,12 +1,12 @@
 import styled, { keyframes } from "styled-components";
 import flex from "../GlobalStyled/flex";
-import logoImg from "../../images/logo/logo.png";
+import logoImg from "../../images/logo/logo.webp";
 import bubble from "../../images/imgs/bubble.webp";
 import introBg from "../../images/background/introBackground.webp";
-import LeftBeer from "../../images/splash/leftBeer.png";
-import RightBeer from "../../images/splash/rightBeer.png";
-import beerBg from "../../images/splash/beer_bg.png";
-import shadow from "../../images/splash/shadow.png";
+import LeftBeer from "../../images/splash/leftBeer.webp";
+import RightBeer from "../../images/splash/rightBeer.webp";
+import beerBg from "../../images/splash/beer_bg.webp";
+import shadow from "../../images/splash/shadow.webp";
 import { LogoProps, DupCheckProps } from "../../typings/typedb";
 
 export const BackWrap = styled.div`

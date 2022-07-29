@@ -20,7 +20,7 @@ import Rule from "./Components/RuleComponents/Rule";
 import { ResizeBtn, RuleBtn } from "./Components/UserComponents/UserStyled";
 // image
 import resize from "./images/imgs/Resize.webp";
-import ruleBook from "./images/rules/ruleBook.png";
+import ruleBook from "./images/rules/ruleBook.webp";
 import Splash from "./pages/Splash";
 function App() {
   const [loading, setLoding] = useState<boolean>(true);

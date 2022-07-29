@@ -5,20 +5,20 @@ import useSound from "use-sound";
 // interface
 import { ModalType } from "../../typings/db";
 // svgs
-import rule1 from "../../images/rules/rule1.png";
-import rule2 from "../../images/rules/rule2.png";
-import rule3 from "../../images/rules/rule3.png";
-import rule4 from "../../images/rules/rule4.png";
-import rule5 from "../../images/rules/rule5.png";
-import rule6 from "../../images/rules/rule6.png";
-import rule7 from "../../images/rules/rule7.png";
-import rule8 from "../../images/rules/rule8.png";
-import rule9 from "../../images/rules/rule9.png";
-import rule10 from "../../images/rules/rule10.png";
-import rule11 from "../../images/rules/rule11.png";
-import rule12 from "../../images/rules/rule12.png";
-import bookMark from "../../images/rules/bookMark.png";
-import bookCase from "../../images/rules/bookCase.png";
+import rule1 from "../../images/rules/rule1.webp";
+import rule2 from "../../images/rules/rule2.webp";
+import rule3 from "../../images/rules/rule3.webp";
+import rule4 from "../../images/rules/rule4.webp";
+import rule5 from "../../images/rules/rule5.webp";
+import rule6 from "../../images/rules/rule6.webp";
+import rule7 from "../../images/rules/rule7.webp";
+import rule8 from "../../images/rules/rule8.webp";
+import rule9 from "../../images/rules/rule9.webp";
+import rule10 from "../../images/rules/rule10.webp";
+import rule11 from "../../images/rules/rule11.webp";
+import rule12 from "../../images/rules/rule12.webp";
+import bookMark from "../../images/rules/bookMark.webp";
+import bookCase from "../../images/rules/bookCase.webp";
 // sounds
 import pageflip from "../../sounds/pageflip.mp3";
 

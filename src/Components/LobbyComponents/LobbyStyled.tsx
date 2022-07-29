@@ -3,14 +3,14 @@ import { ImgNumType, JoinRoomType, ModalDivProps } from "../../typings/db";
 // css
 import flex from "../GlobalStyled/flex";
 // img
-import chatIcon from "../../images/lobby/chat.png";
+import chatIcon from "../../images/lobby/chat.webp";
 import header from "../../images/imgs/header.webp";
 import vs from "../../images/imgs/vs.webp";
-import x from "../../images/lobby/x.png";
-import team1 from "../../images/lobby/team1.png";
-import team2 from "../../images/lobby/team2.png";
-import teamX1 from "../../images/lobby/teamX1.png";
-import teamX2 from "../../images/lobby/teamX2.png";
+import x from "../../images/lobby/x.webp";
+import team1 from "../../images/lobby/team1.webp";
+import team2 from "../../images/lobby/team2.webp";
+import teamX1 from "../../images/lobby/teamX1.webp";
+import teamX2 from "../../images/lobby/teamX2.webp";
 import lobbyBack from "../../images/background/lobbybackground.webp";
 import { pageProps, TeamProps } from "../../typings/typedb";
 import matchProfileImg from "./Team";

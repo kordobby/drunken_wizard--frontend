@@ -1,9 +1,9 @@
-import profile0 from "../../images/lobby/profile0.png";
-import profile1 from "../../images/lobby/profile1.png";
-import profile2 from "../../images/lobby/profile2.png";
-import profile3 from "../../images/lobby/profile3.png";
-import profile4 from "../../images/lobby/profile4.png";
-import profile5 from "../../images/lobby/profile5.png";
+import profile0 from "../../images/lobby/profile0.webp";
+import profile1 from "../../images/lobby/profile1.webp";
+import profile2 from "../../images/lobby/profile2.webp";
+import profile3 from "../../images/lobby/profile3.webp";
+import profile4 from "../../images/lobby/profile4.webp";
+import profile5 from "../../images/lobby/profile5.webp";
 
 export default function matchProfileImg(data: number) {
   switch (data) {
