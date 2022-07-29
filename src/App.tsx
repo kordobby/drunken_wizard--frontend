@@ -19,11 +19,9 @@ import Rule from "./Components/RuleComponents/Rule";
 // css
 import { ResizeBtn, RuleBtn } from "./Components/UserComponents/UserStyled";
 // image
-import resize from "./images/imgs/Resize.png";
+import resize from "./images/imgs/Resize.webp";
 import ruleBook from "./images/rules/ruleBook.png";
 import Splash from "./pages/Splash";
-import LoadingLobby from "./pages/LoadingLobby";
-
 function App() {
   const [loading, setLoding] = useState<boolean>(true);
   const [loginState, setLoginState] = useState(false);

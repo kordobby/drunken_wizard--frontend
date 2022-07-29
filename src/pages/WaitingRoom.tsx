@@ -11,7 +11,6 @@ import sockJS from "sockjs-client";
 import { getCookie } from "../Shared/Cookies";
 // apis
 import apis from "../Shared/api/apis";
-import { Helmet } from "react-helmet";
 // css
 import {
   Header,
@@ -203,9 +202,6 @@ const WaitingRoom = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Welcome! Drunken Wizard</title>
-      </Helmet>
       {roomOutModal && (
         <TwoBtnModal
           confirmText={"확인"}
@@ -217,10 +213,6 @@ const WaitingRoom = () => {
           cancelFunc={setRoomOutModal}
         />
       )}
-      <Header>
-        <HeaderBtn clickFunc={setRoomOutModal} text={"방나가기"} />
-        <HeaderRoomTitle text={`${waitingUsers?.roomName}`} />
-      </Header>
       <WaitingWrap>
         {waitingUsers && (
           <TeamWrap>

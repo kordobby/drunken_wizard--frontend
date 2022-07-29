@@ -216,7 +216,7 @@ const SignUp = () => {
           />
         )}
         <FormWrapSt>
-          <LogLogo top={5.208} bottom={2.604} />
+          <LogLogo top={10.208} bottom={2.604} />
           <form>
             <label id="user-id-label">
               <InputBoxId>

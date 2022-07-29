@@ -117,7 +117,7 @@ const initialState: ingameState = {
     order: [],
     gamOver: false, // 필요없을지도!
     nowPlayer: "",
-    nowPlayerId: 0,
+    nowPlayerId: 85241,
     cardCrave: [],
     targetPlayer: 0,
     selectForUseCard: {

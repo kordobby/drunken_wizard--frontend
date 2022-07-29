@@ -8,6 +8,10 @@ export interface HeaderTitleProps {
   text: string;
 }
 
+export interface NoticeProps {
+  setRoomOutModal: Dispatch<SetStateAction<boolean>>;
+}
+
 export interface OneBtnModalProps {
   headerText: string;
   upperText: string;

@@ -1,11 +1,11 @@
 import styled, { css } from "styled-components";
 import flex from "../GlobalStyled/flex";
 import { BtnProps, BtnSettings } from "../../typings/typedb";
-import kakaoBtn from "../../images/buttons/BTN_kakao.png";
-import activeMBtn from "../../images/buttons/BTN_activeM.png";
-import inactiveMBtn from "../../images/buttons/BTN_inactiveM.png";
-import BtnActive from "../../images/buttons/BTN_active.png";
-import BtnInActive from "../../images/buttons/BTN_inActive.png";
+import kakaoBtn from "../../images/buttons/BTN_kakao.webp";
+import activeMBtn from "../../images/buttons/BTN_activeM.webp";
+import inactiveMBtn from "../../images/buttons/BTN_inactiveM.webp";
+import BtnActive from "../../images/buttons/BTN_active.webp";
+import BtnInActive from "../../images/buttons/BTN_inActive.webp";
 //
 export const StWrap = styled.div`
   width: 100vmax;

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import flex from "../GlobalStyled/flex";
 // images
-import waitingBack from "../../images/background/lobbybackground.png";
-import header from "../../images/imgs/header.png";
+import waitingBack from "../../images/background/lobbybackground.webp";
+import header from "../../images/imgs/header.webp";
 import vs2 from "../../images/waiting/vs2.png";
 import swit from "../../images/waiting/swit.png";
 import xUser from "../../images/waiting/XUser.png";

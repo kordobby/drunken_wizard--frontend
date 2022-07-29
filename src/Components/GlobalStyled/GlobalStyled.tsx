@@ -1,10 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 import "../GlobalStyled/GlobalStyled.module.css";
-
-import { reset } from "styled-reset";
+import normalize from "styled-normalize";
 
 const GlobalStyle = createGlobalStyle`
-  ${reset} // normalize
+  ${normalize} 
   * {
     margin: 0;
     padding: 0;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import loading from "../images/splash/loadingFront.png";
-import background from "../images/background/IngameBackground.png";
+import background from "../images/background/IngameBackground.webp";
 import beerBg from "../images/splash/beer_bg.png";
 import { keyframes } from "styled-components";
 
