@@ -523,7 +523,7 @@ const Ingame = () => {
           // console.log(error);
           setConnectModal(true);
         }
-      }, 300);
+      }, 500);
     });
   };
 
