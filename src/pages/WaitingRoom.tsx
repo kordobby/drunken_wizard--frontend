@@ -62,19 +62,6 @@ const WaitingRoom = () => {
       // console.log(error);
     },
   });
-  // // 새로고침 막기
-  // const doNotReload = (event) => {
-  //   if (
-  //     (event.ctrlKey === true &&
-  //       (event.keyCode === 78 || event.keyCode === 82)) ||
-  //     event.keyCode === 116
-  //   ) {
-  //     return window.confirm('새로고침하면 게임이 정상작동하지 않아요:(');
-  //   }
-  // };
-  // useEffect(() => {
-  //   document.onkeydown = doNotReload;
-  // });
 
   // leaveHandler
   const leaveHandler = useCallback(() => {

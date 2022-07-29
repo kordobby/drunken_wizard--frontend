@@ -7,7 +7,6 @@ import { getCookie, setCookie } from "../Shared/Cookies";
 import { loginStateProps } from "../typings/db";
 // apis
 import apis from "../Shared/api/apis";
-import LoadingLobby from "./LoadingLobby";
 import { BackWrap, LogLogo } from "../Components/UserComponents/UserStyled";
 
 const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
