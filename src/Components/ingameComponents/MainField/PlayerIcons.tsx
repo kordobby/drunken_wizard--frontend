@@ -25,7 +25,7 @@ const PlayerIcons = ({ status }: HeaderProps) => {
   return (
     <>
       <PlayerIconsFields>
-        <AudioBtn></AudioBtn>
+        {/* <AudioBtn></AudioBtn> */}
         {/* ME */}
         <TeamPosition layer={5} top={0.5208} left={2.604}>
           <PlayerIcon

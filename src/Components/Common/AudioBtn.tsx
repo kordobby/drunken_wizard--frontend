@@ -1,42 +1,78 @@
+import { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import playBtn from "../../images/icons/playBtn.webp";
 import bgm from "../../sounds/bgm.mp3";
-
+import ReactAudioPlayer from "react-audio-player";
 const AudioBtn = () => {
+  const [isPlaying, setIsPlaying] = useState();
+
   return (
-    <Audio controls loop>
-      <source src={bgm} type="audio/mp3"></source>
-    </Audio>
+    <>
+      {/* <ReactAudioPlayer
+        src={bgm}
+        autoPlay
+        controls
+        loop
+        style={{
+          position: "absolute",
+          top: "1.85vw",
+          right: "13.5vw",
+          opacity: "0.5",
+          width: "12.8vw",
+          display: "flex",
+        }}
+      ></ReactAudioPlayer> */}
+      <AudioWrap>
+        <div className="audio">
+          <AudioBack>
+            <Audio controls loop>
+              <button>dddddd</button>
+              <source src={bgm} type="audio/mp3"></source>
+            </Audio>
+          </AudioBack>
+        </div>
+      </AudioWrap>
+    </>
   );
 };
+
+const AudioWrap = styled.div`
+  position: absolute;
+  top: 0.5vh;
+  right: 0.5vw;
+`;
+
+const AudioBack = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 4.8vw;
+  background-color: var(--grey);
+  position: relative;
+`;
 
 const Audio = styled.audio`
   z-index: 1000;
   color: white;
   position: absolute;
-  top: 1vw;
-  left: -4.5vw;
+  top: -6px;
+  right: -105px;
   opacity: 0.7;
   padding: 0;
   position: absolute;
-  &::-webkit-media-controls-volume-slider-container,
-  &::-webkit-media-controls-volume-slider,
   &::-webkit-media-controls-panel,
-  &::-webkit-media-controls-mute-button,
   &::-webkit-media-controls-play-button {
-    color: white;
-  }
-  &::-webkit-media-controls-enclosure {
     /* display: none; */
-    /* border: none; */
-    width: 8.8vw;
+  }
+&::-webkit-media-controls-enclosure {
+  width: 50px;
     display: flex;
     justify-content: flex-start;
     padding: 0 0.5vw;
     box-sizing: border-box;
-    background-color: var(--brown-3);
-  }
-
+    background: none;
+  } 
+  &::-webkit-media-controls-mute-button,
+  &::-webkit-media-controls-volume-slider-container,
+  &::-webkit-media-controls-volume-slider,
   &::-webkit-media-controls-timeline-container,
   &::-webkit-media-controls-current-time-display,
   &::-webkit-media-controls-time-remaining-display,
@@ -48,7 +84,7 @@ const Audio = styled.audio`
   &::-webkit-media-controls-return-to-realtime-button,
   &::-webkit-media-controls-toggle-closed-captions-button {
     display: none;
-  }
+  } */
 `;
 
 export default AudioBtn;

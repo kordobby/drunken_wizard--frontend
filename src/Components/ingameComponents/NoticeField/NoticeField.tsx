@@ -7,6 +7,8 @@ import { Header } from "../../waitingRoomCP/WaitingRoomStyled";
 import HeaderBtn from "../../../elem/HeaderBtn";
 import HeaderRoomTitle from "../../Common/RoomTitle";
 import { NoticeProps } from "../../../typings/typedb";
+
+import AudioBtn from "../../Common/AudioBtn";
 const NoticeField = ({ setRoomOutModal }: NoticeProps) => {
   const roomTitle = useAppSelector((state) => state.game.game.roomTitle);
 
@@ -22,6 +24,7 @@ const NoticeField = ({ setRoomOutModal }: NoticeProps) => {
       <Header>
         <HeaderBtn text="방 나가기" clickFunc={() => setRoomOutModal(true)} />
         <HeaderRoomTitle text={roomTitle} />
+        {/* <AudioBtn></AudioBtn> */}
       </Header>
     </>
   );

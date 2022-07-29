@@ -7,6 +7,8 @@ import { useParams } from "react-router-dom";
 /* CSS & SC */
 import { CraveWrap, CraveCards, Crave } from "../InGameStyled/InGameStyled";
 import { DefaultBtnL } from "../../Common/CommonStyle";
+import AudioBtn from "../../Common/AudioBtn";
+
 const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
   const actionTimer = useAppSelector((state) => state.game.game.status);
   const craveCards = useAppSelector((state) => state.game.game.cardCrave);
@@ -28,6 +30,7 @@ const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
   return (
     <>
       <CraveWrap>
+        <AudioBtn></AudioBtn>
         <Crave></Crave>
         {CardsSet.map((value) => (
           <CraveCards value={value} />
