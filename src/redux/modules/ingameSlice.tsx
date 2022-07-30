@@ -41,7 +41,7 @@ const initialState: ingameState = {
       mutedDuration: 0,
       petrifiedDuration: 0,
       poisonedDuration: 0,
-      shield: false,
+      shield: true,
       sleepDuration: 0,
       stunnedDuration: 0,
       team: true,
@@ -81,7 +81,7 @@ const initialState: ingameState = {
       mutedDuration: 0,
       petrifiedDuration: 0,
       poisonedDuration: 0,
-      shield: false,
+      shield: true,
       sleepDuration: 0,
       stunnedDuration: 0,
       team: true,
@@ -117,7 +117,7 @@ const initialState: ingameState = {
     order: [],
     gamOver: false, // 필요없을지도!
     nowPlayer: "",
-    nowPlayerId: 85241,
+    nowPlayerId: 78945612,
     cardCrave: [],
     targetPlayer: 0,
     selectForUseCard: {

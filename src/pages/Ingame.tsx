@@ -108,7 +108,7 @@ const Ingame = () => {
   /* socket connect - token */
   const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
-  stompClient.debug = (f) => f;
+  // stompClient.debug = (f) => f;
   const accessToken = getCookie("token");
   const { roomId } = useParams();
   const myId = Number(getCookie("id"));

@@ -184,14 +184,16 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     event: React.MouseEvent<HTMLButtonElement>,
     value: playersSetting
   ) => {
+    console.log(value);
     if (value.dead === true) {
       setUseFail(true);
       return;
     } else {
       const data = {
-        targetPlayerId: target,
+        targetPlayerId: value.playerId,
         cardId: 0,
       };
+      console.log(data);
       play();
       sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
       setHealCnt(false);
