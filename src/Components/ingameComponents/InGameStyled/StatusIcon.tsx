@@ -1,11 +1,11 @@
-import shield from "../../../images/statIcon/S1.png";
-import sleepDuration from "../../../images/statIcon/S2.png";
-import stunnedDuration from "../../../images/statIcon/S3.png";
-import muteDuration from "../../../images/statIcon/S4.png";
-import poisonedDuration from "../../../images/statIcon/S5.png";
-import weakDuration from "../../../images/statIcon/S6.png";
-import petrifiedDuration from "../../../images/statIcon/S7.png";
-import damageModifierDuration from "../../../images/statIcon/S8.png";
+import shield from "../../../images/statIcon/S1.webp";
+import sleepDuration from "../../../images/statIcon/S2.webp";
+import stunnedDuration from "../../../images/statIcon/S3.webp";
+import muteDuration from "../../../images/statIcon/S4.webp";
+import poisonedDuration from "../../../images/statIcon/S5.webp";
+import weakDuration from "../../../images/statIcon/S6.webp";
+import petrifiedDuration from "../../../images/statIcon/S7.webp";
+import damageModifierDuration from "../../../images/statIcon/S8.webp";
 export default function matchStatusImg(data: string) {
   switch (data) {
     case "sleepDuration":

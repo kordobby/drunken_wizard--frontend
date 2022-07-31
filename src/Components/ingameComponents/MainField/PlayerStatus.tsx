@@ -4,7 +4,7 @@ import { useAppSelector } from "../../../hooks/tsHooks";
 import StatusLower from "./StatusLower";
 import { Targeting } from "../../../typings/typedb";
 import { TeamColorProps } from "../../../typings/typedb";
-import { Card } from "../../../typings/typedb";
+
 const PlayerStatus = () => {
   const playersData = useAppSelector((state) => state.game.players);
   const playersList = Object.values(playersData);
@@ -34,26 +34,39 @@ const PlayerStatus = () => {
   return (
     <StatusBoxWrap>
       {playersList.map((value, index) => (
-        <StatusCard key={index} targeting={targetingFunc(value.playerId)}>
+        <StatusCard
+          dead={value.dead}
+          key={index}
+          targeting={targetingFunc(value.playerId)}
+        >
           <StatusUpper>
-            <StatusNameTag team={value.team === thisPlayer.team}>
+            <StatusNameTag dead={value.dead} team={value.team}>
               <span>{value.username}</span>
             </StatusNameTag>
-            <span>
-              HP {value.health} / MP {value.mana}
-            </span>
+            {value.dead ? (
+              <span>DEAD</span>
+            ) : (
+              <span>
+                HP {value.health <= 0 ? 0 : value.health} / MP{" "}
+                {value.mana <= 0 ? 0 : value.mana}
+              </span>
+            )}
           </StatusUpper>
-          <StatusLower
-            manaCostModifierDuration={value.manaCostModifierDuration}
-            mutedDuration={value.mutedDuration}
-            petrifiedDuration={value.petrifiedDuration}
-            poisonedDuration={value.poisonedDuration}
-            shield={value.shield}
-            sleepDuration={value.sleepDuration}
-            stunnedDuration={value.stunnedDuration}
-            weakDuration={value.weakDuration}
-            damageModifierDuration={value.damageModifierDuration}
-          ></StatusLower>
+          {value.dead ? (
+            <></>
+          ) : (
+            <StatusLower
+              manaCostModifierDuration={value.manaCostModifierDuration}
+              mutedDuration={value.mutedDuration}
+              petrifiedDuration={value.petrifiedDuration}
+              poisonedDuration={value.poisonedDuration}
+              shield={value.shield}
+              sleepDuration={value.sleepDuration}
+              stunnedDuration={value.stunnedDuration}
+              weakDuration={value.weakDuration}
+              damageModifierDuration={value.damageModifierDuration}
+            ></StatusLower>
+          )}
         </StatusCard>
       ))}
     </StatusBoxWrap>
@@ -64,6 +77,7 @@ const StatusBoxWrap = styled.div`
   width: 20.625vw;
   height: 32.8125vw; // 210px;
   background-color: white;
+
   ${flex({ direction: "column" })};
   border: 1px solid black;
 `;
@@ -72,6 +86,8 @@ const StatusCard = styled.div<Targeting>`
   background-color: var(--white);
   width: 20.625vw;
   height: 19.44vw; // 210
+  filter: ${(props) => props.dead && `brightness(50%)`};
+  -webkit-filter: ${(props) => props.dead && `brightness(50%)`};
   border-bottom: 1px solid black;
   box-shadow: ${({ targeting }) =>
     targeting && `0px 0px 0px 0.5208vw var(--yellow) inset`};

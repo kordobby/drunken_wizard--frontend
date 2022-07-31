@@ -14,9 +14,10 @@ import {
   DrawModalHeader,
   PurpleConfirmBtn,
 } from "../InGameStyled/InGameStyled";
+import AlertPopUp from "../InGameCommon/AlertPopUp";
 import DrawableCards from "./DrawableCards";
 import { StModalWrap } from "../../../elem/TwoBtnModal";
-const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
+const DrawModal = ({ sendStompMsgFunc, ClearTimer }: DrawProps) => {
   const [drawDisabled, setDrawDisabled] = useState<boolean>(false);
 
   const { roomId } = useParams();
@@ -46,30 +47,35 @@ const DrawModal = ({ sendStompMsgFunc }: DrawProps) => {
   const sendDrawCardsHandler = () => {
     const data = { selectedCards: removeDupSelectedCard };
     sendStompMsgFunc(roomId, thisPlayer.playerId, "SELECT", data);
+    ClearTimer();
   };
 
   return (
-    <StModalWrap>
-      <DrawModalWrap>
-        <DrawModalHeader>
-          <NoticeIcon>!</NoticeIcon>
-          <span>
-            앞으로 {selectableCnt - removeDupSelectedCard.length}장 더 선택
-            가능합니다.
-          </span>
-        </DrawModalHeader>
-        <DrawableCardsWrap>
-          {selectableCards?.map((value: any) => (
-            <DrawableCards
-              key={value.cardId}
-              drawDisabled={drawDisabled}
-              value={value}
-            ></DrawableCards>
-          ))}
-        </DrawableCardsWrap>
-        <PurpleConfirmBtn onClick={sendDrawCardsHandler}>확인</PurpleConfirmBtn>
-      </DrawModalWrap>
-    </StModalWrap>
+    <>
+      <StModalWrap>
+        <DrawModalWrap>
+          <DrawModalHeader>
+            <NoticeIcon>!</NoticeIcon>
+            <span>
+              앞으로 {selectableCnt - removeDupSelectedCard.length}장 더 선택
+              가능합니다.
+            </span>
+          </DrawModalHeader>
+          <DrawableCardsWrap>
+            {selectableCards?.map((value: any) => (
+              <DrawableCards
+                key={value.cardId}
+                drawDisabled={drawDisabled}
+                value={value}
+              ></DrawableCards>
+            ))}
+          </DrawableCardsWrap>
+          <PurpleConfirmBtn onClick={sendDrawCardsHandler}>
+            확인
+          </PurpleConfirmBtn>
+        </DrawModalWrap>
+      </StModalWrap>
+    </>
   );
 };
 
