@@ -80,6 +80,7 @@ export interface DrawProps {
     msgType: string,
     data: object | null
   ) => void;
+  ClearTimer: () => void;
 }
 export interface IconsImgProps {
   job: string;
@@ -111,6 +112,7 @@ export interface FlagProps {
 }
 export interface TeamColorProps {
   team: boolean;
+  dead: boolean;
 }
 export interface StatBarProps {
   manaCostModifierDuration: number;
@@ -127,6 +129,7 @@ export interface StatIconsImgProps {
   stat: string;
   size: number;
   mouseOver: boolean;
+  value: number;
 }
 
 export interface CardBg {
@@ -212,6 +215,7 @@ export interface IngameAlertProps {
 }
 export interface Targeting {
   targeting: boolean;
+  dead: boolean;
 }
 
 export interface BtnColorType {

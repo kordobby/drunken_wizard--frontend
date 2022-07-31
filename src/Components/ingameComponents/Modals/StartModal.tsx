@@ -3,41 +3,53 @@ import { useState, useEffect } from "react";
 
 /* Modules */
 import { StartModalProps } from "../../../typings/typedb";
-import useSound from "use-sound";
 /* Components */
-import { BeerIcons, StartDiv } from "../InGameStyled/InGameStyled";
-import { DefaultBtnL } from "../../Common/CommonStyle";
-import btnSound from "../../../sounds/turn.mp3";
 import Loading from "../../../pages/Loading";
+import { useAppSelector } from "../../../hooks/tsHooks";
+import { setCookie, getCookie } from "../../../Shared/Cookies";
 const StartModal = ({ setStatus }: StartModalProps) => {
-  const [BtnActive, setBtnActive] = useState<boolean>(true);
-  const [play] = useSound(btnSound);
-  // 유저 접속 텀을 고려해서, 5초 뒤에 버튼 활성화
+  // const roomId = useAppSelector((state) => state.game.game.roomTitle);
+  // const reconnectState = useAppSelector((state) => state.game.game.timer);
+  // const checkGame = getCookie("roomId");
+
   useEffect(() => {
     setTimeout(() => {
       setStatus("READY");
-    }, 8000);
+      // setCookie("roomId", roomId, {
+      //   path: "/",
+      //   expire: "after60m",
+      // });
+    }, 6000);
   }, []);
+
+  // useEffect(() => {
+  //   if (checkGame === undefined) {
+  //     setTimeout(() => {
+  //       setStatus("READY");
+  //       setCookie("roomId", roomId, {
+  //         path: "/",
+  //         expire: "after60m",
+  //       });
+  //       alert("시작합니다");
+  //     }, 6000);
+  //     return;
+  //   }
+  //   if (checkGame === roomId && reconnectState === "action") {
+  //     setStatus("TURNCHECK");
+  //     return;
+  //   }
+  //   if (checkGame === roomId && reconnectState === "draw") {
+  //     setStatus("PRECHECK");
+  //   }
+  //   if (checkGame === roomId && reconnectState === "") {
+  //     setStatus("WAITING");
+  //     console.log("아무일도없었다.");
+  //   }
+  // }, []);
 
   return (
     <>
       <Loading></Loading>
-      {/* <DefaultBtnL
-        disabled={BtnActive}
-        onClick={() => {
-          play();
-          setStatus("READY");
-        }}
-      >
-        <span>Start!</span>
-      </DefaultBtnL> */}
-      {/* <BeerIcons></BeerIcons>
-      <StartDiv>
-        <span className="start__notice">선빵필승!</span>
-        <span className="start__notice start__notice--btm">
-          제일 먼저 게임 스타트를 눌러보세요!
-        </span> */}
-      {/* </StartDiv> */}
     </>
   );
 };

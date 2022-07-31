@@ -8,8 +8,8 @@ import { useParams } from "react-router-dom";
 import { CraveWrap, CraveCards, Crave } from "../InGameStyled/InGameStyled";
 import { DefaultBtnL } from "../../Common/CommonStyle";
 import AudioBtn from "../../Common/AudioBtn";
-
-const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
+import { DrawProps } from "../../../typings/typedb";
+const CraveField = ({ sendStompMsgFunc, ClearTimer }: DrawProps) => {
   const actionTimer = useAppSelector((state) => state.game.game.status);
   const craveCards = useAppSelector((state) => state.game.game.cardCrave);
   const CardsSet = craveCards.slice(undefined, 3);
@@ -39,6 +39,7 @@ const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
           <DefaultBtnL
             disabled={clicked}
             onClick={() => {
+              ClearTimer();
               setClicked(true);
               sendStompMsgFunc(roomId, thisPlayer, "ENDTURN", null);
             }}

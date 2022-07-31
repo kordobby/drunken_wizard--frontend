@@ -108,18 +108,22 @@ const Ingame = () => {
   /* socket connect - token */
   const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
-  stompClient.debug = (f) => f;
+  // stompClient.debug = (f) => f;
   const accessToken = getCookie("token");
   const { roomId } = useParams();
   const myId = Number(getCookie("id"));
 
+  const [reloadModal, setReloadModal] = useState<boolean>(false);
   const doNotReload = (event: any) => {
     if (
       (event.ctrlKey === true &&
         (event.keyCode === 78 || event.keyCode === 82)) ||
       event.keyCode === 116
     ) {
-      return window.confirm("새로고침하면 게임이 정상작동하지 않아요:(");
+      setReloadModal(true);
+      setTimeout(() => {
+        setReloadModal(false);
+      }, 1000);
     }
   };
 
@@ -200,9 +204,10 @@ const Ingame = () => {
                 }
 
                 if (setPlayerOrder[0].playerId === myId) {
-                  setTimeout(() => {
-                    sendStompMsgFunc(roomId, myId, "PRECHECK", null);
-                  }, 2000);
+                  // setTimeout(() => {
+                  //   sendStompMsgFunc(roomId, myId, "PRECHECK", null);
+                  // }, 2000);
+                  sendStompMsgFunc(roomId, myId, "PRECHECK", null);
                 } else {
                   setStatus("WAITING");
                 }
@@ -341,18 +346,19 @@ const Ingame = () => {
       case "READY":
         setTimeout(() => {
           sendStompMsgFunc(roomId, myId, "START", null);
-        }, 2000);
+        }, 500);
         break;
       case "WAITING":
         // console.log("아직 내 턴이 아니옵니다.");
         break;
       case "PRECHECK":
         // 만약 그게 나라면 이제 드로우를 하러 갑니다.
-        if (nowPlayerId === playersData.thisPlayer.playerId) {
+        if (nowPlayerId === myId) {
           sendStompMsgFunc(roomId, myId, "DRAW", null);
         } else {
           // 만약 내가 아니라면 지금 플레이하는 사람의 상태를 최신화할 것이다.
           updatePlayersFunc();
+          setStatus("WAITING");
         }
         break;
       case "DRAW":
@@ -365,7 +371,7 @@ const Ingame = () => {
           // 상태이상으로 인해 턴을 진행할 수 없습니다!
           setTimeout(() => {
             sendStompMsgFunc(roomId, Number(myId), "ENDTURN", null);
-          }, 2000);
+          }, 500);
         }
         break;
       case "USECARD":
@@ -464,6 +470,7 @@ const Ingame = () => {
         }
         break;
       case "CHANGETURN":
+        ClearTimer();
         const nowPlayerName = playersList.filter(
           (value: playersSetting) => value.playerId === nowPlayerId
         );
@@ -491,7 +498,6 @@ const Ingame = () => {
   const waitForConnection = (stompClient: stompJS.Client, callback: any) => {
     setTimeout(function () {
       if (stompClient.ws.readyState === 1) {
-        // console.log("running");
         callback();
       } else {
         waitForConnection(stompClient, callback);
@@ -532,6 +538,7 @@ const Ingame = () => {
 
   const timerFunc = (sec: number, turn: string) => {
     timer.current = setTimeout(() => {
+      ClearTimer();
       setDrawModalOpen(false);
       sendStompMsgFunc(roomId, myId, turn, null);
       dispatch(setTimerTK(""));
@@ -676,6 +683,13 @@ const Ingame = () => {
         />
       )}
 
+      {reloadModal && (
+        <AlertPopUp
+          upperText={`새로고침을 하면`}
+          middleText={`게임이 정상작동하지 않을 수 있어요!`}
+          bottomText=""
+        />
+      )}
       {status === "" ? (
         <StartModal setStatus={setStatus}></StartModal>
       ) : (
@@ -687,8 +701,8 @@ const Ingame = () => {
                 <PlayerStatus></PlayerStatus>
                 <PlayerIcons status={status}></PlayerIcons>
                 <CraveField
-                  status={status}
                   sendStompMsgFunc={sendStompMsgFunc}
+                  ClearTimer={ClearTimer}
                 ></CraveField>
               </MainWrap>
               <PlayerField
@@ -696,7 +710,10 @@ const Ingame = () => {
                 sendStompMsgFunc={sendStompMsgFunc}
               ></PlayerField>
               {drawModalOpen && (
-                <DrawModal sendStompMsgFunc={sendStompMsgFunc}></DrawModal>
+                <DrawModal
+                  sendStompMsgFunc={sendStompMsgFunc}
+                  ClearTimer={ClearTimer}
+                ></DrawModal>
               )}
             </StGameWrapFilter>
           </StGameWrap>
