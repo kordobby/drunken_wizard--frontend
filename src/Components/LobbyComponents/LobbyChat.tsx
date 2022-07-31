@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 // hooks
-import { getCookie } from "../../Shared/Cookies";
+import { getCookie } from "../../shared/Cookies";
 // stomp
 import stompJS from "stompjs";
 import sockJS from "sockjs-client";
 // api
-import apis from "../../Shared/api/apis";
+import apis from "../../shared/api/apis";
 // interface
 import { ChatType } from "../../typings/db";
 // css

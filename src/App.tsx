@@ -11,7 +11,7 @@ import Lobby from "./pages/Lobby";
 import KakaoRedirect from "./pages/KakaoRedirect";
 import Ingame from "./pages/Ingame";
 // cookies
-import { getCookie } from "./Shared/Cookies";
+import { getCookie } from "./shared/Cookies";
 // componentQWED
 import WaitingRoom from "./pages/WaitingRoom";
 import NotFound from "./pages/NotFound";

@@ -3,11 +3,11 @@ import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 // stomp
 import stompJS from "stompjs";
-import { socket } from "../../Shared/WebStomp";
+import { socket } from "../../shared/WebStomp";
 // apis
-import apis from "../../Shared/api/apis";
+import apis from "../../shared/api/apis";
 // hooks
-import { getCookie } from "../../Shared/Cookies";
+import { getCookie } from "../../shared/Cookies";
 // interface
 import { SoundModalType2 } from "../../typings/db";
 // css

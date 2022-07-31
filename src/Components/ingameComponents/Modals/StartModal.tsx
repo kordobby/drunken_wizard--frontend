@@ -6,7 +6,7 @@ import { StartModalProps } from "../../../typings/typedb";
 /* Components */
 import Loading from "../../../pages/Loading";
 import { useAppSelector } from "../../../hooks/tsHooks";
-import { setCookie, getCookie } from "../../../Shared/Cookies";
+import { setCookie, getCookie } from "../../../shared/Cookies";
 const StartModal = ({ setStatus }: StartModalProps) => {
   // const roomId = useAppSelector((state) => state.game.game.roomTitle);
   // const reconnectState = useAppSelector((state) => state.game.game.timer);

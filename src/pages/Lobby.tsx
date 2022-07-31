@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
 // hooks
-import { deleteCookie } from "../Shared/Cookies";
+import { deleteCookie } from "../shared/Cookies";
 import { useModal } from "../hooks/useModal";
 // components
 import CreateRoom from "../Components/LobbyComponents/CreateRoom";
