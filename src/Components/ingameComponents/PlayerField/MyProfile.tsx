@@ -18,6 +18,7 @@ import {
   MyStatIcon,
   StatIcon,
   StatCnt,
+  StatIconBox,
   CoverIcon,
   CoverIconMine,
 } from "../InGameStyled/InGameStyled";
@@ -61,9 +62,13 @@ const MyProfile = () => {
             </div>
             <MyStatBox>
               <div className="profile__stats">
-                <span className="profile__title">HP {thisPlayer.health}</span>
+                {thisPlayer.health > 0 ? (
+                  <span className="profile__title">HP{thisPlayer.health}</span>
+                ) : (
+                  <span className="profile__title">HP 0</span>
+                )}
                 {thisPlayer.health >= 20 ? (
-                  <MyStatBar stat={true} point={21.35}>
+                  <MyStatBar stat={true} point={16.35}>
                     <div className="stat__full">
                       <div className="stat__now"></div>
                     </div>
@@ -71,7 +76,7 @@ const MyProfile = () => {
                 ) : (
                   <MyStatBar
                     stat={true}
-                    point={(thisPlayer.health / 20) * 21.35}
+                    point={(thisPlayer.health / 20) * 16.35}
                   >
                     <div className="stat__full">
                       <div className="stat__now"></div>
@@ -80,7 +85,12 @@ const MyProfile = () => {
                 )}
               </div>
               <div className="profile__stats">
-                <span className="profile__title">MP {thisPlayer.mana}</span>
+                {thisPlayer.mana > 0 ? (
+                  <span className="profile__title">MP{thisPlayer.mana}</span>
+                ) : (
+                  <span className="profile__title">MP 0</span>
+                )}
+
                 {thisPlayer.mana >= 20 ? (
                   <MyStatBar stat={false} point={21.35}>
                     <div className="stat__full">
@@ -104,88 +114,164 @@ const MyProfile = () => {
             {thisPlayer.sleepDuration !== 0 && (
               <MyStatIcon>
                 <StatIcon
+                  value={thisPlayer.sleepDuration}
                   stat="sleepDuration"
-                  size={4.6875}
+                  size={3.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {mouseOver && <CoverIconMine>수면</CoverIconMine>}
+                  {thisPlayer.sleepDuration > 0 ? (
+                    <>{mouseOver && <CoverIconMine>수면</CoverIconMine>}</>
+                  ) : (
+                    <>
+                      {mouseOver && (
+                        <CoverIconMine>
+                          수면
+                          <br />
+                          저항
+                        </CoverIconMine>
+                      )}
+                    </>
+                  )}
                 </StatIcon>
-                <StatCnt size={2.083}>{thisPlayer.sleepDuration}</StatCnt>
+                <StatCnt size={1.083}>
+                  {Math.abs(thisPlayer.sleepDuration)}
+                </StatCnt>
               </MyStatIcon>
             )}
 
             {thisPlayer.mutedDuration !== 0 && (
               <MyStatIcon>
                 <StatIcon
+                  value={thisPlayer.mutedDuration}
                   stat="mutedDuration"
-                  size={4.6875}
+                  size={3.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {mouseOver && <CoverIconMine>침묵</CoverIconMine>}
+                  {thisPlayer.mutedDuration > 0 ? (
+                    <>{mouseOver && <CoverIconMine>침묵</CoverIconMine>}</>
+                  ) : (
+                    <>
+                      {mouseOver && (
+                        <CoverIconMine>
+                          침묵
+                          <br />
+                          저항
+                        </CoverIconMine>
+                      )}
+                    </>
+                  )}
                 </StatIcon>
-                <StatCnt size={2.083}>{thisPlayer.mutedDuration}</StatCnt>
+                <StatCnt size={1.083}>
+                  {Math.abs(thisPlayer.mutedDuration)}
+                </StatCnt>
               </MyStatIcon>
             )}
 
             {thisPlayer.petrifiedDuration !== 0 && (
               <MyStatIcon>
                 <StatIcon
+                  value={thisPlayer.petrifiedDuration}
                   stat="petrifiedDuration"
-                  size={4.6875}
+                  size={3.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {mouseOver && <CoverIconMine>석화</CoverIconMine>}
+                  {thisPlayer.petrifiedDuration > 0 ? (
+                    <>{mouseOver && <CoverIconMine>석화</CoverIconMine>}</>
+                  ) : (
+                    <>
+                      {mouseOver && (
+                        <CoverIconMine>
+                          석화
+                          <br />
+                          저항
+                        </CoverIconMine>
+                      )}
+                    </>
+                  )}
                 </StatIcon>
-                <StatCnt size={2.083}>{thisPlayer.petrifiedDuration}</StatCnt>
+                <StatCnt size={1.083}>
+                  {Math.abs(thisPlayer.petrifiedDuration)}
+                </StatCnt>
               </MyStatIcon>
             )}
 
             {thisPlayer.poisonedDuration !== 0 && (
               <MyStatIcon>
                 <StatIcon
+                  value={thisPlayer.petrifiedDuration}
                   stat="poisonedDuration"
-                  size={4.6875}
+                  size={3.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {mouseOver && <CoverIconMine>독</CoverIconMine>}
+                  {thisPlayer.poisonedDuration > 0 ? (
+                    <>{mouseOver && <CoverIconMine>중독</CoverIconMine>}</>
+                  ) : (
+                    <>
+                      {mouseOver && (
+                        <CoverIconMine>
+                          중독
+                          <br />
+                          저항
+                        </CoverIconMine>
+                      )}
+                    </>
+                  )}
                 </StatIcon>
-                <StatCnt size={2.083}>{thisPlayer.poisonedDuration}</StatCnt>
+                <StatCnt size={1.083}>
+                  {Math.abs(thisPlayer.poisonedDuration)}
+                </StatCnt>
               </MyStatIcon>
             )}
 
             {thisPlayer.stunnedDuration !== 0 && (
               <MyStatIcon>
                 <StatIcon
+                  value={thisPlayer.stunnedDuration}
                   stat="stunnedDuration"
-                  size={4.6875}
+                  size={3.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {mouseOver && <CoverIconMine>기절</CoverIconMine>}
+                  {thisPlayer.stunnedDuration > 0 ? (
+                    <>{mouseOver && <CoverIconMine>기절</CoverIconMine>}</>
+                  ) : (
+                    <>
+                      {mouseOver && (
+                        <CoverIconMine>
+                          기절
+                          <br />
+                          저항
+                        </CoverIconMine>
+                      )}
+                    </>
+                  )}
                 </StatIcon>
-                <StatCnt size={2.083}>{thisPlayer.stunnedDuration}</StatCnt>
+                <StatCnt size={1.083}>
+                  {Math.abs(thisPlayer.stunnedDuration)}
+                </StatCnt>
               </MyStatIcon>
             )}
 
             {thisPlayer.weakDuration !== 0 && (
               <MyStatIcon>
                 <StatIcon
+                  value={thisPlayer.weakDuration}
                   stat="weakDuration"
-                  size={4.6875}
+                  size={3.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
                 >
-                  {thisPlayer.weakDuration <= 0 ? (
+                  {thisPlayer.weakDuration < 0 ? (
                     <>{mouseOver && <CoverIconMine>방어</CoverIconMine>}</>
                   ) : (
                     <>
@@ -199,15 +285,18 @@ const MyProfile = () => {
                     </>
                   )}
                 </StatIcon>
-                <StatCnt size={2.083}>{thisPlayer.weakDuration}</StatCnt>
+                <StatCnt size={1.083}>
+                  {Math.abs(thisPlayer.weakDuration)}
+                </StatCnt>
               </MyStatIcon>
             )}
 
             {thisPlayer.damageModifierDuration !== 0 && (
               <MyStatIcon>
                 <StatIcon
+                  value={-thisPlayer.damageModifierDuration}
                   stat={"damageModifierDuration"}
-                  size={4.6875}
+                  size={3.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
@@ -234,15 +323,18 @@ const MyProfile = () => {
                     </>
                   )}
                 </StatIcon>
-                <StatCnt size={2.083}>{thisPlayer.weakDuration}</StatCnt>
+                <StatCnt size={1.083}>
+                  {Math.abs(thisPlayer.damageModifierDuration)}
+                </StatCnt>
               </MyStatIcon>
             )}
 
             {thisPlayer.shield === true && (
               <MyStatIcon>
                 <StatIcon
+                  value={1}
                   stat="shield"
-                  size={4.6875}
+                  size={3.6875}
                   mouseOver={mouseOver}
                   onMouseOver={MouseOverFunc}
                   onMouseLeave={MouseLeaveFunc}
