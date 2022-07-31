@@ -77,7 +77,7 @@ const initialState: ingameState = {
       username: "",
       dead: false,
       mana: 0,
-      manaCostModifierDuration: 0,
+      manaCostModifierDuration: 1,
       mutedDuration: 0,
       petrifiedDuration: 0,
       poisonedDuration: 0,
@@ -117,7 +117,7 @@ const initialState: ingameState = {
     order: [],
     gamOver: false, // 필요없을지도!
     nowPlayer: "",
-    nowPlayerId: 35212453,
+    nowPlayerId: 56373375,
     cardCrave: [],
     targetPlayer: 0,
     selectForUseCard: {
