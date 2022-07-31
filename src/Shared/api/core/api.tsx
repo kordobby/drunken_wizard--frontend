@@ -1,6 +1,8 @@
 import axios from "axios";
 import { getCookie } from "../../Cookies";
 
+axios.defaults.withCredentials = true;
+
 /* axios instance */
 const API_URL = process.env.REACT_APP_API_URL;
 const api = axios.create({
