@@ -164,6 +164,21 @@ export const RuleBtn = styled.button`
   }
 `;
 
+export const RuleBuBleBtn = styled.img`
+  position: absolute;
+  top: 1.2vw;
+  right: 10.77vw;
+  color: var(--orange);
+  font-size: 20px;
+  width: 13.22vw;
+  height: 3.95vw;
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(120%);
+  }
+`;
+
 const leftBeerCheers = keyframes`
 0% {
   left: -4.427vw;

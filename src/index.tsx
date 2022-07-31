@@ -17,7 +17,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter } from "react-router-dom";
 import { HashRouter } from "react-router-dom";
 /* Cookies settings */
-import Loading from "./pages/Loading";
+
+import LoadingLobby from "./pages/LoadingLobby";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,7 +33,7 @@ const rootElement = document.getElementById("root");
 const root = createRoot(rootElement as Element);
 
 root.render(
-  <React.Suspense fallback={<Loading />}>
+  <React.Suspense fallback={<LoadingLobby />}>
     <QueryClientProvider client={queryClient}>
       {/* <ReactQueryDevtools initialIsOpen={true} /> */}
       <BrowserRouter>

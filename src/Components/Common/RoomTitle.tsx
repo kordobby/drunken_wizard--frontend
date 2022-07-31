@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import { HeaderTitleProps } from "../../typings/typedb";
 import flex from "../GlobalStyled/flex";
+import AudioBtn from "./AudioBtn";
 
 const HeaderRoomTitle = ({ text }: HeaderTitleProps) => {
   return (
     <RoomTitleSt>
       <span className="room__title">{text}</span>
+      <AudioBtn></AudioBtn>
     </RoomTitleSt>
   );
 };
@@ -32,10 +34,5 @@ const RoomTitleSt = styled.div`
     -webkit-background-clip: text;
     -moz-background-clip: text;
     background-clip: text;
-  }
-  &:hover {
-    cursor: pointer;
-    filter: brightness(120%);
-    /* box-shadow: 0px 0px 10px 2px #fd6f33; */
   }
 `;

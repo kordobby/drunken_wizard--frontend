@@ -34,9 +34,7 @@ const CreateRoom = ({ modalHandler, btnSound }: SoundModalType) => {
   // mutate
   const { mutate: createRoom } = useMutation(apis.createRoomMT, {
     onSuccess: (res) => {
-      // console.log(res.data);
       navigate(`/waiting/${res.data.roomId}`);
-      lobbyLeaveMessage();
     },
     onError: (error) => {
       // console.log(error);
@@ -56,18 +54,18 @@ const CreateRoom = ({ modalHandler, btnSound }: SoundModalType) => {
   );
 
   // send
-  const lobbyLeaveMessage = () => {
-    const accessName = getCookie("nickname");
-    const accessId = getCookie("nickname");
-    const data = {
-      type: "LEAVE",
-      roomId: 1,
-      sender: accessId,
-      nickname: accessName,
-      message: `${accessName}님이 채팅방에서 나갔습니다.`,
-    };
-    stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
-  };
+  // const lobbyLeaveMessage = () => {
+  //   const accessId = getCookie("id");
+  //   const accessName = getCookie("nickname");
+  //   const data = {
+  //     type: "LEAVE",
+  //     roomId: 1,
+  //     sender: accessId,
+  //     nickname: accessName,
+  //     message: null,
+  //   };
+  //   stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
+  // };
 
   return (
     <>

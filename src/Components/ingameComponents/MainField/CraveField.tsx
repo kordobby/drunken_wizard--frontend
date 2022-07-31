@@ -30,7 +30,7 @@ const CraveField = ({ sendStompMsgFunc }: PlayerFieldProps) => {
   return (
     <>
       <CraveWrap>
-        <AudioBtn></AudioBtn>
+        {/* <AudioBtn></AudioBtn> */}
         <Crave></Crave>
         {CardsSet.map((value) => (
           <CraveCards value={value} />

@@ -28,7 +28,11 @@ import {
   LoginBtnBox,
   Check,
 } from "../Components/UserComponents/UserStyled";
-import { DefaultBtn, FormWrapSt } from "../Components/Common/CommonStyle";
+import {
+  DefaultBtn,
+  DefaultBtnKakao,
+  FormWrapSt,
+} from "../Components/Common/CommonStyle";
 import OneBtnModal from "../elem/OneBtnModal";
 
 // sounds
@@ -192,14 +196,14 @@ const Login = ({ setLoginState }: loginStateProps) => {
             </Link>
           </LoginBtnBox>
           <a href={KAKAO_AUTH_URL}>
-            <DefaultBtn
+            <DefaultBtnKakao
               btnType="kakao"
-              size={22.8125}
+              size={22.82}
               onClick={() => {
                 play();
               }}
               style={{ marginBottom: "2.77vw" }}
-            ></DefaultBtn>
+            ></DefaultBtnKakao>
           </a>
         </FormWrapSt>
       </BackWrap>

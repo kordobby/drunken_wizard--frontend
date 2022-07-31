@@ -41,6 +41,7 @@ const WaitingRoom = () => {
   const [waitingUsers, setWaitingUsers] = useState<any>();
   const [readyUser, setReadyUser] = useState<boolean>(false);
   const [roomOutModal, setRoomOutModal] = useModal<boolean>(false);
+  const [logOutBtnState, setLogOutBtnState] = useState<boolean>(false);
   const { roomId } = useParams();
   const navigate = useNavigate();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
@@ -102,13 +103,16 @@ const WaitingRoom = () => {
                   res?.player4?.id === Number(accessId))
               ) {
                 setReadyUser(true);
+                setLogOutBtnState(true);
               } else {
                 setReadyUser(false);
+                setLogOutBtnState(false);
               }
             },
             { token: accessToken }
           );
           joinRoomMessage();
+          leaveMessage();
         }
       );
     } catch (error) {
@@ -124,6 +128,17 @@ const WaitingRoom = () => {
       // console.log(error);
     }
   }, []);
+
+  const leaveMessage = () => {
+    const accessName = getCookie("nickname");
+    const data = {
+      type: "LEAVE",
+      sender: accessId,
+      nickname: accessName,
+      message: `${accessName}님이 게임하러 갔습니다.`,
+    };
+    stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
+  };
 
   const joinRoomMessage = () => {
     const data = {
@@ -200,6 +215,14 @@ const WaitingRoom = () => {
           cancelFunc={setRoomOutModal}
         />
       )}
+      <Header>
+        {logOutBtnState ? (
+          <HeaderBtn text={"방나가기"} />
+        ) : (
+          <HeaderBtn clickFunc={setRoomOutModal} text={"방나가기"} />
+        )}
+        <HeaderRoomTitle text={`${waitingUsers?.roomName}`} />
+      </Header>
       <WaitingWrap>
         {waitingUsers && (
           <TeamWrap>

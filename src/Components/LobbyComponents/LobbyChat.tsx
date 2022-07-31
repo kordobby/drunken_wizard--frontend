@@ -43,7 +43,7 @@ const LobbyChat = () => {
   const [userHistoryState, setUserHistoryState] = useState<any>();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
-  stompClient.debug = (f) => f;
+  // stompClient.debug = (f) => f;
   const queryClient = useQueryClient();
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
@@ -88,6 +88,10 @@ const LobbyChat = () => {
     setMsgList(list);
   }, [semiMsgList]);
 
+  // useEffect(() => {
+  //   queryClient.invalidateQueries(["room_list"]);
+  // }, [msgList, userList]);
+
   // stompClient.debug() =>{ console.log('debug')},
   // /* function Subscribe */
   const socketSubscribe = useCallback(() => {
@@ -103,7 +107,7 @@ const LobbyChat = () => {
             "/sub/public",
             (data: any) => {
               const response = JSON.parse(data.body);
-              // console.log(data);
+              // console.log(data);c
               setSemiMsgList(response);
               queryClient.invalidateQueries(["room_list"]);
               if (response.type === "JOIN") {
@@ -124,7 +128,7 @@ const LobbyChat = () => {
 
   const socketUnsubscribe = () => {
     try {
-      leaveMessage();
+      // leaveMessage();
       stompClient.unsubscribe(`/sub/public`);
       // console.log("success to unsubscribe");
     } catch (error) {
@@ -144,17 +148,17 @@ const LobbyChat = () => {
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
   };
   // leave 메세지
-  const leaveMessage = () => {
-    const accessId = getCookie("id");
-    const accessName = getCookie("nickname");
-    const data = {
-      type: "LEAVE",
-      sender: accessId,
-      nickname: accessName,
-      message: `${accessName}님이 채팅방에서 나갔습니다.`,
-    };
-    stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
-  };
+  // const leaveMessage = () => {
+  //   const accessId = getCookie("id");
+  //   const accessName = getCookie("nickname");
+  //   const data = {
+  //     type: "LEAVE",
+  //     sender: accessId,
+  //     nickname: accessName,
+  //     message: null,
+  //   };
+  //   stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
+  // };
 
   // 채팅 메세지 보내기
   const sendMessage = () => {

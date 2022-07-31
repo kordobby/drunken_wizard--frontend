@@ -7,21 +7,25 @@ const AudioBtn = () => {
 
   return (
     <>
-      {/* <ReactAudioPlayer
+      <ReactAudioPlayer
         src={bgm}
         autoPlay
         controls
         loop
         style={{
           position: "absolute",
-          top: "1.85vw",
-          right: "13.5vw",
+          // top: "-6.5vw",
+          // right: "11vw",
+          marginLeft: "56vw",
           opacity: "0.5",
           width: "12.8vw",
+          height: "2.5vh",
           display: "flex",
+          zIndex: "100",
+          float: "right",
         }}
-      ></ReactAudioPlayer> */}
-      <AudioWrap>
+      ></ReactAudioPlayer>
+      {/* <AudioWrap>
         <div className="audio">
           <AudioBack>
             <Audio controls loop>
@@ -30,7 +34,7 @@ const AudioBtn = () => {
             </Audio>
           </AudioBack>
         </div>
-      </AudioWrap>
+      </AudioWrap> */}
     </>
   );
 };
@@ -62,14 +66,14 @@ const Audio = styled.audio`
   &::-webkit-media-controls-play-button {
     /* display: none; */
   }
-&::-webkit-media-controls-enclosure {
-  width: 50px;
+  &::-webkit-media-controls-enclosure {
+    width: 50px;
     display: flex;
     justify-content: flex-start;
     padding: 0 0.5vw;
     box-sizing: border-box;
     background: none;
-  } 
+  }
   &::-webkit-media-controls-mute-button,
   &::-webkit-media-controls-volume-slider-container,
   &::-webkit-media-controls-volume-slider,
@@ -84,7 +88,7 @@ const Audio = styled.audio`
   &::-webkit-media-controls-return-to-realtime-button,
   &::-webkit-media-controls-toggle-closed-captions-button {
     display: none;
-  } */
+  }
 `;
 
 export default AudioBtn;

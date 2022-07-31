@@ -23,7 +23,7 @@ const NoticeField = ({ setRoomOutModal }: NoticeProps) => {
     <>
       <Header>
         <HeaderBtn text="방 나가기" clickFunc={() => setRoomOutModal(true)} />
-        <HeaderRoomTitle text={roomTitle} />
+        <HeaderRoomTitle text={roomTitle}></HeaderRoomTitle>
         {/* <AudioBtn></AudioBtn> */}
       </Header>
     </>

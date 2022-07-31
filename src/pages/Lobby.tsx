@@ -21,6 +21,7 @@ import HeaderBtn from "../elem/HeaderBtn";
 
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
+import PlayBtn from "../Components/Common/PlayBtn";
 
 const Lobby = () => {
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ const Lobby = () => {
           </DefaultBtnL>
         </SideBar>
       </LobbyWrap>
+      <PlayBtn></PlayBtn>
     </WrapBack>
   );
 };

@@ -2,7 +2,7 @@ import { Dispatch, MouseEvent, SetStateAction } from "react";
 
 export interface HeaderBtnProps {
   text: string;
-  clickFunc: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  clickFunc?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 export interface HeaderTitleProps {
   text: string;

@@ -170,7 +170,7 @@ const StatusLower = ({
         </StatIconBox>
       )}
 
-      {shield && (
+      {shield === true && (
         <StatIconBox size={3.125}>
           <StatIcon
             stat="shield"

@@ -8,6 +8,7 @@ import { loginStateProps } from "../typings/db";
 // apis
 import apis from "../Shared/api/apis";
 import { BackWrap, LogLogo } from "../Components/UserComponents/UserStyled";
+import LoadingLobby from "./LoadingLobby";
 
 const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
   const navigate = useNavigate();
@@ -52,9 +53,10 @@ const KakaoRedirect = ({ setLoginState }: loginStateProps) => {
     }
   }, [accessToken]);
   return (
-    <BackWrap>
-      <LogLogo top={5.729} bottom={4.6875}></LogLogo>
-    </BackWrap>
+    // <BackWrap>
+    //   <LogLogo top={5.729} bottom={4.6875}></LogLogo>
+    // </BackWrap>
+    <LoadingLobby></LoadingLobby>
   );
 };
 

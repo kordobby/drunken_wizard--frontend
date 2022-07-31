@@ -94,7 +94,6 @@ const Rooms = ({ btnSound }: SoundModalType2) => {
     try {
       stompClient.unsubscribe(`/sub/public`);
       // console.log("success to unsubscribe");
-      // leaveMessage();
     } catch (error) {
       // console.log(error);
     }

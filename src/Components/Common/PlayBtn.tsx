@@ -46,7 +46,7 @@ const AudioButton = styled.button`
   border: none;
   position: fixed;
   bottom: 2.885vw;
-  right: 2.885vw;
+  right: 22vw;
 `;
 
 export const PlayBtnIcon = styled.img.attrs({
