@@ -4,6 +4,8 @@ import { useAppSelector } from "../../../hooks/tsHooks";
 /* Modules */
 
 /* CSS & SC */
+import styled from "styled-components";
+import matchCardImg from "../InGameStyled/CardFactory";
 import {
   TableImg,
   PlayerIcon,
@@ -12,10 +14,13 @@ import {
   TeamPosition,
   PlayingFlag,
 } from "../InGameStyled/InGameStyled";
-
+import { CraveCardsProps } from "../../../typings/typedb";
 import { HeaderProps } from "../../../typings/typedb";
 import AudioBtn from "../../Common/AudioBtn";
 const PlayerIcons = ({ status }: HeaderProps) => {
+  const selectedCard = useAppSelector(
+    (state) => state.game.game.selectForUseCard
+  );
   const nowPlayerId = useAppSelector((state) => state.game.game.nowPlayerId);
   const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
   const teamPlayer = useAppSelector((state) => state.game.players.PlayerA);
@@ -26,6 +31,9 @@ const PlayerIcons = ({ status }: HeaderProps) => {
     <>
       <PlayerIconsFields>
         {/* <AudioBtn></AudioBtn> */}
+        {selectedCard.cardName !== "" && (
+          <CardBig value={selectedCard}></CardBig>
+        )}
         {/* ME */}
         <TeamPosition layer={5} top={0.5208} left={2.604}>
           <PlayerIcon
@@ -44,7 +52,7 @@ const PlayerIcons = ({ status }: HeaderProps) => {
             )}
             <NameTag
               dead={teamPlayer.dead}
-              team={thisPlayer.team === teamPlayer.team}
+              team={teamPlayer.team}
               top={0.5208}
               left={5.625}
             >
@@ -70,7 +78,7 @@ const PlayerIcons = ({ status }: HeaderProps) => {
             )}
             <NameTag
               dead={thisPlayer.dead}
-              team={true}
+              team={thisPlayer.team}
               top={0.5208}
               left={4.427}
             >
@@ -94,12 +102,7 @@ const PlayerIcons = ({ status }: HeaderProps) => {
                 left={4.166}
               ></PlayingFlag>
             )}
-            <NameTag
-              dead={enemyB.dead}
-              team={thisPlayer.team === enemyB.team}
-              top={2.083}
-              left={0}
-            >
+            <NameTag dead={enemyB.dead} team={enemyB.team} top={2.083} left={0}>
               {enemyB.username}
             </NameTag>
           </PlayerIcon>
@@ -121,7 +124,7 @@ const PlayerIcons = ({ status }: HeaderProps) => {
             )}
             <NameTag
               dead={enemyA.dead}
-              team={thisPlayer.team === enemyA.team}
+              team={enemyA.team}
               top={2.083}
               left={6.25}
             >
@@ -133,5 +136,17 @@ const PlayerIcons = ({ status }: HeaderProps) => {
     </>
   );
 };
+
+const CardBig = styled.div<CraveCardsProps>`
+  height: 29.666vw;
+  width: 16.6716vw;
+  background-image: url(${(props) => matchCardImg(props.value.cardName)});
+  background-size: cover;
+  position: absolute;
+  bottom: 5%;
+  right: 32%;
+  /* background-color: yellow; */
+  z-index: 1000;
+`;
 
 export default PlayerIcons;

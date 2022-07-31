@@ -219,12 +219,12 @@ export const StatIconBox = styled.div<StatNumberProps>`
 `;
 
 export const MyStatIcon = styled.div`
-  width: 5.5208vw;
-  height: 5.5208vw;
+  width: 3.8208vw;
+  height: 3.8208vw;
   position: relative;
-  margin-right: 0.5208vw;
+  margin-right: 0.3208vw;
   &:first-child {
-    margin-left: 0.78125vw;
+    margin-left: 0.68125vw;
   }
 `;
 
@@ -237,9 +237,12 @@ export const StatIcon = styled.div<StatIconsImgProps>`
   width: ${({ size }) => size && `${size}vw`};
   height: ${({ size }) => size && `${size}vw`};
   /* box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25); */
+  background-color: ${({ value }) =>
+    value > 0 ? "var(--white)" : "var(--purple-3)"};
   background-image: url(${(props) => matchStatusImg(props.stat)});
   background-size: cover;
   border-radius: 1.0416vw;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 `;
 
 export const CoverIcon = styled.div`
@@ -271,7 +274,7 @@ export const StatCnt = styled.div<StatNumberProps>`
   border-radius: 1.666vw;
   background-color: var(--purple-3);
   ${flex({ justify: "center", align: "center" })}
-  font-size: ${({ size }) => (size === 1.25 ? "0.8vw" : "1.2vw")}; 0.8vw;
+  font-size: ${({ size }) => (size === 1.25 ? "0.8vw" : "0.6vw")};
 `;
 
 // Main => Crave Field
@@ -338,7 +341,7 @@ export const PlayerFieldWrap = styled.div`
 
 // PlayerField => [LEFT] PlayerIcon
 export const ProfileSizing = styled.div`
-  width: 38.66vw;
+  width: 33.66vw;
   height: 17.1875vw;
   box-sizing: border-box;
   margin-left: 0.78125vw;
@@ -377,7 +380,7 @@ export const MyStatBox = styled.div`
   top: 1.822vw;
   right: 0.4vw;
   z-index: -2;
-  width: 30.4125vw;
+  width: 25.4125vw;
   height: 7.2916vw;
   box-sizing: border-box;
   padding-left: 2.704vw;
@@ -398,7 +401,7 @@ export const MyStatBox = styled.div`
 `;
 export const MyStatBar = styled.div<StatProps>`
   .stat__full {
-    width: 21.35vw;
+    width: 16.35vw;
     height: 1.5625vw;
     border-radius: 1.5625vw;
     margin-left: 1.0416vw;
@@ -440,7 +443,7 @@ export const CardsArea = styled.div`
   transition: all 100ms ease-in-out;
   box-sizing: border-box;
   height: 17.1875vw;
-  width: 49.916vw;
+  width: 55.916vw;
 `;
 
 export const ActionFailText = styled.div`
@@ -459,8 +462,8 @@ export const Divider = styled.div`
 `;
 
 export const PlayerCards = styled.div<UseCardProps>`
-  height: 13.666vw;
-  width: 7.6716vw;
+  height: 15.666vw;
+  width: 8.6716vw;
   margin: 0 0.3208vw;
   border-radius: 0.5208vw;
   background-size: cover;
