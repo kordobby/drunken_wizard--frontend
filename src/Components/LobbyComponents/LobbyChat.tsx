@@ -109,7 +109,9 @@ const LobbyChat = () => {
               const response = JSON.parse(data.body);
               // console.log(data);c
               setSemiMsgList(response);
-              queryClient.invalidateQueries(["room_list"]);
+              if (response.type === "JOIN" || response.type === "LEAVE") {
+                queryClient.invalidateQueries(["room_list"]);
+              }
               if (response.type === "JOIN") {
                 setUserList(response.connectedUsers);
                 userHistory();
