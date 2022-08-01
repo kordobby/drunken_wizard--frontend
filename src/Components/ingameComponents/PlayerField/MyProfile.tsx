@@ -332,7 +332,7 @@ const MyProfile = () => {
             {thisPlayer.shield === true && (
               <MyStatIcon>
                 <StatIcon
-                  value={1}
+                  value={-1}
                   stat="shield"
                   size={3.6875}
                   mouseOver={mouseOver}

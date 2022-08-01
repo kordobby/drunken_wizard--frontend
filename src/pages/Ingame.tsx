@@ -160,6 +160,7 @@ const Ingame = () => {
             const msgData = JSON.parse(response?.content);
             const msgSender = response?.sender;
             const playersInfo = msgData.players;
+            dispatch(setNowPlayerIdTK(0));
             switch (response?.type) {
               case "START":
                 stompClient.unsubscribe(`/sub/wroom/${roomId}`);
