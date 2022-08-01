@@ -148,6 +148,15 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       setClicked(true); // 중복클릭 방지
       sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
     }
+    dispatch(
+      setSelectUseCardTK({
+        cardName: "",
+        cardId: 0,
+        description: "",
+        manaCost: 0,
+        target: "",
+      })
+    );
   };
 
   // DISCARD FUNC
