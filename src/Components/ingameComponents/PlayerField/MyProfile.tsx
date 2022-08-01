@@ -34,15 +34,6 @@ const MyProfile = () => {
     setMouseOver(false);
   }, [mouseOver]);
 
-  const weakDurationFunc = (value: number) => {
-    if (value > 0) return "weakDuration";
-    else return "antiWeakDuration";
-  };
-
-  const damageModifierFunc = (value: number) => {
-    if (value > 0) return "damageModifierDuration";
-    else return "antiDamageModifierDuration";
-  };
   return (
     <>
       {thisPlayer.playerId !== 0 && (
@@ -90,7 +81,7 @@ const MyProfile = () => {
                 )}
 
                 {thisPlayer.mana >= 20 ? (
-                  <MyStatBar stat={false} point={21.35}>
+                  <MyStatBar stat={false} point={16.35}>
                     <div className="stat__full">
                       <div className="stat__now"></div>
                     </div>
@@ -98,7 +89,7 @@ const MyProfile = () => {
                 ) : (
                   <MyStatBar
                     stat={false}
-                    point={(thisPlayer.mana / 20) * 21.35}
+                    point={(thisPlayer.mana / 20) * 16.35}
                   >
                     <div className="stat__full">
                       <div className="stat__now"></div>
