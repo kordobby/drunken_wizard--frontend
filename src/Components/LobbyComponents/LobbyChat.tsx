@@ -43,7 +43,7 @@ const LobbyChat = () => {
   const [userHistoryState, setUserHistoryState] = useState<any>();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
-  // stompClient.debug = (f) => f;
+  stompClient.debug = (f) => f;
   const queryClient = useQueryClient();
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
