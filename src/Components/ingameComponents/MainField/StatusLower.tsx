@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 /* modules */
 import { StatBarProps } from "../../../typings/typedb";
 import { useCallback } from "react";

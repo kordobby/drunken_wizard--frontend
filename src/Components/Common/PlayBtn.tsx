@@ -1,21 +1,7 @@
 import styled from "styled-components";
-import playBtn from "../../images/icons/playBtn.webp";
-import bubble from "../../images/imgs/bubble.webp";
 import { keyframes } from "styled-components";
-import { Link } from "react-router-dom";
 import feedback from "../../images/icons/feedback.png";
 const PlayBtn = () => {
-  // const audio = useState(new Audio(`../../sounds/gameBgm.wav`));
-  // const [playing, setPlaying] = useState(false);
-
-  // const toggle = () => setPlaying(!playing);
-  // useEffect(() => {
-  //   playing ? audio.play() : audio.pause();
-  // }, [playing]);
-  // const [sound] = useSound(musics);
-  const play = () => {
-    // sound();
-  };
   return (
     <>
       <AudioButton

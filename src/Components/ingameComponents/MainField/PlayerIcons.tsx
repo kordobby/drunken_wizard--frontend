@@ -14,9 +14,10 @@ import {
   TeamPosition,
   PlayingFlag,
 } from "../InGameStyled/InGameStyled";
-import { CraveCardsProps } from "../../../typings/typedb";
-import { HeaderProps } from "../../../typings/typedb";
-import AudioBtn from "../../Common/AudioBtn";
+
+/* types */
+import { CraveCardsProps, HeaderProps } from "../../../typings/typedb";
+
 const PlayerIcons = ({ status }: HeaderProps) => {
   const selectedCard = useAppSelector(
     (state) => state.game.game.selectForUseCard

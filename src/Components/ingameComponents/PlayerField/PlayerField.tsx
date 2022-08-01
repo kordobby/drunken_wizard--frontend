@@ -20,7 +20,6 @@ import {
 } from "../../../typings/typedb";
 
 /* Components */
-// import Cards from "./Cards";
 import MyProfile from "./MyProfile";
 /* CSS & SC */
 import AlertPopUp from "../InGameCommon/AlertPopUp";

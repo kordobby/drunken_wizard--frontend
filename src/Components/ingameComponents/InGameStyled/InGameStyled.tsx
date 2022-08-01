@@ -1,12 +1,17 @@
 import styled, { keyframes } from "styled-components";
 import flex from "../../GlobalStyled/flex";
 
-import table from "../../../images/playerfield/table.png";
+/* img */
+import table from "../../../images/playerfield/table.webp";
 import BeerIcon from "../../../images/icons/BeerIcon.webp";
 import lobbyBack from "../../../images/background/lobbybackground.webp";
+
+/* img matching Func */
 import matchFlagImg from "./TurnFlag";
 import matchClassImg from "./MatchClass";
 import matchProfileImg from "./MatchProfile";
+
+/* types */
 import {
   positionProps,
   StatIconsImgProps,

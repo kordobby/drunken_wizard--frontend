@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import flex from "../GlobalStyled/flex";
-import header from "../../images/imgs/header.png";
+import header from "../../images/imgs/header.webp";
 
 const Header = () => {
   return <Headers></Headers>;

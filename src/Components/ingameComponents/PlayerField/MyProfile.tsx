@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useCallback } from "react";
+import { useState, useCallback } from "react";
+
 /* Hooks */
 import { useAppSelector } from "../../../hooks/tsHooks";
 
@@ -18,8 +18,6 @@ import {
   MyStatIcon,
   StatIcon,
   StatCnt,
-  StatIconBox,
-  CoverIcon,
   CoverIconMine,
 } from "../InGameStyled/InGameStyled";
 

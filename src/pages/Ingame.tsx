@@ -39,7 +39,6 @@ import CraveField from "../Components/ingameComponents/MainField/CraveField";
 import PlayerStatus from "../Components/ingameComponents/MainField/PlayerStatus";
 import TwoBtnModal from "../elem/TwoBtnModal";
 import OverModal from "../Components/ingameComponents/Modals/OverModal";
-import Header from "../Components/HeaderComponents/Header";
 
 /* CSS & SC */
 import {
@@ -346,7 +345,7 @@ const Ingame = () => {
       case "READY":
         setTimeout(() => {
           sendStompMsgFunc(roomId, myId, "START", null);
-        }, 500);
+        }, 2000);
         break;
       case "WAITING":
         // console.log("아직 내 턴이 아니옵니다.");
@@ -498,8 +497,12 @@ const Ingame = () => {
   const waitForConnection = (stompClient: stompJS.Client, callback: any) => {
     setTimeout(function () {
       if (stompClient.ws.readyState === 1) {
-        callback();
+        console.log("Connection is made");
+        if (callback != null) {
+          callback();
+        }
       } else {
+        console.log("wait for connection...");
         waitForConnection(stompClient, callback);
       }
     }, 1);

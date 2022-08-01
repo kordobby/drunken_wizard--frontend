@@ -8,7 +8,6 @@ import HeaderBtn from "../../../elem/HeaderBtn";
 import HeaderRoomTitle from "../../Common/RoomTitle";
 import { NoticeProps } from "../../../typings/typedb";
 
-import AudioBtn from "../../Common/AudioBtn";
 const NoticeField = ({ setRoomOutModal }: NoticeProps) => {
   const roomTitle = useAppSelector((state) => state.game.game.roomTitle);
 
