@@ -540,7 +540,9 @@ const Ingame = () => {
     timer.current = setTimeout(() => {
       ClearTimer();
       setDrawModalOpen(false);
-      sendStompMsgFunc(roomId, myId, turn, null);
+      if (nowPlayerId === myId) {
+        sendStompMsgFunc(roomId, myId, turn, null);
+      }
       dispatch(setTimerTK(""));
       if (turn === "SELECT") {
         setDrawFailModal(true);
