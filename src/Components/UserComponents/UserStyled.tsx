@@ -219,7 +219,6 @@ export const LeftBeerImg = styled.img.attrs({
   bottom: -1.5625vw;
   left: -53vw;
   z-index: 3;
-  /* left: -4.427vw; */
 `;
 
 const RightBeerCheers = keyframes`
@@ -245,7 +244,6 @@ const RightBeerUp = keyframes`
   opacity: 0;
 } 
   100%{
-    /* left: -4.427vw; */
     transform: translate(-50.3542vw,3.6458vw);
     opacity : 1;
   }
@@ -263,28 +261,6 @@ export const RightBeerImg = styled.img.attrs({
   width: 53.609vw;
   right: -54vw;
   z-index: 3;
-`;
-
-const logoFlash = keyframes`
-  0% {
-    opacity: 0;
-  } 100%{
-    opacity: 1;
-  }
-`;
-
-const enterGame = keyframes`
-0% {
-  opacity: 0;
-} 25% {
-  opacity: 0.5;
-} 50% {
-  opacity: 1;
-} 75% {
-  opacity: 0.5;
-} 100% {
-  opacity: 0;
-}
 `;
 
 export const DarkBg = styled.div`

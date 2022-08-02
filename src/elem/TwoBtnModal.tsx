@@ -28,21 +28,6 @@ const TwoBtnModal = ({
   );
 };
 
-/*
- ## 사용 방법
-  - 모달 내용에 넣고싶은 내용을 string으로 넣어주세요.
-  - 확인/취소 버튼에 들어갈 함수는
-    <TwoBtnModal
-      titleText="교체하기"
-      upperText="[user_01] 님과"
-      lowerText="팀을 교체하시겠습니까?"
-      confirmText="확인"
-      cancelText="취소"
-      confirmFunc={confirmFunction} // 함수는 사용할 함수를 보내주세요.
-      cancelFunc={cancelFunction} // 모달 창 닫을 useState 함수 보내주세요.
-    />
-*/
-
 export const StModalWrap = styled.div`
   ${flex({ justify: "center", align: "center" })};
   top: 0;
@@ -60,7 +45,6 @@ const StModalBox = styled.div`
   outline: 0.2vw solid var(--purple-1);
   outline-offset: -0.2vw;
   background-color: white;
-  /* border: 0.10416vw solid var(--purple-1); */
   border-radius: 0.83vw;
 `;
 

@@ -5,7 +5,7 @@ import styled, { keyframes } from "styled-components";
 const LoadingLobby = () => {
   return (
     <BackWrap>
-      <LogLogo top={5.729} bottom={4.6875}></LogLogo>
+      <LogLogo top={5.729} bottom={4.6875} rel="preload" alt="logo"></LogLogo>
       <LoadingSpan>Loading...</LoadingSpan>
     </BackWrap>
   );

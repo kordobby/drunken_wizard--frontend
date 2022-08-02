@@ -1,13 +1,20 @@
+/* Package */
 import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
-// hooks
-import { deleteCookie } from "../Shared/Cookies";
+
+/* Hooks */
+import { deleteCookie } from "../shared/Cookies";
 import { useModal } from "../hooks/useModal";
-// components
+
+/* Components */
 import CreateRoom from "../Components/LobbyComponents/CreateRoom";
 import LobbyChat from "../Components/LobbyComponents/LobbyChat";
 import Rooms from "../Components/LobbyComponents/Rooms";
-// css
+import { DefaultBtnL } from "../Components/Common/CommonStyle";
+import TwoBtnModal from "../elem/TwoBtnModal";
+import HeaderBtn from "../elem/HeaderBtn";
+
+/* CSS & SC */
 import {
   Header,
   LobbyWrap,
@@ -15,11 +22,6 @@ import {
   SideBar,
   WrapBack,
 } from "../Components/LobbyComponents/LobbyStyled";
-import { DefaultBtnL } from "../Components/Common/CommonStyle";
-import TwoBtnModal from "../elem/TwoBtnModal";
-import HeaderBtn from "../elem/HeaderBtn";
-
-// sounds
 import btnSound from "../sounds/buttonSound.mp3";
 import PlayBtn from "../Components/Common/PlayBtn";
 

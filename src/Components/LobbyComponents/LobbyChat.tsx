@@ -1,15 +1,21 @@
+/* Package */
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-// hooks
-import { getCookie } from "../../Shared/Cookies";
-// stomp
+
+/* Hooks */
+import { getCookie } from "../../shared/Cookies";
+
+/* Stomp */
 import stompJS from "stompjs";
 import sockJS from "sockjs-client";
-// api
-import apis from "../../Shared/api/apis";
-// interface
+
+/* apis */
+import apis from "../../shared/api/apis";
+
+/* Interface */
 import { ChatType } from "../../typings/db";
-// css
+
+/* CSS & SC */
 import {
   ChatBox,
   ChatImg,

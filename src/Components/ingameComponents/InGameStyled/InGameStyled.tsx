@@ -55,7 +55,6 @@ export const HeaderWrap = styled.div`
   height: 6.25vw;
   background-color: var(--grey);
   font-family: "국립박물관문화재단클래식M";
-  /* font-size: 3.33vh; */
   color: white;
   box-sizing: border-box;
   padding-left: 2.083vw;
@@ -135,9 +134,6 @@ export const PlayingFlag = styled.div<FlagProps>`
   position: absolute;
   top: ${({ top }) => top && `${top}vw`};
   left: ${({ left }) => left && `${left}vw`};
-  /* &:nth-child(2) {
-    right: 7.8125vw;
-  } */
   z-index: 100;
 `;
 
@@ -163,7 +159,6 @@ export const NameTag = styled.div<NameTagsProps>`
 export const PlayerPointBox = styled.div`
   box-sizing: border-box;
   padding-top: 2.083vw;
-  /* width: 10.833vw; */
   height: 10.416vw;
   ${flex({ direction: "column" })};
 `;
@@ -241,7 +236,6 @@ export const StatIcon = styled.div<StatIconsImgProps>`
   ${flex({ justify: "center", align: "center" })}
   width: ${({ size }) => size && `${size}vw`};
   height: ${({ size }) => size && `${size}vw`};
-  /* box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25); */
   background-color: ${({ value }) => (value > 0 ? "#FF6060" : "var(--white)")};
   background-image: url(${(props) => matchStatusImg(props.stat)});
   background-size: cover;
@@ -325,7 +319,6 @@ export const CraveCards = styled.div<CraveCardsProps>`
     z-index: 4;
   }
   &:nth-child(3) {
-    /* animation: ${usedCard} 0.5s ease; */
     top: 2.8229vw;
     transform: rotate(8deg);
     left: 10.031vw;
@@ -334,7 +327,6 @@ export const CraveCards = styled.div<CraveCardsProps>`
 `;
 /* PlayerField */
 export const PlayerFieldWrap = styled.div`
-  /* height: 30.55vh; */
   height: 17.1875vw;
   width: 100vw;
   box-sizing: border-box;
@@ -442,7 +434,6 @@ export const CardsArea = styled.div`
     transform: scale(0.9);
   }
   .default {
-    /* background: yellow; */
   }
   transition: all 100ms ease-in-out;
   box-sizing: border-box;
@@ -472,7 +463,6 @@ export const PlayerCards = styled.div<UseCardProps>`
   border-radius: 0.5208vw;
   background-size: cover;
   font-size: 0.78125vw;
-  /* border-radius: 0.833vw; */
   box-sizing: border-box;
   background-image: url(${(props) => matchCardImg(props.value.cardName)});
   ${flex({ direction: "column", justify: "center", align: "center" })};
@@ -536,7 +526,6 @@ export const TargetNullBtn = styled.button<BtnColorType>`
     props.color === "ENEMY"
       ? `1px solid var(--brown-1)`
       : `1px solid var(--purple-1)`};
-  /* border: 1px solid red; */
   border-radius: 2.6041vw;
   background-color: var(--white);
   color: ${(props) =>

@@ -1,5 +1,17 @@
+/* Package */
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
+/* Hooks */
+import { toggleFullScreen } from "../hooks/fullScreen";
+
+/* Components */
+import { DefaultBtnL } from "../Components/Common/CommonStyle";
+import PlayBtn from "../Components/Common/PlayBtn";
+
+/* CSS & SC */
 import {
   LogLogo,
   BackWrap,
@@ -8,13 +20,6 @@ import {
   BeerBgImg,
   Shadow,
 } from "../Components/UserComponents/UserStyled";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { toggleFullScreen } from "../hooks/fullScreen";
-import { DefaultBtnL } from "../Components/Common/CommonStyle";
-import PlayBtn from "../Components/Common/PlayBtn";
-
-import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const Splash = () => {
   const [clicked, setClicked] = useState<boolean>(false);
@@ -46,7 +51,12 @@ const Splash = () => {
         {toggle ? (
           <>
             {/* <DarkBg></DarkBg> */}
-            <LogLogo top={5.729} bottom={4.6875}></LogLogo>
+            <LogLogo
+              top={5.729}
+              bottom={4.6875}
+              alt="logo"
+              rel="preload"
+            ></LogLogo>
             <BeerBgImg></BeerBgImg>
             <RightBeerImg></RightBeerImg>
             <LeftBeerImg></LeftBeerImg>
@@ -55,7 +65,12 @@ const Splash = () => {
         ) : (
           <>
             <PlayBtn></PlayBtn>
-            <LogLogo top={5.729} bottom={4.6875}></LogLogo>
+            <LogLogo
+              top={5.729}
+              bottom={4.6875}
+              alt="logo"
+              rel="preload"
+            ></LogLogo>
             <DefaultBtnL disabled={clicked} onClick={toggleFunc}>
               입장하기
             </DefaultBtnL>

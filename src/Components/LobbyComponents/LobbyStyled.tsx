@@ -415,7 +415,6 @@ export const ChatWrap = styled.div`
   width: 15.625vw;
   height: 30.55vh;
   overflow: scroll;
-  /* background-color: rgba(202, 37, 37, 0.5); */
   ${flex({ direction: "column", align: "left" })}
   border-bottom: 2px solid black;
   box-sizing: border-box;

@@ -9,7 +9,7 @@ const PlayBtn = () => {
           window.open("https://forms.gle/WfvxAfs2QvordrBcA", "_blank")
         }
       >
-        <PlayBtnIcon />
+        <PlayBtnIcon alt="feedBack" />
       </AudioButton>
     </>
   );

@@ -11,10 +11,14 @@ import { useFocus } from "../hooks/useFocus";
 import { useModal } from "../hooks/useModal";
 
 /* apis */
-import apis from "../Shared/api/apis";
+import apis from "../shared/api/apis";
+
+/* Components */
+import OneBtnModal from "../elem/OneBtnModal";
+import TwoBtnModal from "../elem/TwoBtnModal";
+import { DefaultBtn, FormWrapSt } from "../Components/Common/CommonStyle";
 
 /* css */
-
 import {
   BackWrap,
   LogLogo,
@@ -26,9 +30,6 @@ import {
   IdCheckButton,
   Check,
 } from "../Components/UserComponents/UserStyled";
-import OneBtnModal from "../elem/OneBtnModal";
-import TwoBtnModal from "../elem/TwoBtnModal";
-import { DefaultBtn, FormWrapSt } from "../Components/Common/CommonStyle";
 
 /* sounds */
 import btnSound from "../sounds/buttonSound.mp3";
@@ -215,7 +216,7 @@ const SignUp = () => {
           />
         )}
         <FormWrapSt>
-          <LogLogo top={10.208} bottom={2.604} />
+          <LogLogo top={10.208} bottom={2.604} alt="logo" rel="preload" />
           <form>
             <label id="user-id-label">
               <InputBoxId>
