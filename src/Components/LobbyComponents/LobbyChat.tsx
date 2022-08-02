@@ -88,11 +88,6 @@ const LobbyChat = () => {
     setMsgList(list);
   }, [semiMsgList]);
 
-  // useEffect(() => {
-  //   queryClient.invalidateQueries(["room_list"]);
-  // }, [msgList, userList]);
-
-  // stompClient.debug() =>{ console.log('debug')},
   // /* function Subscribe */
   const socketSubscribe = useCallback(() => {
     try {
@@ -109,7 +104,9 @@ const LobbyChat = () => {
               const response = JSON.parse(data.body);
               // console.log(data);c
               setSemiMsgList(response);
-              queryClient.invalidateQueries(["room_list"]);
+              if (response.type === "JOIN" || response.type === "LEAVE") {
+                queryClient.invalidateQueries(["room_list"]);
+              }
               if (response.type === "JOIN") {
                 setUserList(response.connectedUsers);
                 userHistory();
@@ -123,12 +120,10 @@ const LobbyChat = () => {
     } catch (error) {
       // console.log(error);
     }
-    // stompClient.debug = (str) => null;
   }, []);
 
   const socketUnsubscribe = () => {
     try {
-      // leaveMessage();
       stompClient.unsubscribe(`/sub/public`);
       // console.log("success to unsubscribe");
     } catch (error) {
@@ -147,18 +142,6 @@ const LobbyChat = () => {
     };
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
   };
-  // leave 메세지
-  // const leaveMessage = () => {
-  //   const accessId = getCookie("id");
-  //   const accessName = getCookie("nickname");
-  //   const data = {
-  //     type: "LEAVE",
-  //     sender: accessId,
-  //     nickname: accessName,
-  //     message: null,
-  //   };
-  //   stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
-  // };
 
   // 채팅 메세지 보내기
   const sendMessage = () => {

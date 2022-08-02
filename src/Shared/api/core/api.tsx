@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getCookie } from "../../Cookies";
 
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 /* axios instance */
 const API_URL = process.env.REACT_APP_API_URL;
@@ -17,6 +17,7 @@ api.interceptors.request.use(
     config.headers.Authorization = token;
     return config;
   },
+
   // 요청 에러 직전 호출
   (error) => {
     // console.log(error);
