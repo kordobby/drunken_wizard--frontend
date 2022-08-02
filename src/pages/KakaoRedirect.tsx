@@ -2,11 +2,11 @@ import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 /* Cookies */
-import { getCookie, setCookie } from "../shared/Cookies";
+import { getCookie, setCookie } from "../Shared/Cookies";
 /* Interface */
 import { loginStateProps } from "../typings/db";
 /* apis */
-import apis from "../shared/api/apis";
+import apis from "../Shared/api/apis";
 import LoadingLobby from "./LoadingLobby";
 
 const KakaoRedirect = ({ setLoginState }: loginStateProps) => {

@@ -8,9 +8,9 @@ import { useModal } from "../hooks/useModal";
 import stompJS from "stompjs";
 import sockJS from "sockjs-client";
 // cookies
-import { getCookie } from "../shared/Cookies";
+import { getCookie } from "../Shared/Cookies";
 // apis
-import apis from "../shared/api/apis";
+import apis from "../Shared/api/apis";
 // css
 import {
   Header,

@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 // stomp
 import stompJS from "stompjs";
 // apis
-import apis from "../../shared/api/apis";
+import apis from "../../Shared/api/apis";
 // hooks
-import { getCookie } from "../../shared/Cookies";
+import { getCookie } from "../../Shared/Cookies";
 // interface
 import { SoundModalType2 } from "../../typings/db";
 // css
