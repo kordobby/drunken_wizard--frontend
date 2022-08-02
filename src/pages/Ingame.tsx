@@ -228,7 +228,7 @@ const Ingame = () => {
                 break;
               case "DRAW":
                 if (msgSender === myId) {
-                  turnChange();
+                  // turnChange();
                   dispatch(setSelectableCardCnt(msgData.selectable));
                   setDrawModalOpen(true);
                   timerFunc(10000, "SELECT");
@@ -246,7 +246,7 @@ const Ingame = () => {
                   dispatch(updateMyCardsTK(msgData.cardsOnHand));
                   sendStompMsgFunc(roomId, myId, "TURNCHECK", null);
                 } else {
-                  setStatus("ACTION");
+                  setStatus("WAITING");
                 }
                 break;
               case "SELECT":
@@ -262,7 +262,7 @@ const Ingame = () => {
                   dispatch(updateMyCardsTK(msgData.cardsOnHand));
                   sendStompMsgFunc(roomId, myId, "TURNCHECK", null);
                 } else if (msgSender !== myId) {
-                  setStatus("ACTION");
+                  setStatus("WAITING");
                 }
                 break;
               case "TURNCHECK":
@@ -310,7 +310,7 @@ const Ingame = () => {
                 dispatch(setCraveTK(msgData.discard));
                 if (msgSender === myId) {
                   dispatch(setThisPlayerTK(msgData));
-                  setStatus("ACTION");
+                  setStatus("WAITING");
                 } else {
                   setUpdateOne(msgData);
                   setStatus("DISCARD");
@@ -363,7 +363,9 @@ const Ingame = () => {
       case "DRAW":
         break;
       case "ACTION":
-        timerFunc(30000, "ENDTURN");
+        if (nowPlayerId === playersData.thisPlayer.playerId) {
+          timerFunc(30000, "ENDTURN");
+        }
         break;
       case "ACTIONFAILED":
         if (nowPlayerId === playersData.thisPlayer.playerId) {
