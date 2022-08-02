@@ -518,7 +518,6 @@ const Ingame = () => {
   ) => {
     waitForConnection(stompClient, function () {
       // connect - subscribe - send
-      // setTimeout(() => {
       try {
         stompClient.send(
           `/pub/game/${roomId}`,
@@ -534,7 +533,6 @@ const Ingame = () => {
         // console.log(error);
         setConnectModal(true);
       }
-      // }, 1000);
     });
   };
 
