@@ -27,7 +27,7 @@ import {
 } from "../redux/modules/ingameSlice";
 
 /* Cookies */
-import { getCookie } from "../shared/Cookies";
+import { getCookie } from "../Shared/Cookies";
 
 /* Components */
 import PlayerField from "../Components/ingameComponents/PlayerField/PlayerField";

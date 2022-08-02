@@ -2,10 +2,10 @@ import React, { useCallback } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 // hooks
-import { getCookie } from "../../shared/Cookies";
+import { getCookie } from "../../Shared/Cookies";
 import useInput from "../../hooks/useInput";
 // apis
-import apis from "../../shared/api/apis";
+import apis from "../../Shared/api/apis";
 // interface
 import { SoundModalType } from "../../typings/db";
 // css

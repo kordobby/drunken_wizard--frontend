@@ -10,13 +10,13 @@ import { passwordCheckF } from "../hooks/useCheck";
 import { useModal } from "../hooks/useModal";
 import { useFocus } from "../hooks/useFocus";
 // cookies
-import { setCookie } from "../shared/Cookies";
+import { setCookie } from "../Shared/Cookies";
 // kakao
-import { KAKAO_AUTH_URL } from "../shared/Kakao";
+import { KAKAO_AUTH_URL } from "../Shared/Kakao";
 // interface
 import { loginStateProps } from "../typings/db";
 // apis
-import apis from "../shared/api/apis";
+import apis from "../Shared/api/apis";
 // css
 import {
   BackWrap,

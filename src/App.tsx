@@ -5,7 +5,7 @@ import loadable from "@loadable/component";
 import { toggleFullScreen } from "./hooks/fullScreen";
 import { useModal } from "./hooks/useModal";
 // cookies
-import { getCookie } from "./shared/Cookies";
+import { getCookie } from "./Shared/Cookies";
 // componentQWED
 import WaitingRoom from "./pages/WaitingRoom";
 import NotFound from "./pages/NotFound";
