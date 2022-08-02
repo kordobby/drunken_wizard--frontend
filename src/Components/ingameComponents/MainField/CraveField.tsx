@@ -2,15 +2,16 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useAppSelector } from "../../../hooks/tsHooks";
-import { PlayerFieldProps } from "../../../typings/typedb";
 import { useParams } from "react-router-dom";
+
 /* CSS & SC */
 import { CraveWrap, CraveCards, Crave } from "../InGameStyled/InGameStyled";
 import { DefaultBtnL } from "../../Common/CommonStyle";
-import AudioBtn from "../../Common/AudioBtn";
+
+/* types */
 import { DrawProps } from "../../../typings/typedb";
+
 const CraveField = ({ sendStompMsgFunc, ClearTimer }: DrawProps) => {
-  const actionTimer = useAppSelector((state) => state.game.game.status);
   const craveCards = useAppSelector((state) => state.game.game.cardCrave);
   const CardsSet = craveCards.slice(undefined, 3);
   const thisPlayer = useAppSelector(

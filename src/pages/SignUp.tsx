@@ -1,18 +1,20 @@
-// package
-import { Helmet } from "react-helmet";
+/* Package */
 import React, { useCallback, useState } from "react";
 import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import useSound from "use-sound";
-// hooks
+
+/* Hooks */
 import useInput from "../hooks/useInput";
 import { idCheck, emailCheck, passwordCheckF } from "../hooks/useCheck";
 import { useFocus } from "../hooks/useFocus";
 import { useModal } from "../hooks/useModal";
 
-// apis
+/* apis */
 import apis from "../shared/api/apis";
-// css
+
+/* css */
+
 import {
   BackWrap,
   LogLogo,
@@ -26,9 +28,9 @@ import {
 } from "../Components/UserComponents/UserStyled";
 import OneBtnModal from "../elem/OneBtnModal";
 import TwoBtnModal from "../elem/TwoBtnModal";
-import { DefaultBtn } from "../Components/Common/CommonStyle";
-import { FormWrapSt } from "../Components/Common/CommonStyle";
-// sounds
+import { DefaultBtn, FormWrapSt } from "../Components/Common/CommonStyle";
+
+/* sounds */
 import btnSound from "../sounds/buttonSound.mp3";
 
 const SignUp = () => {
@@ -173,9 +175,6 @@ const SignUp = () => {
   };
   return (
     <>
-      <Helmet>
-        <title>Drunken Wizard - Sign Up</title>
-      </Helmet>
       <BackWrap>
         {signUpSuccessModal && (
           <TwoBtnModal

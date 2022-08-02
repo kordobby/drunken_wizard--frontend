@@ -1,6 +1,6 @@
-import flagIcon from "../../../images/playerfield/beerFlag.png";
-import drawIcon from "../../../images/playerfield/drawingCards.png";
-import ingIcon from "../../../images/playerfield/playing.png";
+import flagIcon from "../../../images/playerfield/beerFlag.webp";
+import drawIcon from "../../../images/playerfield/drawingCards.webp";
+import ingIcon from "../../../images/playerfield/playing.webp";
 
 export default function matchFlagImg(data: string) {
   switch (data) {

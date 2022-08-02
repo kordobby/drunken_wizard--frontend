@@ -1,12 +1,9 @@
 import React, { useCallback } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 // hooks
 import { getCookie } from "../../shared/Cookies";
 import useInput from "../../hooks/useInput";
-// stomp
-import stompJS from "stompjs";
-import { socket } from "../../shared/WebStomp";
 // apis
 import apis from "../../shared/api/apis";
 // interface
@@ -26,9 +23,6 @@ import { DefaultBtnL } from "../Common/CommonStyle";
 const CreateRoom = ({ modalHandler, btnSound }: SoundModalType) => {
   const [roomName, setRoomName] = useInput<string>("");
   const accessToken = getCookie("token");
-  const queryClient = useQueryClient();
-  const stompClient = stompJS.over(socket);
-  stompClient.debug = (f) => f;
   const navigate = useNavigate();
 
   // mutate
@@ -52,20 +46,6 @@ const CreateRoom = ({ modalHandler, btnSound }: SoundModalType) => {
     },
     [roomName, createRoom]
   );
-
-  // send
-  // const lobbyLeaveMessage = () => {
-  //   const accessId = getCookie("id");
-  //   const accessName = getCookie("nickname");
-  //   const data = {
-  //     type: "LEAVE",
-  //     roomId: 1,
-  //     sender: accessId,
-  //     nickname: accessName,
-  //     message: null,
-  //   };
-  //   stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
-  // };
 
   return (
     <>

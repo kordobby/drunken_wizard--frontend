@@ -43,7 +43,7 @@ const LobbyChat = () => {
   const [userHistoryState, setUserHistoryState] = useState<any>();
   const socket = new sockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
-  // stompClient.debug = (f) => f;
+  stompClient.debug = (f) => f;
   const queryClient = useQueryClient();
   const accessToken = getCookie("token");
   const accessId = getCookie("id");
@@ -97,12 +97,10 @@ const LobbyChat = () => {
           id: accessId,
         },
         (data: any) => {
-          // console.log(data);
           stompClient.subscribe(
             "/sub/public",
             (data: any) => {
               const response = JSON.parse(data.body);
-              // console.log(data);c
               setSemiMsgList(response);
               if (response.type === "JOIN" || response.type === "LEAVE") {
                 queryClient.invalidateQueries(["room_list"]);

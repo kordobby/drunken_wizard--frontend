@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 /* modules */
 import { StatBarProps } from "../../../typings/typedb";
 import { useCallback } from "react";
@@ -240,7 +240,7 @@ const StatusLower = ({
       {shield === true && (
         <StatIconBox size={3.125}>
           <StatIcon
-            value={1}
+            value={-1}
             stat="shield"
             mouseOver={mouseOver}
             size={2.8125}

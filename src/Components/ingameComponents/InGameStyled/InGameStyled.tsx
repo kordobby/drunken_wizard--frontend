@@ -1,12 +1,17 @@
 import styled, { keyframes } from "styled-components";
 import flex from "../../GlobalStyled/flex";
 
-import table from "../../../images/playerfield/table.png";
+/* img */
+import table from "../../../images/playerfield/table.webp";
 import BeerIcon from "../../../images/icons/BeerIcon.webp";
 import lobbyBack from "../../../images/background/lobbybackground.webp";
+
+/* img matching Func */
 import matchFlagImg from "./TurnFlag";
 import matchClassImg from "./MatchClass";
 import matchProfileImg from "./MatchProfile";
+
+/* types */
 import {
   positionProps,
   StatIconsImgProps,
@@ -237,8 +242,7 @@ export const StatIcon = styled.div<StatIconsImgProps>`
   width: ${({ size }) => size && `${size}vw`};
   height: ${({ size }) => size && `${size}vw`};
   /* box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25); */
-  background-color: ${({ value }) =>
-    value > 0 ? "var(--purple-3)" : "var(--white)"};
+  background-color: ${({ value }) => (value > 0 ? "#FF6060" : "var(--white)")};
   background-image: url(${(props) => matchStatusImg(props.stat)});
   background-size: cover;
   border-radius: 1.0416vw;

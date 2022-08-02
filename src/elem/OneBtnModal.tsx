@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import flex from "../Components/GlobalStyled/flex";
-import { OneBtnModalProps } from "../typings/typedb";
 import { NoticeIcon } from "../Components/ingameComponents/InGameStyled/InGameStyled";
+
+/* types */
+import { OneBtnModalProps } from "../typings/typedb";
 
 const OneBtnModal = ({
   headerText,

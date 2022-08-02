@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import flex from "../../GlobalStyled/flex";
-import win from "../../../images/playerfield/win.png";
-import lose from "../../../images/playerfield/lose.png";
+import win from "../../../images/playerfield/win.webp";
+import lose from "../../../images/playerfield/lose.webp";
 import lobbyBack from "../../../images/background/lobbybackground.webp";
 import { DefaultBtnL } from "../../Common/CommonStyle";
 import { OverModalProps } from "../../../typings/typedb";

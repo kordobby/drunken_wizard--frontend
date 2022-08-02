@@ -14,9 +14,9 @@ import {
   DrawModalHeader,
   PurpleConfirmBtn,
 } from "../InGameStyled/InGameStyled";
-import AlertPopUp from "../InGameCommon/AlertPopUp";
 import DrawableCards from "./DrawableCards";
 import { StModalWrap } from "../../../elem/TwoBtnModal";
+
 const DrawModal = ({ sendStompMsgFunc, ClearTimer }: DrawProps) => {
   const [drawDisabled, setDrawDisabled] = useState<boolean>(false);
 

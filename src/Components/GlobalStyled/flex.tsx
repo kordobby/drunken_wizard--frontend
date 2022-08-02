@@ -12,6 +12,3 @@ export default function flex({
     flex-direction: ${direction};
   `;
 }
-
-/* Sample */
-// ${flex({ direction : 'column', gap : '24px' })}

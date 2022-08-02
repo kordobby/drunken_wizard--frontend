@@ -5,6 +5,7 @@ import profile3 from "../../images/lobby/profile3.webp";
 import profile4 from "../../images/lobby/profile4.webp";
 import profile5 from "../../images/lobby/profile5.webp";
 
+// 프로필 랜덤 매치
 export default function matchProfileImg(data: number) {
   switch (data) {
     case 0:

@@ -1,7 +1,11 @@
+/* types */
+import { IngameAlertProps } from "../../../typings/typedb";
+
+/* css */
 import styled from "styled-components";
 import flex from "../../GlobalStyled/flex";
-import { NoticeIcon, DrawModalHeader } from "../InGameStyled/InGameStyled";
-import { IngameAlertProps } from "../../../typings/typedb";
+import { NoticeIcon } from "../InGameStyled/InGameStyled";
+
 const AlertPopUp = ({
   upperText,
   middleText,

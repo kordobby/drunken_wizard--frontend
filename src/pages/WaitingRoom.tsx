@@ -34,7 +34,6 @@ import HeaderRoomTitle from "../Components/Common/RoomTitle";
 import { DefaultBtnL } from "../Components/Common/CommonStyle";
 // sounds
 import btnSound from "../sounds/buttonSound.mp3";
-import Loading from "./Loading";
 
 const WaitingRoom = () => {
   const API_URL = process.env.REACT_APP_API_URL;
@@ -54,7 +53,6 @@ const WaitingRoom = () => {
 
   const { mutate: leaveRoom } = useMutation(apis.leaveRoomMT, {
     onSuccess: (res) => {
-      // console.log(res);
       queryClient.invalidateQueries(["room_list"]);
       socketUnsubscribe();
       navigate("/lobby");
@@ -72,9 +70,6 @@ const WaitingRoom = () => {
   // 구독
   useEffect(() => {
     socketSubscribe();
-    // return () => {
-    //   socketUnsubscribe();
-    // };
   }, []);
 
   // /* function Subscribe */

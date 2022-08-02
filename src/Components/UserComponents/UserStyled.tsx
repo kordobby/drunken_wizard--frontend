@@ -22,7 +22,7 @@ export const BackWrap = styled.div`
   position: fixed;
 `;
 
-export const LogLogo = styled.img.attrs({
+export const LogLogo: any = styled.img.attrs({
   src: `${logoImg}`,
 })<LogoProps>`
   width: 36.51vw;
@@ -339,11 +339,12 @@ export const Shadow = styled.img.attrs({
   animation: ${shadowFlash} 1.5s 0.5s ease;
 `;
 
-// export const LogLogo = styled.img.attrs({
-//   src: `${logoImg}`,
-// })<LogoProps>`
-//   width: 36.51vmax;
-//   margin-top: ${(props) => props.top && `${props.top}vmax`};
-//   margin-bottom: ${(props) => props.bottom && `${props.bottom}vmax`};
-//   z-index: 5;
-// `;
+export const NotFoundTitle = styled.span`
+  font-size: 2.3vw;
+  color: white;
+  margin: 1vh;
+  text-shadow: 1px 1px 0.26vw black;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+`;

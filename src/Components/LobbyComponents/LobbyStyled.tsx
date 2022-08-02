@@ -62,62 +62,6 @@ export const ModalBack = styled.div<ModalDivProps>`
   z-index: 9999;
 `;
 
-export const LogoutBox = styled.div`
-  width: 28.125vw;
-  height: 27.77vh;
-  outline: 2px solid #3f0984;
-  outline-offset: -2px;
-  border-radius: 0.8vw;
-  box-shadow: 0 0 1.56vw rgba(30, 30, 30, 0.185);
-  background-color: #fff;
-  z-index: 10000;
-`;
-
-export const LogoutQBox = styled.div`
-  width: 28vw;
-  height: 18.51vh;
-  ${flex({ direction: "column" })};
-`;
-
-export const LogoutQ = styled.span`
-  font-size: 1.875vw;
-  margin-top: 4.125vw;
-`;
-export const LogoutQ2 = styled.span`
-  font-size: 1.25vw;
-  margin-top: 1.125vw;
-`;
-
-export const LogoutButton = styled.button`
-  width: 14vw;
-  height: 9.25vh;
-  font-size: 1.875vw;
-  border-radius: 0 0 0 0.8vw;
-  color: white;
-  background-color: #3f0984;
-  border-top: 2px solid #3f0984;
-  border-right: 1px solid #3f0984;
-  &:hover {
-    filter: brightness(90%);
-    cursor: pointer;
-  }
-`;
-
-export const CancelButton = styled.button`
-  width: 14vw;
-  height: 9.25vh;
-  font-size: 1.875vw;
-  border-radius: 0 0 0.8vw 0;
-  color: #3f0984;
-  background-color: white;
-  border-top: 2px solid #3f0984;
-  border-left: 1px solid #3f0984;
-  &:hover {
-    filter: brightness(90%);
-    cursor: pointer;
-  }
-`;
-
 // Header
 export const Header = styled.header`
   width: 100vw;
@@ -254,10 +198,6 @@ export const RoomWrap = styled.div`
   height: 87.03vh;
   box-sizing: border-box;
   ${flex({ align: "center", justify: "center", direction: "column" })};
-  /* flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  display: flex; */
 `;
 
 export const RoomBoxWrap = styled.div`

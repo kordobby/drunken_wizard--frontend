@@ -20,7 +20,6 @@ import {
 } from "../../../typings/typedb";
 
 /* Components */
-// import Cards from "./Cards";
 import MyProfile from "./MyProfile";
 /* CSS & SC */
 import AlertPopUp from "../InGameCommon/AlertPopUp";
@@ -148,6 +147,15 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
       setClicked(true); // 중복클릭 방지
       sendStompMsgFunc(roomId, thisPlayer.playerId, "USECARD", data);
     }
+    dispatch(
+      setSelectUseCardTK({
+        cardName: "",
+        cardId: 0,
+        description: "",
+        manaCost: 0,
+        target: "",
+      })
+    );
   };
 
   // DISCARD FUNC
@@ -158,6 +166,15 @@ const PlayerField: FunctionComponent<PlayerFieldProps> = ({
     play();
     setClicked(true); // 중복클릭 방지
     sendStompMsgFunc(roomId, thisPlayer.playerId, "DISCARD", data);
+    dispatch(
+      setSelectUseCardTK({
+        cardName: "",
+        target: "",
+        cardId: 0,
+        description: "",
+        manaCost: 0,
+      })
+    );
   };
 
   // about CSS function

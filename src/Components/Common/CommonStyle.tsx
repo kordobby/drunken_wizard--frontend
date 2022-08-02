@@ -1,12 +1,14 @@
 import styled, { css } from "styled-components";
 import flex from "../GlobalStyled/flex";
+
+/* images */
 import { BtnProps, BtnSettings } from "../../typings/typedb";
 import kakaoBtn from "../../images/buttons/BTN_kakao.webp";
 import activeMBtn from "../../images/buttons/BTN_activeM.webp";
 import inactiveMBtn from "../../images/buttons/BTN_inactiveM.webp";
 import BtnActive from "../../images/buttons/BTN_active.webp";
 import BtnInActive from "../../images/buttons/BTN_inActive.webp";
-//
+
 export const StWrap = styled.div`
   width: 100vmax;
   height: 100vmax;
@@ -18,8 +20,6 @@ export const FormWrapSt = styled.div`
   width: 100%;
   height: 100%;
   ${flex({ direction: "column", align: "center" })};
-  /* padding-bottom: 2.77vw;
-  box-sizing: border-box; */
 `;
 
 export default function matchBtnImg(data: string) {

@@ -3,7 +3,6 @@ import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 // stomp
 import stompJS from "stompjs";
-import { socket } from "../../shared/WebStomp";
 // apis
 import apis from "../../shared/api/apis";
 // hooks
@@ -36,15 +35,17 @@ import {
 // imgs
 import { useModal } from "../../hooks/useModal";
 import OneBtnModal from "../../elem/OneBtnModal";
+import SockJS from "sockjs-client";
 
 const Rooms = ({ btnSound }: SoundModalType2) => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
   stompClient.debug = (f) => f;
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [roomCheckModal, setRoomCheckModal] = useModal(false);
   const accessId = getCookie("id");
-  const accessName = getCookie("nickname");
 
   // query
   const { data: roomList_query } = useQuery(
@@ -53,13 +54,11 @@ const Rooms = ({ btnSound }: SoundModalType2) => {
     {
       onSuccess: (data: any) => {
         // console.log(data);
-        // console.log("성공했어!");
       },
       onError: (error: any) => {
         // console.log("실패", error);
       },
       keepPreviousData: true,
-      // refetchInterval: 2000,
     }
   );
 
@@ -76,19 +75,6 @@ const Rooms = ({ btnSound }: SoundModalType2) => {
       navigate("/lobby");
     },
   });
-
-  // soket
-  // const leaveMessage = () => {
-  //   // const accessId = getCookie("id");
-  //   // const accessName = getCookie("nickname");
-  //   const data = {
-  //     type: "LEAVE",
-  //     sender: accessId,
-  //     nickname: accessName,
-  //     message: `${accessName}님이 채팅방에서 나갔습니다.`,
-  //   };
-  //   stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
-  // };
 
   const socketUnsubscribe = () => {
     try {

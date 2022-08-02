@@ -1,8 +1,8 @@
-import styled from "styled-components";
+/* css */
+import styled, { keyframes } from "styled-components";
 import loading from "../images/splash/loadingFront.webp";
 import background from "../images/background/IngameBackground.webp";
 import beerBg from "../images/splash/beer_bg.webp";
-import { keyframes } from "styled-components";
 
 const Loading = () => {
   return (

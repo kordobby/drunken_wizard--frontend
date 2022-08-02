@@ -1,9 +1,14 @@
-import styled from "styled-components";
-import flex from "../../GlobalStyled/flex";
+/* hooks */
 import { useAppSelector } from "../../../hooks/tsHooks";
-import StatusLower from "./StatusLower";
+
+/* css */
 import { Targeting } from "../../../typings/typedb";
 import { TeamColorProps } from "../../../typings/typedb";
+
+/* types */
+import styled from "styled-components";
+import flex from "../../GlobalStyled/flex";
+import StatusLower from "./StatusLower";
 
 const PlayerStatus = () => {
   const playersData = useAppSelector((state) => state.game.players);
@@ -13,7 +18,6 @@ const PlayerStatus = () => {
   const selectedCard = useAppSelector(
     (state) => state.game.game.selectForUseCard
   );
-  const thisPlayer = useAppSelector((state) => state.game.players.thisPlayer);
   const targetingFunc = (playerId: number) => {
     if (selectedCard.target === "SELECT" && targeted === playerId) return true;
     else if (

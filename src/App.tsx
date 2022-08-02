@@ -1,15 +1,9 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import loadable from "@loadable/component";
 // hook
 import { toggleFullScreen } from "./hooks/fullScreen";
 import { useModal } from "./hooks/useModal";
-// pages
-import Main from "./pages/Main";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import Lobby from "./pages/Lobby";
-import KakaoRedirect from "./pages/KakaoRedirect";
-import Ingame from "./pages/Ingame";
 // cookies
 import { getCookie } from "./shared/Cookies";
 // componentQWED
@@ -27,6 +21,13 @@ import resize from "./images/imgs/Resize.webp";
 import ruleBook from "./images/rules/ruleBook.webp";
 import Splash from "./pages/Splash";
 import ruleBubble from "./images/lobby/ruleBubble.webp";
+// pages
+const SignUp = loadable(() => import("./pages/SignUp"));
+const Login = loadable(() => import("./pages/Login"));
+const Lobby = loadable(() => import("./pages/Lobby"));
+const KakaoRedirect = loadable(() => import("./pages/KakaoRedirect"));
+const Ingame = loadable(() => import("./pages/Ingame"));
+
 function App() {
   const [loading, setLoding] = useState<boolean>(true);
   const [loginState, setLoginState] = useState(false);
@@ -37,35 +38,20 @@ function App() {
     token ? setLoginState(true) : setLoginState(false);
   }, [token]);
 
-  // const logoutHandler = () => {
-  //   if (loginState) {
-  //     deleteCookie("token");
-  //     deleteCookie("id");
-  //     deleteCookie("username");
-  //     deleteCookie("nickname");
-  //   }
-
-  //   if (!loginState) {
-  //     navigate("/login");
-  //   }
-  // };
-
   return (
     <>
       <Routes>
-        {/* <Route path="/loading" element={<LoadingLobby />}></Route> */}
         <Route path="/" element={<Splash />}></Route>
-        <Route path="/lobby" element={<Lobby />}></Route>
         <Route
           path="/login"
           element={<Login setLoginState={setLoginState} />}
         />
-        <Route path="/" element={<Main />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route
           element={<KakaoRedirect setLoginState={setLoginState} />}
           path="/auth/kakao/callback/"
         />
+        <Route path="/lobby" element={<Lobby />}></Route>
         <Route path="/waiting/:roomId" element={<WaitingRoom />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
         <Route path="/ingame/:roomId" element={<Ingame></Ingame>}></Route>
@@ -75,7 +61,7 @@ function App() {
           toggleFullScreen(document.body);
         }}
       >
-        <img src={resize} />
+        <img src={resize} alt="리사이즈" />
       </ResizeBtn>
       {ruleModal && <Rule modalHandler={setRuleMoadl} />}
       <RuleBtn
@@ -84,7 +70,7 @@ function App() {
           setTutorial(true);
         }}
       >
-        <img src={ruleBook} />
+        <img src={ruleBook} alt="룰북" />
       </RuleBtn>
       {!tutorial && <RuleBuBleBtn src={ruleBubble}></RuleBuBleBtn>}
     </>

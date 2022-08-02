@@ -1,6 +1,7 @@
+/* css */
 import { BackWrap, LogLogo } from "../Components/UserComponents/UserStyled";
-import styled from "styled-components";
-import { keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
+
 const LoadingLobby = () => {
   return (
     <BackWrap>

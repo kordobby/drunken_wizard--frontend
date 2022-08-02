@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import flex from "../Components/GlobalStyled/flex";
+/* types */
 import { TwoBtnProps } from "../typings/typedb";
 const TwoBtnModal = ({
   confirmText,

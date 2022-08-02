@@ -39,7 +39,6 @@ import CraveField from "../Components/ingameComponents/MainField/CraveField";
 import PlayerStatus from "../Components/ingameComponents/MainField/PlayerStatus";
 import TwoBtnModal from "../elem/TwoBtnModal";
 import OverModal from "../Components/ingameComponents/Modals/OverModal";
-import Header from "../Components/HeaderComponents/Header";
 
 /* CSS & SC */
 import {
@@ -108,7 +107,7 @@ const Ingame = () => {
   /* socket connect - token */
   const socket = new SockJS(`${API_URL}SufficientAmountOfAlcohol`);
   const stompClient = stompJS.over(socket);
-  // stompClient.debug = (f) => f;
+  stompClient.debug = (f) => f;
   const accessToken = getCookie("token");
   const { roomId } = useParams();
   const myId = Number(getCookie("id"));
@@ -229,7 +228,7 @@ const Ingame = () => {
                 break;
               case "DRAW":
                 if (msgSender === myId) {
-                  turnChange();
+                  // turnChange();
                   dispatch(setSelectableCardCnt(msgData.selectable));
                   setDrawModalOpen(true);
                   timerFunc(10000, "SELECT");
@@ -247,7 +246,7 @@ const Ingame = () => {
                   dispatch(updateMyCardsTK(msgData.cardsOnHand));
                   sendStompMsgFunc(roomId, myId, "TURNCHECK", null);
                 } else {
-                  setStatus("ACTION");
+                  setStatus("WAITING");
                 }
                 break;
               case "SELECT":
@@ -263,7 +262,7 @@ const Ingame = () => {
                   dispatch(updateMyCardsTK(msgData.cardsOnHand));
                   sendStompMsgFunc(roomId, myId, "TURNCHECK", null);
                 } else if (msgSender !== myId) {
-                  setStatus("ACTION");
+                  setStatus("WAITING");
                 }
                 break;
               case "TURNCHECK":
@@ -311,7 +310,7 @@ const Ingame = () => {
                 dispatch(setCraveTK(msgData.discard));
                 if (msgSender === myId) {
                   dispatch(setThisPlayerTK(msgData));
-                  setStatus("ACTION");
+                  setStatus("WAITING");
                 } else {
                   setUpdateOne(msgData);
                   setStatus("DISCARD");
@@ -346,7 +345,7 @@ const Ingame = () => {
       case "READY":
         setTimeout(() => {
           sendStompMsgFunc(roomId, myId, "START", null);
-        }, 500);
+        }, 2000);
         break;
       case "WAITING":
         // console.log("아직 내 턴이 아니옵니다.");
@@ -364,7 +363,9 @@ const Ingame = () => {
       case "DRAW":
         break;
       case "ACTION":
-        timerFunc(30000, "ENDTURN");
+        if (nowPlayerId === playersData.thisPlayer.playerId) {
+          timerFunc(30000, "ENDTURN");
+        }
         break;
       case "ACTIONFAILED":
         if (nowPlayerId === playersData.thisPlayer.playerId) {
@@ -498,11 +499,15 @@ const Ingame = () => {
   const waitForConnection = (stompClient: stompJS.Client, callback: any) => {
     setTimeout(function () {
       if (stompClient.ws.readyState === 1) {
-        callback();
+        console.log("Connection is made");
+        if (callback != null) {
+          callback();
+        }
       } else {
+        console.log("wait for connection...");
         waitForConnection(stompClient, callback);
       }
-    }, 1);
+    }, 250);
   };
 
   const sendStompMsgFunc = (
@@ -540,7 +545,9 @@ const Ingame = () => {
     timer.current = setTimeout(() => {
       ClearTimer();
       setDrawModalOpen(false);
-      sendStompMsgFunc(roomId, myId, turn, null);
+      if (nowPlayerId === myId) {
+        sendStompMsgFunc(roomId, myId, turn, null);
+      }
       dispatch(setTimerTK(""));
       if (turn === "SELECT") {
         setDrawFailModal(true);
