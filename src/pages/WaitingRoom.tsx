@@ -12,10 +12,10 @@ import stompJS from "stompjs";
 import sockJS from "sockjs-client";
 
 /* Cookies */
-import { getCookie } from "../shared/Cookies";
+import { getCookie } from "../Shared/Cookies";
 
 /* apis */
-import apis from "../shared/api/apis";
+import apis from "../Shared/api/apis";
 
 /* Components */
 import HeaderBtn from "../elem/HeaderBtn";

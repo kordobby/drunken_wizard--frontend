@@ -3,14 +3,14 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 
 /* Hooks */
-import { getCookie } from "../../shared/Cookies";
+import { getCookie } from "../../Shared/Cookies";
 
 /* Stomp */
 import stompJS from "stompjs";
 import sockJS from "sockjs-client";
 
 /* apis */
-import apis from "../../shared/api/apis";
+import apis from "../../Shared/api/apis";
 
 /* Interface */
 import { ChatType } from "../../typings/db";

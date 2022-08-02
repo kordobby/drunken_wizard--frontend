@@ -11,7 +11,7 @@ import { useFocus } from "../hooks/useFocus";
 import { useModal } from "../hooks/useModal";
 
 /* apis */
-import apis from "../shared/api/apis";
+import apis from "../Shared/api/apis";
 
 /* Components */
 import OneBtnModal from "../elem/OneBtnModal";

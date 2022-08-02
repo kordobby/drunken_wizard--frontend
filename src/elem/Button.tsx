@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { deleteCookie } from "../shared/Cookies";
+import { deleteCookie } from "../Shared/Cookies";
 import { useNavigate } from "react-router-dom";
 import { ModalType } from "../typings/db";
 const LogoutBtn = ({ modalHandler }: ModalType) => {

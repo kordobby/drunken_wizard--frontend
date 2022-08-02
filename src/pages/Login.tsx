@@ -12,13 +12,13 @@ import { useModal } from "../hooks/useModal";
 import { useFocus } from "../hooks/useFocus";
 
 /* Cookies */
-import { setCookie } from "../shared/Cookies";
+import { setCookie } from "../Shared/Cookies";
 /* Kakao */
-import { KAKAO_AUTH_URL } from "../shared/Kakao";
+import { KAKAO_AUTH_URL } from "../Shared/Kakao";
 /* interface */
 import { loginStateProps } from "../typings/db";
 /* apis */
-import apis from "../shared/api/apis";
+import apis from "../Shared/api/apis";
 
 /* Components */
 import {

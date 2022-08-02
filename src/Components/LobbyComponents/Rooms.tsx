@@ -8,10 +8,10 @@ import SockJS from "sockjs-client";
 import stompJS from "stompjs";
 
 /* apis */
-import apis from "../../shared/api/apis";
+import apis from "../../Shared/api/apis";
 
 /* Hooks */
-import { getCookie } from "../../shared/Cookies";
+import { getCookie } from "../../Shared/Cookies";
 import { useModal } from "../../hooks/useModal";
 
 /* Interface */

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
 
 /* Hooks */
-import { deleteCookie } from "../shared/Cookies";
+import { deleteCookie } from "../Shared/Cookies";
 import { useModal } from "../hooks/useModal";
 
 /* Components */

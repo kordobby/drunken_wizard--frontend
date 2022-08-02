@@ -4,11 +4,11 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 /* Hooks */
-import { getCookie } from "../../shared/Cookies";
+import { getCookie } from "../../Shared/Cookies";
 import useInput from "../../hooks/useInput";
 
 /* apis */
-import apis from "../../shared/api/apis";
+import apis from "../../Shared/api/apis";
 
 /* Interface */
 import { SoundModalType } from "../../typings/db";
