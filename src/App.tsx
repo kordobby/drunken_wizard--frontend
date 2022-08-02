@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import loadable from "@loadable/component";
+
 // hook
 import { toggleFullScreen } from "./hooks/fullScreen";
 import { useModal } from "./hooks/useModal";
 // pages
-import Main from "./pages/Main";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import Lobby from "./pages/Lobby";
-import KakaoRedirect from "./pages/KakaoRedirect";
-import Ingame from "./pages/Ingame";
+
 // cookies
 import { getCookie } from "./Shared/Cookies";
 // componentQWED
@@ -27,6 +24,14 @@ import resize from "./images/imgs/Resize.webp";
 import ruleBook from "./images/rules/ruleBook.webp";
 import Splash from "./pages/Splash";
 import ruleBubble from "./images/lobby/ruleBubble.webp";
+
+const Main = loadable(() => import("./pages/Main"));
+const SignUp = loadable(() => import("./pages/SignUp"));
+const Login = loadable(() => import("./pages/Login"));
+const Lobby = loadable(() => import("./pages/Lobby"));
+const KakaoRedirect = loadable(() => import("./pages/KakaoRedirect"));
+const Ingame = loadable(() => import("./pages/Ingame"));
+
 function App() {
   const [loading, setLoding] = useState<boolean>(true);
   const [loginState, setLoginState] = useState(false);
@@ -37,23 +42,9 @@ function App() {
     token ? setLoginState(true) : setLoginState(false);
   }, [token]);
 
-  // const logoutHandler = () => {
-  //   if (loginState) {
-  //     deleteCookie("token");
-  //     deleteCookie("id");
-  //     deleteCookie("username");
-  //     deleteCookie("nickname");
-  //   }
-
-  //   if (!loginState) {
-  //     navigate("/login");
-  //   }
-  // };
-
   return (
     <>
       <Routes>
-        {/* <Route path="/loading" element={<LoadingLobby />}></Route> */}
         <Route path="/" element={<Splash />}></Route>
         <Route path="/lobby" element={<Lobby />}></Route>
         <Route
