@@ -1,15 +1,26 @@
+/* Package */
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-// stomp
+import SockJS from "sockjs-client";
+
+/* Stomp */
 import stompJS from "stompjs";
-// apis
+
+/* apis */
 import apis from "../../Shared/api/apis";
-// hooks
+
+/* Hooks */
 import { getCookie } from "../../Shared/Cookies";
-// interface
+import { useModal } from "../../hooks/useModal";
+
+/* Interface */
 import { SoundModalType2 } from "../../typings/db";
-// css
+
+/* Components */
+import OneBtnModal from "../../elem/OneBtnModal";
+
+/* CSS & SC */
 import {
   ComeIn,
   Impossible,
@@ -32,10 +43,6 @@ import {
   XImg,
   XWrap,
 } from "./LobbyStyled";
-// imgs
-import { useModal } from "../../hooks/useModal";
-import OneBtnModal from "../../elem/OneBtnModal";
-import SockJS from "sockjs-client";
 
 const Rooms = ({ btnSound }: SoundModalType2) => {
   const API_URL = process.env.REACT_APP_API_URL;

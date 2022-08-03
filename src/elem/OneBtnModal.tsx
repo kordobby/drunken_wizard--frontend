@@ -27,15 +27,6 @@ const OneBtnModal = ({
   );
 };
 
-/* 사용방법
-      <OneBtnModal
-        headerText="안녕하세요"
-        upperText="네네"
-        lowerText="네네네"
-        confirmText="확인"
-        clickFunc={}
-      ></OneBtnModal>
-*/
 const StAlertWrap = styled.div`
   ${flex({ justify: "center", align: "center" })};
   top: 0;

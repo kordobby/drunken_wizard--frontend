@@ -29,7 +29,6 @@ const KakaoRedirect = loadable(() => import("./pages/KakaoRedirect"));
 const Ingame = loadable(() => import("./pages/Ingame"));
 
 function App() {
-  const [loading, setLoding] = useState<boolean>(true);
   const [loginState, setLoginState] = useState(false);
   const [ruleModal, setRuleMoadl] = useModal<boolean>(false);
   const [tutorial, setTutorial] = useState<boolean>(false);
@@ -53,15 +52,15 @@ function App() {
         />
         <Route path="/lobby" element={<Lobby />}></Route>
         <Route path="/waiting/:roomId" element={<WaitingRoom />}></Route>
-        <Route path="/*" element={<NotFound />}></Route>
         <Route path="/ingame/:roomId" element={<Ingame></Ingame>}></Route>
+        <Route path="/*" element={<NotFound />}></Route>
       </Routes>
       <ResizeBtn
         onClick={() => {
           toggleFullScreen(document.body);
         }}
       >
-        <img src={resize} alt="리사이즈" />
+        <img src={resize} alt="resize" />
       </ResizeBtn>
       {ruleModal && <Rule modalHandler={setRuleMoadl} />}
       <RuleBtn
@@ -70,9 +69,11 @@ function App() {
           setTutorial(true);
         }}
       >
-        <img src={ruleBook} alt="룰북" />
+        <img src={ruleBook} alt="ruleBook" />
       </RuleBtn>
-      {!tutorial && <RuleBuBleBtn src={ruleBubble}></RuleBuBleBtn>}
+      {!tutorial && (
+        <RuleBuBleBtn alt="turorial" src={ruleBubble}></RuleBuBleBtn>
+      )}
     </>
   );
 }

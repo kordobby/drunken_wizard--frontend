@@ -87,7 +87,7 @@ const PlayerIcons = ({ status }: HeaderProps) => {
             </NameTag>
           </PlayerIcon>
         </TeamPosition>
-        <TableImg />
+        <TableImg alt="tableImg" />
         <TeamPosition layer={1} top={13.541} left={28.645}>
           <PlayerIcon
             size={15.104}
@@ -146,7 +146,6 @@ const CardBig = styled.div<CraveCardsProps>`
   position: absolute;
   bottom: 5%;
   right: 32%;
-  /* background-color: yellow; */
   z-index: 1000;
 `;
 

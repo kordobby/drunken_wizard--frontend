@@ -1,23 +1,34 @@
-// package
+/* Package */
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 import useSound from "use-sound";
-// hooks
+
+/* Hooks */
 import useInput from "../hooks/useInput";
 import { passwordCheckF } from "../hooks/useCheck";
 import { useModal } from "../hooks/useModal";
 import { useFocus } from "../hooks/useFocus";
-// cookies
+
+/* Cookies */
 import { setCookie } from "../Shared/Cookies";
-// kakao
+/* Kakao */
 import { KAKAO_AUTH_URL } from "../Shared/Kakao";
-// interface
+/* interface */
 import { loginStateProps } from "../typings/db";
-// apis
+/* apis */
 import apis from "../Shared/api/apis";
-// css
+
+/* Components */
+import {
+  DefaultBtn,
+  DefaultBtnKakao,
+  FormWrapSt,
+} from "../Components/Common/CommonStyle";
+import OneBtnModal from "../elem/OneBtnModal";
+
+/* CSS & SC */
 import {
   BackWrap,
   LogLogo,
@@ -28,14 +39,6 @@ import {
   LoginBtnBox,
   Check,
 } from "../Components/UserComponents/UserStyled";
-import {
-  DefaultBtn,
-  DefaultBtnKakao,
-  FormWrapSt,
-} from "../Components/Common/CommonStyle";
-import OneBtnModal from "../elem/OneBtnModal";
-
-// sounds
 import btnSound from "../sounds/buttonSound.mp3";
 
 const Login = ({ setLoginState }: loginStateProps) => {
@@ -105,7 +108,7 @@ const Login = ({ setLoginState }: loginStateProps) => {
           />
         )}
         <FormWrapSt>
-          <LogLogo top={12.729} bottom={4.6875} />
+          <LogLogo top={12.729} bottom={4.6875} alt="logo" rel="preload" />
           <form>
             <label id="user-id-label">
               <InputBoxId>

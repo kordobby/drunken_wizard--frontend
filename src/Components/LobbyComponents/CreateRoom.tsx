@@ -1,14 +1,22 @@
+/* Package */
 import React, { useCallback } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-// hooks
+
+/* Hooks */
 import { getCookie } from "../../Shared/Cookies";
 import useInput from "../../hooks/useInput";
-// apis
+
+/* apis */
 import apis from "../../Shared/api/apis";
-// interface
+
+/* Interface */
 import { SoundModalType } from "../../typings/db";
-// css
+
+/* Components */
+import { DefaultBtnL } from "../Common/CommonStyle";
+
+/* CSS & SC */
 import {
   CreateInput,
   CreateRoomTitle,
@@ -17,8 +25,6 @@ import {
   ModalBack,
   ButtonBox,
 } from "./LobbyStyled";
-// svg
-import { DefaultBtnL } from "../Common/CommonStyle";
 
 const CreateRoom = ({ modalHandler, btnSound }: SoundModalType) => {
   const [roomName, setRoomName] = useInput<string>("");

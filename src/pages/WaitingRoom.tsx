@@ -1,17 +1,29 @@
+/* Package */
 import { useCallback, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import useSound from "use-sound";
-// hooks
+
+/* Hooks */
 import { useModal } from "../hooks/useModal";
+
 // stomp
 import stompJS from "stompjs";
 import sockJS from "sockjs-client";
-// cookies
+
+/* Cookies */
 import { getCookie } from "../Shared/Cookies";
-// apis
+
+/* apis */
 import apis from "../Shared/api/apis";
-// css
+
+/* Components */
+import HeaderBtn from "../elem/HeaderBtn";
+import TwoBtnModal from "../elem/TwoBtnModal";
+import HeaderRoomTitle from "../Components/Common/RoomTitle";
+import { DefaultBtnL } from "../Components/Common/CommonStyle";
+
+/* CSS & SC */
 import {
   Header,
   ReadyName,
@@ -28,11 +40,6 @@ import {
   WaitingWrap,
   XUserImg,
 } from "../Components/waitingRoomCP/WaitingRoomStyled";
-import HeaderBtn from "../elem/HeaderBtn";
-import TwoBtnModal from "../elem/TwoBtnModal";
-import HeaderRoomTitle from "../Components/Common/RoomTitle";
-import { DefaultBtnL } from "../Components/Common/CommonStyle";
-// sounds
 import btnSound from "../sounds/buttonSound.mp3";
 
 const WaitingRoom = () => {
@@ -62,17 +69,16 @@ const WaitingRoom = () => {
     },
   });
 
-  // leaveHandler
+  /* leaveHandler */
   const leaveHandler = useCallback(() => {
     leaveRoom({ roomId: roomId, id: accessId });
   }, [leaveRoom, roomId, accessId]);
 
-  // 구독
   useEffect(() => {
     socketSubscribe();
   }, []);
 
-  // /* function Subscribe */
+  /* function Subscribe */
   const socketSubscribe = useCallback(() => {
     try {
       stompClient.connect(
@@ -124,6 +130,7 @@ const WaitingRoom = () => {
     }
   }, []);
 
+  /* lobbyleaveMsg */
   const leaveMessage = () => {
     const accessName = getCookie("nickname");
     const data = {
@@ -134,7 +141,7 @@ const WaitingRoom = () => {
     };
     stompClient.send("/pub/chat/send", {}, JSON.stringify(data));
   };
-
+  /* joinMsg */
   const joinRoomMessage = () => {
     const data = {
       type: "UPDATE",
@@ -145,7 +152,7 @@ const WaitingRoom = () => {
     queryClient.invalidateQueries(["room_list"]);
     stompClient.send(`/pub/wroom/${roomId}`, {}, JSON.stringify(data));
   };
-
+  /* gameReadyMsg */
   const gameReady = () => {
     const data = {
       type: "READY",
@@ -155,7 +162,7 @@ const WaitingRoom = () => {
     };
     stompClient.send(`/pub/wroom/${roomId}`, {}, JSON.stringify(data));
   };
-
+  /* changeTeam Fuc */
   const changeTeam = (int: number) => {
     let num = 0;
     if (waitingUsers?.player1?.id === Number(accessId)) {

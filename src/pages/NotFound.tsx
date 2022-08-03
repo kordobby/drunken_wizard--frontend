@@ -1,13 +1,17 @@
+/* Package */
+import { useNavigate } from "react-router-dom";
+import { Helmet, HelmetProvider } from "react-helmet-async";
+
+/* Components */
+import { DefaultBtnL } from "../Components/Common/CommonStyle";
+import PlayBtn from "../Components/Common/PlayBtn";
+
+/* CSS & SC */
 import {
   LogLogo,
   BackWrap,
   NotFoundTitle,
 } from "../Components/UserComponents/UserStyled";
-import { useNavigate } from "react-router-dom";
-import { DefaultBtnL } from "../Components/Common/CommonStyle";
-import PlayBtn from "../Components/Common/PlayBtn";
-
-import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const NotFound = () => {
   const navigate = useNavigate();

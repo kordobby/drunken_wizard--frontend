@@ -89,5 +89,4 @@ const BeerWrapDup = styled.div`
   left: 35vw;
 `;
 
-//FFF1D7
 export default Loading;
