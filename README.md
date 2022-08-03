@@ -2,7 +2,7 @@
 
 - 술에 만취한 마법사들이 주점에서 시비가 붙었어요. 이러라고 배운 마법은 아니지만 주점에서 치열한 2:2 마법 카드 대전을 벌이세요!
 
-* [🔮 Drunken Wizard 바로가기](https://dunken-wizard.com)
+* [🔮 Drunken Wizard 바로가기](https://drunken-wizard.com)
 
 ### 🧙 드렁큰 위자드 🍻
 
