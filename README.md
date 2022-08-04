@@ -110,9 +110,8 @@
 - 각 캐릭터마다의 고유 특성이 있어, 직업에 따른 다양한 전략을 구상할 수 있습니다.
 </details>
 
-### 🔥 &nbsp;트러블슈팅
-
-https://github.com/kordobby/drunken_wizard--frontend/issues
+### 🔥 &nbsp;Drunken Wizard FE Wiki!
+[📌 드렁큰 위자드 FE 코드 컨벤션 / 깃 플로우 / 트러블 슈팅 바로가기! ](https://github.com/kordobby/drunken_wizard--frontend/wiki)
 
 <hr/>
 
