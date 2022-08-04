@@ -43,13 +43,7 @@
 
 ![img](./src/images/readme/gameLogic.webp)
 
-<details>
-<summary>👉 턴 컨트롤러 구현 방법 </summary>
-
-- [1] 웹소켓에서 받는 메세지 타입으로 현재의 턴을 인지
-- [2] senderId와 플레이어 고유 Id를 비교해 nowPlayer와 waitingPlayer 구분
-- [3] useState를 이용, 게임의 status를 변경해 유저들이 각기 다른 액션을 취하고 데이터를 저장할 수 있도록 함
-</details>
+[👉 자세히 보러가기!](https://www.figma.com/file/QFEzEQR8l0Z8BaOhi6Kls4/Untitled?node-id=0%3A1)
 
 ### 🎨 와이어 프레임
 
