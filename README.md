@@ -17,7 +17,7 @@
 ![img](./src/images/readme/architecture.webp)
 
 <details>
-<summary>💖 Front-end </summary>
+💖 Front-end 기술 
 
 #### React + Typescript
 
