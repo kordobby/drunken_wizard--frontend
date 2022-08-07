@@ -16,8 +16,8 @@
 
 ![img](./src/images/readme/architecture.webp)
 
-<details>
-💖 Front-end 기술 
+
+### 💖 Front-end 기술선정 
 
 #### React + Typescript
 
@@ -37,7 +37,7 @@
 #### Stomp & sockJS
 
 <li> Java Spring과의 통신 및 webSocket 채팅 기능을 구현</li>
-</details>
+
 
 ### 💻 FE 게임 로직 구현
 
